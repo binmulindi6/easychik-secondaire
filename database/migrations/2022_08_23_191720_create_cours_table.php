@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('cours', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->boolean("isAdmin")->default(0);
-            $table->boolean("isActive")->default(0);
-            $table->foreignId('employer_id')->constrained();
-            
+            $table->string("nom");
+            $table->integer("max_periode");
+            $table->integer("max_examen");
+            $table->foreignId('categorie_cours_id')->constrained();
+            $table->foreignId('classe_id')->constrained();
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('cours');
     }
 };

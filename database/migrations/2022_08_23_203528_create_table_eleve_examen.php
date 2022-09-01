@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('table_eleve_examen', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->boolean("isAdmin")->default(0);
-            $table->boolean("isActive")->default(0);
-            $table->foreignId('employer_id')->constrained();
-            
+            $table->foreignId('eleve_id')->constrained();
+            $table->foreignId('examen_id')->constrained();
+            $table->integer('note_obtenu');
             $table->timestamps();
         });
     }
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('table_eleve_examen');
     }
 };

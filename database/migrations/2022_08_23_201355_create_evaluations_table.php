@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->boolean("isAdmin")->default(0);
-            $table->boolean("isActive")->default(0);
-            $table->foreignId('employer_id')->constrained();
-            
+            $table->integer('note_max');
+            $table->foreignId('type_evaluation_id')->constrained();
+            $table->foreignId('cours_id')->constrained();
+            $table->foreignId('periode_id')->constrained();
+            $table->date('date_evaluation');
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('evaluations');
     }
 };
