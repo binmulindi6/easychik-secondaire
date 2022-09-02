@@ -5,11 +5,12 @@ namespace App\Models;
 use App\Models\Examen;
 use App\Models\Evaluation;
 use App\Models\Frequentation;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Facades\DB;
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Eleve extends Model
 {
@@ -48,6 +49,38 @@ class Eleve extends Model
           return "NaN";
      }
 
+     //bulletinPeriode() to get points from periode
+     public function bulletinPeriode($periode){
+          $bulletin = Evaluation::where('evaluations.periode_id', '=', $periode)
+                            ->join('eleve_evaluation', 'evaluation_id', '=', "evaluations.id")
+                            ->where('eleve_evaluation.eleve_id', '=', $this->id)
+                            ->join('cours', 'cours.id', '=', 'evaluations.cours_id')
+                            ->select('cours.nom as nom',DB::raw('SUM(eleve_evaluation.note_obtenu) as note'),DB::raw('SUM(evaluations.note_max) as max'), 'cours.max_periode as total')
+                            ->groupBy('cours_id')
+                            ->get();
+
+        $bulletin->isEmpty() ? $bulletin = null : "" ;
+          
+        return $bulletin;
+     }
+
+
+     //bulletinPeriode() to get points from periode
+     public function bulletinExamen($trimestre){
+          $bulletin = Examen::where('examens.trimestre_id', '=', $trimestre)
+                            ->join('eleve_examen', 'examen_id', '=', "examens.id")
+                            ->where('eleve_examen.eleve_id', '=', $this->id)
+                            ->join('cours', 'cours.id', '=', 'examens.cours_id')
+                            ->select('cours.nom as nom',DB::raw('SUM(eleve_examen.note_obtenu) as note'),DB::raw('SUM(examens.note_max) as max'), 'cours.max_examen as total')
+                            ->groupBy('cours_id')
+                            ->get();
+
+        $bulletin->isEmpty() ? $bulletin = null : "" ;
+          
+        return $bulletin;
+     }
+
+
     public function frequentations()
     {
          return $this->hasMany(Frequentation::class);
@@ -62,6 +95,6 @@ class Eleve extends Model
     //link to Evaluation
     public function examens()
     {
-         return $this->hasMany(Examen::class);
+         return $this->belongsToMany(Examen::class)->withPivot('note_obtenu');
     }
 }

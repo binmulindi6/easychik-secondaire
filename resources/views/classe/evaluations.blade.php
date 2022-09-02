@@ -2,13 +2,12 @@
 
 @section('content')
 
-    <div class="container m-5">
+    <div id='print' class="container m-5">
 
         <p class="text-bold text-xl"> Fiche de cote {{ $periode->nom }}, {{ $periode->trimestre->nom }} Annee Scolaire {{ $periode->trimestre->annee_scolaire->nom }}</p>
 
         <p class="text-bold text-2xl"> Eleve: {{$eleve->nom . " " . $eleve->prenom}} </p>
 
-        
         <div class="flex flex-row justify-between">
             <div class="container p-4 mb-2 border-r-2 border-black-500"> 
             
@@ -47,10 +46,9 @@
         
             </div>
     
-            <div id='content' class="container p-4"> 
+            <div  class="container p-4"> 
                 
                 <p  class="font-bold text-xl m-4"> Bulletin </p>
-                <button id="cmd" class="btn bg-blue-500 px-2 py-1 text-white rounded">generate PDF</button>
 
                 @if (!$bulletin == null)
                 <table>
@@ -104,17 +102,15 @@
                     </p>
                 @endif
             </div>
-            <div id='content'></div>
-        </div>
 
+        </div>
+        
     </div>
+    @if (!$bulletin == null)
+        <button id="cmd" class="btn bg-blue-500 px-2 py-1 text-white rounded">Imprimer la Fiche</button>
+    @endif
     
 @endsection
 
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"
-integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
-crossorigin="anonymous">
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script-->
 
-        
-
-</script>

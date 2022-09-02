@@ -17,4 +17,16 @@ class Examen extends Model
     {
         return $this->belongsToMany(Eleve::class);
     }
+    
+    //link to cours
+    public function cours()
+    {
+       return $this->belongsTo(Cours::class);
+    }
+    //link to
+    public function trimestre()
+    {
+       return $this->belongsTo(Trimestre::class);
+    }
+
 }

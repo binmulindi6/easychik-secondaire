@@ -1,23 +1,23 @@
 import './bootstrap';
 
 import Alpine from 'alpinejs';
+import { jsPDF } from "jspdf";
+import $ from 'jquery';
+
+import './printThis';
+try {
+    window.$ = window.jQuery = require('jquery');
+} catch (e) {}
 
 window.Alpine = Alpine;
 
-var doc = new jsPDF();
-        var specialElementHandlers = {
-            '#editor': function (element, renderer) {
-                return true;
-            }
-        };
-
+const doc = new jsPDF();
         $('#cmd').click(function () {
-            console.log('10');
-            doc.fromHTML($('#content').html(), 15, 15, {
-                'width': 170,
-                    'elementHandlers': specialElementHandlers
+
+            $('#print').printThis({
+                header: null,                   // prefix to html
+                footer: null,
             });
-            doc.save('sample-file.pdf');
         });
 
 Alpine.start();

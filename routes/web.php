@@ -61,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('type-evaluations', EmployerController::class);
 
     Route::get('resultat/periode/{periode_id}/{eleve_id}', [ResultatController::class, 'periode'])->name('resultat.periode');
+    Route::get('resultat/examen/{trimestre_id}/{eleve_id}', [ResultatController::class, 'examen'])->name('resultat.examen');
+    Route::get('resultat/trimestre/{trimestre_id}/{eleve_id}', [ResultatController::class, 'trimestre'])->name('resultat.trimestre');
 
 });
 

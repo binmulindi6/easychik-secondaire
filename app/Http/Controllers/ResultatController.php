@@ -7,6 +7,7 @@ use App\Models\Periode;
 use App\Models\Evaluation;
 use Illuminate\Http\Request;
 use App\Models\EleveEvaluation;
+use App\Models\Trimestre;
 use Illuminate\Support\Facades\DB;
 use PDO;
 
@@ -16,7 +17,8 @@ class ResultatController extends Controller
         $eleve = Eleve::findOrFail($eleve_id);
         $periode = Periode::findOrFail($periode_id);
         $evs = $eleve->evaluations;
-
+        
+        $evaluations = null;
         foreach($evs as $item){
             if($item->periode_id == $periode->id){
                 $evaluations = $evs;
@@ -35,14 +37,7 @@ class ResultatController extends Controller
                     ->get();
         dd($item);*/
 
-        $bulletin = Evaluation::where('evaluations.periode_id', '=', $periode_id)
-                            ->join('eleve_evaluation', 'evaluation_id', '=', "evaluations.id")
-                            ->where('eleve_evaluation.eleve_id', '=', $eleve->id)
-                            ->join('cours', 'cours.id', '=', 'evaluations.cours_id')
-                            ->select('cours.nom as nom',DB::raw('SUM(eleve_evaluation.note_obtenu) as note'),DB::raw('SUM(evaluations.note_max) as max'), 'cours.max_periode as total')
-                            ->groupBy('cours_id')
-                            ->get();
-        $bulletin->isEmpty() ? $bulletin = null : "" ;
+        $bulletin = $eleve->bulletinPeriode($periode_id);
         
         //return($bulletin);
 
@@ -68,7 +63,89 @@ class ResultatController extends Controller
         //$evaluations = EleveEvaluation::where('eleve_id', $eleve->id)->get();
 
         //dd($eleve->evaluations[1]->pivot->note_obtenu);
-        dd($eleve->evaluations);
+        //dd($eleve->evaluations);
 
+    }
+
+
+    //examen
+    public function examen($trimestre_id, $eleve_id){
+        $eleve = Eleve::findOrFail($eleve_id);
+        $trimestre = Trimestre::findOrFail($trimestre_id);
+        $exs = $eleve->examens;
+        
+        $examens = null;
+        foreach($exs as $item){
+            if($item->trimestre_id == $trimestre->id){
+                $examens = $exs;
+                break;
+            }else{
+                $examens = null;
+            }
+        }
+
+        $note = 0;
+        $max = 0;
+        $bulletin = $eleve->bulletinExamen($trimestre_id);
+        //dd($bulletin);
+
+        return view('classe.examens')
+                    ->with('bulletin', $bulletin)
+                    ->with('max', $max)
+                    ->with('note', $note)
+                    ->with('trimestre', $trimestre)
+                    ->with('eleve', $eleve)
+                    ->with('evaluations', $examens);
+    }
+
+
+
+    //trimestre
+    public function trimestre($trimestre_id, $eleve_id){
+        $eleve = Eleve::findOrFail($eleve_id);
+        $trimestre = Trimestre::findOrFail($trimestre_id);
+        $periodes = $trimestre->periodes;
+
+        //fiche examen
+        $examen = $eleve->bulletinExamen($trimestre_id);
+
+        //fiche periodes
+        $periode1 = $eleve->bulletinPeriode($periodes[0]->id);
+        $periode2 = $eleve->bulletinPeriode($periodes[1]->id);
+        
+        
+        //variables 
+        $noteP1 = 0;
+        $maxP1 = 0;
+        $noteP2 = 0;
+        $maxP2 = 0;
+        $noteEx = 0;
+        $maxEx = 0;
+        $noteTri = 0;
+        $maxTri = 0;
+        
+        if ($examen != null && !$periode1 != null && $periode2 != null) {
+            if($examen->count() != $periode1->count() && $examen->count() != $periode2->count() && $periode1->count() != $periode2->count()){
+                $examen = null;
+                $periode1 = null;
+                $periode2 = null;
+            }
+        }
+        
+
+        return view('classe.trimestres')
+                    ->with('examen', $examen)
+                    ->with('periode1', $periode1)
+                    ->with('periode2', $periode2)
+                    ->with('maxP1', $maxP1)
+                    ->with('noteP1', $noteP1)
+                    ->with('maxP2', $maxP2)
+                    ->with('noteP2', $noteP2)
+                    ->with('maxEx', $maxEx)
+                    ->with('noteEx', $noteEx)
+                    ->with('noteTri', $noteTri)
+                    ->with('maxTri', $maxTri)
+                    ->with('trimestre', $trimestre)
+                    ->with('eleve', $eleve);
     }
 }

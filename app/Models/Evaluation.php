@@ -18,7 +18,7 @@ class Evaluation extends Model
     {
        return $this->belongsTo(TypeEvaluation::class);
     }
-    //link to
+    //link to cours
     public function cours()
     {
        return $this->belongsTo(Cours::class);

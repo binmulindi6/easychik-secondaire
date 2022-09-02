@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "SAS - School Administration Sysytem",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "School Administration Sysytem",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {

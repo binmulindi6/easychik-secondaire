@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "flowbite": "^1.5.2",
+        "jquery": "^3.6.1",
         "jspdf": "^2.5.1"
     }
 }
