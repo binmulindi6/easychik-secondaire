@@ -38,6 +38,7 @@ class Eleve extends Model
                //dd($annee->nom, AnneeScolaire::current()->nom, $annee->isCurrent());
                //dd($annee->isCurrent());
                if($annee->isCurrent()){
+               
                     $classe_id = $frequetation->classe_id;
                     $classe = Classe::find($classe_id);
                    if($instance){
@@ -46,7 +47,7 @@ class Eleve extends Model
                    return $classe->niveau . " " . $classe->nom;;
                }
           }      
-          return "NaN";
+          return null;
      }
 
      //bulletinPeriode() to get points from periode

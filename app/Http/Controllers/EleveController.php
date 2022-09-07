@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Eleve;
+use App\Models\Fonction;
+use App\Models\Trimestre;
+use App\Models\EleveExamen;
 use Illuminate\Http\Request;
+use App\Http\Middleware\TrimStrings;
+use App\Models\Periode;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 
 class EleveController extends Controller
 {
@@ -76,8 +82,21 @@ class EleveController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show(Request $request, $id)
+    {   
+        if($request->_method == 'PUT'){
+            $request->validate([
+                'matricule' => ['required','string','max:255', 'unique:employers'],
+                'nom' => ['required','string','max:255'],
+                'prenom' => ['required','string','max:255'],
+                'lieu_naissance' => ['required','string','max:255'],
+                'date_naissance' => ['required','string','max:255'],
+                'nom_pere' => ['required','string','max:255'],
+                'nom_mere' => ['required','string','max:255'],
+                'adresse' => ['required','string','max:255'],
+            ]);
+            return  $this->update($request, $id);
+        }
         $eleves = Eleve::find($id);
         
         return view('eleve.eleves')
@@ -108,7 +127,20 @@ class EleveController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $eleve = Eleve::find($id);
+
+        $eleve->matricule = $request->matricule;
+        $eleve->nom = $request->nom;
+        $eleve->prenom = $request->prenom;
+        $eleve->lieu_naissance = $request->lieu_naissance;
+        $eleve->date_naissance = $request->date_naissance;
+        $eleve->nom_pere = $request->nom_pere;
+        $eleve->nom_mere = $request->nom_mere;
+        $eleve->adresse = $request->adresse;
+
+        $eleve->save();
+
+        return redirect()->route('eleves.index');
     }
 
     /**
@@ -123,5 +155,30 @@ class EleveController extends Controller
         $eleve->delete();
 
         return redirect()->route('eleves.index');
+    }
+
+    public function ficheExamen($eleve, $trimestre){
+        $eleve = Eleve::findOrFail($eleve);
+        $trimestre = Trimestre::findOrFail($trimestre);
+
+        $examens = $eleve->examens;
+
+        return view('eleve.show')
+                    ->with('examens', $examens)
+                    ->with('trimestre', $trimestre)
+                    ->with('eleve', $eleve);
+    }
+
+    public function ficheEvaluations($eleve, $periode){
+        $eleve = Eleve::findOrFail($eleve);
+        $periode = Periode::findOrFail($periode);
+
+        $evaluations = $eleve->evaluations;
+        //dd($evaluations[0]);
+
+        return view('eleve.show')
+                    ->with('evaluations', $evaluations)
+                    ->with('periode', $periode)
+                    ->with('eleve', $eleve);
     }
 }

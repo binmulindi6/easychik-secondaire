@@ -140,7 +140,7 @@
                                         <td class="p-1 ">{{$item->nom_mere}}</td>
                                         <td class="p-1 ">{{$item->adresse}}</td>
                                         <td class="p-1 ">
-                                            @if ($item->classe(false) == "NaN")
+                                            @if ($item->classe(false) == null)
                                             <a class="text-blue-500 underline" href="{{ route('frequentations.link',$item->id) }}"> Ajouter dans une classe </a>
                                             @else
                                             {{$item->classe(false)}}</td>    

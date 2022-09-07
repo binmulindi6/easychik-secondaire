@@ -1,8 +1,8 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <p>SAS</p>
+            <a href="/"><p class="font-bold text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md">S.A.S</p>
+                
             </a>
         </x-slot>
 

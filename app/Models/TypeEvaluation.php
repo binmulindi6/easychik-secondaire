@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class TypeEvaluation extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $fillable = [
+        'nom',
+    ];
 
     public function evaluations()
     {

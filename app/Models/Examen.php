@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Examen extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $fillable = [
+        'note_max',
+        'date_examen'
+      ];
 
 
     //link to Eleve

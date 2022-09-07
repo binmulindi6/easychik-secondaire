@@ -15,7 +15,7 @@ class FrequentationEleveController extends Controller
     {
         $frequentations = Frequentation::all();
         $eleve = Eleve::findOrFail($id);
-        $classes = Classe::all();
+        $classes = Classe::orderBy('niveau','asc')->get();
         $annees = AnneeScolaire::all();
 
         return view('eleve.frequentations')

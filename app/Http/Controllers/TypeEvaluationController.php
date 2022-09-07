@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TypeEvaluation;
 use Illuminate\Http\Request;
 
 class TypeEvaluationController extends Controller
@@ -13,7 +14,8 @@ class TypeEvaluationController extends Controller
      */
     public function index()
     {
-        //
+        $type_valuations = TypeEvaluation::all();
+        return view('classe.type-evaluations')->with('items', $type_valuations);
     }
 
     /**
@@ -23,7 +25,7 @@ class TypeEvaluationController extends Controller
      */
     public function create()
     {
-        //
+        return $this->index();
     }
 
     /**
@@ -34,7 +36,15 @@ class TypeEvaluationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => ['required', 'string', 'max:255'],
+        ]);
+
+        TypeEvaluation::create([
+            'nom' => $request->nom,
+        ]);
+
+        return redirect()->route('type-evaluations.index');
     }
 
     /**
@@ -43,9 +53,12 @@ class TypeEvaluationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        if($request->_method == 'PUT'){
+            return  $this->update($request, $id);
+        }
+        dd("show");
     }
 
     /**
@@ -56,7 +69,11 @@ class TypeEvaluationController extends Controller
      */
     public function edit($id)
     {
-        //
+        $type_valuations = TypeEvaluation::all();
+        $type = TypeEvaluation::find($id);
+        return view('classe.type-evaluations')
+                    ->with('self', $type)
+                    ->with('items', $type_valuations);
     }
 
     /**
@@ -67,8 +84,16 @@ class TypeEvaluationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   
+        $request->validate([
+            'nom' => ['required', 'string', 'max:255'],
+        ]);
+
+        $type = TypeEvaluation::find($id);
+        $type->nom = $request->nom;
+        $type->save();
+
+        return redirect()->route('type-evaluations.index');
     }
 
     /**
@@ -79,6 +104,7 @@ class TypeEvaluationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $type = TypeEvaluation::find($id);
+        $type->delete();
     }
 }

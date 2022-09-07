@@ -25,7 +25,7 @@ class FonctionController extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->route('fonctions.index');
     }
 
     /**
@@ -48,20 +48,6 @@ class FonctionController extends Controller
 
         return redirect()->route('fonctions.index');
     }
-    public function test(Request $request)
-    {
-        $request->validate([
-            'nom' => ['required','string','max:255', 'unique:fonctions'],
-        ]);
-
-        //dd($request->nom);
-
-        Fonction::create([
-            'nom' => $request->nom,
-        ]);
-
-        return redirect()->route('fonctions.index');
-    }
 
     /**
      * Display the specified resource.
@@ -69,8 +55,11 @@ class FonctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show(Request $request, $id)
+    {   
+        if($request->_method == 'PUT'){
+            return  $this->update($request, $id);
+        }
         $fonction = Fonction::find($id);
         return view('employer.fonctions')
                     ->with('item', $fonction);
@@ -102,11 +91,10 @@ class FonctionController extends Controller
      */
     public function update(Request $request, $id)
     {   
-        dd('1010');
         $fonction = Fonction::find($id);
         $fonction->nom = $request->nom;
-        dd($fonction);
         $fonction->save();
+        return redirect()->route('fonctions.index');
     }
 
     /**

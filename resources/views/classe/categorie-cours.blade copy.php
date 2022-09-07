@@ -1,7 +1,7 @@
 @extends('layouts.sas')
 
 @section('content')
-    <p class=" font-bold text-xl mt-5"><a href="{{route('type-evaluations.index')}}" >Type Evaluations</a></p>
+    <p class=" font-bold text-xl mt-5"><a href="{{route('categorie-cours.index')}}" >Categorie Cours</a></p>
     <div class="container flex flex-row justify-between gap-5 mt-16" >
         
         @if (isset($item))
@@ -9,8 +9,8 @@
         @else
             <div class="container p-4">
                 @if (isset($self))
-                    <p class="font-bold text-base "> Edit Type Evaluations </p>
-                    <form method="PUT" action="{{ route('type-evaluations.update', $self->id) }}">
+                    <p class="font-bold text-base"> Edit Categorie Cours </p>
+                    <form method="PUT" action="{{ route('categorie-cours.update', $self->id) }}">
                         @csrf
                         {{ method_field('PUT') }}
                         <!-- Email Address -->
@@ -24,8 +24,8 @@
                         </div>
                     </form>
                 @else
-                    <p class="font-bold text-base"> Create Type Evaluations </p>
-                    <form method="POST" action="{{ route('type-evaluations.store') }}">
+                    <p class="font-bold text-base"> Create Categorie Cours </p>
+                    <form method="POST" action="{{ route('categorie-cours.store') }}">
                         @method('POST')
                         @csrf
                         <!-- Email Address -->
@@ -56,9 +56,9 @@
                             @foreach ($items as $item)
                                 <tr class="">
                                     <td class="p-1">{{$item->nom}}</td>
-                                    <td class="p-1 text-blue-500 underline"><a href="{{ route('type-evaluations.edit',$item->id) }}">edit</a></td>
+                                    <td class="p-1 text-blue-500 underline"><a href="{{ route('categorie-cours.edit',$item->id) }}">edit</a></td>
                                     <td >
-                                        <form action="{{ route('type-evaluations.destroy',$item->id) }}" method="post">
+                                        <form action="{{ route('categorie-cours.destroy',$item->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button class="p-1 text-blue-500 underline" type="submit">delete</button>

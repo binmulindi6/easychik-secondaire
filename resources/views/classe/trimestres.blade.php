@@ -13,20 +13,20 @@
             <div  class="container p-4"> 
                 
                 <p  class="font-bold text-xl m-4"> Bulletin  </p>
-
-                @if (!$examen == null)
-                <table>
+                @if ($examen != null && $periode1 != null && $periode2 != null )
+                
+                    <table class="border-2xl  border-collapse">
                         <thead>
-                            <th class="p-1 text-left" >Cours </th>
-                            <th class="p-1" >Max Periode</th>
-                            <th class="p-1" >Periode 1</th>
-                            <th class="p-1" >Periode 2</th>
-                            <th class="p-1" >Max Examen</th>
-                            <th class="p-1" >Examen</th>
-                            <th class="p-1" >Max Tri</th>
-                            <th class="p-1" >Points</th>
+                            <th class=" border p-1 text-left" >Cours </th>
+                            <th class=" border p-1" >Max Periode</th>
+                            <th class=" border p-1" >Periode 1</th>
+                            <th class=" border p-1" >Periode 2</th>
+                            <th class=" border p-1" >Max Examen</th>
+                            <th class=" border p-1" >Examen</th>
+                            <th class=" border p-1" >Max Tri</th>
+                            <th class=" border p-1" >Points</th>
                         </thead>
-                        <tbody>
+                        <tbody> 
                                 @for ($i = 0; $i < $periode1->count(); $i++)
                                     
                                     @php
@@ -68,14 +68,14 @@
 
                                     @endphp
                                     <tr>
-                                        <td class="p-1 text-left"> {{$examen[$i]->nom }} </td>
-                                        <td class="p-1 text-center font-bold"> {{$periode1[$i]->total}} </td>
-                                        <td class="p-1 text-center"> {{$periode1[$i]->note}} </td>
-                                        <td class="p-1 text-center"> {{$periode2[$i]->note}} </td>
-                                        <td class="p-1 text-center font-bold"> {{ $examen[$i]->total }} </td>
-                                        <td class="p-1 text-center"> {{$examen[$i]->note}} </td>
-                                        <td class="p-1 text-center font-bold"> {{ $examen[$i]->total * 2 }} </td>
-                                        <td class="p-1 text-center"> {{ $periode1[$i]->note + $periode2[$i]->note + $examen[$i]->note }} </td>
+                                        <td class="border p-1 text-left"> {{$examen[$i]->nom }} </td>
+                                        <td class="border p-1 text-center font-bold"> {{$periode1[$i]->total}} </td>
+                                        <td class="border p-1 text-center"> {{$periode1[$i]->note}} </td>
+                                        <td class="border p-1 text-center"> {{$periode2[$i]->note}} </td>
+                                        <td class="border p-1 text-center font-bold"> {{ $examen[$i]->total }} </td>
+                                        <td class="border p-1 text-center"> {{$examen[$i]->note}} </td>
+                                        <td class="border p-1 text-center font-bold"> {{ $examen[$i]->total * 2 }} </td>
+                                        <td class="border p-1 text-center"> {{ $periode1[$i]->note + $periode2[$i]->note + $examen[$i]->note }} </td>
                                         
                                         
                                     </tr>
@@ -86,44 +86,44 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="p-1" > </th>
-                                    <th class="p-1" >Total </th>
-                                    <th class="p-1" >Total</th>
-                                    <th class="p-1" >Total</th>
-                                    <th class="p-1" >Total</th>
-                                    <th class="p-1" >Total</th>
-                                    <th class="p-1" >Total Tri</th>
-                                    <th class="p-1" >Total </th>
+                                    <th class="border p-1" > </th>
+                                    <th class="border p-1" >Total </th>
+                                    <th class="border p-1" >Total</th>
+                                    <th class="border p-1" >Total</th>
+                                    <th class="border p-1" >Total</th>
+                                    <th class="border p-1" >Total</th>
+                                    <th class="border p-1" >Total Tri</th>
+                                    <th class="border p-1" >Total </th>
                                 </tr>
                                 <tr>
-                                    <th class="p-1" ></th>
-                                    <th class="p-1" > {{$maxP1}} </th>
-                                    <th class="p-1" >{{$noteP1}}</th>
-                                    <th class="p-1" >{{$noteP2}}</th>
-                                    <th class="p-1" >{{$maxEx}}</th>
-                                    <th class="p-1" >{{$noteEx}}</th>
-                                    <th class="p-1" > {{ $maxEx*2 }} </th>
-                                    <th class="p-1" >  {{$noteTri}} </th>
+                                    <th class="border p-1" ></th>
+                                    <th class="border p-1" > {{$maxP1}} </th>
+                                    <th class="border p-1" >{{$noteP1}}</th>
+                                    <th class="border p-1" >{{$noteP2}}</th>
+                                    <th class="border p-1" >{{$maxEx}}</th>
+                                    <th class="border p-1" >{{$noteEx}}</th>
+                                    <th class="border p-1" > {{ $maxEx*2 }} </th>
+                                    <th class="border p-1" >  {{$noteTri}} </th>
                                 </tr>
                                 <tr>
-                                    <th class="p-1" > </th>
-                                    <th class="p-1" >-</th>
-                                    <th class="p-1" > Pourc </th>
-                                    <th class="p-1" > Pourc </th>
-                                    <th class="p-1" >-</th>
-                                    <th class="p-1" >Pourc</th>
-                                    <th class="p-1" >-</th>
-                                    <th class="p-1" >Pourc</th>
+                                    <th class="border p-1" > </th>
+                                    <th class="border p-1" >-</th>
+                                    <th class="border p-1" > Pourc </th>
+                                    <th class="border p-1" > Pourc </th>
+                                    <th class="border p-1" >-</th>
+                                    <th class="border p-1" >Pourc</th>
+                                    <th class="border p-1" >-</th>
+                                    <th class="border p-1" >Pourc</th>
                                 </tr>
                                 <tr>
-                                    <th class="p-1" >  </th>
-                                    <th class="p-1" > - </th>
-                                    <th class="p-1" > {{ round($noteP1 * 100 / $maxP1, 2) }} %</th>
-                                    <th class="p-1" > {{ round($noteP2 * 100 / $maxP2, 2) }} %</th>
-                                    <th class="p-1" > - </th>
-                                    <th class="p-1" >{{ round($noteEx * 100 / $maxEx, 2) }} %</th>
-                                    <th class="p-1" >-</th>
-                                    <th class="p-1" >{{ round($noteTri * 100 / ($maxEx*2), 2) }}</th>
+                                    <th class="border p-1" >  </th>
+                                    <th class="border p-1" > - </th>
+                                    <th class="border p-1" > {{ round($noteP1 * 100 / $maxP1, 2) }} %</th>
+                                    <th class="border p-1" > {{ round($noteP2 * 100 / $maxP2, 2) }} %</th>
+                                    <th class="border p-1" > - </th>
+                                    <th class="border p-1" >{{ round($noteEx * 100 / $maxEx, 2) }} %</th>
+                                    <th class="border p-1" >-</th>
+                                    <th class="border p-1" >{{ round($noteTri * 100 / ($maxEx*2), 2)}} %</th>
                                 </tr>
                         </tfoot>
                     </table>

@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('table_eleve_examen', function (Blueprint $table) {
+        Schema::create('eleve_examen', function (Blueprint $table) {
             $table->id();
             $table->foreignId('eleve_id')->constrained();
             $table->foreignId('examen_id')->constrained();
-            $table->integer('note_obtenu');
+            $table->integer('note_obtenu')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_eleve_examen');
+        Schema::dropIfExists('eleve_examen');
     }
 };

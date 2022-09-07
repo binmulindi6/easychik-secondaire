@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategorieCours;
 use App\Models\Classe;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,12 @@ class ClasseController extends Controller
      */
     public function index()
     {
-        $classes = Classe::all();
-        return view('employer.show')->with('items', $classes);
+        $classes = Classe::orderBy('niveau', 'asc')->get();
+        //$user = User::where('id',)
+
+        return view('classe.classes')
+                    ->with('items', $classes);
+
     }
 
     /**
@@ -25,7 +30,7 @@ class ClasseController extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->route("classes.index");
     }
 
     /**
@@ -36,7 +41,18 @@ class ClasseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'niveau' => ['required','string','max:255'],
+            'nom' => ['required','string','max:255'],
+        ]);
+
+        Classe::create([
+            'nom' => $request->nom,
+            'niveau' => $request->niveau,
+        ]);
+
+        return redirect()->route("classes.index");
+
     }
 
     /**
@@ -45,9 +61,12 @@ class ClasseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        if($request->_method == 'PUT'){
+          return  $this->update($request, $id);
+        }
+        dd("show");
     }
 
     /**
@@ -57,8 +76,13 @@ class ClasseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {   
+        $classes = Classe::orderBy('niveau', 'asc')->get();
+        $classe = Classe::find($id);
+
+        return view('classe.classes')
+                    ->with('self', $classe)
+                    ->with('items', $classes);
     }
 
     /**
@@ -70,7 +94,20 @@ class ClasseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        $request->validate([
+            'niveau' => ['required','string','max:255'],
+            'nom' => ['required','string','max:255'],
+        ]);
+
+        $classe = Classe::find($id);
+        $classe->niveau = $request->niveau;
+        $classe->nom = $request->nom;
+
+        $classe->save();
+
+        return redirect()->route("classes.index");
+
     }
 
     /**
@@ -81,6 +118,8 @@ class ClasseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $classe = Classe::find($id);
+        $classe->delete();
+        return redirect()->route("classes.index");
     }
 }

@@ -20,15 +20,15 @@
                         <!-- Email Address -->
                         <div class="mt-4">
                             <x-label for="matricule" :value="__('Matricule Eleve')" />
-                            <x-input id="eleve_matricule" class="block mt-1 w-full" type="text" name="eleve_matricule" :value="old('eleve_matricule')" required />
+                            <x-input id="eleve_matricule" class="block mt-1 w-full" type="text" name="eleve_matricule" :value="($self->eleve->matricule)" readonly required />
                         </div>
                         <div class="mt-4">
                             <x-label for="classe" :value="__('Classe')" />
-                            <x-select :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
+                            <x-select :val="$self->classe" :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
                         </div>
                         <div class="mt-4">
                             <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
-                            <x-select :collection="$classes" class="block mt-1 w-full" name='annee_scolaire_id' required> </x-select>
+                            <x-select :val="$self->annee_scolaire" :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required> </x-select>
                         </div>
                         <div class="mt-4">
                             <x-button>Enregistrer</x-button>
@@ -85,27 +85,27 @@
                 <p class="font-bold text-xl m-4"> Display </p>
                 <table>
                         <thead>
-                            <th class="p-1" >Matricule Eleve </th>
-                            <th class="p-1" >Nom, Prenom </th>
-                            <th class="p-1" >Classe</th>
-                            <th class="p-1" >Annee Scolaire</th>
-                            <th class="p-1" >Action</th>
-                            <th class="p-1" >Action</th>
+                            <th class="p-1 text-center " >Matricule Eleve </th>
+                            <th class="p-1 text-center " >Nom, Prenom </th>
+                            <th class="p-1 text-center " >Classe</th>
+                            <th class="p-1 text-center " >Annee Scolaire</th>
+                            <th class="p-1 text-center " >Action</th>
+                            <th class="p-1 text-center " >Action</th>
                         </thead>
                         <tbody>
                         
                                 @foreach ($items as $item)
                                     <tr class="">
-                                        <td class="p-1 ">{{ " 10 "}}</td>
-                                        <td class="p-1 ">{{$item->eleve_id}}</td>
-                                        <td class="p-1 ">{{$item->classe_id}}</td>
-                                        <td class="p-1 ">{{$item->annee_scolaire_id}}</td>  
-                                        <td class="p-1  text-blue-500 underline"><a href="{{ route('frequentations.edit',$item->id) }}">edit</a></td>
+                                        <td class="p-1 text-center  ">{{ $item->eleve->matricule}}</td>
+                                        <td class="p-1 text-center  ">{{$item->eleve->nom . " " . $item->eleve->prenom}}</td>
+                                        <td class="p-1 text-center  ">{{$item->classe->niveau . " " . $item->classe->nom}}</td>
+                                        <td class="p-1 text-center  ">{{$item->annee_scolaire->nom}}</td>  
+                                        <td class="p-1 text-center   text-blue-500 underline"><a href="{{ route('frequentations.edit',$item->id) }}">edit</a></td>
                                         <td >
                                             <form action="{{ route('frequentations.destroy',$item->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="p-1 text-blue-500 underline" type="submit">delete</button>
+                                                <button class="p-1 text-center  text-blue-500 underline" type="submit">delete</button>
                                             </form>
                                         </td>
                                     </tr>

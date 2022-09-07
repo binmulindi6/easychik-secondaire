@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Evaluation extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $fillable = [
+      'note_max',
+      'date_evaluation'
+    ];
 
     public function type_evaluation()
     {

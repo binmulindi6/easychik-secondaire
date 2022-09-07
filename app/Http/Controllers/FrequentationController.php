@@ -18,7 +18,7 @@ class FrequentationController extends Controller
     public function index()
     {
         $frequentations = Frequentation::all();
-        $classes = Classe::all();
+        $classes = Classe::orderBy('niveau','asc')->get();
         $annees = AnneeScolaire::all();
 
         return view('eleve.frequentations')
@@ -34,7 +34,7 @@ class FrequentationController extends Controller
      */
     public function create()
     {
-        //
+        return $this->index();
     }
 
     
@@ -63,13 +63,9 @@ class FrequentationController extends Controller
         //links 
         $frequentation->eleve()->associate($eleve);
         $frequentation->classe()->associate($classe);
-        $frequentation->anneeScolaire()->associate($annee);
+        $frequentation->annee_scolaire()->associate($annee);
         // save
         $frequentation->save();
-
-        /*$eleve->frequentations()->associate($frequentation);
-        $classe->frequentations()->associate($frequentation);
-        $annee->frequentations()->associate($frequentation);*/
 
         return redirect()->route('frequentations.index');
 
@@ -81,9 +77,12 @@ class FrequentationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        if($request->_method == 'PUT'){
+            return  $this->update($request, $id);
+        }
+        dd("show");
     }
 
     /**
@@ -94,9 +93,18 @@ class FrequentationController extends Controller
      */
     public function edit($id)
     {
-        //
-    }
+        $frequentation = Frequentation::find($id);
+        $frequentations = Frequentation::all();
+        $classes = Classe::orderBy('niveau','asc')->get();
+        $annees = AnneeScolaire::all();
 
+        return view('eleve.frequentations')
+                    ->with('self', $frequentation)
+                    ->with('items', $frequentations)
+                    ->with('classes', $classes)
+                    ->with("annees",$annees);
+                }
+                
     /**
      * Update the specified resource in storage.
      *
@@ -106,7 +114,26 @@ class FrequentationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'eleve_matricule' => ['required','string','max:255'],
+            'classe_id' => ['required','string','max:255'],
+            'annee_scolaire_id' => ['required','string','max:255'],
+        ]);
+
+        $eleve = Eleve::where('matricule',$request->eleve_matricule)->first();
+        $classe = Classe::find($request->classe_id);
+        $annee  = AnneeScolaire::find($request->annee_scolaire_id);
+
+        $frequentation = Frequentation::find($id);
+
+        //links 
+        $frequentation->eleve()->associate($eleve);
+        $frequentation->classe()->associate($classe);
+        $frequentation->annee_scolaire()->associate($annee);
+        // save
+        $frequentation->save();
+        return redirect()->route('frequentations.index');
+
     }
 
     /**
@@ -117,6 +144,8 @@ class FrequentationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $frequentation = Frequentation::find($id);
+        $frequentation->delete();
+        return redirect()->route('frequentations.index');
     }
 }

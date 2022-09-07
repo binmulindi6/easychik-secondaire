@@ -32,7 +32,7 @@ class EmployerController extends Controller
      */
     public function create()
     {
-        //
+        return $this->index();
     }
 
     /**
@@ -42,19 +42,7 @@ class EmployerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-        $request->validate([
-            'matricule' => ['required','string','max:255', 'unique:employers'],
-            'nom' => ['required','string','max:255'],
-            'prenom' => ['required','string','max:255'],
-            'date_naissance' => ['required','string','max:255'],
-            'formation' => ['required','string','max:255'],
-            'diplome' => ['required','string','max:255'],
-            'niveau_etude' => ['required','string','max:255'],
-            'fonction' => ['required','integer','max:255'],
-        ]);
-
-
+    {   dd(10);
         $employer = Employer::create([
             'matricule' => $request->matricule,
             'nom' => $request->nom,
@@ -67,6 +55,7 @@ class EmployerController extends Controller
 
         $fonction = Fonction::find($request->fonction);
         $employer->fonctions()->attach($fonction);
+        $employer->save();
 
         return redirect()->route('employers.index');
     }
@@ -77,9 +66,23 @@ class EmployerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show(Request $request, $id)
+    {   
+        if($request->_method == 'PUT'){
+            $request->validate([
+                'matricule' => ['required','string','max:255', 'unique:employers'],
+                'nom' => ['required','string','max:255'],
+                'prenom' => ['required','string','max:255'],
+                'date_naissance' => ['required','string','max:255'],
+                'formation' => ['required','string','max:255'],
+                'diplome' => ['required','string','max:255'],
+                'niveau_etude' => ['required','string','max:255'],
+                'fonction' => ['required','integer','max:255'],
+            ]);
+
+            return  $this->update($request, $id);
+        }
+        dd("show");
     }
 
     /**
@@ -110,8 +113,32 @@ class EmployerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   $request->validate([
+        'matricule' => ['required','string','max:255', 'unique:employers'],
+        'nom' => ['required','string','max:255'],
+        'prenom' => ['required','string','max:255'],
+        'date_naissance' => ['required','string','max:255'],
+        'formation' => ['required','string','max:255'],
+        'diplome' => ['required','string','max:255'],
+        'niveau_etude' => ['required','string','max:255'],
+        'fonction' => ['required','integer','max:255'],
+        ]);
+
+        $employer = Employer::find($id);
+        $employer->matricule = $request->matricule;
+        $employer->nom = $request->nom;
+        $employer->prenom = $request->prenom;
+        $employer->date_naissance = $request->date_naissance;
+        $employer->formation = $request->formation;
+        $employer->diplome = $request->diplome;
+        $employer->niveau_etude = $request->niveau_etude;
+        
+        $fonction = Fonction::find($request->fonction);
+        $employer->fonctions()->attach($fonction);
+        $employer->save();
+
+        return redirect()->route('employers.index');
+
     }
 
     /**

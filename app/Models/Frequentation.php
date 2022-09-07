@@ -14,7 +14,7 @@ class Frequentation extends Model
     use HasFactory,SoftDeletes;
 
     //links
-    function anneeScolaire(){
+    function annee_scolaire(){
         return $this->belongsTo(AnneeScolaire::class);
     }
     function classe(){

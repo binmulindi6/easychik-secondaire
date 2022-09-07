@@ -1,116 +1,134 @@
 @extends('layouts.sas')
 
 @section('content')
-
-    <div id='print' class="container m-5">
-
-        <p class="text-bold text-xl"> Fiche de cote {{ $periode->nom }}, {{ $periode->trimestre->nom }} Annee Scolaire {{ $periode->trimestre->annee_scolaire->nom }}</p>
-
-        <p class="text-bold text-2xl"> Eleve: {{$eleve->nom . " " . $eleve->prenom}} </p>
-
-        <div class="flex flex-row justify-between">
-            <div class="container p-4 mb-2 border-r-2 border-black-500"> 
-            
-                <p class="font-bold text-xl m-4">Fiche d'Evaluations </p>
-                @if ($evaluations != null)
-                    <table>
-                        <thead>
-                            <th class="p-1" >Cours </th>
-                            <th class="p-1" >Note </th>
-                            <th class="p-1" >Max</th>
-                            <th class="p-1" >Date</th>
-                        </thead>
-                        <tbody>
-                            @if ($evaluations == null)
-                                1010
-                            @else
-                                @foreach ($evaluations as $item)
-                                @if ($item->periode_id == $periode->id ) 
-                                    <tr>
-                                        <td class="p-1"> {{ $item->type_evaluation->nom . " ". $item->cours->nom }} </td>
-                                        <td class="p-1"> {{$item->pivot->note_obtenu}} </td>
-                                        <td class="p-1"> {{ $item->note_max }} </td>
-                                        <td class="p-1"> {{ $item->date_evaluation }}</td>
-                                    </tr>
-                                @endif
-                                @endforeach
-                            @endif
-                                
-                        </tbody>
-                    </table>
-                @else
-                    <p class="text-bold text-2xl text-red-500 text-center">
-                        Fiche D'evaluations Indisponible 
-                    </p>
-                @endif
+    <p class=" font-bold text-xl mt-5"><a href="{{route('evaluations.index')}}" >Evaluations</a></p>
+    <div class="container flex flex-row justify-between gap-5 mt-16" >
         
-            </div>
-    
-            <div  class="container p-4"> 
-                
-                <p  class="font-bold text-xl m-4"> Bulletin </p>
+        @if(isset($item))
+            <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
+        @else
+            <div class="container p-4">
+                @if(isset($self))
+                    <div class="border-b-2 border-color-black-500 pb-4 mb-4">
+                        <a href="{{route('evaluations.create')}}"> <x-button class="bg-green-500">ajouter une Evaluation</x-button> </a>
+                        
+                    </div>
+                    <p class="font-bold text-base"> Edit Evaluation </p>
+                    <form method="PUT" action="{{ route('evaluations.update', $self->id) }}">
+                        @csrf
+                        {{ method_field('PUT') }}
+                        <!-- Email Address -->
+                        <div class="mt-4">
+                            <x-label for="type_evaluation" :value="__('Type de L\'evaluation')" />
+                            <x-select :val="$self->type_evaluation" :collection="$type_evaluations" class="block mt-1 w-full" name='type_evaluation' required> </x-select>
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="cours" :value="__('Cours')" />
+                            <x-select :val="$self->cours" :collection="$cours" class="block mt-1 w-full" name='cours' required> </x-select>
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="note_max" :value="__('Note Maximum')" />
+                            <x-input id="note-max" class="block mt-1 w-full" type="text" name="note_max" :value="($self->note_max)" placeholder="ex: 10" required />
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="periode" :value="__('Periode')" />
+                            <x-select :val="$self->periode" :collection="$periodes" class="block mt-1 w-full" name='periode' required> </x-select>
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="date" :value="__('Date de L\'Evaluation')" />
+                            <x-input id="date-evaluation" class="block mt-1 w-full" type="date" name="date_evaluation" :value="($self->date_evaluation)" required />
+                        </div>
+                        <div class="mt-4">
+                            <x-button>Enregistrer</x-button>
+                        </div>
+                    </form>
+                @else
+                    <p class="font-bold text-base"> Ajouter une Evaluation</p>
+                    
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li class="text-red-500">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-                @if (!$bulletin == null)
+                    <form class="" method="POST" action="{{ route('evaluations.store') }}">
+                        @method('POST')
+                        @csrf
+                        <!-- Email Address -->
+
+                        <div class="mt-4">
+                            <x-label for="type_evaluation" :value="__('Type de L\'evaluation')" />
+                            <x-select :collection="$type_evaluations" class="block mt-1 w-full" name='type_evaluation' required> </x-select>
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="cours" :value="__('Cours')" />
+                            <x-select :collection="$cours" class="block mt-1 w-full" name='cours' required> </x-select>
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="note_max" :value="__('Note Maximum')" />
+                            <x-input id="note-max" class="block mt-1 w-full" type="text" name="note_max" :value="old('note_max')" placeholder="ex: 1,2,3" required />
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="periode" :value="__('Periode')" />
+                            <x-select :collection="$periodes" class="block mt-1 w-full" name='periode' required> </x-select>
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="date" :value="__('Date de L\'Evaluation')" />
+                            <x-input id="date-evaluation" class="block mt-1 w-full" type="date" name="date_evaluation" :value="old('date_evaluation')" required />
+                        </div>
+                        
+                        <div class="mt-4">
+                            <x-button>ajouter</x-button>
+                        </div>
+                    </form>
+                @endif
+            </div>
+        @endif
+
+
+        @if (isset($items))
+            <div class="container p-4"> 
+            
+                <p class="font-bold text-xl m-4"> Display </p>
                 <table>
                         <thead>
-                            <th class="p-1 text-left" >Cours </th>
-                            <th class="p-1" >Note Obtenu</th>
-                            <th class="p-1" >Max Cours</th>
-                            <th class="p-1" ></th>
+                            <th class="p-1" >Type Evaluation</th>
+                            <th class="p-1" >Cours </th>
+                            <th class="p-1" >Note Max</th>
+                            <th class="p-1" >Periode</th>
+                            <th class="p-1" >Date Evaluation</th>
+                            <th class="p-1" >Action</th>
+                            <th class="p-1" >Action</th>
                         </thead>
                         <tbody>
-                                @foreach ($bulletin as $cours)
-                                    @php
-                                        if ($cours->max == $cours->total) {
-                                            $note += $cours->note;
-                                            $max += $cours->total;
-                                        } else {
-                                            
-                                            $cours->note = round($cours->note * $cours->total / $cours->max, 2);
-                                            $note += $cours->note;
-                                            $max += $cours->total;
-                                        }
-                                        
-                                    @endphp
-                                    <tr>
-                                        <td class="p-1 text-left"> {{$cours->nom }} </td>
-                                        <td class="p-1 text-center"> {{$cours->note}} </td>
-                                        <td class="p-1 text-center"> {{ $cours->total }} </td>
-                                        <td class="p-1 text-center"></td>
+                        
+                                @foreach ($items as $item)
+                                    <tr class="">
+                                        <td class="p-1  ">{{$item->type_evaluation->nom}}</td>
+                                        <td class="p-1 text-center ">{{$item->cours->nom}}</td>
+                                        <td class="p-1 text-center ">{{$item->note_max}}</td>
+                                        <td class="p-1 text-center ">{{$item->periode->nom}}</td>
+                                        <td class="p-1 text-center ">{{$item->date_evaluation}}</td>
+                                        <td class="p-1 text-center  text-blue-500 underline"><a href="{{ route('evaluations.edit',$item->id) }}">edit</a></td>
+                                        <td >
+                                            <form action="{{ route('evaluations.destroy',$item->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="p-1 text-blue-500 underline" type="submit">delete</button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                @endforeach
-                                
-                            </tbody>
-                            <tfoot>
-                                <thead>
-                                <th class="p-1" > </th>
-                                <th class="p-1" >Total </th>
-                                <th class="p-1" >Total</th>
-                                <th class="p-1" >Pourcentatge</th>
-                            </thead>
-                            <thead>
-                                <th class="p-1" > </th>
-                                <th class="p-1" >{{$note}} </th>
-                                <th class="p-1" >{{$max}}</th>
-                                <th class="p-1" >{{ round($note * 100 / $max, 2) }} %</th>
-                            </thead>
-                        </tfoot>
-                    </table>
-                @else
-                    <p class="text-bold text-2xl text-red-500 text-center">
-                       Buelletin Indisponible 
-                    </p>
-                @endif
-            </div>
-
-        </div>
+                                    @endforeach
+                        
+                        </tbody>
+                </table>
         
+            </div>
+        @endif
     </div>
-    @if (!$bulletin == null)
-        <button id="cmd" class="btn bg-blue-500 px-2 py-1 text-white rounded">Imprimer la Fiche</button>
-    @endif
-    
+
 @endsection
-
-<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script-->
-

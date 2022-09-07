@@ -12,17 +12,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Cours extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $fillable = [
+        'nom',
+        'max_periode',
+        'max_examen',
+    ];
 
     //link to categorie
-    public function categorie()
+    public function categorie_cours()
     {
-        return $this->belongsTo(CategoryCours::class);
+        return $this->belongsTo(CategorieCours::class);
     }
 
     //link to classe
     public function classe()
     {
-        return $this->belongsTo(CategoryCours::class);
+        return $this->belongsTo(Classe::class);
     }
 
     //link to evaluation

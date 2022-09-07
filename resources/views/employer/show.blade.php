@@ -10,7 +10,7 @@
             <div class="container p-4">
                 @if (isset($self))
                     <p class="font-bold text-base"> Edit Employer </p>
-                    <form method="PUT" action="{{ route('employers.update', $self->id) }}">
+                    <form method="POST" action="{{ route('employers.update', $self->id) }}">
                         @csrf
                         {{ method_field('PUT') }}
                         <!-- Email Address -->
@@ -44,7 +44,7 @@
                         </div>
                         <div class="mt-4">
                             <x-label for="nom" :value="__('Fonction')" /> 
-                            <x-select :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select>
+                            <x-select :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select>
                         </div>
                         <div class="mt-4">
                             <x-button>Enregistrer</x-button>

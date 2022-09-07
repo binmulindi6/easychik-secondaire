@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CategoryCours;
+use App\Models\CategorieCours;
 use Illuminate\Http\Request;
 
 class CategorieCoursController extends Controller
@@ -14,8 +14,8 @@ class CategorieCoursController extends Controller
      */
     public function index()
     {
-        $categorieCours = CategoryCours::all();
-        return view('employer.show')->with('items', $categorieCours);
+        $categorieCours = CategorieCours::all();
+        return view('classe.categorie-cours')->with('items', $categorieCours);
     }
 
     /**
@@ -36,7 +36,17 @@ class CategorieCoursController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => ['required','string','max:255', 'unique:fonctions'],
+        ]);
+
+        //dd($request->nom);
+
+        CategorieCours::create([
+            'nom' => $request->nom,
+        ]);
+
+        return redirect()->route('categorie-cours.index');
     }
 
     /**
@@ -45,9 +55,12 @@ class CategorieCoursController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        if($request->_method == 'PUT'){
+            return  $this->update($request, $id);
+        }
+        dd('show');
     }
 
     /**
@@ -58,7 +71,11 @@ class CategorieCoursController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categorie = CategorieCours::find($id);
+        $categorieCours = CategorieCours::all();
+        return view('classe.categorie-cours')
+                    ->with('items', $categorieCours)
+                    ->with('self', $categorie);
     }
 
     /**
@@ -70,7 +87,10 @@ class CategorieCoursController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $categorie = CategorieCours::find($id);
+        $categorie->nom = $request->nom;
+        $categorie->save();
+        return redirect()->route('categorie-cours.index');
     }
 
     /**
@@ -81,6 +101,8 @@ class CategorieCoursController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $categorie = CategorieCours::find($id);
+        $categorie->delete();
+        return redirect()->route('categorie-cours.index');
+    }       
 }

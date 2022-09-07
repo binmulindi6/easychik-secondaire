@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Classe extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $fillable = [
+        'nom',
+        'niveau'
+    ];
 
 
     //link to the user
@@ -22,6 +26,17 @@ class Classe extends Model
     public function cours()
     {
         return $this->hasMany(Cours::class);
+    }
+
+    public function eleves(){
+        $annee = AnneeScolaire::current();
+        $eleves = Eleve::join('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
+                            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+                            ->where('frequentations.classe_id', '=', $this->id)
+                            //->select('eleves.id')
+                            ->get();
+        //dd($eleves);
+        return $eleves;
     }
 
     public function frequentations()
