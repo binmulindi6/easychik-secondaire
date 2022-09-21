@@ -12,10 +12,14 @@ class FonctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     protected $page_name = 'Fonctions';
     public function index()
     {
         $fonctions = Fonction::all();
-        return view('employer.fonctions')->with('items', $fonctions);
+        return view('employer.fonctions')
+                    ->with('page_name', $this->page_name)
+                    ->with('items', $fonctions);
     }
 
     /**
@@ -25,7 +29,8 @@ class FonctionController extends Controller
      */
     public function create()
     {
-        return redirect()->route('fonctions.index');
+        $this->page_name .= "/Create"; 
+        return $this->index();
     }
 
     /**
@@ -76,6 +81,7 @@ class FonctionController extends Controller
         $fonction = Fonction::find($id);
         $fonctions = Fonction::all();
         return view('employer.fonctions')
+                    ->with('page_name', $this->page_name . "/Edit")
                     ->with('items', $fonctions)
                     ->with('self', $fonction);
 

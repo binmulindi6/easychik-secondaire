@@ -13,12 +13,16 @@ class ClasseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    protected $page = "Classes";
+
     public function index()
     {
         $classes = Classe::orderBy('niveau', 'asc')->get();
         //$user = User::where('id',)
 
         return view('classe.classes')
+                    ->with('page_name', $this->page)
                     ->with('items', $classes);
 
     }
@@ -29,8 +33,9 @@ class ClasseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return redirect()->route("classes.index");
+    {   
+        $this->page = "Classes/Create";
+        return $this->index();
     }
 
     /**
@@ -81,6 +86,7 @@ class ClasseController extends Controller
         $classe = Classe::find($id);
 
         return view('classe.classes')
+                    ->with('page_name', $this->page . '/Edit')
                     ->with('self', $classe)
                     ->with('items', $classes);
     }

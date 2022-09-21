@@ -19,15 +19,21 @@ class EleveController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     protected $page = 'Eleves';
+
     public function index()
     {
-        $eleves = Eleve::all();
+        $eleves = Eleve::latest()
+                    ->limit(10)    
+                    ->get();
         $lastmatricule = Eleve::all()->last()->matricule;
         $initial = explode('/', $lastmatricule, -1)[0];
         $middle = str_replace('E','', $initial);
         $matricule = 'E' . intval($middle) + 1 . '/' . date('Y');
         
         return view('eleve.eleves')
+                    ->with('page_name', $this->page)
                     ->with('items', $eleves)
                     ->with('last_matricule', $matricule);
     }
@@ -38,8 +44,9 @@ class EleveController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-       return redirect()->route('eleves.index');
+    {   
+        $this->page = "Eleves/Create";
+       return $this->index();
     }
 
     /**
@@ -73,7 +80,7 @@ class EleveController extends Controller
             'adresse' => $request->adresse,
         ]);
 
-        return redirect()->route('eleves.index');
+        return redirect()->route('frequentations.link', $eleve->id);
     }
 
     /**
@@ -97,10 +104,11 @@ class EleveController extends Controller
             ]);
             return  $this->update($request, $id);
         }
-        $eleves = Eleve::find($id);
+        $eleve = Eleve::find($id);
         
         return view('eleve.eleves')
-                    ->with('item', $eleves);
+                    ->with('page_name', $this->page)
+                    ->with('item', $eleve);
     }
 
     /**
@@ -114,6 +122,7 @@ class EleveController extends Controller
         $eleves = Eleve::all();
         $eleve = Eleve::find($id);
         return view('eleve.eleves')
+                    ->with('page_name', $this->page. "/Edit")
                     ->with('self', $eleve)
                     ->with('items', $eleves);
     }

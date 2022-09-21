@@ -156,7 +156,7 @@ class ResultatController extends Controller
 
 
 
-    //trimestre
+    //bulletin annee
     public function bulletin($annee_scolaire_id, $eleve_id){
 
         $eleve = Eleve::find($eleve_id);
@@ -171,6 +171,7 @@ class ResultatController extends Controller
         if($trimestres->count() != 3){
             abort(404);
         }
+        
         foreach ($trimestres as $trimestre) {
             if($trimestre->periodes->count() != 2){
                 abort(404);

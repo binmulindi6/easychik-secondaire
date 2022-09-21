@@ -1,5 +1,16 @@
 import './bootstrap';
+import './myjs';
+import './countup';
+//import './fontawesome';
+//import './Chart.extension';
+import './chartjs.min';
+import './charts';
+import './perfect-scrollbar.min';
+import './sidenav-burger';
+import './perfect-scrollbar';
+import './argon-dashboard-tailwind';
 
+import './popper';
 import Alpine from 'alpinejs';
 import { jsPDF } from "jspdf";
 import $ from 'jquery';

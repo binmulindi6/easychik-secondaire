@@ -7,19 +7,23 @@ use App\Models\Trimestre;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 
+
 class PeriodeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    protected $page_name = "Periodes";
+    
     public function index()
     {
         $periodes = Periode::all();
         $trimestres = Trimestre::all();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.periodes')
+                    ->with('page_name', $this->page_name)
                     ->with('anneeEncours', $anneeEncours)
                     ->with('trimestres', $trimestres)
                     ->with('items', $periodes);
@@ -32,7 +36,8 @@ class PeriodeController extends Controller
      */
     public function create()
     {
-        //
+        $this->page_name = "Periodes/Create";
+        return $this->index();
     }
 
     /**
@@ -85,7 +90,16 @@ class PeriodeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $periodes = Periode::all();
+        $periode = Periode::findOrFail($id);
+        $trimestres = Trimestre::all();
+        $anneeEncours = AnneeScolaire::current();
+        return view('ecole.periodes')
+                    ->with('page_name', $this->page_name ."/Edit")
+                    ->with('anneeEncours', $anneeEncours)
+                    ->with('trimestres', $trimestres)
+                    ->with('self', $periode)
+                    ->with('items', $periodes);
     }
 
     /**

@@ -1,13 +1,14 @@
-@extends('layouts.sas')
+@extends('layouts.admin')
 
 @section('content')
-    <p class=" font-bold text-xl mt-5"><a href="{{route('fonctions.index')}}" >Fonctions</a></p>
-    <div class="container flex flex-row justify-between gap-5 mt-16" >
+    <div class="container flex flex-col justify-between gap-5" >
+    
+        <x-nav-employers :pagename="$page_name"></x-nav-employers>
         
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
         @else
-            <div class="container p-4">
+            <div class="frm-create bg-white rounded-5 shadow-2xl container p-5">
                 @if (isset($self))
                     <p class="font-bold text-base"> Edit Fonction </p>
                     <form method="PUT" action="{{ route('fonctions.update', $self->id) }}">
@@ -42,7 +43,7 @@
             </div>
         @endif
         @if (isset($items))
-        <div class="container p-4"> 
+        <div class="display bg-white rounded-5 shadow-2xl container p-5> 
             
             <p class="font-bold text-xl m-4"> Display </p>
             <table>

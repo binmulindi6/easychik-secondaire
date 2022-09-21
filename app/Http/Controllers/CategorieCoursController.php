@@ -12,10 +12,13 @@ class CategorieCoursController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $page_name = "Categories Cours";
     public function index()
     {
         $categorieCours = CategorieCours::all();
-        return view('classe.categorie-cours')->with('items', $categorieCours);
+        return view('classe.categorie-cours')
+                    ->with('page_name', $this->page_name)
+                    ->with('items', $categorieCours);
     }
 
     /**
@@ -25,7 +28,8 @@ class CategorieCoursController extends Controller
      */
     public function create()
     {
-        //
+        $this->page_name .= "/Create";
+        return $this->index();
     }
 
     /**
@@ -58,6 +62,9 @@ class CategorieCoursController extends Controller
     public function show(Request $request, $id)
     {
         if($request->_method == 'PUT'){
+            $request->validate([
+                'nom' => ['required','string','max:255', 'unique:fonctions'],
+            ]);
             return  $this->update($request, $id);
         }
         dd('show');
@@ -74,6 +81,7 @@ class CategorieCoursController extends Controller
         $categorie = CategorieCours::find($id);
         $categorieCours = CategorieCours::all();
         return view('classe.categorie-cours')
+                    ->with('page_name', $this->page_name . "/Edit")
                     ->with('items', $categorieCours)
                     ->with('self', $categorie);
     }

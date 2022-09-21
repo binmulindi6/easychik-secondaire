@@ -15,13 +15,18 @@ class FrequentationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $page = 'Frequentations';
+
     public function index()
     {
-        $frequentations = Frequentation::all();
+        $frequentations = Frequentation::latest()
+                            ->limit(10)
+                            ->get();
         $classes = Classe::orderBy('niveau','asc')->get();
         $annees = AnneeScolaire::all();
 
         return view('eleve.frequentations')
+                    ->with('page_name', $this->page)
                     ->with('items', $frequentations)
                     ->with('classes', $classes)
                     ->with("annees",$annees);
@@ -33,7 +38,7 @@ class FrequentationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   $this->page = 'Frequentations/Create';
         return $this->index();
     }
 
@@ -67,7 +72,7 @@ class FrequentationController extends Controller
         // save
         $frequentation->save();
 
-        return redirect()->route('frequentations.index');
+        return redirect()->route('eleves.index');
 
     }
 
@@ -98,7 +103,9 @@ class FrequentationController extends Controller
         $classes = Classe::orderBy('niveau','asc')->get();
         $annees = AnneeScolaire::all();
 
+
         return view('eleve.frequentations')
+                    ->with('page_name', $this->page . "/Edit")
                     ->with('self', $frequentation)
                     ->with('items', $frequentations)
                     ->with('classes', $classes)

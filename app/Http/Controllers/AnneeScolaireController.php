@@ -13,10 +13,13 @@ class AnneeScolaireController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $page_name = "Annees Scolaires";
     public function index()
     {
         $anneeScolaires = AnneeScolaire::all();
-        return view('ecole.annees')->with('items', $anneeScolaires);
+        return view('ecole.annees')
+                ->with('page_name', $this->page_name)
+                ->with('items', $anneeScolaires);
     }
 
     
@@ -38,13 +41,14 @@ class AnneeScolaireController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $request->validate([
             'nom' => ['required','string','max:255', 'unique:annee_scolaires'],
             'date_debut' => ['required','string','max:255'],
             'date_fin' => ['required','string','max:255'],
         ]);
-
+        
+        //dd(10);
         //dd($request->nom);
         AnneeScolaire::create([
             'nom' => $request->nom,
@@ -77,6 +81,7 @@ class AnneeScolaireController extends Controller
         $anneeScolaires = AnneeScolaire::all();
         $annee = AnneeScolaire::find($id);
         return view('ecole.annees')
+                    ->with('page_name', $this->page_name . "/Edit")
                     ->with('self', $annee)
                     ->with('items', $anneeScolaires);
     }

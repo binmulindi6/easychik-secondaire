@@ -14,12 +14,14 @@ class CoursController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $page_name = "Cours";
     public function index()
     {
         $cours = Cours::all();
         $classes = Classe::orderBy('niveau', 'asc')->get();
         $categories = CategorieCours::orderBy('nom', 'asc')->get();
         return view('classe.cours')
+                    ->with('page_name', $this->page_name)
                     ->with('items', $cours)
                     ->with('classes', $classes)
                     ->with('categories', $categories);
@@ -32,7 +34,8 @@ class CoursController extends Controller
      */
     public function create()
     {
-        //
+        $this->page_name .= "/Create";
+        return $this->index();
     }
 
     /**
@@ -78,6 +81,14 @@ class CoursController extends Controller
     public function show(Request $request, $id)
     {
         if($request->_method == 'PUT'){
+            $request->validate([
+                'nom' => ['required','string','max:255'],
+                'categorie_cours' => ['required','string','max:255'],
+                'classe' => ['required','string','max:255'],
+                'max_periode' => ['required','string','max:255'],
+                'max_examen' => ['required','string','max:255'],
+            ]);
+
             return  $this->update($request, $id);
         }
         dd("show");
@@ -96,6 +107,7 @@ class CoursController extends Controller
         $classes = Classe::orderBy('niveau', 'asc')->get();
         $categories = CategorieCours::orderBy('nom', 'asc')->get();
         return view('classe.cours')
+                ->with('page_name', $this->page_name . "/Edit")
                 ->with('self', $cour)
                 ->with('items', $cours)
                 ->with('classes', $classes)

@@ -60,7 +60,9 @@ class RegisteredUserController extends Controller
             
             return redirect(RouteServiceProvider::HOME);
         }else{
-            return redirect(RouteServiceProvider::REGISTER);
+            return back()->withErrors([
+                'email' => 'Cet Employer n\'existe pas dans le system',
+            ])->onlyInput('matricule');
             
         }
     }

@@ -13,12 +13,14 @@ class TrimestreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $page_name = "Trimestres";
     public function index()
     {
         $trimestres = Trimestre::all();
         $annees = AnneeScolaire::all();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.trimestres')
+                    ->with('page_name', $this->page_name)
                     ->with('anneeEncours', $anneeEncours)
                     ->with('annees', $annees)
                     ->with('items', $trimestres);
@@ -93,6 +95,7 @@ class TrimestreController extends Controller
         $annees = AnneeScolaire::all();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.trimestres')
+                    ->with('page_name', $this->page_name . "/Edit")
                     ->with('anneeEncours', $anneeEncours)
                     ->with('self', $trimestre)
                     ->with('annees', $annees)
