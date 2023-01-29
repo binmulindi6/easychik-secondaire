@@ -18,11 +18,11 @@ class AnneeScolaireController extends Controller
     {
         $anneeScolaires = AnneeScolaire::all();
         return view('ecole.annees')
-                ->with('page_name', $this->page_name)
-                ->with('items', $anneeScolaires);
+            ->with('page_name', $this->page_name)
+            ->with('items', $anneeScolaires);
     }
 
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -31,7 +31,8 @@ class AnneeScolaireController extends Controller
      */
     public function create()
     {
-        //
+        $this->page_name = $this->page_name . ' / Create';
+        return $this->index();
     }
 
     /**
@@ -41,13 +42,13 @@ class AnneeScolaireController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $request->validate([
-            'nom' => ['required','string','max:255', 'unique:annee_scolaires'],
-            'date_debut' => ['required','string','max:255'],
-            'date_fin' => ['required','string','max:255'],
+            'nom' => ['required', 'string', 'max:255', 'unique:annee_scolaires'],
+            'date_debut' => ['required', 'string', 'max:255'],
+            'date_fin' => ['required', 'string', 'max:255'],
         ]);
-        
+
         //dd(10);
         //dd($request->nom);
         AnneeScolaire::create([
@@ -65,9 +66,16 @@ class AnneeScolaireController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        if ($request->_method == 'PUT') {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255'],
+                'date_debut' => ['required', 'string', 'max:255'],
+                'date_fin' => ['required', 'string', 'max:255'],
+            ]);
+            return  $this->update($request, $id);
+        }
     }
 
     /**
@@ -81,9 +89,9 @@ class AnneeScolaireController extends Controller
         $anneeScolaires = AnneeScolaire::all();
         $annee = AnneeScolaire::find($id);
         return view('ecole.annees')
-                    ->with('page_name', $this->page_name . "/Edit")
-                    ->with('self', $annee)
-                    ->with('items', $anneeScolaires);
+            ->with('page_name', $this->page_name . " / Edit")
+            ->with('self', $annee)
+            ->with('items', $anneeScolaires);
     }
 
     /**
@@ -94,8 +102,17 @@ class AnneeScolaireController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
+
     {
-        //
+        //dd(10);
+        $annee = AnneeScolaire::find($id);
+
+        $annee->nom = $request->nom;
+        $annee->date_debut = $request->date_debut;
+        $annee->date_fin = $request->date_fin;
+
+        $annee->save();
+        return redirect()->route('annee-scolaires.index');
     }
 
     /**
@@ -109,6 +126,19 @@ class AnneeScolaireController extends Controller
         $annee = AnneeScolaire::find($id);
         $annee->delete();
         return redirect()->route('annee-scolaires.index');
+    }
 
+
+    //Search Engine
+
+    public function search(Request $request)
+    {
+
+        $items = AnneeScolaire::where('nom', 'like', '%' . $request->search . '%')
+            ->get();
+        return view('ecole.annees')
+            ->with('search', $request->search)
+            ->with('page_name', $this->page_name . ' / Search')
+            ->with('items', $items);
     }
 }

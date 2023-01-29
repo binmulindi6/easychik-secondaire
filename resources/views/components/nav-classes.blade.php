@@ -99,13 +99,13 @@
                 @if ( $pagename != "Cours" && $pagename != "Cours/Create" && $pagename != "Cours/Edit")
                     <a href="{{route('cours.index')}}">
                         <div>
-                            <i class="relative top-0 leading-normal text-blacksolid fa fa-duotone fa-book text-size-sm"></i>
+                            <i class="relative top-0 leading-normal text-blacksolid fa fa-solid fa-book text-size-sm"></i>
                             <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Cours</span>
                         </div>
                     </a>
                 @else
                 <div>
-                    <i class="relative top-0 leading-normal text-black fa fa-duotone fa-book text-size-sm"></i>
+                    <i class="relative top-0 leading-normal text-black fa fa-solid fa-book text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Cours</span>
                 </div>
                 @endif

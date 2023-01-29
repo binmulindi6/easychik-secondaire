@@ -44,6 +44,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //check if user is admin
+    public function isAdmin()
+    {
+        if ($this->isAdmin === 1) {
+            return true;
+        }
+        return false;
+    }
 
     //link to the employer
     public function employer()

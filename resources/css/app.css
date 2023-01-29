@@ -1,4 +1,5 @@
 
+@import './fontawesome.css';
 @import './argon-dashboard-tailwind.css';
 @import './nucleo-icons.css';
 @import './nucleo-svg.css';
@@ -6,6 +7,5 @@
 @import './perfect-scrollbar.css';
 
 @tailwind base;
-@import './fontawesome.css';
 @tailwind components;
 @tailwind utilities;

@@ -11,22 +11,22 @@ use App\Models\AnneeScolaire;
 class PeriodeController extends Controller
 {
     /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     protected $page_name = "Periodes";
-    
+
     public function index()
     {
         $periodes = Periode::all();
         $trimestres = Trimestre::all();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.periodes')
-                    ->with('page_name', $this->page_name)
-                    ->with('anneeEncours', $anneeEncours)
-                    ->with('trimestres', $trimestres)
-                    ->with('items', $periodes);
+            ->with('page_name', $this->page_name)
+            ->with('anneeEncours', $anneeEncours)
+            ->with('trimestres', $trimestres)
+            ->with('items', $periodes);
     }
 
     /**
@@ -49,10 +49,10 @@ class PeriodeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => ['required','string','max:255'],
-            'trimestre' => ['required','string','max:255'],
-            'date_debut' => ['required','string','max:255'],
-            'date_fin' => ['required','string','max:255'],
+            'nom' => ['required', 'string', 'max:255'],
+            'trimestre' => ['required', 'string', 'max:255'],
+            'date_debut' => ['required', 'string', 'max:255'],
+            'date_fin' => ['required', 'string', 'max:255'],
         ]);
 
         //dd($request->nom);
@@ -77,9 +77,17 @@ class PeriodeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        if ($request->_method == 'PUT') {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255'],
+                'trimestre' => ['required', 'string', 'max:255'],
+                'date_debut' => ['required', 'string', 'max:255'],
+                'date_fin' => ['required', 'string', 'max:255'],
+            ]);
+            return  $this->update($request, $id);
+        }
     }
 
     /**
@@ -95,11 +103,11 @@ class PeriodeController extends Controller
         $trimestres = Trimestre::all();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.periodes')
-                    ->with('page_name', $this->page_name ."/Edit")
-                    ->with('anneeEncours', $anneeEncours)
-                    ->with('trimestres', $trimestres)
-                    ->with('self', $periode)
-                    ->with('items', $periodes);
+            ->with('page_name', $this->page_name . "/Edit")
+            ->with('anneeEncours', $anneeEncours)
+            ->with('trimestres', $trimestres)
+            ->with('self', $periode)
+            ->with('items', $periodes);
     }
 
     /**
@@ -111,7 +119,18 @@ class PeriodeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $periode = Periode::find($id);
+
+        $periode->nom = $request->nom;
+        $periode->date_debut = $request->date_debut;
+        $periode->date_fin = $request->date_fin;
+
+        $trimestre = Trimestre::find($request->trimestre);
+        $periode->trimestre()->associate($trimestre);
+        $periode->save();
+
+        return redirect()->route('periodes.index');
     }
 
     /**
@@ -122,6 +141,30 @@ class PeriodeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $periode = Periode::find($id);
+        $periode->delete();
+        return redirect()->route('periodes.index');
+    }
+
+    //Search Engine
+
+    public function search(Request $request)
+    {
+        //dd(10);
+
+        $trimestres = Trimestre::all();
+        $anneeEncours = AnneeScolaire::current();
+        $items = Periode::where('periodes.nom', 'like', '%' . $request->search . '%')
+            //->join('annee_scolaires', 'annee_scolaires.id', '=', 'trimestres.annee_scolaire_id')
+            //->where('trimestres.nom', 'like', '%' . $request->search . '%')
+            //->orWhere('annee_scolaires.nom', 'like', '%' . $request->search . '%')
+            ->get();
+
+        return view('ecole.periodes')
+            ->with('search', $request->search)
+            ->with('page_name', $this->page_name . ' / Search')
+            ->with('anneeEncours', $anneeEncours)
+            ->with('trimestres', $trimestres)
+            ->with('items', $items);
     }
 }

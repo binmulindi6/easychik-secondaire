@@ -16,15 +16,19 @@ class ExamenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $page_name = 'Examens';
     public function index()
     {
-        $examens = Examen::all();
+        $examens = Examen::latest()
+            ->limit(10)
+            ->get();
         $cours = Cours::orderBy('nom', 'asc')->get();
         $trimestres = Trimestre::all();
-        return view('classe.examens')
-                    ->with('trimestres', $trimestres)
-                    ->with('cours', $cours)
-                    ->with('items', $examens);
+        return view('travails.examens')
+            ->with('trimestres', $trimestres)
+            ->with('cours', $cours)
+            ->with('page_name', $this->page_name)
+            ->with('items', $examens);
     }
 
     /**
@@ -55,17 +59,17 @@ class ExamenController extends Controller
         $cours = Cours::findOrFail($request->cours);
         $trimestre = Trimestre::findOrFail($request->trimestre);
         //dd($periode->isCurrent());
-        
+
         $examen = Examen::create([
             'note_max' => $request->note_max,
             'date_examen' => $request->date_examen,
         ]);
-        
+
         $examen->cours()->associate($cours);
         $examen->trimestre()->associate($trimestre);
-        
+
         $examen->save();
-        
+
         //la classe de l'examen
         $classe = $cours->classe;
         //eleves de la classe
@@ -96,7 +100,7 @@ class ExamenController extends Controller
             'date_examen' => ['required', 'string', 'max:255'],
         ]);
         return  $this->update($request, $id);
-    
+
         dd("show");
     }
 
@@ -112,11 +116,12 @@ class ExamenController extends Controller
         $examens = Examen::all();
         $cours = Cours::orderBy('nom', 'asc')->get();
         $trimestres = Trimestre::all();
-        return view('classe.examens')
-                    ->with('trimestres', $trimestres)
-                    ->with('cours', $cours)
-                    ->with('self', $examen)
-                    ->with('items', $examens);
+        return view('travails.examens')
+            ->with('trimestres', $trimestres)
+            ->with('cours', $cours)
+            ->with('self', $examen)
+            ->with('page_name', $this->page_name . ' / Edit')
+            ->with('items', $examens);
     }
 
     /**
@@ -145,7 +150,7 @@ class ExamenController extends Controller
 
         $examen->cours()->associate($cours);
         $examen->trimestre()->associate($trimestre);
-        
+
         $examen->save();
 
         return redirect()->route('examens.index');
@@ -164,7 +169,22 @@ class ExamenController extends Controller
         return redirect()->route('examens.index');
     }
 
-    public function examen(){
-        
-    } 
+    public function search(Request $request)
+    {
+        $items = Examen::join('cours', 'cours.id', '=', 'examens.cours_id')
+            ->where('cours.nom', 'like', '%' . $request->search . '%')
+            // ->join('trimestres', 'trimestres.id', '=', 'examens.cours_id')
+            // ->where('trimestres.nom', 'like', '%' . $request->search . '%')
+            ->get();
+
+        $cours = Cours::orderBy('nom', 'asc')->get();
+        $trimestres = Trimestre::all();
+        return view('travails.examens')
+            ->with('page_name', $this->page_name . " / Search")
+            ->with('search',  $request->search)
+            ->with('trimestres', $trimestres)
+            ->with('cours', $cours)
+            ->with('page_name', $this->page_name)
+            ->with('items', $items);
+    }
 }

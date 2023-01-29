@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CategorieCours;
+use App\Models\User;
 use App\Models\Classe;
 use Illuminate\Http\Request;
+use App\Models\CategorieCours;
+use Illuminate\Support\Facades\DB;
 
 class ClasseController extends Controller
 {
@@ -22,9 +24,8 @@ class ClasseController extends Controller
         //$user = User::where('id',)
 
         return view('classe.classes')
-                    ->with('page_name', $this->page)
-                    ->with('items', $classes);
-
+            ->with('page_name', $this->page)
+            ->with('items', $classes);
     }
 
     /**
@@ -33,7 +34,7 @@ class ClasseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
+    {
         $this->page = "Classes/Create";
         return $this->index();
     }
@@ -47,8 +48,8 @@ class ClasseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'niveau' => ['required','string','max:255'],
-            'nom' => ['required','string','max:255'],
+            'niveau' => ['required', 'string', 'max:255'],
+            'nom' => ['required', 'string', 'max:255'],
         ]);
 
         Classe::create([
@@ -57,7 +58,6 @@ class ClasseController extends Controller
         ]);
 
         return redirect()->route("classes.index");
-
     }
 
     /**
@@ -68,8 +68,8 @@ class ClasseController extends Controller
      */
     public function show(Request $request, $id)
     {
-        if($request->_method == 'PUT'){
-          return  $this->update($request, $id);
+        if ($request->_method == 'PUT') {
+            return  $this->update($request, $id);
         }
         dd("show");
     }
@@ -81,14 +81,23 @@ class ClasseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
+    {
         $classes = Classe::orderBy('niveau', 'asc')->get();
         $classe = Classe::find($id);
+        // $users = User::crossJoin('classes', 'classes.user_id', '=', 'users.id')->get();
+        $users = User::whereNotExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('classes')
+                ->whereColumn('classes.user_id', 'users.id');
+        })->get();
+        // ('classes', 'classes.user_id', '=', 'users.id')->get();
+        //dd($users);
 
         return view('classe.classes')
-                    ->with('page_name', $this->page . '/Edit')
-                    ->with('self', $classe)
-                    ->with('items', $classes);
+            ->with('page_name', $this->page . '/Edit')
+            ->with('self', $classe)
+            ->with('users', $users)
+            ->with('items', $classes);
     }
 
     /**
@@ -100,20 +109,23 @@ class ClasseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         $request->validate([
-            'niveau' => ['required','string','max:255'],
-            'nom' => ['required','string','max:255'],
+            'niveau' => ['required', 'string', 'max:255'],
+            'nom' => ['required', 'string', 'max:255'],
+            'user' => ['required', 'string', 'max:255'],
         ]);
 
         $classe = Classe::find($id);
         $classe->niveau = $request->niveau;
         $classe->nom = $request->nom;
 
+        $user = User::find($request->user);
+        $classe->user()->associate($user);
+
         $classe->save();
 
         return redirect()->route("classes.index");
-
     }
 
     /**

@@ -1,49 +1,60 @@
-
 const btn_create_eleve = document.querySelector("[btn-create-eleves]");
 const btn_show_eleves = document.querySelector("[btn-display-eleves]");
 const form_add_eleve = document.querySelector("[frm-create-eleves]");
 const display_eleves = document.querySelector("[display-eleves]");
 
+const btn_create_frequentations = document.querySelector(
+    "[btn-create-frequentations]"
+);
+const btn_show_frequentations = document.querySelector(
+    "[btn-display-frequentations]"
+);
+const frm_frequentations = document.querySelector(
+    "[frm-create-frequentations]"
+);
+const display_frequentations = document.querySelector(
+    "[display-frequentations]"
+);
 
-const btn_create_frequentations = document.querySelector("[btn-create-frequentations]");
-const btn_show_frequentations = document.querySelector("[btn-display-frequentations]");
-const frm_frequentations = document.querySelector("[frm-create-frequentations]");
-const display_frequentations = document.querySelector("[display-frequentations]");
+const btnCreate = document.querySelectorAll(".btn-create");
+const btnDispaly = document.querySelectorAll(".btn-display");
 
-
-const btnCreate = document.querySelectorAll('.btn-create');
-const btnDispaly = document.querySelectorAll('.btn-display');
-
-const frm = document.querySelector('.frm-create');
-const display = document.querySelector('.display');
+const frm = document.querySelector(".frm-create");
+const display = document.querySelector(".display");
 //eleves
 
-btnCreate.forEach(btn => {
-    btn.addEventListener("click", function (){
-        if(frm.getAttribute("hidden") == true){
+//Show Eleve
+
+const btnIdentity = document.querySelector(".btn-identity");
+const frmIdentity = document.querySelector(".frm-identity");
+//console.log(btnIdentity);
+
+btnCreate.forEach((btn) => {
+    btn.addEventListener("click", function () {
+        if (frm.getAttribute("hidden") == true) {
             display.setAttribute("hidden", "true");
             frm.classList.toggle("hidden");
-        }else{
+        } else {
             frm.classList.remove("hidden");
             display.classList.add("hidden");
             console.log(11);
         }
-    })
+    });
 });
 
-btnDispaly.forEach(btn => {
-    btn.addEventListener("click", function (){
-        if(frm.getAttribute("hidden") == false){
+btnDispaly.forEach((btn) => {
+    btn.addEventListener("click", function () {
+        if (frm.getAttribute("hidden") == false) {
             frm.setAttribute("hidden", "true");
             display.classList.toggle("hidden");
             //console.log(11);
-        }else{
+        } else {
             frm.classList.add("hidden");
             display.classList.remove("hidden");
             console.log(11);
         }
-    })
-})
+    });
+});
 
 /*btn_create_eleve.addEventListener("click", function (){
 
@@ -97,3 +108,8 @@ btn_show_frequentations.addEventListener("click", function (){
 
 });*/
 
+if (btnIdentity != null) {
+    btnIdentity.addEventListener("click", () => {
+        frmIdentity.classList.toggle("hidden");
+    });
+}

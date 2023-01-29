@@ -20,10 +20,10 @@ class TrimestreController extends Controller
         $annees = AnneeScolaire::all();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.trimestres')
-                    ->with('page_name', $this->page_name)
-                    ->with('anneeEncours', $anneeEncours)
-                    ->with('annees', $annees)
-                    ->with('items', $trimestres);
+            ->with('page_name', $this->page_name)
+            ->with('anneeEncours', $anneeEncours)
+            ->with('annees', $annees)
+            ->with('items', $trimestres);
     }
 
     /**
@@ -33,12 +33,11 @@ class TrimestreController extends Controller
      */
     public function create()
     {
-        //
+        $this->page_name = $this->page_name . ' / Create';
+        return $this->index();
     }
-    
-    public function current(){
-        ///
-    }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -49,10 +48,10 @@ class TrimestreController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => ['required','string','max:255'],
-            'annee_scolaire' => ['required','string','max:255'],
-            'date_debut' => ['required','string','max:255'],
-            'date_fin' => ['required','string','max:255'],
+            'nom' => ['required', 'string', 'max:255'],
+            'annee_scolaire' => ['required', 'string', 'max:255'],
+            'date_debut' => ['required', 'string', 'max:255'],
+            'date_fin' => ['required', 'string', 'max:255'],
         ]);
 
         //dd($request->nom);
@@ -77,9 +76,17 @@ class TrimestreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        if ($request->_method == 'PUT') {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255'],
+                'annee_scolaire' => ['required', 'string', 'max:255'],
+                'date_debut' => ['required', 'string', 'max:255'],
+                'date_fin' => ['required', 'string', 'max:255'],
+            ]);
+            return  $this->update($request, $id);
+        }
     }
 
     /**
@@ -95,11 +102,11 @@ class TrimestreController extends Controller
         $annees = AnneeScolaire::all();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.trimestres')
-                    ->with('page_name', $this->page_name . "/Edit")
-                    ->with('anneeEncours', $anneeEncours)
-                    ->with('self', $trimestre)
-                    ->with('annees', $annees)
-                    ->with('items', $trimestres);
+            ->with('page_name', $this->page_name . " / Edit")
+            ->with('anneeEncours', $anneeEncours)
+            ->with('self', $trimestre)
+            ->with('annees', $annees)
+            ->with('items', $trimestres);
     }
 
     /**
@@ -111,7 +118,18 @@ class TrimestreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $trimestre = Trimestre::find($id);
+
+        $trimestre->nom = $request->nom;
+        $trimestre->date_debut = $request->date_debut;
+        $trimestre->date_fin = $request->date_fin;
+
+        $annee = AnneeScolaire::find($request->annee_scolaire);
+        $trimestre->annee_scolaire()->associate($annee);
+        $trimestre->save();
+
+        return redirect()->route('trimestres.index');
     }
 
     /**
@@ -125,5 +143,26 @@ class TrimestreController extends Controller
         $trimestre = Trimestre::find($id);
         $trimestre->delete();
         return redirect()->route('trimestres.index');
+    }
+
+    //Search Engine
+
+    public function search(Request $request)
+    {
+
+        $annees = AnneeScolaire::all();
+        $anneeEncours = AnneeScolaire::current();
+        $items = Trimestre::where('trimestres.nom', 'like', '%' . $request->search . '%')
+            //->join('annee_scolaires', 'annee_scolaires.id', '=', 'trimestres.annee_scolaire_id')
+            //->where('trimestres.nom', 'like', '%' . $request->search . '%')
+            //->orWhere('annee_scolaires.nom', 'like', '%' . $request->search . '%')
+            ->get();
+
+        return view('ecole.trimestres')
+            ->with('search', $request->search)
+            ->with('page_name', $this->page_name . ' / Search')
+            ->with('anneeEncours', $anneeEncours)
+            ->with('annees', $annees)
+            ->with('items', $items);
     }
 }
