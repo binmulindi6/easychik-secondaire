@@ -206,12 +206,14 @@ class EleveController extends Controller
         $eleve = Eleve::findOrFail($eleve);
         $trimestre = Trimestre::findOrFail($trimestre);
 
-        $examens = $eleve->examens;
-
+        $examens = $eleve->examens->reverse();
+        // $examens = $eleve->examens;
+        // dd($examens->reverse());
         return view('eleve.evaluations')
             ->with('examens', $examens)
             ->with('trimestre', $trimestre)
-            ->with('eleve', $eleve);
+            ->with('eleve', $eleve)
+            ->with('page_name', $this->page . "/Examens");
     }
 
     public function ficheEvaluations($eleve, $periode)
@@ -219,6 +221,7 @@ class EleveController extends Controller
         $eleve = Eleve::findOrFail($eleve);
         $periode = Periode::findOrFail($periode);
 
+        // $evaluations = $eleve->evaluations->reverse();
         $evaluations = $eleve->evaluations;
         //dd($evaluations[0]);
 
@@ -226,7 +229,7 @@ class EleveController extends Controller
             ->with('evaluations', $evaluations)
             ->with('periode', $periode)
             ->with('eleve', $eleve)
-            ->with('page_name', $this->page . " / Evaluations");
+            ->with('page_name', $this->page . "/Evaluations");
     }
 
 

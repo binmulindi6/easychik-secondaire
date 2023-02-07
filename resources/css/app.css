@@ -1,8 +1,12 @@
 
-@import './fontawesome.css';
+/* @import './fontawesome.css'; */
 @import './argon-dashboard-tailwind.css';
 @import './nucleo-icons.css';
 @import './nucleo-svg.css';
+
+/* @import './fonts/fa-solid-900.woff2'; */
+
+@import './fa.min.css';
 @import'./tooltips.css';
 @import './perfect-scrollbar.css';
 

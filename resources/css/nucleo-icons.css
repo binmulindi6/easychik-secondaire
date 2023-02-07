@@ -12,6 +12,11 @@ License - nucleoapp.com/license/
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'FontawesomeIcons';
+  src: url('./fonts/fa-solid-900.woff2');
+}
+
 /*------------------------
     base class definition
 -------------------------*/

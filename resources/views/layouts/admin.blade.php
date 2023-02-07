@@ -8,7 +8,7 @@
     <!--link rel="icon" type="image/png" href="../assets/img/favicon.png" /-->
     <title> {{ config('app.name', 'SAS') }} - {{ $page_name }} </title>
     <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    {{-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" /> --}}
     <!-- Font Awesome Icons -->
     <!--script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script-->
     <!-- Popper -->
@@ -59,9 +59,9 @@
                 @if (Auth::user()->isAdmin())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Ecole') ||
-                            str_contains($page_name, 'Annees Scolaires') ||
-                            str_contains($page_name, 'Trimestres') ||
-                            str_contains($page_name, 'Periodes'))
+                                str_contains($page_name, 'Annees Scolaires') ||
+                                str_contains($page_name, 'Trimestres') ||
+                                str_contains($page_name, 'Periodes'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('ecole.index') }}">
                             @else
@@ -78,8 +78,8 @@
 
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Classes') ||
-                            str_contains($page_name, 'Categories Cours') ||
-                            str_contains($page_name, 'Cours'))
+                                str_contains($page_name, 'Categories Cours') ||
+                                str_contains($page_name, 'Cours'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('classes.index') }}">
                             @else
@@ -115,9 +115,10 @@
                     </li>
 
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Travails') ||
-                            str_contains($page_name, 'Evaluations') ||
-                            str_contains($page_name, 'Examens'))
+                        @if (str_contains($page_name, 'Travails') 
+                                // str_contains($page_name, 'Evaluations') ||
+                                // str_contains($page_name, 'Examens')
+                                )
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('travails.index') }}">
                             @else

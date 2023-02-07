@@ -1,7 +1,7 @@
 import "./delete";
 import "./bootstrap";
 import "./myjs";
-import "./fontawesome.min";
+import "./fa.min";
 import "./countup";
 //import './Chart.extension';
 import "./chartjs.min";
