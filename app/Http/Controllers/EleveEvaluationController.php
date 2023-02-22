@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class EleveEvaluationController extends Controller
 {
+    private $page_name = 'Evaluation';
+
     public function edit($eleve_id, $evaluation_id){
         $eleve = Eleve::findOrFail($eleve_id);
         $evaluation = Evaluation::findOrFail($evaluation_id);
@@ -18,6 +20,7 @@ class EleveEvaluationController extends Controller
         return view('eleve.note')
                 ->with('evaluation', $evaluation)
                 ->with('self', $pivot)
+                ->with('page_name', $this->page_name)
                 ->with('eleve', $eleve);
     }
 

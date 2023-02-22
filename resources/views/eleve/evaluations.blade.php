@@ -3,9 +3,16 @@
 @section('content')
     <div class=" flex flex-col gap-5 md:p-5">
         <a href="{{ route('eleves.show', $eleve->id) }}"
-            class="p-2 bg-white rounded-full w-8 h-8 flex justify-center items-center"><i
-                class="fa fa-solid fa-arrow-left"></i></a>
-        <x-eleve-profile-header :data="$eleve"> </x-eleve-profile-header>
+            class="p-2 bg-white rounded-full w-8 h-8 flex justify-center items-center">
+            <i class="fa fa-solid fa-arrow-left"></i>
+        </a>
+
+
+        @if (isset($periode))
+            <x-eleve-profile-header :data="$eleve" :periode="$periode"> </x-eleve-profile-header> 
+        @else
+            <x-eleve-profile-header :data="$eleve" :trimestre="$trimestre"> </x-eleve-profile-header>
+        @endif
         <div class=" flex flex-row justify-between w-full ">
             @if (isset($examens))
                 <div

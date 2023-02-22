@@ -28,7 +28,7 @@ class Eleve extends Model
 
      ];
 
-     //classe() is already taken by the system, that why i use class
+     //class() is already taken by the system, that why i use classe
 
      public function classe($instance = true)
      {

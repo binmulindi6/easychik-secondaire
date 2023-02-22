@@ -225,6 +225,8 @@ class EleveController extends Controller
         $evaluations = $eleve->evaluations;
         //dd($evaluations[0]);
 
+        // dd($evaluations[0]->periode->nom);
+
         return view('eleve.evaluations')
             ->with('evaluations', $evaluations)
             ->with('periode', $periode)

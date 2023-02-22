@@ -145,7 +145,7 @@
                                     @foreach ($trimestre->periodes as $periode)
                                         <tr class=" rounded-2xl hover:bg-slate-100  cursor-pointer">
                                             <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
                                                 <a href="{{ route('eleves.evaluations', [$item->id, $periode->id]) }}">
                                                     {{ $periode->nom }}
                                                 </a>
@@ -168,7 +168,7 @@
                                 @foreach ($trimestres as $trimestre)
                                     <tr class=" rounded-2xl hover:bg-slate-100 cursor-pointer">
                                         <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
                                             <a href="{{ route('eleves.examens', [$item->id, $trimestre->id]) }}">
                                                 {{ $trimestre->nom }}
                                             </a>

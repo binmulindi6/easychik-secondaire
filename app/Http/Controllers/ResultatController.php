@@ -14,6 +14,9 @@ use PDO;
 
 class ResultatController extends Controller
 {
+    public $page_name = 'Resultat';
+
+    //bulletin des resultats de la Peride
     public function periode($periode_id, $eleve_id){
         $eleve = Eleve::findOrFail($eleve_id);
         $periode = Periode::findOrFail($periode_id);
@@ -47,12 +50,14 @@ class ResultatController extends Controller
             ->groupBy('items.id', 'items.name')
             ->get();*/
 
-        return view('classe.resultats')
+        // return view('classe.resultats')
+        return view('eleve.resultats-periode')
                     ->with('bulletin', $bulletin)
                     ->with('max', $max)
                     ->with('note', $note)
                     ->with('periode', $periode)
                     ->with('eleve', $eleve)
+                    ->with('page_name', $this->page_name . ' / Periode')
                     ->with('evaluations', $evaluations);
 
 
@@ -69,7 +74,7 @@ class ResultatController extends Controller
     }
 
 
-    //examen
+    //bulletin des resultats du Trimestre
     public function examen($trimestre_id, $eleve_id){
         $eleve = Eleve::findOrFail($eleve_id);
         $trimestre = Trimestre::findOrFail($trimestre_id);
@@ -90,12 +95,14 @@ class ResultatController extends Controller
         $bulletin = $eleve->bulletinExamen($trimestre_id);
         //dd($bulletin);
 
-        return view('classe.resultats-examens')
+        // return view('classe.resultats-examens')
+        return view('eleve.resultats-trimestre')
                     ->with('bulletin', $bulletin)
                     ->with('max', $max)
                     ->with('note', $note)
                     ->with('trimestre', $trimestre)
                     ->with('eleve', $eleve)
+                    ->with('page_name', $this->page_name . ' / Trimestre')
                     ->with('evaluations', $examens);
     }
 

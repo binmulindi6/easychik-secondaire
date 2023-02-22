@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class EleveExamenController extends Controller
 {
+    private $page_name = 'Examens';
+
+
     public function edit($eleve_id, $examen_id){
         $eleve = Eleve::findOrFail($eleve_id);
         $examen = Examen::find($examen_id);
@@ -18,6 +21,7 @@ class EleveExamenController extends Controller
         return view('eleve.note')
                 ->with('self', $pivot)
                 ->with('examen', $examen)
+                ->with('page_name', $this->page_name)
                 ->with('eleve', $eleve);
     }
 
