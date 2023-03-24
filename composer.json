@@ -1,5 +1,5 @@
 {
-    "name": "SAS - School Administration Sysytem",
+    "name": "sas/v1",
     "type": "project",
     "description": "School Administration Sysytem",
     "keywords": ["framework", "laravel"],
