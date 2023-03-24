@@ -10,6 +10,21 @@
 @import'./tooltips.css';
 @import './perfect-scrollbar.css';
 
+@media print {
+    body * {
+      visibility: hidden;
+    }
+    #printable, #printable * {
+        /* max-width: 150rem; */
+      visibility: visible;
+    }
+    #printable {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

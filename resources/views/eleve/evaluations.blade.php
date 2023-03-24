@@ -13,9 +13,9 @@
         @else
             <x-eleve-profile-header :data="$eleve" :trimestre="$trimestre"> </x-eleve-profile-header>
         @endif
-        <div class=" flex flex-row justify-between w-full ">
+        <div class=" flex flex-col gap-5  justify-between w-full ">
             @if (isset($examens))
-                <div
+                <div id="evaluations"
                     class="display  shadow-2xl p-4  flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
 
                     <div class=" flex justify-center p-4 pb-0 mb-0 rounded-t-2xl">
@@ -86,9 +86,47 @@
 
                     </div>
                 </div>
+
+                <div id="fiche-evaluation" class="display hidden shadow-2xl p-5  flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
+                    <div class="conatiner w-full flex justify-center">
+                        @if ($examens != null)
+                        <table class="border-collapse w-full max-w-160">
+                            <caption class="uppercase font-bold text-xs pb-2">Fiche des cotes Examens
+                                {{ $trimestre->nom }} Annee Scolaire {{ $trimestre->annee_scolaire->nom }}
+                            </caption>
+                            <thead>
+                                    <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Cours </th>
+                                    <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Note </th>
+                                    <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Max</th>
+                                    <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Date</th>
+                            </thead>
+                            <tbody>
+                                @if ($examens == null)
+                                    1010
+                                @else
+                                    @foreach ($examens as $item)
+                                    @if ($item->trimestre_id == $trimestre->id ) 
+                                        <tr>
+                                            <td class="p-1 border font-bold text-left uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-70"> {{ $item->cours->nom }} </td>
+                                            <td class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-70"> {{$item->pivot->note_obtenu}} </td>
+                                            <td class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-70"> {{ $item->note_max }} </td>
+                                            <td class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-70"> {{ $item->date_examen }}</td>
+                                        </tr>
+                                    @endif
+                                    @endforeach
+                                @endif
+                                    
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-bold text-2xl text-red-500 text-center">
+                            Fiche Examens Indisponible 
+                        </p>
+                    @endif
+                    </div>
+                </div>
             @else
-                <div
-                    class="display  shadow-2xl p-4  flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
+                <div id="evaluations" class="display  shadow-2xl p-4  flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
 
                     <div class=" flex justify-center p-4 pb-0 mb-0 rounded-t-2xl">
                         <h6>Evaluations
@@ -162,8 +200,61 @@
                         </div>
                     </div>
                 </div>
+                <div id="fiche-evaluation" class="display hidden shadow-2xl p-5  flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
+          
+            
+                    <div class="conatiner w-full flex justify-center">
+                        @if ($evaluations != null)
+                            <table class="border-collapse w-full max-w-160">
+                                <caption class="uppercase font-bold text-xs pb-2">Fiche des cotes 
+                                    {{ $periode->nom . ', ' . $periode->trimestre->nom . ' Annee Scolaire' . $periode->trimestre->annee_scolaire->nom }}
+                                </caption>
+                                <thead>
+                                    <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Cours </th>
+                                    <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Note </th>
+                                    <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Max</th>
+                                    <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Date</th>
+                                </thead>
+                                <tbody>
+                                    @if ($evaluations == null)
+                                        1010
+                                    @else
+                                        @foreach ($evaluations as $item)
+                                        @if ($item->periode_id == $periode->id ) 
+                                            <tr>
+                                                <td class="p-1 border font-bold text-left uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-70"> {{ $item->type_evaluation->nom . " ". $item->cours->nom }} </td>
+                                                <td class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-70"> {{$item->pivot->note_obtenu}} </td>
+                                                <td class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-70"> {{ $item->note_max }} </td>
+                                                <td class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-70"> {{ $item->date_evaluation }}</td>
+                                            </tr>
+                                        @endif
+                                        @endforeach
+                                    @endif
+                                        
+                                </tbody>
+                            </table>
+                        @else
+                            <p class="text-bold text-2xl text-red-500 text-center">
+                                Fiche D'evaluations Indisponible 
+                            </p>
+                        @endif
+                
+                    </div>
+
+                </div>
             @endif
         </div>
 
     </div>
 @endsection
+
+
+<script defer>
+    // const btnShowFiche = document.getElementById('btn-show-fiche');
+    // const ficheEvaluation = document.getElementById('fiche-evaluation');
+    // const evaluations =  document.getElementById('evaluations');
+
+    // btnShowFiche.addEventListener('click', ()=>{
+    //     ficheEvaluation.classList.toggle('hidden');
+    // })
+</script>

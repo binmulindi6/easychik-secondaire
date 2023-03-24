@@ -28,8 +28,8 @@ const display = document.querySelector(".display");
 const btnIdentity = document.querySelector(".btn-identity");
 const frmIdentity = document.querySelector(".frm-identity");
 //console.log(btnIdentity);
-
-btnCreate.forEach((btn) => {
+// console.log(frm)
+(display !== null && frm !== null) && btnCreate.forEach((btn) => {
     btn.addEventListener("click", function () {
         if (frm.getAttribute("hidden") == true) {
             display.setAttribute("hidden", "true");
@@ -42,7 +42,7 @@ btnCreate.forEach((btn) => {
     });
 });
 
-btnDispaly.forEach((btn) => {
+(display !== null && frm !== null) && btnDispaly.forEach((btn) => {
     btn.addEventListener("click", function () {
         if (frm.getAttribute("hidden") == false) {
             frm.setAttribute("hidden", "true");
@@ -108,8 +108,44 @@ btn_show_frequentations.addEventListener("click", function (){
 
 });*/
 
-if (btnIdentity != null) {
+if (btnIdentity !== null) {
     btnIdentity.addEventListener("click", () => {
-        frmIdentity.classList.toggle("hidden");
+       frmIdentity !== null && frmIdentity.classList.toggle("hidden");
     });
 }
+
+
+///ads
+
+const btnShowFiche = document.getElementById('btn-show-fiche');
+const ficheEvaluation = document.getElementById('fiche-evaluation');
+const evaluations =  document.getElementById('evaluations');
+
+btnShowFiche !== null && btnShowFiche.addEventListener('click', ()=>{
+    ficheEvaluation.classList.toggle('hidden');
+    evaluations.classList.toggle('hidden');
+})
+
+
+//joker print
+
+const printable = document.getElementById('printable')
+const btnJokerPrint = document.getElementById('joker-print')
+
+btnJokerPrint !== null && btnJokerPrint.addEventListener('click', ()=>{
+
+    // var printContents = printable.innerHTML;
+	// var originalContents = document.body.innerHTML;
+
+			// document.body.innerHTML = printContents;
+
+			window.print();
+
+			// document.body.innerHTML = originalContents;
+    // window.print()
+})
+
+// printable bullentin
+
+
+

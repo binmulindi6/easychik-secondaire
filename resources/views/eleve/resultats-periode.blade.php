@@ -51,9 +51,9 @@
             <div  class="container w-full flex justify-center"> 
                 @if (!$bulletin == null)
                 <table border-collapse class=" w-full max-w-160 border border-collapse">
-                        <caption class="uppercase font-bold text-4-em">BULLETIN {{ $periode->nom }}, {{ $periode->trimestre->nom }} Annee Scolaire {{ $periode->trimestre->annee_scolaire->nom }}</caption>
+                        <caption class="uppercase font-bold text-xs pb-2">BULLETIN {{ $periode->nom }}, {{ $periode->trimestre->nom }} Annee Scolaire {{ $periode->trimestre->annee_scolaire->nom }}</caption>
                         <thead class="border">
-                            <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Cours </th>
+                            <th class="p-1 border font-bold text-left uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Cours </th>
                             <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Note Obtenu</th>
                             <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Max Cours</th>
                             <th class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" ></th>

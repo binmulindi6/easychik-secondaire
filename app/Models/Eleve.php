@@ -28,6 +28,10 @@ class Eleve extends Model
 
      ];
 
+     public function nomComplet(){
+          return $this->nom . " " . $this->prenom; 
+     }
+
      //class() is already taken by the system, that why i use classe
 
      public function classe($instance = true)

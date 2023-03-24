@@ -59,31 +59,54 @@
                         <li
                             class="btn-identity cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                             @if (isset($periode))
+                                <span id="btn-show-fiche" href={{route('resultat.periode',[$periode->id, $data->id])}}  class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                role="tab" aria-selected="false">
+                                    <i class="fa fa-solid fa-table-list text-green-500"></i>
+                                    <span class="ml-2">Fiche de Cote {{$periode->nom}}</span>
+                                </span>
+                            @else
+                                <span id="btn-show-fiche" href={{route('resultat.trimestre',[$trimestre->id, $data->id])}} class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                role="tab" aria-selected="false">
+                                    <i class="fa fa-solid fa-table-list text-green-500"></i>
+                                    <span class="ml-2">Fiche de Cote {{$trimestre->nom}}</span>
+                                </span>
+            
+                            @endif
+                        </li>
+                        <li
+                            class="btn-identity cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                            @if (isset($periode))
                                 <a href={{route('resultat.periode',[$periode->id, $data->id])}}  class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                 role="tab" aria-selected="false">
-                                    <i class="fa fa-solid fa-table-list"></i>
+                                    <i class="fa fa-solid fa-table-list text-blue-700"></i>
                                     <span class="ml-2">Bulletin {{$periode->nom}}</span>
                                 </a>
                             @else
-                                <a href={{route('resultat.periode',[$trimestre->id, $data->id])}} class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                <a href={{route('resultat.trimestre',[$trimestre->id, $data->id])}} class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                 role="tab" aria-selected="false">
-                                    <i class="fa fa-solid fa-table-list"></i>
+                                    <i class="fa fa-solid fa-table-list text-blue-700"></i>
                                     <span class="ml-2">Bulletin {{$trimestre->nom}}</span>
                                 </a>
             
                             @endif
                         </li>
-                        {{-- <li
-                            class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                            <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                href="{{ route('eleves.show', $eleves->count() === $index + 1 ? $eleves[0]->id : $eleves[$index + 1]->id) }}"
-                                role="tab" aria-selected="false" title="Eleve Suivant">
-                                <span class="mr-2">Suivant</span>
-                                <i class="fa fa-solid fa-arrow-right"></i>
-                            </a>
-                        </li> --}}
+                        
                     </ul>
                 </div>
+            @endif
+            @if (isset($print) && $print===true)
+                        <div class="px-3 mx-auto mt-4 sm:my-auto sm:mr-0  md:flex-none">
+                            <ul class="relative flex flex-wrap gap-2  list-none " role="tablist">
+                                
+                            <li
+                                class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                <span id="joker-print" class="z-30 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
+                                    <i class="fa fa-solid fa-print text-blue-500"></i>
+                                    <span class="mr-2">Imprimer le  Bulletin</span>
+                                </span>
+                            </li>
+                            </ul>
+                        </div>
             @endif
         </div>
     </div>

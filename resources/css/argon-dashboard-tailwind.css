@@ -2544,7 +2544,7 @@ h6 {
 }
 
 .text-size-banner-calculate {
-  font-size: calc(1.625rem+4.5vw);
+  font-size: calc(1.625rem + 4.5vw);
 }
 
 .font-normal {

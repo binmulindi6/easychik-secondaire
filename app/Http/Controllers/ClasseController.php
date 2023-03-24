@@ -84,12 +84,19 @@ class ClasseController extends Controller
     {
         $classes = Classe::orderBy('niveau', 'asc')->get();
         $classe = Classe::find($id);
-        // $users = User::crossJoin('classes', 'classes.user_id', '=', 'users.id')->get();
+        $users = User::crossJoin('classes', 'classes.user_id', '=', 'users.id')->get();
         $users = User::whereNotExists(function ($query) {
             $query->select(DB::raw(1))
                 ->from('classes')
                 ->whereColumn('classes.user_id', 'users.id');
         })->get();
+
+        // $users = User::join('classes', 'users.id', '!=' , 'classes.user_id')
+        //             ->get();
+                        // ->where('user.fonction');
+
+        // dd($users);
+
         // ('classes', 'classes.user_id', '=', 'users.id')->get();
         //dd($users);
 

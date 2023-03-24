@@ -1,12 +1,15 @@
-@extends('layouts.sas')
+@extends('layouts.admin')
 
 @section('content')
 
-    <div id='print' class="container m-5">
+    <div id='print' class=" flex flex-col gap-5 md:p-5">
 
-        <p class="text-bold text-xl"> Fiche de cote {{ $trimestre->nom }} Annee Scolaire {{ $trimestre->annee_scolaire->nom }}</p>
-
-        <p class="text-bold text-2xl"> Eleve: {{$eleve->nom . " " . $eleve->prenom}} </p>
+        <a href="{{ route('eleves.evaluations', [$eleve->id,$periode->id]) }}"
+            class="p-2 bg-white rounded-full w-8 h-8 flex justify-center items-center">
+            <i class="fa fa-solid fa-arrow-left"></i>
+        </a>
+        <x-eleve-profile-header :data="$eleve" :print="true" > </x-eleve-profile-header> 
+   
 
         <div class="flex flex-row justify-between">
             <div class="container p-4 mb-2 border-r-2 border-black-500"> 

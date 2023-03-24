@@ -131,7 +131,7 @@
             </div>
             <div class="shadow-2xl relative bg-white rounded-5 p-5 w-full  z-20">
                 <p class="text-center font-bold text-base"> Fiches de Cotes Annee Scolaire {{ $annee_scolaire->nom }} </p>
-                <div class="flex-auto px-0 pt-0 pb-2">
+                <div class="flex flex-col px-0 pt-0 pb-2 gap-3">
                     <div class="flex flex-row justify-between gap-3 p-0 overflow-x-auto">
                         <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                             <thead class="align-bottom">
@@ -179,6 +179,20 @@
                         </table>
                     </div>
                 </div>
+                    <div class="px-3 mx-auto mt-4 sm:my-auto sm:mr-0  md:flex-none">
+                        <ul class="relative flex flex-wrap gap-2  list-none " role="tablist">
+                            
+                        <li
+                            class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                            <a  href="{{route('resultat.bulletin', [$annee_scolaire->id,$item->id])}}"
+                                {{-- id="joker-print"  --}}
+                                class="z-30 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
+                                <i class="fa fa-solid fa-table-list text-blue-500"></i>
+                                <span class="mr-2 uppercase">Bulletin Annee Scolaire {{ $annee_scolaire->nom }} </span>
+                            </a>
+                        </li>
+                        </ul>
+                    </div>
             </div>
 
         </div>

@@ -74,7 +74,7 @@ class ResultatController extends Controller
     }
 
 
-    //bulletin des resultats du Trimestre
+    //bulletin des resultats des examens du Trimestre
     public function examen($trimestre_id, $eleve_id){
         $eleve = Eleve::findOrFail($eleve_id);
         $trimestre = Trimestre::findOrFail($trimestre_id);
@@ -96,7 +96,7 @@ class ResultatController extends Controller
         //dd($bulletin);
 
         // return view('classe.resultats-examens')
-        return view('eleve.resultats-trimestre')
+        return view('eleve.resultats-examen')
                     ->with('bulletin', $bulletin)
                     ->with('max', $max)
                     ->with('note', $note)
@@ -108,7 +108,7 @@ class ResultatController extends Controller
 
 
 
-    //trimestre
+    //bulletin des resultats du Trimestre
     public function trimestre($trimestre_id, $eleve_id){
         $eleve = Eleve::findOrFail($eleve_id);
         $trimestre = Trimestre::findOrFail($trimestre_id);
@@ -143,7 +143,8 @@ class ResultatController extends Controller
         //dd($examen, $periode1 ,$periode2);
         
 
-        return view('classe.trimestres')
+        // return view('classe.trimestres')
+        return view('eleve.resultats-trimestres')
                     ->with('examen', $examen)
                     ->with('periode1', $periode1)
                     ->with('periode2', $periode2)
@@ -156,6 +157,7 @@ class ResultatController extends Controller
                     ->with('noteTri', $noteTri)
                     ->with('maxTri', $maxTri)
                     ->with('trimestre', $trimestre)
+                    ->with('page_name', 'Bulletin / Trimestre')
                     ->with('eleve', $eleve);
     }
 
@@ -163,11 +165,12 @@ class ResultatController extends Controller
 
 
 
-    //bulletin annee
+    //bulletin annee scolaire
     public function bulletin($annee_scolaire_id, $eleve_id){
 
         $eleve = Eleve::find($eleve_id);
-        if($eleve->classe(true) == null){
+        // dd($eleve);
+        if($eleve === null || $eleve->classe(true) === null){
             abort(404);
         }
         
@@ -261,7 +264,8 @@ class ResultatController extends Controller
         }
         
 
-        return view('classe.bulletin')
+        // return view('classe.bulletin')
+        return view('eleve.bulletin')
                     ->with('examenT1', $examenT1)
                     ->with('periode1', $periode1)
                     ->with('periode2', $periode2)
@@ -301,8 +305,10 @@ class ResultatController extends Controller
                     ->with('maxTri3', $maxTri3)
 
 
+                    ->with('page_name', 'Bulletin / Scolaire')
 
 
+                    ->with('annee_scolaire', $annee)
                     ->with('trimestre', $trimestre)
                     ->with('eleve', $eleve);
     }
