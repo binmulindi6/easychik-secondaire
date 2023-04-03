@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Classe;
 use Illuminate\Http\Request;
 use App\Models\CategorieCours;
+use App\Models\Niveau;
 use Illuminate\Support\Facades\DB;
 
 class ClasseController extends Controller
@@ -19,12 +20,17 @@ class ClasseController extends Controller
     protected $page = "Classes";
 
     public function index()
-    {
-        $classes = Classe::orderBy('niveau', 'asc')->get();
-        //$user = User::where('id',)
+    {   
 
+
+        $classes = Classe::orderBy('niveau_id','asc')->get();
+        $niveaux = Niveau::all();
+        //$user = User::where('id',)
+        // dd($classes[2]);
+        // dd($classes[2]->encadrements);
         return view('classe.classes')
             ->with('page_name', $this->page)
+            ->with('niveaux', $niveaux)
             ->with('items', $classes);
     }
 
@@ -82,20 +88,22 @@ class ClasseController extends Controller
      */
     public function edit($id)
     {
-        $classes = Classe::orderBy('niveau', 'asc')->get();
+        // $classes = Classe::orderBy('niveau_id', 'asc')->get();
+        $classes = Classe::all();
         $classe = Classe::find($id);
-        $users = User::crossJoin('classes', 'classes.user_id', '=', 'users.id')->get();
-        $users = User::whereNotExists(function ($query) {
-            $query->select(DB::raw(1))
-                ->from('classes')
-                ->whereColumn('classes.user_id', 'users.id');
-        })->get();
+        $niveaux = Niveau::all();
+        // $users = User::crossJoin('classes', 'classes.user_id', '=', 'users.id')->get();
+        // $users = User::whereNotExists(function ($query) {
+        //     $query->select(DB::raw(1))
+        //         ->from('classes')
+        //         ->whereColumn('classes.user_id', 'users.id');
+        // })->get();
 
+        // dd($users);
         // $users = User::join('classes', 'users.id', '!=' , 'classes.user_id')
         //             ->get();
                         // ->where('user.fonction');
 
-        // dd($users);
 
         // ('classes', 'classes.user_id', '=', 'users.id')->get();
         //dd($users);
@@ -103,7 +111,7 @@ class ClasseController extends Controller
         return view('classe.classes')
             ->with('page_name', $this->page . '/Edit')
             ->with('self', $classe)
-            ->with('users', $users)
+            ->with('niveaux', $niveaux)
             ->with('items', $classes);
     }
 

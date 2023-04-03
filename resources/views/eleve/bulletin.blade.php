@@ -33,12 +33,12 @@
                                         echo date_format($date, "d/m/Y");
                                         @endphp
                                 </span> <br>
-                                <span class="upercase w-full">Classe : {{$eleve->classe()->niveau . " " . 'ANNEE ' . $eleve->classe()->nom}}</span> <br>
+                                <span class="upercase w-full">Classe : {{$eleve->classe()->niveau->nom . " " . $eleve->classe()->nom}}</span> <br>
                                 <span class="upercase w-full">Matricule : {{$eleve->matricule}}</span><br>
                             </th>
                         </thead>
                         <thead>
-                            <th colspan="12" class="border p-0.5 uppercase" >Bulletin de l'eleve : {{$eleve->classe()->niveau}}e Annee </th>
+                            <th colspan="12" class="border p-0.5 uppercase" >Bulletin de l'eleve : {{$eleve->classe()->niveau->nom}} </th>
                             <th colspan="12" class="border p-0.5 uppercase" > Annee scolaire {{$annee_scolaire->nom}} </th>
                         </thead>
                         <thead>

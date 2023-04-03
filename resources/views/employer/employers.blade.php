@@ -153,9 +153,9 @@
                         <div class="mt-4">
                             <x-button>Ajouter</x-button>
                         </div>
-                        <div class="mt-4">
+                        {{-- <div class="mt-4">
                             <x-button>Annuler</x-button>
-                        </div>
+                        </div> --}}
                     </div>
                 </form>
             @endif

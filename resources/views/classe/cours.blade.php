@@ -4,7 +4,7 @@
 
     <div class="container flex flex-col justify-between gap-5">
 
-        <x-nav-classes :pagename="$page_name"> </x-nav-classes>
+        <x-nav-enseignement :pagename="$page_name"> </x-nav-enseignement>
 
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
@@ -15,18 +15,12 @@
                     <div class="hidden frm-create bg-white rounded-5 shadow-2xl container p-5">
             @endif
             @if (isset($self))
-                <div class="border-b-2 border-color-black-500 pb-4 mb-4">
-                    <a href="{{ route('cours.create') }}">
-                        <x-button class="bg-green-500">ajouter un Cours</x-button>
-                    </a>
-
-                </div>
                 <p class="font-bold text-base"> Edit Cours </p>
                 <form method="PUT" action="{{ route('cours.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
                     <!-- Email Address -->
-    </div>
+ 
     <div class="mt-4">
         <x-label for="categorie_cours" :value="__('Categorie Cours')" />
         <x-select :val="$self->categorie_cours" :collection="$categories" class="block mt-1 w-full" name='categorie_cours' required> </x-select>
@@ -161,7 +155,7 @@
                                     {{ $item->max_examen }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->classe->niveau . ' ' . $item->classe->nom }} </td>
+                                    {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }} </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                     <div class="flex justify-center gap-4 align-middle">

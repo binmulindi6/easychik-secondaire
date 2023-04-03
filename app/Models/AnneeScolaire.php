@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Trimestre;
+use App\Models\Encadrement;
 use App\Models\Frequentation;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Date\DateController;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AnneeScolaire extends Model
 {
@@ -36,9 +37,14 @@ class AnneeScolaire extends Model
      {
          return $this->hasMany(Frequentation::class);
      }
+
      public function trimestres()
      {
          return $this->hasMany(Trimestre::class);
+     }
+
+     public function encadrements(){
+        return $this->hasMany(Encadrement::class);
      }
  }
 

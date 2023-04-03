@@ -26,8 +26,10 @@ class EleveController extends Controller
 
     protected $page = 'Eleves';
 
-    public function index()
-    {
+    public function index() 
+    {   
+        // dd(10);
+        // dd($_SESSION['current']);
         if (DateController::checkYears()) {
             $eleves = Eleve::latest()
                 ->limit(10)

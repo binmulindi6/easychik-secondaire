@@ -4,17 +4,113 @@
     <div class="container flex flex-col justify-between gap-5">
 
         <x-nav-users :pagename="$page_name"> </x-nav-users>
-
+        @if ($page_name == 'Utilisateurs')
+                <div class="frm-create hidden container p-5 bg-white rounded-5 shadow-2xl">
+                @else
+                    <div class="frm-create container p-5 bg-white rounded-5 shadow-2xl">
+        @endif
+            <!-- Validation Errors -->
+            <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                    
+            @if (isset($self))
+                <form method="PUT" action="{{ route('users.update',$self->id) }}">
+                    @csrf
+                    {{ method_field('PUT') }}
+                    <!-- Name -->
+                    <div>
+                        <x-label for="matricule" :value="__('Matricule de L\'Employé')" />
+        
+                        <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule" :value="$self->employer->matricule" readonly required autofocus />
+                    </div>
+        
+                    <!-- Email Address -->
+                    <div class="mt-4">
+                        <x-label for="email" :value="__('Email')" />
+        
+                        <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="$self->email" readonly required />
+                    </div>
+        
+                    <!-- Password -->
+                    <div class="mt-4">
+                        <x-label for="password" :value="__('Nouveau Mot de Passe')" />
+        
+                        <x-input id="password" class="block mt-1 w-full"
+                                        type="password"
+                                        name="password"
+                                        required autocomplete="new-password" />
+                    </div>
+        
+                    <!-- Confirm Password -->
+                    <div class="mt-4">
+                        <x-label for="password_confirmation" :value="__('Confirmer le Nouveau Mot de Passe')" />
+        
+                        <x-input id="password_confirmation" class="block mt-1 w-full"
+                                        type="password"
+                                        name="password_confirmation" required />
+                    </div>
+        
+                    <div class="flex items-center mt-4">
+                        <x-button class="ml-4">
+                            {{ __('Enregistrer') }}
+                        </x-button>
+                    </div>
+                </form>
+            @else
+                <form method="POST" action="{{ route('users.store') }}">
+                    @csrf
+        
+                    <!-- Name -->
+                    <div>
+                        <x-label for="matricule" :value="__('Matricule de L\'Employé')" />
+        
+                        <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule" :value="old('matricule')" required autofocus />
+                    </div>
+        
+                    <!-- Email Address -->
+                    <div class="mt-4">
+                        <x-label for="email" :value="__('Email')" />
+        
+                        <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                    </div>
+        
+                    <!-- Password -->
+                    <div class="mt-4">
+                        <x-label for="password" :value="__('Mot de Passe')" />
+        
+                        <x-input id="password" class="block mt-1 w-full"
+                                        type="password"
+                                        name="password"
+                                        required autocomplete="new-password" />
+                    </div>
+        
+                    <!-- Confirm Password -->
+                    <div class="mt-4">
+                        <x-label for="password_confirmation" :value="__('Confirmer le Mot de Passe')" />
+        
+                        <x-input id="password_confirmation" class="block mt-1 w-full"
+                                        type="password"
+                                        name="password_confirmation" required />
+                    </div>
+        
+                    <div class="flex items-center mt-4">
+                        <x-button class="ml-4">
+                            {{ __('Enregistrer') }}
+                        </x-button>
+                    </div>
+                </form>
+            @endif
+            
+         </div>
 
         @if (isset($items))
-            @if ($page_name == 'Employers/Edit')
+            @if ($page_name === 'Utilisateurs / Create' || $page_name === 'Utilisateurs / Edit')
                 <div class="display hidden container p-5 bg-white rounded-5 shadow-2xl">
                 @else
                     <div class="display container p-5 bg-white rounded-5 shadow-2xl">
             @endif
 
             <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-                <h6>Employers</h6>
+                <h6>Utilisateurs</h6>
             </div>
             <div class="flex-auto px-0 pt-0 pb-2">
                 <div class="p-0 overflow-x-auto">
@@ -54,11 +150,12 @@
                                         {{ $item->employer->fonctions[0]->nom }}</td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                        @if ($item->classe === null)
-                                            <a class="text-blue-500 underline " href="{{ route('classes') }}">assigner une
-                                                classe</a>
+                                        @if ($item->classe() === null)
+                                            <a class="text-blue-500 underline " href="{{ route('encadrements.link',$item->id) }}">
+                                                assigner à une classe
+                                            </a>
                                         @else
-                                            {{ $item->classe->niveau . ' - ' . $item->classe->nom }}
+                                            {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}
                                         @endif
 
                                     </td>

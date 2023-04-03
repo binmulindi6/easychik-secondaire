@@ -3,7 +3,7 @@
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
 
-        <x-nav-enseignement :pagename="$page_name"></x-nav-enseignement>
+        <x-nav-classes :pagename="$page_name"></x-nav-classes>
 
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
@@ -49,14 +49,14 @@
     </div>
     @endif
     @if (isset($items))
-        @if ($page_name == 'Categories Cours/Edit' || $page_name == 'Categories Cours/Create')
+        @if ($page_name == 'Niveaux / Edit' || $page_name == 'Niveaux / Create')
             <div class="hidden display bg-white shadow-2xl rounded-5 container p-5">
             @else
                 <div class="display bg-white shadow-2xl rounded-5 container p-5">
         @endif
 
         <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-            <h6>Categories Cours</h6>
+            <h6>Niveaux </h6>
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
@@ -65,6 +65,9 @@
                         <th
                             class="p-1 px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                             Nom</th>
+                        <th
+                            class="p-1 px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            Numerotation</th>
                         <th
                             class="p-1 px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                             action</th>
@@ -77,11 +80,14 @@
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                     {{ $item->nom }}</td>
                                 <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                    {{ $item->numerotation }}</td>
+                                <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                     <div class="flex justify-center gap-4 align-middle">
-                                        <a title="Modifier" href="{{ route('categorie-cours.edit', $item->id) }}"><i
+                                        <a title="Modifier" href="{{ route('niveaux.edit', $item->id) }}"><i
                                                 class="fa fa-solid fa-pen"></i></a>
-                                        <form class="delete-form" action="{{ route('categorie-cours.destroy', $item->id) }}"
+                                        <form class="delete-form" action="{{ route('niveaux.destroy', $item->id) }}"
                                             method="post">
                                             @csrf
                                             @method('DELETE')

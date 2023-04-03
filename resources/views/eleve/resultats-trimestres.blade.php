@@ -16,7 +16,7 @@
             <div  class="container w-full flex justify-center"> 
                 @if ($examen != null && $periode1 != null && $periode2 != null )
                 
-                    <table border-collapse class=" w-full max-w-160 border border-collapse">
+                    <table id="printable" border-collapse class=" w-full max-w-160 border border-collapse">
                         <caption class="uppercase font-bold text-xs pb-2">BULLETIN  {{ $trimestre->nom }}, Annee Scolaire {{ $trimestre->annee_scolaire->nom }}</caption>
                         <thead>
                             <th class="p-1 border font-bold text-left uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90" >Cours </th>

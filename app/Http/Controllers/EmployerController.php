@@ -55,6 +55,17 @@ class EmployerController extends Controller
      */
     public function store(Request $request)
     {   // dd(10);
+        $request->validate([
+            'matricule' => ['required', 'string', 'max:255'],
+            'nom' => ['required', 'string', 'max:255'],
+            'prenom' => ['required', 'string', 'max:255'],
+            'date_naissance' => ['required', 'string', 'max:255'],
+            'formation' => ['required', 'string', 'max:255'],
+            'diplome' => ['required', 'string', 'max:255'],
+            'niveau_etude' => ['required', 'string', 'max:255'],
+            'fonction' => ['required', 'integer', 'max:255'],
+        ]);
+        
         $employer = Employer::create([
             'matricule' => $request->matricule,
             'nom' => $request->nom,

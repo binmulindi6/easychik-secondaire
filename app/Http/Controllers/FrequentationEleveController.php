@@ -16,15 +16,18 @@ class FrequentationEleveController extends Controller
     {   $page = "Frequentations/Create";
         $frequentations = Frequentation::all();
         $eleve = Eleve::findOrFail($id);
-        $classes = Classe::orderBy('niveau','asc')->get();
+        $classes = Classe::orderBy('niveau_id','asc')->get();
         $annees = AnneeScolaire::all();
+        $current = AnneeScolaire::current();
 
         return view('eleve.frequentations')
                     ->with('page_name', $page)
                     ->with('matricule', $eleve->matricule)
                     ->with('items', $frequentations)
                     ->with('classes', $classes)
+                    ->with('current', $current)
                     ->with("annees",$annees);
+                    
     }
 
 }

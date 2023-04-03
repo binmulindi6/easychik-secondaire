@@ -15,7 +15,7 @@
                 <p  class="font-bold text-xl m-4"> Bulletin  </p>
                 @if ($examen != null && $periode1 != null && $periode2 != null )
                 
-                    <table class="border-2xl  border-collapse">
+                    <table id="printable" class="border-2xl  border-collapse">
                         <thead>
                             <th class=" border p-1 text-left" >Cours </th>
                             <th class=" border p-1" >Max Periode</th>

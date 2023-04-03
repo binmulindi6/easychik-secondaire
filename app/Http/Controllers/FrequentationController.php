@@ -18,11 +18,11 @@ class FrequentationController extends Controller
     protected $page = 'Frequentations';
 
     public function index()
-    {
+    {   
         $frequentations = Frequentation::latest()
             ->limit(10)
             ->get();
-        $classes = Classe::orderBy('niveau', 'asc')->get();
+        $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::all();
 
         return view('eleve.frequentations')
@@ -100,7 +100,7 @@ class FrequentationController extends Controller
     {
         $frequentation = Frequentation::find($id);
         $frequentations = Frequentation::all();
-        $classes = Classe::orderBy('niveau', 'asc')->get();
+        $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::all();
 
 
@@ -178,7 +178,7 @@ class FrequentationController extends Controller
             ->orWhere('prenom', 'like', '%' . $request->search . '%')*/
             ->get();
         //dd($items);
-        $classes = Classe::orderBy('niveau', 'asc')->get();
+        $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::all();
 
         return view('eleve.frequentations')

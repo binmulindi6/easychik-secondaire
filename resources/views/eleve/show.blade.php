@@ -118,7 +118,7 @@
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
                                                 <a href="{{ route('frequentations.show', $frequetation->id) }}">
-                                                    {{ $frequetation->classe->niveau . ' ' . $frequetation->classe->nom }}
+                                                    {{ $frequetation->classe->niveau->numerotation . 'e ' . $frequetation->classe->nom }}
                                                 </a>
                                             </td>
                                         </tr>

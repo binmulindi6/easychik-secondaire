@@ -54,7 +54,7 @@
                 <p  class="font-bold text-xl m-4"> Bulletin </p>
 
                 @if (!$bulletin == null)
-                <table>
+                <table id="printable">
                         <thead>
                             <th class="p-1 text-left" >Cours </th>
                             <th class="p-1" >Note Obtenu</th>

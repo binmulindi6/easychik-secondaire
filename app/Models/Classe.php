@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Cours;
+use App\Models\Niveau;
+use App\Models\Encadrement;
 use App\Models\Frequentation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,14 +15,33 @@ class Classe extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'nom',
-        'niveau'
+        'nom'
     ];
 
 
     //link to the user
-    function user(){
-        return $this->belongsTo(User::class);
+    public function user(){
+        $encadrements = $this->encadrements;
+        $currentAnneeScolaire = AnneeScolaire::current();
+        $currentEncadrement = null;
+        // dd($currentAnneeScolaire->id);
+                foreach($encadrements as $encadrement){
+                    if($encadrement->annee_scolaire->id === $currentAnneeScolaire->id){
+                        $currentEncadrement = $encadrement;
+                        return $currentEncadrement->user();
+                    }
+                }
+
+        return $currentEncadrement;
+    }
+
+    public function encadrements(){
+        return $this->hasMany(Encadrement::class);
+    }
+
+    public function niveau()
+    {
+        return $this->belongsTo(Niveau::class);
     }
 
     public function cours()

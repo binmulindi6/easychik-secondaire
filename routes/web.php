@@ -4,15 +4,21 @@ use App\Models\User;
 use App\Models\Eleve;
 use App\Models\Classe;
 use App\Models\Employer;
+use App\Models\Encadrement;
 use App\Models\AnneeScolaire;
 use App\Models\Frequentation;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\EleveController;
+use App\Http\Controllers\UserEncadrement;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ExamenController;
+use App\Http\Controllers\NiveauController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\TravailController;
+use App\Http\Controllers\CotationController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\FonctionController;
 use App\Http\Controllers\ResultatController;
@@ -21,15 +27,13 @@ use App\Http\Controllers\TrimestreController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\Admin\EcoleController;
 use App\Http\Controllers\EleveExamenController;
+use App\Http\Controllers\EncadrementController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\FrequentationController;
 use App\Http\Controllers\CategorieCoursController;
-use App\Http\Controllers\CotationController;
 use App\Http\Controllers\TypeEvaluationController;
 use App\Http\Controllers\EleveEvaluationController;
 use App\Http\Controllers\FrequentationEleveController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TravailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +75,9 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::resource('periodes', PeriodeController::class);
     Route::resource('trimestres', TrimestreController::class);
     Route::resource('type-evaluations', TypeEvaluationController::class);
+    Route::get('encadrements/create/user/{id}', [UserEncadrement::class, 'create'])->name('encadrements.link');
+    Route::resource('encadrements', EncadrementController::class);
+    Route::resource('niveaux', NiveauController::class);
 
     //Resultat
 
@@ -109,9 +116,11 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::post('periodes/search', [PeriodeController::class, 'search'])->name('periodes.search');
     //Route::post('evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
 
-
+    //Users
+    Route::get('users/update/{id}', [UserController::class, 'show'])->name('users.update');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('users/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::get('users/show', [UserController::class, 'show'])->name('users.show');
     Route::put('users/{id}', [UserController::class, 'changeStatut'])->name('users.statut');

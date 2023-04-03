@@ -3,8 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Classe;
+// use App\Models\Classe;
 use App\Models\Employer;
+use App\Models\Encadrement;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,6 +54,13 @@ class User extends Authenticatable
         return false;
     }
 
+    public function isEnseignant(){
+        if ($this->employer->fonction->nom === 'Enseignant') {
+            return true;
+        }
+        return false;
+    }
+
     //link to the employer
     public function employer()
     {
@@ -60,8 +68,23 @@ class User extends Authenticatable
     }
 
     //link to the class
-    public function classe()
+    public function encadrements()
     {
-        return $this->hasOne(Classe::class);
+        return $this->hasMany(Encadrement::class);
+    }
+
+    public function classe(){
+        $encadrements = $this->encadrements;
+        $currentAnneeScolaire = AnneeScolaire::current();
+        $currentEncadrement = null;
+        // dd($currentAnneeScolaire->id);
+                foreach($encadrements as $encadrement){
+                    if($encadrement->annee_scolaire->id === $currentAnneeScolaire->id){
+                        $currentEncadrement = $encadrement;
+                        return $currentEncadrement->classe();
+                    }
+                }
+
+        return $currentEncadrement;
     }
 }

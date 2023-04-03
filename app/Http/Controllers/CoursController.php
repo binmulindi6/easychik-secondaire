@@ -18,7 +18,7 @@ class CoursController extends Controller
     public function index()
     {
         $cours = Cours::all();
-        $classes = Classe::orderBy('niveau', 'asc')->get();
+        $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $categories = CategorieCours::orderBy('nom', 'asc')->get();
         return view('classe.cours')
                     ->with('page_name', $this->page_name)
@@ -104,7 +104,7 @@ class CoursController extends Controller
     {
         $cour = Cours::find($id);
         $cours = Cours::all();
-        $classes = Classe::orderBy('niveau', 'asc')->get();
+        $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $categories = CategorieCours::orderBy('nom', 'asc')->get();
         return view('classe.cours')
                 ->with('page_name', $this->page_name . "/Edit")

@@ -177,13 +177,13 @@
     @if (isset($items))
         @if ($page_name == 'Eleves/Edit' || $page_name == 'Eleves/Create')
             <div
-                class="display container shadow-2xl p-4 hidden relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
+                class="display container p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
             @else
                 <div
-                    class="display container shadow-2xl p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
+                    class="display container  p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
         @endif
 
-        <div class=" flex justify-between p-4 pb-0 mb-0 bg-white rounded-t-2xl">
+        <div class=" flex justify-between pb-0 mb-0 bg-white rounded-t-2xl">
             <h6>Eleves</h6>
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">

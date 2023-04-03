@@ -1,4 +1,4 @@
-<select
+<select readonly 
     {{ $attributes->merge(['class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50']) }}>
 
     @if (isset($val))
@@ -7,14 +7,14 @@
                 {{ $val->employer->nom . ' ' . $val->employer->prenom }}
             @else
                 @if (isset($val->niveau))
-                    {{ $val->niveau . ' ' . $val->nom }}
+                    {{ $val->niveau->nom . ' ' . $val->nom }}
                 @else
                     {{ $val->nom }}
                 @endif
             @endif
         </option>
     @else
-        <option disabled selected hidden>Select an option</option>
+        <option disabled selected hidden>Selectionner une option</option>
     @endif
 
     @foreach ($collection as $item)
@@ -29,7 +29,7 @@
                         {{ $item->nom . ' ' . $item->annee_scolaire->nom }}
                     @else
                         @if (isset($item->niveau))
-                            {{ $item->niveau . ' ' . $item->nom }}
+                            {{ $item->niveau->nom . ' ' . $item->nom }}
                         @else
                             {{ $item->nom }}
                         @endif

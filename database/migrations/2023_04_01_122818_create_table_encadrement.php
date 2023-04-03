@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('classes', function (Blueprint $table) {
+        Schema::create('encadrements', function (Blueprint $table) {
             $table->id();
-            // $table->integer('niveau');
-            $table->string('nom');
-            // $table->foreignId('user_id')->constrained()->nullable();
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('classe_id')->nullable()->constrained();
+            $table->foreignId('annee_scolaire_id')->nullable()->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classes');
+        Schema::dropIfExists('table_encadrement');
     }
 };

@@ -22,19 +22,20 @@
                     <!-- Email Address -->
                     <div class="mt-4">
                         <x-label for="niveau" :value="__('Niveau de la Classe')" />
-                        <x-input id="niveau" class="block mt-1 w-full" type="text" name="niveau" :value="$self->niveau"
-                            placeholder="ex: 1,2,3" required />
+                        <x-select :val="$self->niveau" :collection="$niveaux" class="block mt-1 w-full" name='niveau' required></x-select>
+                        {{-- <x-input id="niveau" class="block mt-1 w-full" type="text" name="niveau" :value="$self->niveau->nom"
+                            placeholder="ex: 1,2,3" required /> --}}
                     </div>
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom de la Classe')" />
                         <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
                             placeholder="ex: A,B,C" required />
                     </div>
-                    <div class="mt-4">
+                    {{-- <div class="mt-4">
                         <x-label for="user" :value="__('Enseignant')" />
                         <x-select :val="$self->user" :collection="$users" class="block mt-1 w-full" name='user' required>
                         </x-select>
-                    </div>
+                    </div> --}}
                     <div class="mt-4">
                         <x-button>Enregistrer</x-button>
                     </div>
@@ -59,8 +60,7 @@
 
                     <div class="mt-4">
                         <x-label for="niveau" :value="__('Niveau de la Classe')" />
-                        <x-input id="niveau" class="block mt-1 w-full" type="text" name="niveau" :value="old('niveau')"
-                            placeholder="ex: 1,2,3" required />
+                        <x-select :collection="$niveaux" class="block mt-1 w-full" name='niveau' required></x-select>
                     </div>
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom de la Classe')" />
@@ -82,7 +82,7 @@
             @else
                 <div class="display bg-white shadow-2xl rounded-5 container p-5">
         @endif
-        <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+        <div class="pl-6pb-0 mb-0 bg-white rounded-t-2xl">
             <h6>Classes</h6>
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">
@@ -108,14 +108,18 @@
                             <tr class="">
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->niveau }}</td>
+                                    {{ $item->niveau->numerotation . " " .$item->niveau->nom }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                     {{ $item->nom }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
 
-                                    @if (isset($item->user->employer))
+                                    {{-- @if ($item->user() !== null)
+                                        {{$item->user->employer->nom}}
+                                    @endif --}}
+
+                                    @if ($item->user() !== null)
                                         {{ $item->user->employer->nom . ' ' . $item->user->employer->prenom }}
                                     @else
                                         <a class="p-1  text-blue-500 underline"

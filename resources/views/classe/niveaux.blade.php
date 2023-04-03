@@ -3,7 +3,7 @@
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
 
-        <x-nav-enseignement :pagename="$page_name"></x-nav-enseignement>
+        <x-nav-classes :pagename="$page_name"></x-nav-classes>
 
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>

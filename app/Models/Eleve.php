@@ -50,7 +50,7 @@ class Eleve extends Model
                     if ($instance) {
                          return $classe;
                     }
-                    return $classe->niveau . " " . $classe->nom;;
+                    return $classe->niveau->numerotation . "e " . $classe->nom;;
                }
           }
           return null;
