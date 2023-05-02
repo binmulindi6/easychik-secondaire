@@ -54,10 +54,10 @@
                     <table id="printable" class="border-2xl print:w-60 border-collapse text-xs m-5">
                         <thead>
                             <th colspan="12" class="border p-0.5 uppercase text-left" >
-                                <span class="upercase w-full">ecole:</span><br>
-                                <span class="upercase w-full">ville:                                </span> <br>
-                                <span class="upercase w-full">Commune/Ter (1)</span> <br>
-                                <span class="upercase w-full">code : </span><br>
+                                <span class="upercase w-full">ecole: {{env("ECOLE")}}</span><br>
+                                <span class="upercase w-full">ville: {{env("VILLE")}}                               </span> <br>
+                                <span class="upercase w-full">Commune/Ter (1) : {{env("COMMUNE")}}</span> <br>
+                                <span class="upercase w-full">code : {{env("CODE")}}</span><br>
                             </th>
                             <th colspan="12" class="border py-1 px-2 uppercase text-left" >
                                 

@@ -51,8 +51,8 @@
                     <table id="printable" border-collapse class=" w-full max-w-160 border border-collapse">
                         <thead>
                             <th colspan="8" class="border px-2 py-1 uppercase text-left text-xs" >
-                                <span class="upercase w-full">ecole:</span><br>
-                                <span class="upercase w-full">ville:                                </span> <br>
+                                <span class="upercase w-full">ecole: {{env('ECOLE')}}</span><br>
+                                <span class="upercase w-full">ville: {{env('VILLE')}}</span> <br>
                                 {{-- <span class="upercase w-full">Commune/Ter (1)</span> <br>
                                 <span class="upercase w-full">code : </span><br> --}}
                             </th>
@@ -261,7 +261,7 @@
                                 </tr>
                         </tfoot>
                     </table>
-                    @if ($resultat1 !== $pourc1 || $resultat2 !== $pourc2 || $resultatExam !== $pourcExam || $resultatTrim !== $pourcTrim && Auth::user()->isEnseignant())
+                    @if (($resultat1 !== $pourc1 || $resultat2 !== $pourc2 || $resultatExam !== $pourcExam || $resultatTrim !== $pourcTrim) && Auth::user()->isEnseignant())
                         <form class="ml-2 self-end" action="{{route('resultat.trimestre.store', [$trimestre->id,$eleve->id])}}" method="post">
                             @csrf
                             <input type="hidden" name="periode1" value="{{$pourc1}}">

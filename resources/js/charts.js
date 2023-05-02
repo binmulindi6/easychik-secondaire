@@ -1,4 +1,7 @@
 import axios from "axios";
+const queryString = window.location;
+const link = queryString.origin;
+console.log(link);
 
 let data;
 axios.get('http://localhost/sas/public/charts')

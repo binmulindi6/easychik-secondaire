@@ -1,0 +1,59 @@
+{
+  "resources/css/fonts/nucleo-icons.eot": {
+    "file": "assets/nucleo-icons.f899f875.eot",
+    "src": "resources/css/fonts/nucleo-icons.eot"
+  },
+  "resources/css/fonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900.8f06540f.woff2",
+    "src": "resources/css/fonts/fa-solid-900.woff2"
+  },
+  "resources/css/fonts/nucleo-icons.woff2": {
+    "file": "assets/nucleo-icons.3180896c.woff2",
+    "src": "resources/css/fonts/nucleo-icons.woff2"
+  },
+  "resources/css/fonts/nucleo-icons.woff": {
+    "file": "assets/nucleo-icons.daa807b2.woff",
+    "src": "resources/css/fonts/nucleo-icons.woff"
+  },
+  "resources/css/fonts/nucleo-icons.ttf": {
+    "file": "assets/nucleo-icons.655956cd.ttf",
+    "src": "resources/css/fonts/nucleo-icons.ttf"
+  },
+  "resources/css/fonts/nucleo-icons.svg": {
+    "file": "assets/nucleo-icons.21030e24.svg",
+    "src": "resources/css/fonts/nucleo-icons.svg"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app.6bb27ea5.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "node_modules/html2canvas/dist/html2canvas.esm.js",
+      "node_modules/dompurify/dist/purify.es.js",
+      "node_modules/canvg/lib/index.es.js"
+    ]
+  },
+  "node_modules/html2canvas/dist/html2canvas.esm.js": {
+    "file": "assets/html2canvas.esm.0eae2bf4.js",
+    "src": "node_modules/html2canvas/dist/html2canvas.esm.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/dompurify/dist/purify.es.js": {
+    "file": "assets/purify.es.b862aa1a.js",
+    "src": "node_modules/dompurify/dist/purify.es.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/canvg/lib/index.es.js": {
+    "file": "assets/index.es.487bea85.js",
+    "src": "node_modules/canvg/lib/index.es.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/css/app.css": {
+    "file": "assets/app.232e4a95.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  }
+}
