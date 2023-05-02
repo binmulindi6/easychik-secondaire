@@ -132,7 +132,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="shadow-2xl text-center relative bg-white rounded-5 p-5 w-full  z-20">
+                <div class="shadow-2xl hidden text-center relative bg-white rounded-5 p-5 w-full  z-20">
                     <span class="text-center font-bold text-base"> Historique de Frequentations </span>
                     <div class="flex-auto px-0 pt-0 pb-2">
                         <div class="p-0 overflow-x-auto">
