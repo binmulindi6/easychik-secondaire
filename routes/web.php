@@ -6,6 +6,7 @@ use App\Models\Classe;
 use App\Models\Employer;
 use App\Models\Encadrement;
 use App\Models\AnneeScolaire;
+use App\Models\EleveConduite;
 use App\Models\Frequentation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\NiveauController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\TravailController;
+use App\Http\Controllers\ConduiteController;
 use App\Http\Controllers\CotationController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\FonctionController;
@@ -31,9 +33,16 @@ use App\Http\Controllers\EncadrementController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\FrequentationController;
 use App\Http\Controllers\CategorieCoursController;
+use App\Http\Controllers\EleveConduiteController;
 use App\Http\Controllers\TypeEvaluationController;
 use App\Http\Controllers\EleveEvaluationController;
+use App\Http\Controllers\FraisController;
 use App\Http\Controllers\FrequentationEleveController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PaiementFraisController;
+use App\Http\Controllers\ParentAuthController;
+use App\Http\Controllers\ParrainController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,13 +59,28 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
+Route::get('/charts', [HomeController::class, 'chart']);
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'isActive'])->name('dashboard');
 
-//Route::get('/current-year', [DateController::class, 'test']);
-//Route::put('/update/{id}', [FonctionController::class, 'test'])->name('fonctions.test');
+// //Route::get('/current-year', [DateController::class, 'test']);
+// //Route::put('/update/{id}', [FonctionController::class, 'test'])->name('fonctions.test');
+// //parents
+// // Route::get('parentauth/login', [ParentAuthController::class, 'login'])->name('parentauth.login');
+// // Route::post('parentauth/authenticate', [ParentAuthController::class, 'authenticate'])->name('parentauth.authenticate');
 
 
-//Ressours
+// // Route::prefix('authP')
+// //         ->as('auth.')
+// //         ->group(function() {
+// //             Route::namespace('Auth\Login')
+// //                 ->group(function() {
+//                 Route::get('parentauth/login', [ParentAuthController::class, 'index'])->name('parentauth.login');
+//                 Route::post('parentauth/login', [ParentAuthController::class, 'auth'])->name('parentauth.login');
+//                 Route::post('logout', 'ParentAuthController@logout')->name('parentauth.logout');
+// //       });
+// //  });
+
+// //Ressours
 Route::middleware(['auth', 'isActive'])->group(function () {
 
     //Globalss Roussoures
@@ -65,6 +89,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::resource('categorie-cours', CategorieCoursController::class);
     Route::resource('classes', ClasseController::class);
     Route::resource('cours', CoursController::class);
+    Route::get('eleve-parent/{parent}', [EleveController::class, 'linkParent'])->name('eleve-parent.link');
     Route::resource('eleves', EleveController::class);
     Route::resource('employers', EmployerController::class);
     Route::resource('evaluations', EvaluationController::class);
@@ -75,9 +100,23 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::resource('periodes', PeriodeController::class);
     Route::resource('trimestres', TrimestreController::class);
     Route::resource('type-evaluations', TypeEvaluationController::class);
+    Route::get('encadrements/create/classe/{id}', [UserEncadrement::class, 'createClasse'])->name('encadrements.linkClasse');
     Route::get('encadrements/create/user/{id}', [UserEncadrement::class, 'create'])->name('encadrements.link');
     Route::resource('encadrements', EncadrementController::class);
     Route::resource('niveaux', NiveauController::class);
+    Route::get('conduites/create/eleve/{eleve_id}/periode/{periode_id}', [EleveConduiteController::class, 'create'])->name('conduites.link');
+    // Route::get('conduites/create/eleve/{eleve_id}/periode/{periode_id}/{from}', [EleveConduiteController::class, 'create'])->name('conduites.link');
+    Route::post('conduites/store', [EleveConduiteController::class, 'store'])->name('eleveconduites.store');
+    Route::resource('conduites', ConduiteController::class);
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    // Route::get('parents/eleves/{parent}', [ParrainController::class]);
+    Route::get('eleve-parent/{parent}/{eleve}', [ParrainController::class, 'linkParentEleve'])->name('parent-eleve.link');
+    Route::resource('parents', ParrainController::class);
+    Route::resource('messages', MessageController::class);
+    Route::resource('frais', FraisController::class);
+    Route::get('paiements/eleves/create/{id}', [PaiementFraisController::class, 'linkEleve'])->name('paiements.linkEleve');
+    Route::resource('paiements', PaiementFraisController::class);
+
 
     //Resultat
 
@@ -86,6 +125,11 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('resultat/trimestre/{trimestre_id}/{eleve_id}', [ResultatController::class, 'trimestre'])->name('resultat.trimestre');
     Route::get('resultat/bulletin/{annee_scolaire_id}/{eleve_id}', [ResultatController::class, 'bulletin'])->name('resultat.bulletin');
 
+    //joker
+    Route::post('resultat/periode/{periode_id}/{eleve_id}', [ResultatController::class, 'periodeStore'])->name('resultat.periode.store');
+    Route::post('resultat/trimestre/{trimestre_id}/{eleve_id}', [ResultatController::class, 'trimestreStore'])->name('resultat.trimestre.store');
+    Route::post('resultat/bulletin/{annee_scolaire_id}/{eleve_id}', [ResultatController::class, 'bulletinStore'])->name('resultat.bulletin.store');
+    
 
     //Travails
     Route::get('travails', [TravailController::class, 'index'])->name('travails.index');
@@ -106,14 +150,21 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('eleves/{eleve}/evaluations/edit/{examen}', [EleveEvaluationController::class, 'edit'])->name('eleves.evaluations.edit');
     Route::put('eleves/evaluations/{pivot}', [EleveEvaluationController::class, 'update'])->name('eleves.evaluations.update');
 
+    //eleve fichePaie
+    Route::get('eleves/paiements/eleve/{id}', [EleveController::class, 'fichePaiements'])->name('eleves.paiements');
+    Route::get('eleves/paiements/{eleve}/{frequentation}', [EleveController::class, 'showPaiements'])->name('eleves.paiements.show');
+    Route::post('eleves/paiements/{eleve}', [EleveController::class, 'createPaiements'])->name('eleves.paiements.create');
+    
     //Searchs
     Route::post('eleves/search', [EleveController::class, 'search'])->name('eleves.search');
+    Route::post('eleves/search/{parent}', [EleveController::class, 'searchEleve'])->name('eleve-parent.search');
     Route::post('examens/search', [ExamenController::class, 'search'])->name('examens.search');
     Route::post('evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
     Route::post('frequentations/search', [FrequentationController::class, 'search'])->name('frequentations.search');
     Route::post('annee-scolaires/search', [AnneeScolaireController::class, 'search'])->name('annees.search');
     Route::post('trimestres/search', [TrimestreController::class, 'search'])->name('trimestres.search');
     Route::post('periodes/search', [PeriodeController::class, 'search'])->name('periodes.search');
+    Route::post('paiements/eleves/search', [PaiementFraisController::class, 'searchEleve'])->name('paiements.searchEleve');
     //Route::post('evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
 
     //Users
@@ -128,7 +179,13 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::get('ecole', [EcoleController::class, 'index'])->name('ecole.index');
 
+    //parents
+    Route::get('parents/login', [ParrainController::class, 'login'])->name('parents.login');
+    Route::post('parents/authenticate', [ParrainController::class, 'authenticate'])->name('parents.authenticate');
+    Route::put('parents/statut/{id}', [ParrainController::class, 'changeStatut'])->name('parents.statut');
     Route::get('date', [DateController::class, 'test']);
+
+
 });
 
 require __DIR__ . '/auth.php';

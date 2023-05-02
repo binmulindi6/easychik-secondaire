@@ -21,9 +21,17 @@
                     <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
                         {{ $data->sexe === 'M' ? 'Masculin' : 'Feminin' }}
                     </p>
-                    <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
-                        {{ $data->classe(false) === null ? null : $data->classe(false) }}
-                    </p>
+                    @if ($data->classe(false) !== null )
+                        <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
+                            {{ $data->classe(false) }}
+                        </p>
+                    @else
+                        <a class="text-blue-500 underline"
+                            href="{{ route('frequentations.link', $data->id) }}"> Ajouter dans une classe
+                        </a>
+                    @endif
+                    
+                    
                 </div>
             </div>
             @if (isset($eleves) && isset($index))
@@ -31,6 +39,18 @@
                     <div class="relativeright-0">
                     </div>
                     <ul class="relative flex flex-wrap gap-2  list-none " role="tablist">
+                        @if (Auth::user()->isSecretaire() || Auth::user()->isParent() && $data->currentFrequentation())
+                            <li
+                                class=" cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                <a href="{{route('eleves.paiements.show', [$data->id, $data->currentFrequentation()->id])}}"
+                                    class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    role="tab" aria-selected="false">
+                                    <i class="fa fa-solid fa-money-bill"></i>
+                                    <span class="ml-2">Fiche de Paie</span>
+                                </a>
+                            </li>
+                        @endif
+
                         <li
                             class="btn-identity cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                             <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
@@ -39,15 +59,18 @@
                                 <span class="ml-2">Identité Complete</span>
                             </a>
                         </li>
-                        <li
-                            class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                            <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                href="{{ route('eleves.show', $eleves->count() === $index + 1 ? $eleves[0]->id : $eleves[$index + 1]->id) }}"
-                                role="tab" aria-selected="false" title="Eleve Suivant">
-                                <span class="mr-2">Suivant</span>
-                                <i class="fa fa-solid fa-arrow-right"></i>
-                            </a>
-                        </li>
+                        
+                        @if (!Auth::user()->isParent())
+                            <li
+                                class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    href="{{ route('eleves.show', $eleves->count() === $index + 1 ? $eleves[0]->id : $eleves[$index + 1]->id) }}"
+                                    role="tab" aria-selected="false" title="Eleve Suivant">
+                                    <span class="mr-2">Suivant</span>
+                                    <i class="fa fa-solid fa-arrow-right"></i>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             @endif

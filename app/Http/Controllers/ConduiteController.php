@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conduite;
 use Illuminate\Http\Request;
 
-class User.UserController extends Controller
+class ConduiteController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+     protected $page = 'Conduites';
+
     public function index()
     {
-        //
+        $consuites = Conduite::all();
+
+        return view('ecole.conduites')
+            ->with('page_name', $this->page)
+            ->with("items", $consuites);
     }
 
     /**

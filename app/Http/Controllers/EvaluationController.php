@@ -8,6 +8,7 @@ use App\Models\Periode;
 use App\Models\Evaluation;
 use Illuminate\Http\Request;
 use App\Models\TypeEvaluation;
+use Illuminate\Support\Facades\Auth;
 
 class EvaluationController extends Controller
 {
@@ -24,6 +25,17 @@ class EvaluationController extends Controller
             ->limit(10)
             ->get();
         $cours = Cours::orderBy('nom', 'asc')->get();
+
+        if(Auth::user()->isEnseignant()){
+            if(Auth::user()->classe()){
+                $cours = Cours::where('classe_id', Auth::user()->classe->id)
+                        ->orderBy('nom', 'asc')->get();
+            }else{
+                $cours = null;
+            }
+            // $cours = [];
+        }
+
         $periodes = Periode::all();
         $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
         return view('travails.evaluations')
@@ -80,11 +92,17 @@ class EvaluationController extends Controller
         $classe = $cours->classe;
         //eleves de la classe
         $eleves = $classe->eleves();
+        // dd($eleves[0]->id);
 
         foreach ($eleves as $eleve) {
-            $currentEleve = Eleve::find($eleve->eleve_id);
-            $currentEleve->evaluations()->attach($evaluation);
-            $currentEleve->save();
+            if($eleve->evaluations() !== null){
+                $currentEleve = Eleve::find($eleve->id);
+                // dd($currentEleve);
+                if($currentEleve !== null){
+                    $currentEleve->evaluations()->attach($evaluation);
+                    $currentEleve->save();
+                }
+            }
         }
 
 
@@ -123,6 +141,12 @@ class EvaluationController extends Controller
         $evaluation = Evaluation::find($id);
         $evaluations = Evaluation::all();
         $cours = Cours::orderBy('nom', 'asc')->get();
+
+        if(Auth::user()->isEnseignant()){
+            $cours = Cours::where('classe_id', Auth::user()->classe->id)
+                        ->orderBy('nom', 'asc')->get();
+        }
+
         $periodes = Periode::all();
         $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
         return view('travails.evaluations')
@@ -195,6 +219,12 @@ class EvaluationController extends Controller
 
 
         $cours = Cours::orderBy('nom', 'asc')->get();
+
+        if(Auth::user()->isEnseignant()){
+            $cours = Cours::where('classe_id', Auth::user()->classe->id)
+                        ->orderBy('nom', 'asc')->get();
+        }
+
         $periodes = Periode::all();
         $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
         return view('travails.evaluations')

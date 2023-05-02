@@ -8,21 +8,25 @@
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
         @else
-            @if ($page_name == 'Categories Cours/Edit' || $page_name == 'Categories Cours/Create')
+            @if ($page_name == 'Niveaux / Edit' || $page_name == 'Niveaux / Create')
                 <div class="frm-create bg-white rounded-5 shadow-2xl container p-5">
                 @else
                     <div class="hidden frm-create bg-white rounded-5 shadow-2xl container p-5">
             @endif
             @if (isset($self))
-                <p class="font-bold text-base"> Edit Categorie Cours </p>
+                <p class="font-bold text-base"> Modifier le Niveau </p>
                 <form method="PUT" action="{{ route('categorie-cours.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
                     <!-- Email Address -->
                     <div class="mt-4">
-                        <x-label for="nom" :value="__('Nom')" />
-
+                        <x-label for="nom" :value="__('Numerotation')" />
                         <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
+                            required />
+                    </div>
+                    <div class="mt-4">
+                        <x-label for="nom" :value="__('Nom')" />
+                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->numerotation"
                             required />
                     </div>
                     <div class="mt-4">
@@ -30,15 +34,19 @@
                     </div>
                 </form>
             @else
-                <p class="font-bold text-base"> Create Categorie Cours </p>
+                <p class="font-bold text-base"> Ajouter in Niveau</p>
                 <form method="POST" action="{{ route('categorie-cours.store') }}">
                     @method('POST')
                     @csrf
                     <!-- Email Address -->
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
-
                         <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')"
+                            required />
+                    </div>
+                    <div class="mt-4">
+                        <x-label for="nom" :value="__('Numerotation')" />
+                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('numerotation')"
                             required />
                     </div>
                     <div class="mt-4">
@@ -68,9 +76,9 @@
                         <th
                             class="p-1 px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                             Numerotation</th>
-                        <th
+                        {{-- <th
                             class="p-1 px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                            action</th>
+                            action</th> --}}
                     </thead>
                     <tbody>
 
@@ -82,7 +90,7 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                     {{ $item->numerotation }}</td>
-                                <td
+                                {{-- <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                     <div class="flex justify-center gap-4 align-middle">
                                         <a title="Modifier" href="{{ route('niveaux.edit', $item->id) }}"><i
@@ -95,7 +103,7 @@
                                                     class="text-red-500 fa fa-solid fa-trash"></i></button>
                                         </form>
                                     </div>
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
 

@@ -6,7 +6,7 @@
 
 /* @import './fonts/fa-solid-900.woff2'; */
 
-@import './fa.min.css';
+@import './fa2.min.css';
 @import'./tooltips.css';
 @import './perfect-scrollbar.css';
 
@@ -14,14 +14,23 @@
     body * {
       visibility: hidden;
     }
+
+    /* @page{
+      size: a4 portrait;
+      margin: none; 
+    } */
+
     #printable, #printable * {
+      /* background: red; */
         /* max-width: 150rem; */
       visibility: visible;
+      /* height: 3508px; */
+      /* width: 248px; */
     }
     #printable {
-      position: absolute;
-      left: 0;
-      top: 0;
+      /* position: absolute; */
+      /* left: 0; */
+      /* top: 0; */
     }
   }
 

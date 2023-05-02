@@ -1,47 +1,12 @@
 <div class="flex flex-row justify-between gap-4">
             
     <div class="flex gap-5">
-            @if (str_contains('Niveaux',$pagename))
-            <div class=" btn-create flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+        @if (str_contains('Classes',$pagename) || $pagename === "Classes / Edit")
+            <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
-            <div class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="btn-create items-center hidden  justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @endif
-                @if ($pagename != "Classes/Create" && $pagename != "Classes" )
-                    <a class="w-full" href="{{route('classes.create')}}">
-                        <div>
-                            <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Niveau</span>
-                        </div>
-                    </a>
-                @else
-                    <div>
-                        <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Niveau</span>
-                    </div>
-                @endif
-            </div>
-
-            <div class=" btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
-                @if ( !str_contains("niveaux",$pagename))
-                    <a href="{{route('niveaux.index')}}">
-                        <div>
-                            <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-chalkboard text-size-sm"></i>
-                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Niveaux</span>
-                        </div>
-                    </a>
-                @else
-                <div>
-                    <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-chalkboard text-size-sm"></i>
-                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Niveaux</span>
-                </div>
-                @endif
-            </div>
-            @if (str_contains('Classes',$pagename))
-            <div class=" btn-create flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
-            @else
-            <div class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
-            @endif
-                @if ($pagename != "Classes/Create" && $pagename != "Classes" )
+                @if ($pagename != "Classes / Create" && $pagename != "Classes" )
                     <a class="w-full" href="{{route('classes.create')}}">
                         <div>
                             <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
@@ -56,8 +21,8 @@
                 @endif
             </div>
 
-            <div class=" classes btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
-                @if ( $pagename != "Classes" && $pagename != "Classes/Create" && $pagename != "Classes/Edit")
+            <div class=" classes btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+                @if ( $pagename != "Classes" && $pagename != "Classes / Create" && $pagename != "Classes / Edit")
                     <a href="{{route('classes.index')}}">
                         <div>
                             <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-chalkboard text-size-sm"></i>
@@ -68,6 +33,41 @@
                 <div>
                     <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-chalkboard text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Classes</span>
+                </div>
+                @endif
+            </div>
+            @if (str_contains('Niveaux',$pagename))
+            <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            @else
+            <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            @endif
+                @if ($pagename != "Niveaux / Create" && $pagename != "Niveaux" )
+                    <a class="w-full" href="{{route('niveaux.create')}}">
+                        <div>
+                            <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Niveau</span>
+                        </div>
+                    </a>
+                @else
+                    <div>
+                        <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Niveau</span>
+                    </div>
+                @endif
+            </div>
+        
+            <div class=" btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+                @if ( !str_contains("Niveaux",$pagename))
+                    <a href="{{route('niveaux.index')}}">
+                        <div>
+                            <i class="relative top-0 leading-normal text-slate-800 fa fa-solid fa-line-chart text-size-sm"></i>
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Niveaux</span>
+                        </div>
+                    </a>
+                @else
+                <div>
+                    <i class="relative top-0 leading-normal text-slate-800 fa fa-solid fa-line-chart text-size-sm"></i>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Niveaux</span>
                 </div>
                 @endif
             </div>

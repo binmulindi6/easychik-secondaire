@@ -2,9 +2,9 @@
         
     <div class="flex gap-5">
         @if ($pagename == "Employers/Create" || $pagename == "Employers" || $pagename == "Employers/Edit")
-            <div class=" btn-create flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
-            <div class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @endif
                 @if ($pagename != "Employers/Create" && $pagename != "Employers" )
                     <a class="w-full" href="{{route('employers.create')}}">
@@ -21,17 +21,17 @@
                 @endif
             </div>
 
-            <div class="btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
                 @if ( $pagename != "Employers" && $pagename != "Employers/Create" && $pagename != "Employers/Edit")
                     <a href="{{route('employers.index')}}">
                         <div>
-                            <i class="relative top-0 leading-normal text-orange-500 ni ni-single-02 text-size-sm"></i>
+                            <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-user text-size-sm"></i>
                             <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employers</span>
                         </div>
                     </a>
                 @else
                 <div>
-                    <i class="relative top-0 leading-normal text-orange-500 ni ni-single-02 text-size-sm"></i>
+                    <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-user text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employers</span>
                 </div>
                 @endif
@@ -39,9 +39,9 @@
 
 
             @if ($pagename == "Fonctions/Create" || $pagename == "Fonctions" || $pagename == "Fonctions/Edit")
-            <div class=" btn-create flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
-            <div class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @endif
                 @if ($pagename != "Fonctions/Create" && $pagename != "Employers" )
                     <a class="w-full" href="{{route('fonctions.create')}}">
@@ -58,17 +58,17 @@
                 @endif
             </div>
 
-            <div class="btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
                 @if ( $pagename != "Fonctions" && $pagename != "Fonctions/Create" && $pagename != "Fonctions/Edit")
                     <a href="{{route('fonctions.index')}}">
                         <div>
-                            <i class="relative top-0 leading-normal text-blue-500 ni ni-single-02 text-size-sm"></i>
+                            <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-briefcase text-size-sm"></i>
                             <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Fonctions</span>
                         </div>
                     </a>
                 @else
                 <div>
-                    <i class="relative top-0 leading-normal text-blue-500 ni ni-single-02 text-size-sm"></i>
+                    <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-briefcase text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Fonctions</span>
                 </div>
                 @endif

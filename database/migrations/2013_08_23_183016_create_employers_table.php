@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("nom");
             $table->string("prenom");
+            $table->string("sexe");
             $table->date("date_naissance");
             $table->string("formation");
             $table->string("diplome");

@@ -25,6 +25,7 @@ class UserController extends Controller
         
         $page_name = 'Utilisateurs';
         $users = User::where('isAdmin', 0)
+        ->where('parrain_id', null)
         ->latest()
         ->get();
         
@@ -37,7 +38,7 @@ class UserController extends Controller
     public function create()
     {
         $page_name = 'Utilisateurs';
-        $users = User::where('isAdmin', 0)
+        $users = User::where('isAdmin', 0)->where('parrain_id', null)
         ->latest()
         ->get();
         
@@ -126,7 +127,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $users = User::where('isAdmin', 0)
+        $users = User::where('isAdmin', 0)->where('parrain_id', null)
                     ->latest()
                     ->get();
         $user = User::find($id);

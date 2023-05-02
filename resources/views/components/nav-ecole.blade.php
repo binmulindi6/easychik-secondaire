@@ -1,14 +1,14 @@
-<div class="flex flex-row justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
+<div class="flex flex-col justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
     <div class="flex flex-row gap-4 sm-max:justify-center">
 
         <div class="flex gap-5">
 
             @if (str_contains($pagename, 'Annees Scolaires'))
                 <div
-                    class=" btn-create flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                    class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
                 @else
                     <div
-                        class=" btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                        class=" btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
             @endif
             @if ($pagename != 'Annees Scolaires' && $pagename != 'Annees Scolaires / Create')
                 <a href="{{ route('annee-scolaires.create') }}">
@@ -26,7 +26,7 @@
             @endif
         </div>
 
-        <div class=" btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+        <div class=" btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
             show-eleves>
             @if ($pagename != 'Annees Scolaires' &&
                 $pagename != 'Annees Scolaires / Create' &&
@@ -34,23 +34,23 @@
                 <a href="{{ route('annee-scolaires.index') }}">
                     <div>
                         <i
-                            class="relative top-0 leading-normal text-orange-500 ni ni-calendar-grid-58 text-size-sm"></i>
+                            class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-calendar text-size-sm"></i>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Annee Scolaires</span>
                     </div>
                 </a>
             @else
                 <div>
-                    <i class="relative top-0 leading-normal text-orange-500 ni ni-calendar-grid-58 text-size-sm"></i>
+                    <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-calendar text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Annee Scolaires</span>
                 </div>
             @endif
         </div>
 
         @if ($pagename == 'Trimestres / Create' || $pagename == 'Trimestres' || $pagename == 'Trimestres / Edit')
-            <div class="btn-create  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+            <div class="btn-create items-center  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
                 create-frequentations>
             @else
-                <div class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+                <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
                     create-frequentations>
         @endif
         @if ($pagename != 'Trimestres' && $pagename != 'Trimestres / Create')
@@ -68,7 +68,7 @@
         @endif
     </div>
 
-    <div class="btn-display flex flex-row overflow-hidden justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+    <div class="btn-display items-center flex flex-row overflow-hidden justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
         show-frequentations>
         @if ($pagename != 'Trimestres / Create' && $pagename != 'Trimestres')
             <a href="{{ route('trimestres.index') }}">
@@ -88,10 +88,10 @@
 
 
     @if (str_contains($pagename, 'Periode'))
-        <div class="btn-create  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+        <div class="btn-create items-center  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
             create-frequentations>
         @else
-            <div class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+            <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
                 create-frequentations>
     @endif
     @if ($pagename != 'Periodes' && $pagename != 'Periodes / Create')
@@ -109,7 +109,7 @@
     @endif
 </div>
 
-<div class="btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+<div class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
     show-frequentations>
     @if ($pagename != 'Periodes' && $pagename != 'Periodes / Create')
         <a href="{{ route('periodes.index') }}">
@@ -125,13 +125,53 @@
         </div>
     @endif
 </div>
+    @if (str_contains($pagename, 'Conduites'))
+        <div class="btn-create items-center  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+            create-frequentations>
+        @else
+            <div class="btn-create items-center  hidden justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+                create-frequentations>
+    @endif
+    @if ($pagename != 'Conduites' && $pagename != 'Conduites / Create')
+        <a href="{{ route('conduites.create') }}">
+            <div>
+                <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
+                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter une Conduite</span>
+            </div>
+        </a>
+    @else
+        <div>
+            <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
+            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter une Conduite</span>
+        </div>
+    @endif
+</div>
+
+<div class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
+    show-frequentations>
+    @if ($pagename != 'Conduites' && $pagename != 'Conduites / Create')
+        <a href="{{ route('conduites.index') }}">
+            <div>
+                <i class="relative top-0 leading-normal text-black fa fa-solid fa-calendar-days text-size-sm"></i>
+                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Conduites</span>
+            </div>
+        </a>
+    @else
+        <div>
+            <i class="relative top-0 leading-normal text-black fa fa-calendar-days text-size-sm"></i>
+            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Conduites</span>
+        </div>
+    @endif
+</div>
+
+
 </div>
 </div>
 
 @if (!str_contains($pagename, 'Ecole'))
 
     <div
-        class="relative shadow-xl justify-end flex flex-wrap items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
+        class="relative shadow-xl justify-end flex flex-wrap self-end items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
         @if (str_contains($pagename, 'Annees'))
             <form class="w-full" action="{{ route('annees.search') }}" method="post">
         @endif

@@ -51,7 +51,11 @@
                 </form>
             @else
                 @if (isset($matricule))
-                    <p class="font-bold text-base"> Ajouter l'eleve dans une Classe pour l'annee Scolaire Encours</p>
+                    @if (Auth::user()->isEnseignant() !== null && Auth::user()->isEnseignant())
+                    <span class="font-bold text-base"> Ajouter l'eleve dans ma Classe pour l'annee Scolaire Encours</span>
+                    @else
+                        <span class="font-bold text-base"> Ajouter l'eleve dans une Classe pour l'annee Scolaire Encours</span>
+                    @endif
                 @else
                     <p class="font-bold text-base"> Ajouter une Frequentation</p>
                 @endif
@@ -86,7 +90,11 @@
                         @endif
                         <div class="mt-4 w-full">
                             <x-label for="classe" :value="__('Classe')" />
-                            <x-select :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
+                            @if (isset($classe))
+                                <x-select :val="$classe" :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
+                            @else
+                                <x-select :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
+                            @endif
                         </div>
                     </div>
                     <div class="mt-4">
@@ -94,7 +102,11 @@
                             @if (isset($matricule) && isset($current))
                                 <x-select :val="$current" :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required> </x-select>
                             @else
-                                <x-select :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required></x-select>
+                                @if (isset($classe))
+                                    <x-select :val="$annee" :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required></x-select>
+                                @else
+                                    <x-select :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required></x-select>
+                                @endif
                             @endif
 
                         

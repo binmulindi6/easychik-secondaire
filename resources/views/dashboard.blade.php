@@ -3,9 +3,10 @@
 @section('content')
     
           <!-- cards -->
-          <div class="w-full px-6 py-0.6 mx-auto">
+      <div class="w-full px-6 py-0.6 mx-auto">
             <!-- row 1 -->
-            <div class="flex flex-wrap -mx-3">
+        @if (Auth::user()->isAdmin() || Auth::user()->isDirecteur())
+          <div class="flex flex-wrap -mx-3">
             <!-- card3 -->
                 <a href="{{route("classes.index")}}" class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
                   <div class="relative flex flex-col min-w-0 break-words bg-white hover:bg-slate-200 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
@@ -45,7 +46,7 @@
                       </div>
                       <div class="px-3 text-right basis-1/3">
                         <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500">
-                          <i class="ni ni-single-02 text-size-lg relative top-3.5 text-white"></i>
+                          <i class="fa fa-solid fa-user text-size-lg relative top-3.5 text-white"></i>
                         </div>
                       </div>
                     </div>
@@ -67,7 +68,7 @@
                       </div>
                       <div class="px-3 text-right basis-1/3">
                         <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-red-600 to-orange-600">
-                          <i class="ni ni-single-02 text-size-lg relative top-3.5 text-white"></i>
+                          <i class="fa fa-solid fa-user text-size-lg relative top-3.5 text-white"></i>
                         </div>
                       </div>
                     </div>
@@ -89,14 +90,33 @@
                       </div>
                       <div class="px-3 text-right basis-1/3">
                         <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-orange-500 to-yellow-500">
-                          <i class="ni ni-single-02 text-size-lg relative top-3.5 text-white"></i>
+                          <i class="fa fa-solid fa-user text-size-lg relative top-3.5 text-white"></i>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
             </a>
+          </div>
+        @else
+          @if (isset($trimestre))
+          <div class="flex flex-auto gap-5">
+            <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col gap-1">
+                <span class="font-base text-sm text-slate-500 uppercase">Annee Scolaire encours:</span>
+                <span class="font-bold text-2xl"> {{$annee->nom}} </span>
+            </div>
+            <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col gap-1">
+                <span class="font-base text-sm text-slate-500 uppercase">Trimestre encours:</span>
+                <span class="font-bold text-2xl"> {{$trimestre->nom}} </span>
+            </div>
+            <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col gap-1">
+                <span class="font-base text-sm text-slate-500 uppercase">Periode encours:</span>
+                <span class="font-bold text-2xl"> {{$periode->nom}} </span>
+            </div>
         </div>
+          @endif
+
+        @endif
     
             <!-- cards row 2 -->
             <div class="flex flex-wrap mt-6 -mx-3">
@@ -106,7 +126,7 @@
                         <h6 class="capitalize dark:text-white">Frequentations des Eleves</h6>
                         <p class="mb-0 leading-normal dark:text-white dark:opacity-60 text-size-sm">
                         <i class="fa fa-arrow-up text-emerald-500"></i>
-                        <span class="font-semibold">4% plus</span> en 2021
+                        <span class="font-semibold">240% plus</span> en 2022-2023
                         </p>
                   </div>
                   <div class="flex-auto p-4">
@@ -138,9 +158,94 @@
             </div>
     </div>
 
+    <script defer >
+      
+      //   if(document.querySelector("#chart-line")){
+      // var ctx1 = document.getElementById("chart-line").getContext("2d");
+    
+      // var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+    
+      // gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
+      // gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+      // gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
+      // new Chart(ctx1, {
+      //   type: "line",
+      //   data: {
+      //     labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      //     datasets: [{
+      //       label: "Eleves",
+      //       tension: 0.4,
+      //       borderWidth: 0,
+      //       pointRadius: 0,
+      //       borderColor: "#5e72e4",
+      //       backgroundColor: gradientStroke1,
+      //       borderWidth: 3,
+      //       fill: true,
+      //       data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+      //       maxBarThickness: 6
+    
+      //     }],
+      //   },
+      //   options: {
+      //     responsive: true,
+      //     maintainAspectRatio: false,
+      //     plugins: {
+      //       legend: {
+      //         display: false,
+      //       }
+      //     },
+      //     interaction: {
+      //       intersect: false,
+      //       mode: 'index',
+      //     },
+      //     scales: {
+      //       y: {
+      //         grid: {
+      //           drawBorder: false,
+      //           display: true,
+      //           drawOnChartArea: true,
+      //           drawTicks: false,
+      //           borderDash: [5, 5]
+      //         },
+      //         ticks: {
+      //           display: true,
+      //           padding: 10,
+      //           color: '#fbfbfb',
+      //           font: {
+      //             size: 11,
+      //             family: "Open Sans",
+      //             style: 'normal',
+      //             lineHeight: 2
+      //           },
+      //         }
+      //       },
+      //       x: {
+      //         grid: {
+      //           drawBorder: false,
+      //           display: false,
+      //           drawOnChartArea: false,
+      //           drawTicks: false,
+      //           borderDash: [5, 5]
+      //         },
+      //         ticks: {
+      //           display: true,
+      //           color: '#ccc',
+      //           padding: 20,
+      //           font: {
+      //             size: 11,
+      //             family: "Open Sans",
+      //             style: 'normal',
+      //             lineHeight: 2
+      //           },
+      //         }
+      //       },
+      //     },
+      //   },
+      // });
+      // }
+    </script>
     
 @endsection
-
 
 
 

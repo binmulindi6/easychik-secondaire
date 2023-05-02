@@ -26,7 +26,7 @@ class EleveEvaluationController extends Controller
 
     public function update(Request $request, $id){
         $request->validate([
-            'note_obtenu' => ['required','string','max:255']
+            'note_obtenu' => ['required','string','max:255'],
         ]);
 
         EleveEvaluation::set($id,$request->note_obtenu);

@@ -76,7 +76,11 @@
                     </div>
                     <div class="mt-4">
                         <x-label for="cours" :value="__('Cours')" />
+                        @if ($cours !== null)
                         <x-select :collection="$cours" class="block mt-1 w-full" name='cours' required> </x-select>
+                        @else
+                        <x-select :collection="$cours" class="block mt-1 w-full" name='cours' required> </x-select>
+                        @endif
                     </div>
                     <div class="mt-4">
                         <x-label for="note_max" :value="__('Note Maximum')" />
@@ -129,6 +133,9 @@
                                 Cours </th>
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                Classe </th>
+                            <th
+                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                                 Note Max</th>
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
@@ -143,39 +150,84 @@
                         <tbody>
 
                             @foreach ($items as $item)
-                                <tr class="rounded-2xl hover:bg-slate-100">
-                                    <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        {{ $item->type_evaluation->nom }}</td>
-                                    <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                        {{ $item->cours->nom }}</td>
-                                    <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                        {{ $item->note_max }}</td>
-                                    <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                        {{ $item->periode->nom }}</td>
-                                    <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                        {{ $item->date_evaluation }}</td>
-                                    <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
-                                        <div class="flex justify-center gap-4 align-middle">
-                                            <a href="{{ route('evaluations.edit', $item->id) }}" title="Modifier">
-                                                <i class="fa fa-solid fa-pen"></i>
-                                            </a>
-                                            <form class="delete-form" class="delete-form"
-                                                action="{{ route('evaluations.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="delete-btn" type="submit" title="Effacer">
-                                                    <i class="text-red-500 fa fa-solid fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @if (Auth::user()->isEnseignant() && Auth::user()->classe())
+                                {{-- @die(Auth::user()->classe->id) --}}
+                                    @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id)
+                                        <tr class="rounded-2xl hover:bg-slate-100">
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                {{ $item->type_evaluation->nom }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->cours->nom }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->cours->classe->nomCourt() }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->note_max }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->periode->nom }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->date_evaluation }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
+                                                <div class="flex justify-center gap-4 align-middle">
+                                                    <a href="{{ route('evaluations.edit', $item->id) }}" title="Modifier">
+                                                        <i class="fa fa-solid fa-pen"></i>
+                                                    </a>
+                                                    <form class="delete-form" class="delete-form"
+                                                        action="{{ route('evaluations.destroy', $item->id) }}" method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="delete-btn" type="submit" title="Effacer">
+                                                            <i class="text-red-500 fa fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @else
+                                    <tr class="rounded-2xl hover:bg-slate-100">
+                                        <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                            {{ $item->type_evaluation->nom }}</td>
+                                        <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                            {{ $item->cours->nom }}</td>
+                                        <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                            {{ $item->cours->classe->nomCourt() }}</td>
+                                        <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                            {{ $item->note_max }}</td>
+                                        <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                            {{ $item->periode->nom }}</td>
+                                        <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                            {{ $item->date_evaluation }}</td>
+                                        <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
+                                            <div class="flex justify-center gap-4 align-middle">
+                                                <a href="{{ route('evaluations.edit', $item->id) }}" title="Modifier">
+                                                    <i class="fa fa-solid fa-pen"></i>
+                                                </a>
+                                                <form class="delete-form" class="delete-form"
+                                                    action="{{ route('evaluations.destroy', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="delete-btn" type="submit" title="Effacer">
+                                                        <i class="text-red-500 fa fa-solid fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
                             @endforeach
 
                         </tbody>

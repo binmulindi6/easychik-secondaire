@@ -4,12 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 // use App\Models\Classe;
+use App\Models\Parrain;
 use App\Models\Employer;
 use App\Models\Encadrement;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -47,16 +49,58 @@ class User extends Authenticatable
 
     //check if user is admin
     public function isAdmin()
+    {   
+        if($this->parrain_id === null){
+            if ($this->isAdmin === 1) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+    public function isParent()
     {
-        if ($this->isAdmin === 1) {
+        // $this->id;
+        if ($this->parrain_id !== null) {
             return true;
         }
         return false;
     }
 
     public function isEnseignant(){
-        if ($this->employer->fonction->nom === 'Enseignant') {
-            return true;
+        if($this->parrain_id === null){
+            foreach($this->employer->fonctions as $fonction){
+                if(strtolower($fonction->nom) === strtolower('Enseignant')){
+                    return true;
+                    // dd(10);
+                }
+            }
+        }
+        return false;
+    }
+
+    public function isDirecteur(){
+        if($this->parrain_id === null){
+            foreach($this->employer->fonctions as $fonction){
+                if(strtolower($fonction->nom) === strtolower('Directeur')){
+                    return true;
+                    // dd(10);
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public function isSecretaire(){
+
+        if($this->parrain_id === null){
+            foreach($this->employer->fonctions as $fonction){
+                if(strtolower($fonction->nom) === strtolower('Secretaire')){
+                    return true;
+                    // dd(10);
+                }
+            }
         }
         return false;
     }
@@ -67,6 +111,12 @@ class User extends Authenticatable
         return $this->belongsTo(Employer::class);
     }
 
+    //link to the parrain
+    public function parrain()
+    {
+        return $this->belongsTo(Parrain::class);
+    }
+
     //link to the class
     public function encadrements()
     {
@@ -75,16 +125,44 @@ class User extends Authenticatable
 
     public function classe(){
         $encadrements = $this->encadrements;
+        // dd($encadrements);
         $currentAnneeScolaire = AnneeScolaire::current();
         $currentEncadrement = null;
         // dd($currentAnneeScolaire->id);
-                foreach($encadrements as $encadrement){
-                    if($encadrement->annee_scolaire->id === $currentAnneeScolaire->id){
-                        $currentEncadrement = $encadrement;
-                        return $currentEncadrement->classe();
-                    }
+        if($this->isEnseignant()){
+            // dd(10);
+            foreach($encadrements as $encadrement){
+                if($encadrement->annee_scolaire->id === $currentAnneeScolaire->id){
+                    $currentEncadrement = $encadrement;
+                    return $currentEncadrement->classe();
                 }
+            }
+        }
+        // dd(11);
 
         return $currentEncadrement;
+    }
+
+    public static function Parents()
+    {
+        return User::where('parrain_id', '!=', null)->get();
+    }
+
+    public static function Employers()
+    {
+        return User::where('parrain_id', null)->get();
+    }
+
+    public static function Directeurs()
+    {
+        $users = User::Employers();
+        $dirs = array();
+        foreach($users as $user){
+            if ($user->isDirecteur()) {
+                array_push($dirs, $user);
+            }
+        }
+
+        return $dirs;
     }
 }

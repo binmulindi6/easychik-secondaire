@@ -43,7 +43,8 @@ class EmployerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        $this->page .= '/Create';
         return $this->index();
     }
 
@@ -60,6 +61,7 @@ class EmployerController extends Controller
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
             'date_naissance' => ['required', 'string', 'max:255'],
+            'sexe' => ['required', 'string', 'max:255'],
             'formation' => ['required', 'string', 'max:255'],
             'diplome' => ['required', 'string', 'max:255'],
             'niveau_etude' => ['required', 'string', 'max:255'],
@@ -71,6 +73,7 @@ class EmployerController extends Controller
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'date_naissance' => $request->date_naissance,
+            'sexe' => $request->sexe,
             'formation' => $request->formation,
             'diplome' => $request->diplome,
             'niveau_etude' => $request->niveau_etude,
@@ -97,6 +100,7 @@ class EmployerController extends Controller
                 'nom' => ['required', 'string', 'max:255'],
                 'prenom' => ['required', 'string', 'max:255'],
                 'date_naissance' => ['required', 'string', 'max:255'],
+                'sexe' => ['required', 'string', 'max:255'],
                 'formation' => ['required', 'string', 'max:255'],
                 'diplome' => ['required', 'string', 'max:255'],
                 'niveau_etude' => ['required', 'string', 'max:255'],
@@ -144,6 +148,7 @@ class EmployerController extends Controller
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
             'date_naissance' => ['required', 'string', 'max:255'],
+            'sexe' => ['required', 'string', 'max:255'],
             'formation' => ['required', 'string', 'max:255'],
             'diplome' => ['required', 'string', 'max:255'],
             'niveau_etude' => ['required', 'string', 'max:255'],
@@ -155,6 +160,7 @@ class EmployerController extends Controller
         $employer->nom = $request->nom;
         $employer->prenom = $request->prenom;
         $employer->date_naissance = $request->date_naissance;
+        $employer->sexe = $request->sexe;
         $employer->formation = $request->formation;
         $employer->diplome = $request->diplome;
         $employer->niveau_etude = $request->niveau_etude;

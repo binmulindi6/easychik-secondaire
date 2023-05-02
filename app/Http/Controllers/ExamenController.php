@@ -8,6 +8,7 @@ use App\Models\Examen;
 use App\Models\trimestre;
 use Illuminate\Http\Request;
 use App\Models\TypeEvaluation;
+use Illuminate\Support\Facades\Auth;
 
 class ExamenController extends Controller
 {
@@ -23,6 +24,17 @@ class ExamenController extends Controller
             ->limit(10)
             ->get();
         $cours = Cours::orderBy('nom', 'asc')->get();
+
+        if(Auth::user()->isEnseignant()){
+            if(Auth::user()->classe()){
+                $cours = Cours::where('classe_id', Auth::user()->classe->id)
+                        ->orderBy('nom', 'asc')->get();
+            }else{
+                $cours = null;
+            }
+            // $cours = [];
+        }
+        
         $trimestres = Trimestre::all();
         return view('travails.examens')
             ->with('trimestres', $trimestres)
@@ -76,7 +88,7 @@ class ExamenController extends Controller
         $eleves = $classe->eleves();
 
         foreach ($eleves as $eleve) {
-            $currentEleve = Eleve::find($eleve->eleve_id);
+            $currentEleve = Eleve::find($eleve->id);
             $currentEleve->examens()->attach($examen);
             $currentEleve->save();
         }
@@ -115,6 +127,10 @@ class ExamenController extends Controller
         $examen = Examen::find($id);
         $examens = Examen::all();
         $cours = Cours::orderBy('nom', 'asc')->get();
+            if(Auth::user()->isEnseignant()){
+                $cours = Cours::where('classe_id', Auth::user()->classe->id)
+                            ->orderBy('nom', 'asc')->get();
+            }
         $trimestres = Trimestre::all();
         return view('travails.examens')
             ->with('trimestres', $trimestres)
@@ -178,6 +194,12 @@ class ExamenController extends Controller
             ->get();
 
         $cours = Cours::orderBy('nom', 'asc')->get();
+
+        if(Auth::user()->isEnseignant()){
+            $cours = Cours::where('classe_id', Auth::user()->classe->id)
+                        ->orderBy('nom', 'asc')->get();
+        }
+
         $trimestres = Trimestre::all();
         return view('travails.examens')
             ->with('page_name', $this->page_name . " / Search")

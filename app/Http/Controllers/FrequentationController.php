@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnneeScolaire;
-use App\Models\Classe;
 use App\Models\Eleve;
-use App\Models\Frequentation;
+use App\Models\Classe;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
+use App\Models\Frequentation;
+use App\Models\Resultat;
+use Illuminate\Support\Facades\Auth;
 
 class FrequentationController extends Controller
 {
@@ -22,13 +24,28 @@ class FrequentationController extends Controller
         $frequentations = Frequentation::latest()
             ->limit(10)
             ->get();
+        $annee = AnneeScolaire::current();
+        // dd(Auth::user()->classe);
+        if (Auth::user()->isEnseignant()) {
+            if(Auth::user()->classe() !== null){
+                $frequentations = Frequentation::where('annee_scolaire_id', $annee->id)
+                ->where('classe_id', Auth::user()->classe->id)
+                ->orderBy('frequentations.id', 'desc')
+                ->limit(10)
+                ->get();
+            }
+        }
+        
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::all();
-
+        // dd(10);
+        // dd(Auth::user()->classe);
         return view('eleve.frequentations')
             ->with('page_name', $this->page)
             ->with('items', $frequentations)
+            ->with('annee', $annee)
             ->with('classes', $classes)
+            ->with('classe', Auth::user()->classe() ? Auth::user()->classe : null)
             ->with("annees", $annees);
     }
 
@@ -61,10 +78,39 @@ class FrequentationController extends Controller
 
         $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
 
+        if($eleve->classe()){
+            return redirect()->route('frequentations.create')->withErrors([
+                'eleve_matricule' => 'L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire encours.",
+                ])->onlyInput('classe_id');
+                
+        }
+
         $classe = Classe::find($request->classe_id);
+
+        $evaluations = $classe->currentEvaluations();
+        $examens = $classe->currentExamens();
+
+        
+        
+        if(count($evaluations) > 0){
+            foreach($evaluations as $ev){
+                $eleve->evaluations()->attach($ev);
+                $eleve->save();
+            }
+        }
+        
+        if(count($examens) > 0){
+            foreach($examens as $ex){
+                $eleve->examens()->attach($ex);
+                $eleve->save();
+            }
+        }
+        // dd(12);
+
         $annee  = AnneeScolaire::find($request->annee_scolaire_id);
 
         $frequentation = Frequentation::create();
+
 
         //links 
         $frequentation->eleve()->associate($eleve);
@@ -72,6 +118,11 @@ class FrequentationController extends Controller
         $frequentation->annee_scolaire()->associate($annee);
         // save
         $frequentation->save();
+
+         //create resultat
+         $resultat = Resultat::create();
+         $resultat->frequentation()->associate($frequentation);
+         $resultat->save();
 
         return redirect()->route('eleves.index');
     }
@@ -171,7 +222,7 @@ class FrequentationController extends Controller
             ->orWhere('eleves.nom', 'like', '%' . $request->search . '%')
             ->orWhere('eleves.prenom', 'like', '%' . $request->search . '%')
             ->orWhere('classes.nom', 'like', '%' . $request->search . '%')
-            ->orWhere('classes.niveau', 'like', '%' . $request->search . '%')
+            // ->orWhere('classes.niveau', 'like', '%' . $request->search . '%')
 
             /*->orWhere('matricule', 'like', '%' . $request->search . '%')
             ->orWhere('lieu_naissance', 'like', '%' . $request->search . '%')

@@ -9,7 +9,7 @@
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
         @else
-            @if ($page_name == 'Classes/Edit' || $page_name == 'Classes/Create')
+            @if ($page_name == 'Classes / Edit' || $page_name == 'Classes / Create')
                 <div class="frm-create bg-white rounded-5 shadow-2xl container p-5">
                 @else
                     <div class="hidden frm-create bg-white rounded-5 shadow-2xl container p-5">
@@ -77,7 +77,7 @@
 
 
     @if (isset($items))
-        @if ($page_name == 'Classes/Edit' || $page_name == 'Classes/Create')
+        @if ($page_name == 'Classes / Edit' || $page_name == 'Classes / Create')
             <div class="hidden display bg-white shadow-2xl rounded-5 container p-5">
             @else
                 <div class="display bg-white shadow-2xl rounded-5 container p-5">
@@ -123,7 +123,7 @@
                                         {{ $item->user->employer->nom . ' ' . $item->user->employer->prenom }}
                                     @else
                                         <a class="p-1  text-blue-500 underline"
-                                            href="{{ route('classes.edit', $item->id) }}"> Enseignant indisponible </a>
+                                            href="{{ route('encadrements.linkClasse', $item->id) }}"> Enseignant indisponible </a>
                                     @endif
 
                                 </td>

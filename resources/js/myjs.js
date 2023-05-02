@@ -18,26 +18,53 @@ const display_frequentations = document.querySelector(
 
 const btnCreate = document.querySelectorAll(".btn-create");
 const btnDispaly = document.querySelectorAll(".btn-display");
+const btnDispalySent = document.querySelectorAll(".btn-display-sent");
 
 const frm = document.querySelector(".frm-create");
 const display = document.querySelector(".display");
+const displaySent = document.querySelector(".display-sent");
+const show = document.querySelector(".show");
 //eleves
+
+const myBtn = document.querySelectorAll(".my-btn");
 
 //Show Eleve
 
 const btnIdentity = document.querySelector(".btn-identity");
 const frmIdentity = document.querySelector(".frm-identity");
 //console.log(btnIdentity);
-// console.log(frm)
+
+const btnEdit = document.querySelector('.btn-edit');
+const btnSave = document.querySelector('.btn-save');
+
+console.log(myBtn)
+///joker btn
+
+myBtn !== null && myBtn.forEach((jokerBtn) => {
+    jokerBtn.addEventListener('click', (e)=>{
+        myBtn.forEach((btn) => {
+            btn.classList.remove('bg-white');
+            btn.classList.add('bg-slate-100');
+        });
+        const theBtn = e.target;
+        theBtn.classList.add('bg-white');
+        theBtn.classList.remove('bg-slate-100');
+    });
+});
+
+////
 (display !== null && frm !== null) && btnCreate.forEach((btn) => {
     btn.addEventListener("click", function () {
         if (frm.getAttribute("hidden") == true) {
             display.setAttribute("hidden", "true");
             frm.classList.toggle("hidden");
+            displaySent.classList.add("hidden");
+            show.classList.add("hidden");
         } else {
             frm.classList.remove("hidden");
             display.classList.add("hidden");
-            console.log(11);
+            displaySent.classList.add("hidden");
+            show.classList.add("hidden");
         }
     });
 });
@@ -47,66 +74,34 @@ const frmIdentity = document.querySelector(".frm-identity");
         if (frm.getAttribute("hidden") == false) {
             frm.setAttribute("hidden", "true");
             display.classList.toggle("hidden");
-            //console.log(11);
+            displaySent.classList.add("hidden");
+            show.classList.add("hidden");
         } else {
             frm.classList.add("hidden");
             display.classList.remove("hidden");
-            console.log(11);
+            displaySent.classList.add("hidden");
+            show.classList.add("hidden");
         }
     });
 });
 
-/*btn_create_eleve.addEventListener("click", function (){
-
-    if(form_add_eleve.getAttribute("hidden") == true){
-        display_eleves.setAttribute("hidden", "true");
-        form_add_eleve.classList.toggle("hidden");
-    }else{
-        form_add_eleve.classList.remove("hidden");
-        display_eleves.classList.add("hidden");
-        console.log(11);
-    }
-
-});
-
-btn_show_eleves.addEventListener("click", function (){
-
-    if(form_add_eleve.getAttribute("hidden") == false){
-        form_add_eleve.setAttribute("hidden", "true");
-        display_eleves.classList.toggle("hidden");
-    }else{
-        form_add_eleve.classList.add("hidden");
-        display_eleves.classList.remove("hidden");
-    }
-
+(display !== null && frm !== null && displaySent !== null) && btnDispalySent.forEach((btn) => {
+    btn.addEventListener("click", function () {
+        if (frm.getAttribute("hidden") == false) {
+            frm.setAttribute("hidden", "true");
+            display.classList.add("hidden");
+            displaySent.classList.toggle("hidden");
+            show.classList.add("hidden");
+        } else {
+            frm.classList.add("hidden");
+            display.classList.add("hidden");
+            displaySent.classList.remove("hidden");
+            show.classList.add("hidden");
+        }
+    });
 });
 
 
-//frequentations
-
-btn_create_frequentations.addEventListener("click", function (){
-    console.log(10);
-    if(frm_frequentations.getAttribute("hidden") == true){
-        display_frequentations.setAttribute("hidden", "true");
-        frm_frequentations.classList.toggle("hidden");
-    }else{
-        frm_frequentations.classList.remove("hidden");
-        display_frequentations.classList.add("hidden");
-    }
-
-});
-
-btn_show_frequentations.addEventListener("click", function (){
-
-    if(frm_frequentations.getAttribute("hidden") == false){
-        frm_frequentations.setAttribute("hidden", "true");
-        display_frequentations.classList.toggle("hidden");
-    }else{
-        frm_frequentations.classList.add("hidden");
-        display_frequentations.classList.remove("hidden");
-    }
-
-});*/
 
 if (btnIdentity !== null) {
     btnIdentity.addEventListener("click", () => {
@@ -133,19 +128,14 @@ const printable = document.getElementById('printable')
 const btnJokerPrint = document.getElementById('joker-print')
 
 btnJokerPrint !== null && btnJokerPrint.addEventListener('click', ()=>{
-
-    // var printContents = printable.innerHTML;
-	// var originalContents = document.body.innerHTML;
-
-			// document.body.innerHTML = printContents;
-
 			window.print();
-
-			// document.body.innerHTML = originalContents;
-    // window.print()
 })
 
-// printable bullentin
 
 
 
+
+//BTN EDIT && SAVE
+btnEdit !== null && btnEdit.addEventListener('click', ()=>{
+    btnSave !== null && btnSave.classList.toggle('hidden');
+})

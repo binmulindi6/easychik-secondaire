@@ -25,6 +25,9 @@ class EleveEvaluation extends Model
 
         DB::table('eleve_evaluation')
             ->where('id', '=', $id)
-            ->update(['note_obtenu' => $note_obtenu]);
+            ->update([
+                    'note_obtenu' => $note_obtenu,
+                     'updated_at' => now(),
+                ]);
     }
 }

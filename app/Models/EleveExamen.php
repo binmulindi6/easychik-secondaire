@@ -23,6 +23,9 @@ class EleveExamen extends Model
         
         DB::table('eleve_examen')
                 ->where('id', '=', $id)
-                ->update(['note_obtenu' => $note_obtenu]);
+                ->update([
+                    'note_obtenu' => $note_obtenu,
+                     'updated_at' => now(),
+                ]);
     }
 }

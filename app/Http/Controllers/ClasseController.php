@@ -41,7 +41,7 @@ class ClasseController extends Controller
      */
     public function create()
     {
-        $this->page = "Classes/Create";
+        $this->page = "Classes / Create";
         return $this->index();
     }
 
@@ -58,10 +58,15 @@ class ClasseController extends Controller
             'nom' => ['required', 'string', 'max:255'],
         ]);
 
-        Classe::create([
+        // dd($request->nom , $request->niveau);
+        $niveau = Niveau::find($request->niveau);
+        $classe = Classe::create([
             'nom' => $request->nom,
-            'niveau' => $request->niveau,
         ]);
+
+        $classe->niveau()->associate($niveau);
+
+        $classe->save();
 
         return redirect()->route("classes.index");
     }
@@ -109,7 +114,7 @@ class ClasseController extends Controller
         //dd($users);
 
         return view('classe.classes')
-            ->with('page_name', $this->page . '/Edit')
+            ->with('page_name', $this->page . ' / Edit')
             ->with('self', $classe)
             ->with('niveaux', $niveaux)
             ->with('items', $classes);

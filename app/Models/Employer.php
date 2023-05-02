@@ -17,11 +17,16 @@ class Employer extends Model
         'nom',
         'prenom',
         'date_naissance',
+        'sexe',
         'formation',
         'diplome',
         'niveau_etude'
     ];
 
+    //nomComplet
+    public function nomComplet(){
+        return $this->nom . " " . $this->prenom; 
+   }
     //Fonctions
     public function fonctions()
     {

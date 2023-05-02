@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Frais;
 use App\Models\Classe;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,5 +19,8 @@ class Niveau extends Model
 
     public function classes(){
         return $this->hasMany(Classe::class);
+    }
+    public function frais(){
+        return $this->hasMany(Frais::class);
     }
 }

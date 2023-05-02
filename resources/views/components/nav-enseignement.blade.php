@@ -3,9 +3,9 @@
     <div class="flex gap-5">
             
             @if ($pagename == "Categories Cours/Create" || $pagename == "Categories Cours" || $pagename == "Categories Cours/Edit")
-            <div class=" btn-create flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
-            <div class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @endif
                 @if ($pagename != "Categories Cours/Create" && $pagename != "Categories Cours" )
                     <a class="w-full" href="{{route('categorie-cours.create')}}">
@@ -22,7 +22,7 @@
                 @endif
             </div>
 
-            <div class="categorie-cours btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="categorie-cours btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
                 @if ( $pagename != "Categories Cours" && $pagename != "Categories Cours/Create" && $pagename != "Categories Cours/Edit")
                     <a href="{{route('categorie-cours.index')}}">
                         <div>
@@ -40,9 +40,9 @@
 
 
             @if ($pagename == "Cours/Create" || $pagename == "Cours" || $pagename == "Cours/Edit")
-            <div class=" btn-create flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
-            <div class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @endif
                 @if ($pagename != "Cours/Create" && $pagename != "Cours" )
                     <a class="w-full" href="{{route('cours.create')}}">
@@ -59,7 +59,7 @@
                 @endif
             </div>
 
-            <div class="cours btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            <div class="cours btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
                 @if ( $pagename != "Cours" && $pagename != "Cours/Create" && $pagename != "Cours/Edit")
                     <a href="{{route('cours.index')}}">
                         <div>

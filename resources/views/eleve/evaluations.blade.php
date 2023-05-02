@@ -37,9 +37,11 @@
                                     <th
                                         class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                                         Date Examen</th>
-                                    <th
-                                        class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                        Action</th>
+                                    @if (!Auth::user()->isParent())
+                                        <th
+                                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                            Action</th>
+                                    @endif
 
                                 </thead>
                                 <tbody>
@@ -55,26 +57,28 @@
                                                     {{ $item->pivot->note_obtenu }}</td>
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                    {{ $item->cours->max_examen }}</td>
+                                                    {{ $item->note_max }}</td>
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                     {{ $item->date_examen }}</td>
-                                                <td
-                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                    <div class="flex justify-center gap-4 align-middle">
-                                                        <a title="Modifier"
-                                                            href="{{ route('eleves.examens.edit', [$eleve->id, $item->id]) }}"><i
-                                                                class="fa fa-solid fa-pen"></i></a>
+                                                @if (!Auth::user()->isParent())
+                                                    <td
+                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                        <div class="flex justify-center gap-4 align-middle">
+                                                            <a title="Modifier"
+                                                                href="{{ route('eleves.examens.edit', [$eleve->id, $item->id]) }}"><i
+                                                                    class="fa fa-solid fa-pen"></i></a>
 
-                                                        {{-- <form action="{{ route('eleves.examens.destroy', $item->id) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="delete-btn" title="Effacer" type="submit"><i
-                                                                    class="text-red-500 fa fa-solid fa-trash"></i></button>
-                                                        </form> --}}
-                                                    </div>
-                                                </td>
+                                                            {{-- <form action="{{ route('eleves.examens.destroy', $item->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button class="delete-btn" title="Effacer" type="submit"><i
+                                                                        class="text-red-500 fa fa-solid fa-trash"></i></button>
+                                                            </form> --}}
+                                                        </div>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endif
                                     @endforeach
@@ -149,9 +153,11 @@
                                     <th
                                         class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                                         Date Evaluation</th>
-                                    <th
-                                        class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                        Action</th>
+                                    @if (!Auth::user()->isParent())
+                                        <th
+                                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                            Action</th>
+                                    @endif
 
                                 </thead>
                                 <tbody>
@@ -173,23 +179,24 @@
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                     {{ $item->date_evaluation }}</td>
+                                                @if (!Auth::user()->isParent())
+                                                    <td
+                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                        <div class="flex justify-center gap-4 align-middle">
+                                                            <a title="Modifier"
+                                                                href="{{ route('eleves.evaluations.edit', [$eleve->id, $item->id]) }}"><i
+                                                                    class="fa fa-solid fa-pen"></i></a>
 
-                                                <td
-                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                    <div class="flex justify-center gap-4 align-middle">
-                                                        <a title="Modifier"
-                                                            href="{{ route('eleves.evaluations.edit', [$eleve->id, $item->id]) }}"><i
-                                                                class="fa fa-solid fa-pen"></i></a>
-
-                                                        {{-- <form action="{{ route('eleves.examens.destroy', $item->id) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="delete-btn" title="Effacer" type="submit"><i
-                                                                    class="text-red-500 fa fa-solid fa-trash"></i></button>
-                                                        </form> --}}
-                                                    </div>
-                                                </td>
+                                                            {{-- <form action="{{ route('eleves.examens.destroy', $item->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button class="delete-btn" title="Effacer" type="submit"><i
+                                                                        class="text-red-500 fa fa-solid fa-trash"></i></button>
+                                                            </form> --}}
+                                                        </div>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endif
                                     @endforeach

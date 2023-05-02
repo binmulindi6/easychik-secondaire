@@ -3,9 +3,17 @@
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
         @if (isset($search))
-            <x-nav-eleves :search="$search" :pagename="$page_name"></x-nav-eleves>
+            @if (isset($parent))
+                <x-nav-eleves :search="$search" :pagename="$page_name" :parent="$parent"></x-nav-eleves>
+            @else
+                <x-nav-eleves :search="$search" :pagename="$page_name" ></x-nav-eleves>
+            @endif
         @else
-            <x-nav-eleves :pagename="$page_name"></x-nav-eleves>
+             @if (isset($parent))
+                <x-nav-eleves :pagename="$page_name" :parent="$parent"></x-nav-eleves>
+            @else
+                <x-nav-eleves :pagename="$page_name" ></x-nav-eleves>
+            @endif
         @endif
 
         @if (isset($item))
@@ -184,7 +192,11 @@
         @endif
 
         <div class=" flex justify-between pb-0 mb-0 bg-white rounded-t-2xl">
+            @if (isset($parent) && $parent != null)
+            <h6>Choisir Un Eleve</h6>
+            @else
             <h6>Eleves</h6>
+            @endif
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
@@ -214,8 +226,10 @@
                         <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                             Classe </th>
-                        <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
-                            colspan="2">Action </th>
+                        @if ( Auth::user()->isAdmin() || !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
+                            <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                                colspan="2">action</th>
+                        @endif
                     </thead>
                     <tbody>
 
@@ -223,9 +237,15 @@
                             <tr class=" rounded-2xl hover:bg-slate-100">
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                    <a href="{{ route('eleves.show', $item->id) }}">
-                                        {{ $item->matricule }}
-                                    </a>
+                                    @if (isset($parent) && $parent != null)
+                                        <a href="{{ route('parent-eleve.link', [$parent,$item->id]) }}">
+                                            {{ $item->matricule }}
+                                        </a>
+                                    @else
+                                        <a href="{{ route('eleves.show', $item->id) }}">
+                                            {{ $item->matricule }}
+                                        </a>
+                                    @endif
                                 </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
@@ -247,30 +267,32 @@
                                     {{ $item->adresse }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    @if ($item->classe(false) == null)
+                                    @if ($item->classe(false) === null)
                                         <a class="text-blue-500 underline"
                                             href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
                                         </a>
                                     @else
                                         {{ $item->classe(false) }}
+                                    @endif
                                 </td>
+                        @if ( Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
+                                <div class="flex justify-center gap-4 align-middle">
+                                    <a href="{{ route('eleves.edit', $item->id) }}" title="Modifier">
+                                        <i class="fa fa-solid fa-pen"></i>
+                                    </a>
+                                    <form class="delete-form" class="delete-form"
+                                        action="{{ route('eleves.destroy', $item->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="delete-btn" type="submit" title="Effacer">
+                                            <i class="text-red-500 fa fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         @endif
-                        <td
-                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
-                            <div class="flex justify-center gap-4 align-middle">
-                                <a href="{{ route('eleves.edit', $item->id) }}" title="Modifier">
-                                    <i class="fa fa-solid fa-pen"></i>
-                                </a>
-                                <form class="delete-form" class="delete-form"
-                                    action="{{ route('eleves.destroy', $item->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="delete-btn" type="submit" title="Effacer">
-                                        <i class="text-red-500 fa fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
                         </tr>
     @endforeach
 

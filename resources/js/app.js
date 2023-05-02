@@ -1,5 +1,5 @@
 import "./delete";
-import "./bootstrap";
+// import "./bootstrap";
 import "./myjs";
 import "./fa.min";
 import "./countup";
@@ -9,7 +9,7 @@ import "./charts";
 import "./perfect-scrollbar.min";
 import "./sidenav-burger";
 import "./perfect-scrollbar";
-import "./argon-dashboard-tailwind";
+// import "./argon-dashboard-tailwind";
 
 import "./popper";
 import Alpine from "alpinejs";
@@ -22,7 +22,7 @@ try {
     window.$ = window.jQuery = require("jquery");
 } catch (e) {}
 
-window.Alpine = Alpine;
+// window.Alpine = Alpine;
 
 const doc = new jsPDF();
 $("#cmd").click(function () {

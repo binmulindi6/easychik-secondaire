@@ -21,7 +21,7 @@
                         <x-label for="matricule" :value="__('Matricule de L\'Employé')" />
         
                         <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule" :value="$self->employer->matricule" readonly required autofocus />
-                    </div>
+                    </div>  
         
                     <!-- Email Address -->
                     <div class="mt-4">

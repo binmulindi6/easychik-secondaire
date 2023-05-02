@@ -2,6 +2,41 @@
 
 @section('content')
 
+<style>
+    body{
+        /* display: none; */
+    }
+    /* @page{
+        size: a4 portrait;
+        /* margin: 500px;
+        /* display: none; */
+        /* background: #000; */ 
+    /*} */
+
+    @media print{
+        /* @page{
+            size: a4 portrait;
+            margin: 1%; 
+        } */
+        body{
+            background: #fff;
+        }
+        #printable{
+            min-width: 23cm;
+            margin: none;
+            transform: scale(0.90);
+            position: fixed;
+            top: 0;
+            /* transform-origin: auto 0; */
+            /* padding: 10px; */
+            /* display: none; */
+            /* background: #000; */
+        }
+
+    }
+    
+</style>
+
     <div id='print' class=" flex flex-col gap-5 md:p-5">
 
         <a href="{{ route('eleves.show', $eleve->id) }}"
@@ -14,8 +49,8 @@
         <div  class="  flex flex-col gap-2 bg-white rounded-xl shadow-xxs w-full p-5  items-center">
             <div class="w-full flex flex-row justify-between">
             <div  class="container w-full flex justify-center"> 
-                @if ($examenT1 != null && $periode1 != null && $periode2 != null )
-                
+                @if ($examenT1 != null && $periode1 != null && $periode2 != null && $examenT2 != null && $periode3 != null && $periode4 != null && $examenT3 != null && $periode5 != null && $periode6 != null )
+                    <div  class="w-full flex flex-col justify-center items-center h-full">
                     <table id="printable" class="border-2xl print:w-60 border-collapse text-xs m-5">
                         <thead>
                             <th colspan="12" class="border p-0.5 uppercase text-left" >
@@ -49,30 +84,30 @@
                             <th colspan="2" class="border p-0.5">TOTAL</th>
                         </thead>
                         <thead>
-                            <th class=" border p-0.5 text-left" >Cours </th>
-                            <th class=" border p-0.5" >Max P</th>
-                            <th class=" border p-0.5" >1e P</th>
-                            <th class=" border p-0.5" >2e P</th>
-                            <th class=" border p-0.5" >Max Ex</th>
-                            <th class=" border p-0.5" >Pts Ex</th>
-                            <th class=" border p-0.5" >Max Tri</th>
-                            <th class=" border p-0.5" >Pts Ob</th>
+                            <th class=" border p-0.5 text-left uppercase" >Cours </th>
+                            <th class=" border p-0.5 text-3" >Max P</th>
+                            <th class=" border p-0.5 text-3" >1e P</th>
+                            <th class=" border p-0.5 text-3" >2e P</th>
+                            <th class=" border p-0.5 text-3" >Max Ex</th>
+                            <th class=" border p-0.5 text-3" >Pts Ex</th>
+                            <th class=" border p-0.5 text-3" >Max Tri</th>
+                            <th class=" border p-0.5 text-3" >Pts Ob</th>
 
-                            <th class=" border p-0.5" >Max P</th>
-                            <th class=" border p-0.5" >3e P</th>
-                            <th class=" border p-0.5" >4e P</th>
-                            <th class=" border p-0.5" >Max Ex</th>
-                            <th class=" border p-0.5" >Pts Ex</th>
-                            <th class=" border p-0.5" >Max Tri</th>
-                            <th class=" border p-0.5" >Pts Ob</th>
+                            <th class=" border p-0.5 text-3" >Max P</th>
+                            <th class=" border p-0.5 text-3" >3e P</th>
+                            <th class=" border p-0.5 text-3" >4e P</th>
+                            <th class=" border p-0.5 text-3" >Max Ex</th>
+                            <th class=" border p-0.5 text-3" >Pts Ex</th>
+                            <th class=" border p-0.5 text-3" >Max Tri</th>
+                            <th class=" border p-0.5 text-3" >Pts Ob</th>
 
-                            <th class=" border p-0.5" >Max P</th>
-                            <th class=" border p-0.5" >5e P</th>
-                            <th class=" border p-0.5" >6e P</th>
-                            <th class=" border p-0.5" >Max Ex</th>
-                            <th class=" border p-0.5" >Pts Ex</th>
-                            <th class=" border p-0.5" >Max Tri</th>
-                            <th class=" border p-0.5" >Pts Ob</th>
+                            <th class=" border p-0.5 text-3" >Max P</th>
+                            <th class=" border p-0.5 text-3" >5e P</th>
+                            <th class=" border p-0.5 text-3" >6e P</th>
+                            <th class=" border p-0.5 text-3" >Max Ex</th>
+                            <th class=" border p-0.5 text-3" >Pts Ex</th>
+                            <th class=" border p-0.5 text-3" >Max Tri</th>
+                            <th class=" border p-0.5 text-3" >Pts Ob</th>
 
 
                             <th class=" border p-0.5" >Max</th>
@@ -89,7 +124,7 @@
                                             $maxExT1 += $examenT1[$i]->total;
                                         } else {
                                             
-                                            $examenT1[$i]->note = round($examenT1[$i]->note * $examenT1[$i]->total / $examenT1[$i]->max, 2);
+                                            $examenT1[$i]->note = round($examenT1[$i]->note * $examenT1[$i]->total / $examenT1[$i]->max, 1);
                                             $noteExT1 += $examenT1[$i]->note;
                                             $maxExT1 += $examenT1[$i]->total;
                                         }
@@ -100,7 +135,7 @@
                                             $maxP1 += $periode1[$i]->total;
                                         } else {
                                             
-                                            $periode1[$i]->note = round($periode1[$i]->note * $periode1[$i]->total / $periode1[$i]->max, 2);
+                                            $periode1[$i]->note = round($periode1[$i]->note * $periode1[$i]->total / $periode1[$i]->max, 1);
                                             $noteP1 += $periode1[$i]->note;
                                             $maxP1 += $periode1[$i]->total;
                                         }
@@ -111,7 +146,7 @@
                                             $maxP2 += $periode2[$i]->total;
                                         } else {
                                             
-                                            $periode2[$i]->note = round($periode2[$i]->note * $periode2[$i]->total / $periode2[$i]->max, 2);
+                                            $periode2[$i]->note = round($periode2[$i]->note * $periode2[$i]->total / $periode2[$i]->max, 1);
                                             $noteP2 += $periode2[$i]->note;
                                             $maxP2 += $periode2[$i]->total;
                                         }
@@ -125,7 +160,7 @@
                                             $maxExT2 += $examenT2[$i]->total;
                                         } else {
                                             
-                                            $examenT2[$i]->note = round($examenT2[$i]->note * $examenT2[$i]->total / $examenT2[$i]->max, 2);
+                                            $examenT2[$i]->note = round($examenT2[$i]->note * $examenT2[$i]->total / $examenT2[$i]->max, 1);
                                             $noteExT2 += $examenT2[$i]->note;
                                             $maxExT2 += $examenT2[$i]->total;
                                         }
@@ -136,7 +171,7 @@
                                             $maxP3 += $periode3[$i]->total;
                                         } else {
                                             
-                                            $periode3[$i]->note = round($periode3[$i]->note * $periode3[$i]->total / $periode3[$i]->max, 2);
+                                            $periode3[$i]->note = round($periode3[$i]->note * $periode3[$i]->total / $periode3[$i]->max, 1);
                                             $noteP3 += $periode3[$i]->note;
                                             $maxP3 += $periode3[$i]->total;
                                         }
@@ -147,7 +182,7 @@
                                             $maxP4 += $periode4[$i]->total;
                                         } else {
                                             
-                                            $periode4[$i]->note = round($periode4[$i]->note * $periode4[$i]->total / $periode4[$i]->max, 2);
+                                            $periode4[$i]->note = round($periode4[$i]->note * $periode4[$i]->total / $periode4[$i]->max, 1);
                                             $noteP4 += $periode4[$i]->note;
                                             $maxP4 += $periode4[$i]->total;
                                         }
@@ -161,7 +196,7 @@
                                             $maxExT3 += $examenT3[$i]->total;
                                         } else {
                                             
-                                            $examenT3[$i]->note = round($examenT3[$i]->note * $examenT3[$i]->total / $examenT3[$i]->max, 2);
+                                            $examenT3[$i]->note = round($examenT3[$i]->note * $examenT3[$i]->total / $examenT3[$i]->max, 1);
                                             $noteExT3 += $examenT3[$i]->note;
                                             $maxExT3 += $examenT3[$i]->total;
                                         }
@@ -172,7 +207,7 @@
                                             $maxP5 += $periode5[$i]->total;
                                         } else {
                                             
-                                            $periode5[$i]->note = round($periode5[$i]->note * $periode5[$i]->total / $periode5[$i]->max, 2);
+                                            $periode5[$i]->note = round($periode5[$i]->note * $periode5[$i]->total / $periode5[$i]->max, 1);
                                             $noteP5 += $periode5[$i]->note;
                                             $maxP5 += $periode5[$i]->total;
                                         }
@@ -183,7 +218,7 @@
                                             $maxP6 += $periode6[$i]->total;
                                         } else {
                                             
-                                            $periode6[$i]->note = round($periode6[$i]->note * $periode6[$i]->total / $periode6[$i]->max, 2);
+                                            $periode6[$i]->note = round($periode6[$i]->note * $periode6[$i]->total / $periode6[$i]->max, 1);
                                             $noteP6 += $periode6[$i]->note;
                                             $maxP6 += $periode6[$i]->total;
                                         }
@@ -192,7 +227,7 @@
 
                                     @endphp
                                     <tr>
-                                        <td class="border p-0.5 text-left"> {{$examenT1[$i]->nom }} </td>
+                                        <td class="border p-0.5 text-left uppercase"> {{$examenT1[$i]->nom }} </td>
                                         <td class="border p-0.5 text-center font-bold"> {{$periode1[$i]->total}} </td>
                                         <td class="border p-0.5 text-center"> {{$periode1[$i]->note}} </td>
                                         <td class="border p-0.5 text-center"> {{$periode2[$i]->note}} </td>
@@ -240,7 +275,7 @@
                             <tfoot>
                                 
                                 <tr>
-                                    <th class="border p-0.5" > Maxima General </th>
+                                    <th class="border p-0.5 uppercase" > Maxima General </th>
                                     <th class="border p-0.5" > {{$maxP1}} </th>
                                     <th class="border p-0.5" >{{$noteP1}}</th>
                                     <th class="border p-0.5" >{{$noteP2}}</th>
@@ -278,36 +313,210 @@
                                 </tr>
         
                                 <tr>
-                                    <th class="border p-0.5" > Pourcentage </th>
+                                    <th class="border p-0.5 uppercase" > Pourcentage </th>
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP1 * 100 / $maxP1, 2) }} %</td>
-                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP2 * 100 / $maxP2, 2) }} %</td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP1 * 100 / $maxP1, 1) }}%</td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP2 * 100 / $maxP2, 1) }}%</td>
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteExT1 * 100 / $maxExT1, 2) }} %</td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteExT1 * 100 / $maxExT1, 1) }}%</td>
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteTri1 * 100 / ($maxExT1*2), 2)}} %</td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteTri1 * 100 / ($maxExT1*2), 1)}}%</td>
 
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP3 * 100 / $maxP3, 2) }} %</td>
-                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP4 * 100 / $maxP4, 2) }} %</td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP3 * 100 / $maxP3, 1) }}%</td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP4 * 100 / $maxP4, 1) }}%</td>
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteExT2 * 100 / $maxExT2, 2) }} %</td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteExT2 * 100 / $maxExT2, 1) }}%</td>
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteTri2 * 100 / ($maxExT2 * 2), 2)}} %</td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteTri2 * 100 / ($maxExT2 * 2), 1)}}%</td>
 
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP5 * 100 / $maxP5, 2) }} %</td>
-                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP6 * 100 / $maxP6, 2) }} %</td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP5 * 100 / $maxP5, 1) }}%</td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ round($noteP6 * 100 / $maxP6, 1) }}%</td>
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteExT3 * 100 / $maxExT3, 2) }} %</td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteExT3 * 100 / $maxExT3, 1) }}%</td>
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteTri3 * 100 / ($maxExT3*2), 2)}} %</td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteTri3 * 100 / ($maxExT3*2), 1)}}%</td>
 
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
-                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteGeneral * 100 / ($maxGeneral), 2)}} %</td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ round($noteGeneral * 100 / ($maxGeneral), 1)}}%</td>
+                                </tr>
+                                @php
+                                    $pourcP1 = round($noteP1 * 100 / $maxP1, 1);
+                                    $pourcP2 = round($noteP2 * 100 / $maxP2, 1);
+                                    $pourcP3 = round($noteP3 * 100 / $maxP3, 1);
+                                    $pourcP4 = round($noteP4 * 100 / $maxP4, 1);
+                                    $pourcP5 = round($noteP5 * 100 / $maxP5, 1);
+                                    $pourcP6 = round($noteP6 * 100 / $maxP6, 1);
+
+                                    //examen
+
+                                    $pourcEx1 = round($noteExT1 * 100 / $maxExT1, 1);
+                                    $pourcEx2 = round($noteExT2 * 100 / $maxExT2, 1);
+                                    $pourcEx3 = round($noteExT3 * 100 / $maxExT3, 1);
+
+                                    //trimestre
+                                    
+                                    $pourcTrim1 = round($noteTri1 * 100 / ($maxExT1*2), 1);
+                                    $pourcTrim2 = round($noteTri2 * 100 / ($maxExT2 * 2), 1);
+                                    $pourcTrim3 = round($noteTri3 * 100 / ($maxExT3*2), 1);
+
+                                    //annee
+
+                                    $pourcAnnee = round($noteGeneral * 100 / ($maxGeneral), 1);
+                                @endphp
+                                <tr>
+                                    <th class="border p-0.5 uppercase" > Application </th>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" >
+
+                                        @php
+                                        function conduite($pourc){
+                                            if($pourc > 80){
+                                            return 'E';
+                                            }else{
+                                                if ($pourc > 70 && $pourc < 81){
+                                                    return 'TB';
+                                                }else{
+                                                        if ($pourc > 60 && $pourc < 81 ){
+                                                            return 'B';
+                                                    }else{
+                                                            if ($pourc > 49 && $pourc < 61){
+                                                                return 'AB';
+                                                    }else{
+                                                        return 'M';
+                                                    }
+                                                    }
+                                                    }
+                                                }
+                                            
+                                            }
+                                        @endphp
+                                        {{ conduite(round($noteP1 * 100 / $maxP1, 1)) }}
+                                    </td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ conduite(round($noteP2 * 100 / $maxP2, 1)) }}</td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT1 * 100 / $maxExT1, 1) }}%</td> --}}
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ conduite(round($noteTri1 * 100 / ($maxExT1*2), 1))}}</td>
+
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ conduite(round($noteP3 * 100 / $maxP3, 1)) }}</td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ conduite(round($noteP4 * 100 / $maxP4, 1)) }}</td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT2 * 100 / $maxExT2, 1)) }}%</td> --}}
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ conduite(round($noteTri2 * 100 / ($maxExT2 * 2), 1))}}</td>
+
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ conduite(round($noteP5 * 100 / $maxP5, 1)) }}</td>
+                                    <td class="border p-0.5 font-normal text-center" > {{ conduite(round($noteP6 * 100 / $maxP6, 1)) }}</td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT3 * 100 / $maxExT3, 1)) }}%</td> --}}
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" >{{ conduite(round($noteTri3 * 100 / ($maxExT3*2), 1))}}</td>
+
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteGeneral * 100 / ($maxGeneral), 1))}}%</td> --}}
+                                </tr>
+                                <tr>
+                                    <th class="border p-0.5 uppercase" > Conduite </th>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" >
+                                        @if ($cond1)
+                                            {{$cond1->conduite->abbreviation}}
+                                        @else
+                                            <a href="{{route('conduites.link',[$eleve->id,$p1->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
+                                        @endif
+                                    </td>
+                                    <td class="border p-0.5 font-normal text-center" >
+                                        @if ($cond2)
+                                            {{$cond2->conduite->abbreviation}}
+                                        @else
+                                            <a href="{{route('conduites.link',[$eleve->id,$p2->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
+                                        @endif
+                                    </td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT1 * 100 / $maxExT1, 1) }}%</td> --}}
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteTri1 * 100 / ($maxExT1*2), 1)}}%</td> --}}
+
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" >
+                                        @if ($cond3)
+                                            {{$cond3->conduite->abbreviation}}
+                                        @else
+                                            <a href="{{route('conduites.link',[$eleve->id,$p3->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
+                                        @endif
+                                    </td>
+                                    <td class="border p-0.5 font-normal text-center" >
+                                        @if ($cond4)
+                                            {{$cond4->conduite->abbreviation}}
+                                        @else
+                                            <a href="{{route('conduites.link',[$eleve->id,$p4->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
+                                        @endif
+                                    </td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT2 * 100 / $maxExT2, 1) }}%</td> --}}
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteTri2 * 100 / ($maxExT2 * 2), 1)}}%</td> --}}
+
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center" >
+                                        @if ($cond6)
+                                            {{$cond6->conduite->abbreviation}}
+                                        @else
+                                            <a href="{{route('conduites.link',[$eleve->id,$p5->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
+                                        @endif
+                                    </td>
+                                    <td class="border p-0.5 font-normal text-center" >
+                                        @if ($cond6)
+                                            {{$cond6->conduite->abbreviation}}
+                                        @else
+                                            <a href="{{route('conduites.link',[$eleve->id,$p6->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
+                                        @endif
+                                    </td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT3 * 100 / $maxExT3, 1) }}%</td> --}}
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteTri3 * 100 / ($maxExT3*2), 1)}}%</td> --}}
+
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
+                                    {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteGeneral * 100 / ($maxGeneral), 1)}}%</td> --}}
                                 </tr>
                         </tfoot>
                     </table>
+                    @if (($resultatP1 !== $pourcP1 || $resultatP2 !== $pourcP2 || $resultatP3 !== $pourcP3 || $resultatP4 !== $pourcP4 || $resultatP5 !== $pourcP5 || $resultatP6 !== $pourcP6 || $resultatEx1 !== $pourcEx1 || $resultatEx2 !== $pourcEx2 || $resultatEx3 !== $pourcEx3 || $resultatTri1 !== $pourcTrim1 || $resultatTri2 !== $pourcTrim2 || $resultatTri3 !== $pourcTrim3 || $resultatAnnee !== $pourcAnnee) && Auth::user()->isEnseignant())
+                        <form class="mr-4 self-end" action="{{route('resultat.bulletin.store', [$annee_scolaire->id,$eleve->id])}}" method="post">
+                            @csrf
+                            <input type="hidden" name="periode1" value="{{$pourcP1}}">
+                            <input type="hidden" name="periode2" value="{{$pourcP2}}">
+                            <input type="hidden" name="periode3" value="{{$pourcP3}}">
+                            <input type="hidden" name="periode4" value="{{$pourcP4}}">
+                            <input type="hidden" name="periode5" value="{{$pourcP5}}">
+                            <input type="hidden" name="periode6" value="{{$pourcP6}}">
+                            <input type="hidden" name="examen1" value="{{$pourcEx1}}">
+                            <input type="hidden" name="examen2" value="{{$pourcEx2}}">
+                            <input type="hidden" name="examen3" value="{{$pourcEx3}}">
+                            <input type="hidden" name="trimestre1" value="{{$pourcTrim1}}">
+                            <input type="hidden" name="trimestre2" value="{{$pourcTrim2}}">
+                            <input type="hidden" name="trimestre3" value="{{$pourcTrim3}}">
+                            <input type="hidden" name="annee" value="{{$pourcAnnee}}">
+                            <x-button title="Valider le bulletin">Valider ✅</x-button>
+                        </form>
+                    @endif
+                    </div>
                 @else
                     <p class="text-bold text-2xl text-red-500 text-center">
                        Buelletin Indisponible 

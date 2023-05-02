@@ -10,9 +10,12 @@ use App\Models\EleveExamen;
 use Illuminate\Http\Request;
 use App\Http\Middleware\TrimStrings;
 use App\Models\AnneeScolaire;
+use App\Models\Frequentation;
 use App\Models\Periode;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
@@ -25,15 +28,31 @@ class EleveController extends Controller
      */
 
     protected $page = 'Eleves';
+    protected $parent;
 
     public function index() 
     {   
-        // dd(10);
         // dd($_SESSION['current']);
-        if (DateController::checkYears()) {
-            $eleves = Eleve::latest()
+        $eleves = Eleve::latest()
                 ->limit(10)
                 ->get();
+        if (DateController::checkYears()) {
+            if (Auth::user()->isParent()) {
+               $eleves = Auth::user()->parrain->eleves;
+            }
+
+            if (Auth::user()->isEnseignant()) {
+                if(Auth::user()->classe() !== null){
+                    $eleves = Auth::user()->classe->eleves();
+                    // dd($eleves);
+                }
+            }
+            
+            if (Auth::user()->isAdmin()){
+                $eleves = Eleve::latest()
+                ->limit(10)
+                ->get();
+            }
             $lastmatricule = Eleve::all()->last()->matricule;
             $initial = explode('/', $lastmatricule, -1)[0];
             $middle = str_replace('E', '', $initial);
@@ -46,6 +65,7 @@ class EleveController extends Controller
             return view('eleve.eleves')
                 ->with('page_name', $this->page)
                 ->with('items', $eleves)
+                ->with('parent', $this->parent)
                 ->with('last_matricule', $matricule);
         }
         return view('origin')->with('page_name', "Ecole");
@@ -106,6 +126,8 @@ class EleveController extends Controller
      */
     public function show(Request $request, $id)
     {
+        //die(now());
+
         if ($request->_method == 'PUT') {
             $request->validate([
                 'matricule' => ['required', 'string', 'max:255', 'unique:employers'],
@@ -121,10 +143,16 @@ class EleveController extends Controller
             return  $this->update($request, $id);
         }
         $eleve = Eleve::findOrFail($id);
+        
 
-
-        ///joker
         $eleves = Eleve::all();
+        if (Auth::user()->isEnseignant()) {
+            if(Auth::user()->classe() !== null){
+                $eleves = Auth::user()->classe->eleves();
+                // dd($eleves);
+            }
+        }
+        ///joker
         $index = 0;
         for ($i = 0; $i < $eleves->count(); $i++) {
             if ($eleves[$i]->id === $eleve->id) {
@@ -261,5 +289,88 @@ class EleveController extends Controller
             ->with('search',  $request->search)
             ->with('items', $items)
             ->with('last_matricule', $matricule);
+    }
+
+    public function searchEleve(Request $request, $parent)
+    {
+
+
+        $items = Eleve::where('nom', 'like', '%' . $request->search . '%')
+            ->orWhere('matricule', 'like', '%' . $request->search . '%')
+            ->orWhere('lieu_naissance', 'like', '%' . $request->search . '%')
+            ->orWhere('prenom', 'like', '%' . $request->search . '%')
+            ->get();
+        $lastmatricule = Eleve::all()->last()->matricule;
+        $initial = explode('/', $lastmatricule, -1)[0];
+        $middle = str_replace('E', '', $initial);
+        $matricule = 'E' . intval($middle) + 1 . '/' . date('Y');
+        //return $eleves;
+        // return response()->json([
+        //     "eleves" => $eleves
+        // ]);
+        return view('eleve.eleves')
+            ->with('page_name', 'Eleve-Parent')
+            ->with('search',  $request->search)
+            ->with('items', $items)
+            ->with('parent', $parent)
+            ->with('last_matricule', $matricule);
+    }
+
+    public function linkParent($parent)
+    {
+        $this->parent = $parent;
+        $this->page = 'Eleve-Parent';
+
+        return $this->index();
+    }
+
+    public function fichePaiements($id)
+    {   
+        $frequentation = Frequentation::findOrFail($id);
+        $eleve = Eleve::findOrFail($id);
+    }
+
+    public function createPaiements(Request $request, $eleve)
+    {
+        $request->validate([
+            'frequentation' =>  ['required', 'string', 'max:255'],
+        ]);
+
+        return redirect()->route('eleves.paiements.show',[$eleve, $request->frequentation]);
+    }
+    public function showPaiements($eleve, $frequentation)
+    {
+        $el = Eleve::find($eleve);
+        $freq = Frequentation::find($frequentation);
+        $paiements = $freq->paiement_frais;
+        $annees = $el->frequentations;
+        $curFreq = $el->currentFrequentation();
+        $frais = $freq->classe->niveau->frais;
+
+        $data = array();
+        foreach($frais as $ff){
+            $partials = array();
+            $partials['frais'] = $ff;
+            $total = 0;
+            foreach($paiements as $paye) {
+                if($paye->frais->id === $ff->id){
+                    $total +=  (int)$paye->montant_paye;
+                }
+            }
+            $partials['total'] = $total;
+            array_push($data, $partials);
+        };
+
+        // dd($data[0]['frais']);
+
+        return view('frais.fiche')
+                    ->with('page_name', 'Paiements')
+                    ->with('paiements', $paiements)
+                    ->with('annees', $annees)
+                    ->with('freq', $freq)
+                    ->with('frais', $frais)
+                    ->with('data', $data)
+                    ->with('item', $el);
+        dd(10);
     }
 }

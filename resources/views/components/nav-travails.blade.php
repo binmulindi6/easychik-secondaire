@@ -2,10 +2,10 @@
     <div class="flex flex-row gap-4 sm-max:justify-center">
         @if (str_contains('Evaluations', $pagename))
             <div
-                class=" btn-create flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
             @else
                 <div
-                    class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                    class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
         @endif
         @if ($pagename != 'Evaluations / Create' && $pagename != 'Evaluations')
             <a class="w-full" href="{{ route('evaluations.create') }}">
@@ -26,10 +26,10 @@
 
     @if (str_contains('Evaluations', $pagename))
         <div
-            class="btn-display flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+            class="btn-display items-center flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
         @else
             <div
-                class="btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
     @endif
     @if ($pagename != 'Evaluations / Create' && $pagename != 'Evaluations')
         <a href="{{ route('evaluations.index') }}">
@@ -49,10 +49,10 @@
 
 @if (str_contains('Examens', $pagename))
     <div
-        class="btn-create  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+        class="btn-create items-center  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
     @else
         <div
-            class="btn-create hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+            class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
 @endif
 @if ($pagename != 'Examens' && $pagename != 'Examens / Create')
     <a href="{{ route('examens.create') }}">
@@ -73,10 +73,10 @@
 
 @if (str_contains('Examens', $pagename))
     <div
-        class="btn-display flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+        class="btn-display items-center flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
     @else
         <div
-            class="btn-display flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+            class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
 @endif
 @if ($pagename != 'Examens' && $pagename != 'Examens / Create')
     <a href="{{ route('examens.index') }}">

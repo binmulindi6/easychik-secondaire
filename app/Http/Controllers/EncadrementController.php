@@ -25,7 +25,9 @@ class EncadrementController extends Controller
                         ->get();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::all();
-        $users = User::where('isAdmin', '=', '0')->get();
+        $users = User::where('isAdmin', '=', '0')
+                ->where('parrain_id', null)
+                ->get();
         // dd($users);
         return view('users.encadrements')
                 ->with('items',$encadrements)
@@ -112,7 +114,7 @@ class EncadrementController extends Controller
         $encadrement = Encadrement::find($id);
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::all();
-        $users = User::where('isAdmin', '=', '0')->get();
+        $users = User::where('isAdmin', '=', '0')->where('parrain_id', null)->get();
         // dd($users);
         return view('users.encadrements')
         ->with('items',$encadrements)

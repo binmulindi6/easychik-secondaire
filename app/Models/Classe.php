@@ -7,6 +7,7 @@ use App\Models\Cours;
 use App\Models\Niveau;
 use App\Models\Encadrement;
 use App\Models\Frequentation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,13 @@ class Classe extends Model
         'nom'
     ];
 
+
+    public function nomCourt(){
+        return $this->niveau->numerotation . 'e ' . $this->nom;
+    }
+    public function nomComplet(){
+        return $this->niveau->nom . ' ' . $this->nom;
+    }
 
     //link to the user
     public function user(){
@@ -48,15 +56,111 @@ class Classe extends Model
     {
         return $this->hasMany(Cours::class);
     }
+    
+    public function evaluations()
+    {   
+        $annee = AnneeScolaire::current();
+        $cours = $this->cours;
+        $evs = array();
+        if(count($cours) > 0){
+            foreach($cours as $cour){
+                if (count($cour->evaluations) > 0) {
+                    foreach($cour->evaluations as $evaluation){
+                        array_push($evs, $evaluation);
+                    }
+                }
+                // dd($cour->evaluations);
+            }
+        }
+        return $evs;
+        // dd($evs[0]->periode);
+
+        // // $evaluations = 
+        // return($cours[2]->evaluations[0]->periode);
+        // // return $this->hasMany(Cours::class);
+    }
+
+    public function currentEvaluations()
+    {   
+        $annee = AnneeScolaire::current();
+        $cours = $this->cours;
+        $evs = array();
+        if(count($cours) > 0){
+            foreach($cours as $cour){
+                if (count($cour->evaluations) > 0) {
+                    foreach($cour->evaluations as $evaluation){
+                        if($evaluation->periode !== null && $evaluation->periode->trimestre->annee_scolaire->id === $annee->id){
+                            array_push($evs, $evaluation);
+                        }
+                    
+                    }
+                }
+            }
+        }
+
+        return $evs;
+        // dd($evs[0]->periode);
+
+        // // $evaluations = 
+        // return($cours[2]->evaluations[0]->periode);
+        // // return $this->hasMany(Cours::class);
+    }
+
+    public function examens()
+    {   
+        $annee = AnneeScolaire::current();
+        $cours = $this->cours;
+        $evs = array();
+        if(count($cours) > 0){
+            foreach($cours as $cour){
+                if (count($cour->examens) > 0) {
+                    foreach($cour->examens as $examen){
+                        array_push($evs, $examen);
+                    }
+                }
+            }
+        }
+
+        return $evs;
+    }
+    
+    public function currentExamens()
+    {   
+        $annee = AnneeScolaire::current();
+        $cours = $this->cours;
+        $evs = array();
+        if(count($cours) > 0){
+            foreach($cours as $cour){
+                if (count($cour->examens) > 0) {
+                    foreach($cour->examens as $examen){
+                        if($examen->trimestre !== null && $examen->trimestre->annee_scolaire->id === $annee->id){
+                            array_push($evs, $examen);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $evs;
+    }
+
+
 
     public function eleves(){
         $annee = AnneeScolaire::current();
-        $eleves = Eleve::join('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
+        // $eleves = DB::table('eleves')
+        //                     ->leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
+        //                     ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+        //                     ->where('frequentations.classe_id', '=', $this->id)
+        //                     ->select('eleves.*')
+        //                     ->get();
+        $eleves = Eleve::leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
                             ->where('frequentations.annee_scolaire_id', '=', $annee->id)
                             ->where('frequentations.classe_id', '=', $this->id)
-                            //->select('eleves.id')
+                            ->select('eleves.*')
+                            ->orderBy('eleves.nom', 'asc')
                             ->get();
-        //dd($eleves);
+        // dd($eleves[0]);
         return $eleves;
     }
 
