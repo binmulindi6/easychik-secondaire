@@ -4,7 +4,7 @@ const link = queryString.origin;
 console.log(link);
 
 let data;
-axios.get('http://localhost/sas/public/charts')
+axios.get(link + '/charts')
   .then(res => {
     console.log(res.data);
     data = res.data;
