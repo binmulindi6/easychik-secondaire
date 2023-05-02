@@ -130,6 +130,10 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::post('resultat/trimestre/{trimestre_id}/{eleve_id}', [ResultatController::class, 'trimestreStore'])->name('resultat.trimestre.store');
     Route::post('resultat/bulletin/{annee_scolaire_id}/{eleve_id}', [ResultatController::class, 'bulletinStore'])->name('resultat.bulletin.store');
     
+    //classe resultats
+    Route::get('classes/{id}/resultat/periode/{periode_id}/{annee_scolaire_id}', [ClasseController::class, 'resultatPeriode'])->name('classes.resultat.periode');
+    Route::get('classes/{id}/resultat/trimestre/{trimestre_id}/{annee_scolaire_id}', [ClasseController::class, 'resultatTrimestre'])->name('classes.resultat.trimestre');
+    Route::get('classes/{id}/resultat/bulletin/{annee_scolaire_id}', [ClasseController::class, 'resultatAnnee'])->name('classes.resultat.annee');
 
     //Travails
     Route::get('travails', [TravailController::class, 'index'])->name('travails.index');

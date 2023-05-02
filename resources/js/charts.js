@@ -3,8 +3,10 @@ const queryString = window.location;
 const link = queryString.origin;
 console.log(link);
 
+const link2 = link === "http://sas.test" ? link : link+"/sas/public"
+
 let data;
-axios.get(link + '/charts')
+axios.get(link2 + '/charts')
   .then(res => {
     console.log(res.data);
     data = res.data;

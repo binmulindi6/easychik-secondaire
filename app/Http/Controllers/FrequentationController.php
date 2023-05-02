@@ -24,6 +24,7 @@ class FrequentationController extends Controller
         $frequentations = Frequentation::latest()
             ->limit(10)
             ->get();
+
         $annee = AnneeScolaire::current();
         // dd(Auth::user()->classe);
         if (Auth::user()->isEnseignant()) {

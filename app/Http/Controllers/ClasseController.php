@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Classe;
-use Illuminate\Http\Request;
-use App\Models\CategorieCours;
 use App\Models\Niveau;
+use App\Models\Periode;
+use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
+use App\Models\CategorieCours;
+use App\Models\Trimestre;
 use Illuminate\Support\Facades\DB;
 
 class ClasseController extends Controller
@@ -82,7 +85,13 @@ class ClasseController extends Controller
         if ($request->_method == 'PUT') {
             return  $this->update($request, $id);
         }
-        dd("show");
+        $classe = Classe::findOrFail($id);
+        $annee = AnneeScolaire::current();
+
+        return view('classe.profile')
+            ->with('page_name', "Profile")
+            ->with('annee_scolaire', $annee)
+            ->with('classe', $classe);
     }
 
     /**
@@ -160,4 +169,151 @@ class ClasseController extends Controller
         $classe->delete();
         return redirect()->route("classes.index");
     }
+
+    public function resultatPeriode($id,$periode_id,$annee_scolaire_id)
+    {
+        $classe = Classe::findOrFail($id);
+        $periode = Periode::findOrFail($periode_id);
+        $annee = AnneeScolaire::findOrFail($annee_scolaire_id);
+        // $eleves = $classe->elevesAnnee($annee);
+
+        $classResults = $classe->resultats();
+        $res = array();
+        // arsort($classResults);
+        foreach($classResults as $resultat){
+            if($resultat->frequentation->eleve !== null){
+                $data = array();
+                $data['resultat'] = $this->checkPeriode($resultat, $periode);
+                $data['eleve'] = $resultat->frequentation->eleve->nomComplet();
+                $data['id'] = $resultat->frequentation->eleve->id;
+                array_push($res, $data);
+            }
+        }
+        arsort($res);
+        $resultats = array();
+        foreach($res as $final ){
+            array_push($resultats, $final);
+        }
+        // dd($resultats);  
+
+        return view('classe.resultats')
+            ->with('page_name', "Resultats / Classe")
+            ->with('annee_scolaire', $annee)
+            ->with('periode', $periode)
+            ->with('data', $resultats)
+            ->with('classe', $classe);
+    }
+    public function resultatTrimestre($id,$trimestre_id,$annee_scolaire_id)
+    {
+        $classe = Classe::findOrFail($id);
+        $trimestre = Trimestre::findOrFail($trimestre_id);
+        $annee = AnneeScolaire::findOrFail($annee_scolaire_id);
+        // $eleves = $classe->elevesAnnee($annee);
+
+        $classResults = $classe->resultats();
+        $res = array();
+        // dd($trimestre);
+        // arsort($classResults);
+        foreach($classResults as $resultat){
+            if($resultat->frequentation->eleve !== null){
+                $data = array();
+                $data['resultat'] = $this->checkTrimestre($resultat, $trimestre);
+                $data['eleve'] = $resultat->frequentation->eleve->nomComplet();
+                $data['id'] = $resultat->frequentation->eleve->id;
+                array_push($res, $data);
+            }
+        }
+        arsort($res);
+        $resultats = array();
+        foreach($res as $final ){
+            array_push($resultats, $final);
+        }
+
+        return view('classe.resultats')
+            ->with('page_name', "Resultats / Classe")
+            ->with('annee_scolaire', $annee)
+            ->with('trimestre', $trimestre)
+            ->with('data', $resultats)
+            ->with('classe', $classe);
+    }
+    public function resultatAnnee($id,$annee_scolaire_id)
+    {   
+        $classe = Classe::findOrFail($id);
+        $annee = AnneeScolaire::findOrFail($annee_scolaire_id);
+
+        $classResults = $classe->resultats();
+        $res = array();
+        // dd($trimestre);
+        // arsort($classResults);
+        foreach($classResults as $resultat){
+            // dd($resultat);
+            if($resultat->frequentation->eleve !== null){
+                $data = array();
+                $data['resultat'] = $resultat->annee;
+                $data['eleve'] = $resultat->frequentation->eleve->nomComplet();
+                $data['id'] = $resultat->frequentation->eleve->id;
+                array_push($res, $data);
+            }
+        }
+        arsort($res);
+        $resultats = array();
+        foreach($res as $final ){
+            array_push($resultats, $final);
+        }
+
+        return view('classe.resultats')
+            ->with('page_name', "Resultats / Classe")
+            ->with('annee_scolaire', $annee)
+            ->with('data', $resultats)
+            ->with('classe', $classe);
+    }
+
+
+    //methods
+    public function checkPeriode($resultat, $periode)
+    {
+        // $data ;
+        switch ($periode->nom) {
+            case 'PREMIERE PERIODE':
+                $data = $resultat->periode1;
+                break;
+            case 'DEUXIEME PERIODE':
+                $data = $resultat->periode2;
+                break;
+            case 'TROISIEME PERIODE':
+                $data = $resultat->periode3;
+                break;
+            case 'QUATRIEME PERIODE':
+                $data = $resultat->periode4;
+                break;
+            case 'CINQUIME PERIODE':
+                $data = $resultat->periode5;
+                break;
+            case 'SIXIEME PERIODE':
+                $data = $resultat->periode6;
+                break;
+        }
+
+        return $data;
+    }
+
+    public function checkTrimestre($resultat, $trimestre)
+    {
+        // dd($trimestre);
+        $trim = 0.00 ;
+        switch ($trimestre->nom) {
+                case 'PREMIER TRIMESTRE':
+                    $trim = $resultat->trimestre1;
+                break;
+                case 'DEUXIEME TRIMESTRE':
+                    $trim = $resultat->trimestre2;
+                    break;
+                case 'TROISIEME TRIMESTRE':
+                    $trim = $resultat->trimestre3;
+                break;
+        }
+
+        return $trim;
+    }
 }
+

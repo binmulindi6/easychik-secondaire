@@ -14,89 +14,100 @@
         @if (isset($self))
             <div class="flex items-center">
               {{-- <p class="mb-0 dark:text-white/80">Edit Profile</p> --}}
-            <span class="leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">Informations D'employé</span>
-              <button type="button" class="btn-edit inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-size-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Modifier</button>
-            </div>
-            <form method="PUT" action="{{ route('employers.update', $self->id) }}">
-                @csrf
-                {{ method_field('PUT') }}
-                <!-- Email Address -->
-                <div class="flex flex-col md:flex-row md:gap-5">
-                    <div class="mt-4 w-full">
-                        <x-label for="matricule" :value="__('Matricule')" />
-                        <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
-                            :value="$self->matricule" required />
-                    </div>
-                    <div class="mt-4 w-full">
-                        <x-label for="nom" :value="__('Nom et Post-Nom')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
-                            :value="$self->nom" required />
-                    </div>
-                </div>
-                <div class="flex flex-col md:flex-row md:gap-5">
-                    <div class="mt-4 w-full">
-                        <x-label for="prenom" :value="__('Prenom')" />
-                        <x-input id="prenom" class="block mt-1 w-full" type="text" name="prenom"
-                            :value="$self->prenom" required />
-                    </div>
-                    <div class="mt-4 w-full">
-                        <x-label for="sexe" :value="__('Sexe')" />
-                        <div class="block mt-3">
-                            Masculin : @if ($self->sexe === 'M')
-                                <input type="radio" name="sexe" id="sexe-m" value="M" required checked>
-                            @else
-                                <input type="radio" name="sexe" id="sexe-m" value="M" required>
-                            @endif
-                            Feminin : @if ($self->sexe === 'F')
-                                <input type="radio" name="sexe" id="sexe-f" value="F" required checked>
-                            @else
-                                <input type="radio" name="sexe" id="sexe-f" value="F" required>
-                            @endif
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="flex flex-col md:flex-row md:gap-5">
-                    <div class="mt-4 w-full">
-                        <x-label for="date_naissance" :value="__('Date de Naissance')" />
-                        <x-input id="date-naissance" class="block mt-1 w-full" type="date" name="date_naissance"
-                            :value="$self->date_naissance" required />
-                    {{-- </div>
-                    <div class="mt-4 w-full"> --}}
-                        {{-- <x-label for="formation" :value="__('Formation')" /> --}}
-                        <x-input id="formation" class="block mt-1 w-full" type="hidden" name="formation"
-                            :value="$self->formation" required />
-                    </div>
-                    
-                </div>
-                <div class="flex flex-col md:flex-row md:gap-5">
-                    <div class="mt-4 w-full">
-                        {{-- <x-label for="diplome" :value="__('Diplome')" /> --}}
-                        <x-input id="diplome" class="block mt-1 w-full" type="hidden" name="diplome"
-                            :value="$self->diplome" required />
-                    </div>
-                    <div class="mt-4 w-full">
-                        {{-- <x-label for="niveau_etude" :value="__('Niveau d\'etude ')" /> --}}
-                        <x-input id="niveau_etude" class="block mt-1 w-full" type="hidden" name="niveau_etude"
-                            :value="$self->niveau_etude" required />
-                    </div>
-                </div>
-                {{-- <div class="mt-4 w-full"> --}}
-                    {{-- <x-label for="nom" :value="__('Fonction')" /> --}}
-                    <input type="hidden" value={{$self->fonctions[0]}} name="fonction">
-                    {{-- <x-select :hidden="true" :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select> --}}
-                {{-- </div> --}}
-                <div class="flex gap-5">
-                    <div class="btn-save mt-4 hidden">
-                        <x-button>Enregistrer</x-button>
-                    </div>
-                    <!--div class="mt-4">
-                                <x-button>Annuler</x-button>
-                            </div-->
+              <span class="leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">
+                @if (!Auth::user()->isParent())
+                Informations D'employé
+                @else
+                Informations du Compte
+                @endif   
+              </span>
+                <button type="button" class="btn-edit inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-size-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Modifier</button>
+              </div>
+              @if (!Auth::user()->isParent())
+                <form method="PUT" action="{{ route('parents.update', $self->id) }}">
+                  @csrf
+                  {{ method_field('PUT') }}
+                  <!-- Email Address -->
+                  <div class="flex flex-col md:flex-row md:gap-5">
+                      <div class="mt-4 w-full">
+                          <x-label for="matricule" :value="__('Matricule')" />
+                          <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
+                              :value="$self->matricule" required />
+                      </div>
+                      <div class="mt-4 w-full">
+                          <x-label for="nom" :value="__('Nom et Post-Nom')" />
+                          <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
+                              :value="$self->nom" required />
+                      </div>
+                  </div>
+                  <div class="flex flex-col md:flex-row md:gap-5">
+                      <div class="mt-4 w-full">
+                          <x-label for="prenom" :value="__('Prenom')" />
+                          <x-input id="prenom" class="block mt-1 w-full" type="text" name="prenom"
+                              :value="$self->prenom" required />
+                      </div>
+                      <div class="mt-4 w-full">
+                          <x-label for="sexe" :value="__('Sexe')" />
+                          <div class="block mt-3">
+                              Masculin : @if ($self->sexe === 'M')
+                                  <input type="radio" name="sexe" id="sexe-m" value="M" required checked>
+                              @else
+                                  <input type="radio" name="sexe" id="sexe-m" value="M" required>
+                              @endif
+                              Feminin : @if ($self->sexe === 'F')
+                                  <input type="radio" name="sexe" id="sexe-f" value="F" required checked>
+                              @else
+                                  <input type="radio" name="sexe" id="sexe-f" value="F" required>
+                              @endif
+                          </div>
+                      </div>
+                      
+                  </div>
+                  <div class="flex flex-col md:flex-row md:gap-5">
+                      <div class="mt-4 w-full">
+                          <x-label for="date_naissance" :value="__('Date de Naissance')" />
+                          <x-input id="date-naissance" class="block mt-1 w-full" type="date" name="date_naissance"
+                              :value="$self->date_naissance" required />
+                      {{-- </div>
+                      <div class="mt-4 w-full"> --}}
+                          {{-- <x-label for="formation" :value="__('Formation')" /> --}}
+                          <x-input id="formation" class="block mt-1 w-full" type="hidden" name="formation"
+                              :value="$self->formation" required />
+                      </div>
+                      
+                  </div>
+                  <div class="flex flex-col md:flex-row md:gap-5">
+                      <div class="mt-4 w-full">
+                          {{-- <x-label for="diplome" :value="__('Diplome')" /> --}}
+                          <x-input id="diplome" class="block mt-1 w-full" type="hidden" name="diplome"
+                              :value="$self->diplome" required />
+                      </div>
+                      <div class="mt-4 w-full">
+                          {{-- <x-label for="niveau_etude" :value="__('Niveau d\'etude ')" /> --}}
+                          <x-input id="niveau_etude" class="block mt-1 w-full" type="hidden" name="niveau_etude"
+                              :value="$self->niveau_etude" required />
+                      </div>
+                  </div>
+                  {{-- <div class="mt-4 w-full"> --}}
+                      {{-- <x-label for="nom" :value="__('Fonction')" /> --}}
+                      {{-- @if() --}}
+                      @if (!Auth::user()->isParent())
+                        <input type="hidden" value={{$self->fonctions[0]}} name="fonction">
+                      @endif
+                      {{-- <x-select :hidden="true" :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select> --}}
+                  {{-- </div> --}}
+                  <div class="flex gap-5">
+                      <div class="btn-save mt-4 hidden">
+                          <x-button>Enregistrer</x-button>
+                      </div>
+                      <!--div class="mt-4">
+                                  <x-button>Annuler</x-button>
+                              </div-->
 
-                </div>
-            </form>
-          @endif
+                  </div>
+              </form>
+              @endif
+            @endif
         </div>
         <div class=" hidden w-full max-w-full shrink-0  md:flex-0">
             <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">

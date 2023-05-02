@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Date\DateController;
 use App\Models\Eleve;
+use App\Models\Classe;
+use App\Models\Periode;
 use App\Models\Fonction;
 use App\Models\Trimestre;
 use App\Models\EleveExamen;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use App\Http\Middleware\TrimStrings;
 use App\Models\AnneeScolaire;
 use App\Models\Frequentation;
-use App\Models\Periode;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use App\Http\Middleware\TrimStrings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Support\Jsonable;
+use App\Http\Controllers\Date\DateController;
 
 class EleveController extends Controller
 {
@@ -145,6 +146,7 @@ class EleveController extends Controller
         $eleve = Eleve::findOrFail($id);
         
 
+        ///
         $eleves = Eleve::all();
         if (Auth::user()->isEnseignant()) {
             if(Auth::user()->classe() !== null){

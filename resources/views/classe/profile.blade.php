@@ -100,59 +100,115 @@
         </div>
         <div class=" flex flex-row w-full justify-between gap-5">
 
+          <div class="flex flex-col gap-2 w-1/3">
+              <div class="shadow-2xl text-center relative bg-white rounded-5 p-5 w-full  z-20">
+                  <span class="text-center font-bold text-base"> Historique de Frequentations </span>
+                  <div class="flex-auto px-0 pt-0 pb-2">
+                      <div class="p-0 overflow-x-auto">
+                          <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                              <thead class="align-bottom">
+                                  <th
+                                      class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                      Annee Scolaire
+                                  </th>
+                                  <th
+                                      class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                      Eleve
+                                  </th>
+                              </thead>
+                              <tbody>
+
+                                  @if ($classe->frequentations->count() > 0)
+                                  @php
+                                      $frequentations = $classe->frequentations;
+                                  @endphp
+                                      {{-- @foreach ($classe->frequentations as $frequetation) --}}
+                                          <tr class=" rounded-2xl hover:bg-slate-100">
+                                              <td
+                                                  class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                  {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
+                                                      {{ $frequentations[0]->annee_scolaire === null ? 'null' : $frequentations[0]->annee_scolaire->nom }}
+                                                  {{-- </a> --}}
+                                              </td>
+                                              <td
+                                                  class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                  {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
+                                                      {{ $classe->frequentations->count() }}
+                                                  {{-- </a> --}}
+                                              </td>
+                                          </tr>
+                                      {{-- @endforeach --}}
+                                  @endif
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
           {{-- @if($item->classe() && $item->currentFrequentation() && $item->currentFrequentation()->annee_scolaire->id === $annee_scolaire->id ) --}}
-          <div  class="shadow-2xl relative bg-white rounded-5 p-5 w-full  z-20">
-              <div id="printable" class="flex flex-col px-0 pt-0 ">
-                  <p class="text-center font-bold text-base uppercase"> Resultats 
-                    @if (isset($periode))
-                        {{ $periode->nom . " " . $periode->trimestre->nom . " " . "annee scolaire " .$annee_scolaire->nom }} 
-                    @else
-                        @if (isset($trimestre))
-                        {{ $trimestre->nom . " " . "annee scolaire " . $annee_scolaire->nom }} 
-                        @else
-                        {{ "annee scolaire ".$annee_scolaire->nom }} 
-                        @endif
-                    @endif
-                </p>
+          <div class="shadow-2xl relative bg-white rounded-5 p-5 w-full  z-20">
+              <p class="text-center font-bold text-base uppercase"> Resultats Scolaire {{ $annee_scolaire->nom }} </p>
+              <div class="flex flex-col px-0 pt-0 pb-2 gap-3">
+                  <div class="flex flex-row justify-between gap-3 p-0 overflow-x-auto">
                       <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                           <thead class="align-bottom">
                               <th
                                   class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                  Place
+                                  Periodes
                               </th>
+                          </thead>
+                          <tbody>
+                              @foreach ($annee_scolaire->trimestres as $trimestre)
+                                  @foreach ($trimestre->periodes as $periode)
+                                      <tr class=" rounded-2xl hover:bg-slate-100  cursor-pointer">
+                                          <td
+                                              class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
+                                              <a href="{{ route('classes.resultat.periode', [$classe->id,$periode->id,$annee_scolaire->id]) }}">
+                                                  {{ $periode->nom }}
+                                              </a>
+                                          </td>
+                                      </tr>
+                                  @endforeach
+                              @endforeach
+
+                          </tbody>
+                      </table>
+                      <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                          <thead class="align-bottom">
                               <th
                                   class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                 ELEVE
-                              </th>
-                              <th
-                                  class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                  Pourcentage
+                                  Trimetre
                               </th>
                           </thead>
                           <tbody>
 
-                              @foreach ($data as $index => $resultat)
+                              @foreach ($annee_scolaire->trimestres as $trimestre)
                                   <tr class=" rounded-2xl hover:bg-slate-100 cursor-pointer">
                                       <td
                                           class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
-                                          {{ $index+1 }}
-                                      </td>
-                                      <td
-                                          class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
-                                          <a href="{{ route('eleves.show', $resultat['id']) }}">
-                                              {{ $resultat['eleve'] }}
+                                          <a href="{{ route('classes.resultat.trimestre', [$classe->id,$trimestre->id,$annee_scolaire->id]) }}">
+                                              {{ $trimestre->nom }}
                                           </a>
-                                      </td>
-                                      <td
-                                          class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
-                                          <span>{{ $resultat['resultat'] }} %</span>  
-                                          
                                       </td>
                                   </tr>
                               @endforeach
                           </tbody>
                       </table>
+                  </div>
               </div>
+                  <div class="px-3 mx-auto mt-4 sm:my-auto sm:mr-0  md:flex-none">
+                      <ul class="relative flex flex-wrap gap-2  list-none " role="tablist">
+                          
+                      <li
+                          class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                          <a  href="{{route('classes.resultat.annee', [$classe->id,$annee_scolaire->id])}}"
+                              class="z-30 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
+                              <i class="fa fa-solid fa-table-list text-blue-500"></i>
+                              <span class="mr-2 uppercase">Annee Scolaire {{ $annee_scolaire->nom }} </span>
+                          </a>
+                      </li>
+                      </ul>
+                  </div>
               </div>
           {{-- @endif --}}
       </div>

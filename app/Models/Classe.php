@@ -163,10 +163,72 @@ class Classe extends Model
         // dd($eleves[0]);
         return $eleves;
     }
+    public function elevesAnnee( $annee){
+        // $eleves = DB::table('eleves')
+        //                     ->leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
+        //                     ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+        //                     ->where('frequentations.classe_id', '=', $this->id)
+        //                     ->select('eleves.*')
+        //                     ->get();
+        $eleves = Eleve::leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
+                            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+                            ->where('frequentations.classe_id', '=', $this->id)
+                            ->select('eleves.*')
+                            ->orderBy('eleves.nom', 'asc')
+                            ->get();
+        // dd($eleves[0]);
+        return $eleves;
+    }
+
+    public function filles()
+    {
+        $annee = AnneeScolaire::current();
+        $eleves = Eleve::leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
+                            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+                            ->where('frequentations.classe_id', '=', $this->id)
+                            ->select('eleves.*')
+                            ->where('sexe', 'F')
+                            ->orderBy('eleves.nom', 'asc')
+                            ->get();
+        return $eleves;
+    }
+
+    public function garcons()
+    {
+        $annee = AnneeScolaire::current();
+        $eleves = Eleve::leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
+                            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+                            ->where('frequentations.classe_id', '=', $this->id)
+                            ->select('eleves.*')
+                            ->where('sexe', 'M')
+                            ->orderBy('eleves.nom', 'asc')
+                            ->get();
+        return $eleves;
+    }
 
     public function frequentations()
     {
          return $this->hasMany(Frequentation::class);
+    }
+    public function currentrequentations()
+    {   
+        $annee = AnneeScolaire::current();
+        $frequentations = Frequentation::where('frequentations.annee_scolaire_id', '=', $annee->id)
+                            ->where('frequentations.classe_id', '=', $this->id)
+                            ->get();
+         return $frequentations;
+    }
+
+    public function resultats()
+    {
+        $freqs = $this->currentrequentations();
+        $resultats = array();
+
+        foreach($freqs as $freq){
+            array_push($resultats, $freq->resultat);
+        }
+
+        return $resultats;
     }
 
 }

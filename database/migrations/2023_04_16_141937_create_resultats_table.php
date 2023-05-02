@@ -24,7 +24,7 @@ return new class extends Migration
             $table->float('examen1')->default(0);
             $table->float('examen2')->default(0);
             $table->float('examen3')->default(0);
-            $table->foreignId('frequentation_id')->constrained();
+            $table->foreignId('frequentation_id')->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();
         });
