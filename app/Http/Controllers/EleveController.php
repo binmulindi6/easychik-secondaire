@@ -145,8 +145,31 @@ class EleveController extends Controller
         }
         $eleve = Eleve::findOrFail($id);
         
+        ////JOKER
+        // $classe = Classe::find($eleve->classe()->id);
 
-        ///
+        // $evaluations = $classe->currentEvaluations();
+        // $examens = $classe->currentExamens();
+
+        
+        
+        // if(count($evaluations) > 0){
+        //     foreach($evaluations as $ev){
+        //         $eleve->evaluations()->attach($ev);
+        //         $eleve->save();
+        //     }
+        // }
+        
+        // if(count($examens) > 0){
+        //     foreach($examens as $ex){
+        //         $eleve->examens()->attach($ex);
+        //         $eleve->save();
+        //     }
+        // }
+        // // dd(10);
+        ///JOKER
+
+        
         $eleves = Eleve::all();
         if (Auth::user()->isEnseignant()) {
             if(Auth::user()->classe() !== null){
@@ -162,7 +185,8 @@ class EleveController extends Controller
                 break;
             }
         }
-        // dd($index);
+
+
 
         $annee_scolaire = AnneeScolaire::current();
         $trimestres = $annee_scolaire->trimestres;

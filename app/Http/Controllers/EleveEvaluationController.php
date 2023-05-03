@@ -28,9 +28,12 @@ class EleveEvaluationController extends Controller
         $request->validate([
             'note_obtenu' => ['required','string','max:255'],
         ]);
-
+        // dd($request->note_obtenu);
         EleveEvaluation::set($id,$request->note_obtenu);
         $x = intval($request->eleve);
+        if(isset($request->back)){
+            return back();
+        }
         return redirect()->route('eleves.evaluations' ,[intval($request->eleve), intval($request->periode)]);
     }
 }

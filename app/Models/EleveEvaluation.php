@@ -20,6 +20,22 @@ class EleveEvaluation extends Model
         return $pivot;
     }
 
+    public static function getByEvaluation($evaluation_id)
+    {
+        $pivot = DB::table('eleve_evaluation')
+            ->where('evaluation_id', '=', $evaluation_id)
+            ->join('eleves', 'eleve_evaluation.eleve_id', 'eleves.id')
+            ->select(['eleve_evaluation.id', 'eleve_evaluation.note_obtenu', 'eleve_evaluation.eleve_id', 'nom', 'prenom'])
+            ->orderBy('eleves.nom')
+            ->get();
+        return $pivot;
+    }
+
+    public function eleve()
+    {
+       return Eleve::findOrFail($this->eleve_id);
+    }
+
     public static function set($id, $note_obtenu)
     {
 

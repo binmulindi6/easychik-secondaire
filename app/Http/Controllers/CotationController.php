@@ -2,12 +2,103 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cours;
+use App\Models\Eleve;
+use App\Models\EleveEvaluation;
+use App\Models\EleveExamen;
+use App\Models\Examen;
+use App\Models\Evaluation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CotationController extends Controller
 {
+    protected $page_name = 'Cotations';
+
+    public function __construct()
+    {
+        // if(!Auth::user()->isEnseignant()){
+        //     return redirect(404);
+        // }
+    }
+
     public function index()
     {
-        dd(10);
+            $classe = Auth::user()->classe;
+            $evaluations =  $classe->currentEvaluations();
+            rsort($evaluations);
+
+            return view('cotation.evaluations')
+            // ->with('items', $evaluations)
+            ->with('items', $evaluations)
+            ->with('page_name', $this->page_name . " Evaluations");
+
+    }
+    public function examens()
+    {
+            $classe = Auth::user()->classe;
+            $examens = $classe->currentExamens();
+            rsort($examens);
+
+            return view('cotation.examens')
+            // ->with('items', $evaluations)
+            ->with('items', $examens)
+            ->with('page_name', $this->page_name . " Examens");
+    }
+
+    public function searchEvaluation(Request $request)
+    {
+        $items = Evaluation::join('cours', 'cours.id', '=', 'evaluations.cours_id')
+            ->where('cours.nom', 'like', '%' . $request->search . '%')
+            // ->join('type_evaluations', 'type_evaluations.id', '=', 'evaluations.type_evaluation_id')
+            // ->where('type_evaluations.nom', 'like', '%' . $request->search . '%')
+            ->get();
+
+        return view('cotation.evaluations')
+            ->with('page_name', $this->page_name . " Evaluations / Search")
+            ->with('search',  $request->search)
+            ->with('items', $items);
+    }
+
+    public function showEvaluation($id)
+    {
+        $evaluation = Evaluation::findOrFail($id);
+        $eleveEvaluations = EleveEvaluation::getByEvaluation($evaluation->id);
+
+        // dd($eleveEvaluations[0]);
+
+        return view('cotation.showEvaluation')
+        ->with('evaluation', $evaluation)
+        ->with('items', $eleveEvaluations)
+        ->with('page_name', $this->page_name . " Evaluations");
+    }
+    public function showExamen($id)
+    {
+        $examen = Examen::findOrFail($id);
+        $eleveExamens = EleveExamen::getByExamen($examen->id);
+
+        return view('cotation.showExamen')
+            ->with('examen', $examen)
+            ->with('items', $eleveExamens)
+            ->with('page_name', $this->page_name . " Examens");
+    }
+
+
+
+
+    public function searchExamen(Request $request)
+    {
+        $items = Examen::join('cours', 'cours.id', '=', 'examens.cours_id')
+            ->where('cours.nom', 'like', '%' . $request->search . '%')
+            // ->join('trimestres', 'trimestres.id', '=', 'examens.cours_id')
+            // ->where('trimestres.nom', 'like', '%' . $request->search . '%')
+            ->get();
+
+
+        return view('cotation.examens')
+            ->with('page_name', $this->page_name . " Examens / Search")
+            ->with('search',  $request->search)
+            ->with('page_name', $this->page_name)
+            ->with('items', $items);
     }
 }

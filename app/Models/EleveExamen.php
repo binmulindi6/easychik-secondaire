@@ -19,13 +19,27 @@ class EleveExamen extends Model
         return $pivot;
     }
 
+    public static function getByExamen($examen_id)
+    {
+        $pivot = DB::table('eleve_examen')
+            ->where('examen_id', '=', $examen_id)
+            ->orderBy('eleves.nom')
+            ->join('eleves', 'eleve_examen.eleve_id', 'eleves.id')
+            ->select(['eleve_examen.id', 'eleve_examen.note_obtenu', 'eleve_examen.eleve_id', 'nom', 'prenom'])
+
+            ->get();
+        return $pivot;
+    }
+
     public static function set($id, $note_obtenu){
-        
+        // dd($id);
         DB::table('eleve_examen')
-                ->where('id', '=', $id)
-                ->update([
-                    'note_obtenu' => $note_obtenu,
-                     'updated_at' => now(),
-                ]);
+            ->where('id', '=', $id)
+            ->update([
+                'note_obtenu' => $note_obtenu,
+                'updated_at' => now(),
+        ]);
+        // dd(DB::table('eleve_examen')
+        //     ->where('id', '=', $id)->get());
     }
 }

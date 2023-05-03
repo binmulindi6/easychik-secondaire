@@ -212,9 +212,10 @@
                 @endif
                 @if (Auth::user()->isAdmin() || Auth::user()->isEnseignant())
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Travails') ||
+                        @if ((str_contains($page_name, 'Travails') ||
                                 str_contains($page_name, 'Evaluations') ||
-                                str_contains($page_name, 'Examens')
+                                str_contains($page_name, 'Examens'))
+                                    && !str_contains($page_name, 'Cotations') && !str_contains($page_name, 'Eleves')
                                 )
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('travails.index') }}">
@@ -228,6 +229,23 @@
                                 class="relative top-0 leading-normal text-blue-500 fa fa-regular fa-clipboard text-size-sm"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Traveaux</span>
+                        </a>
+                    </li>
+
+                    <li class="mt-0.5 w-full">
+                        @if (str_contains($page_name, 'Cotations Evaluations') || str_contains($page_name, 'Cotations Examens'))
+                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                                href="{{ route('cotations.index') }}">
+                            @else
+                                <a class=" dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                    href="{{ route('cotations.index') }}">
+                        @endif
+                        <div
+                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                            <i
+                                class="relative top-0 leading-normal text-black fa fa-solid fa-pen-to-square text-size-sm"></i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Cotations </span>
                         </a>
                     </li>
 
@@ -249,22 +267,7 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ma Classe</span>
                         </a>
                     </li>
-                    {{-- <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Eleves / Evaluations') || str_contains($page_name, 'Eleves / Examens'))
-                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
-                                href="{{ route('cotations.index') }}">
-                            @else
-                                <a class=" dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-                                    href="{{ route('cotations.index') }}">
-                        @endif
-                        <div
-                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i
-                                class="relative top-0 leading-normal text-black fa fa-solid fa-pen-to-square text-size-sm"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Cotations </span>
-                        </a>
-                    </li> --}}
+                    
                 @endif
                 @if (Auth::user()->isAdmin())
                     <li class="mt-0.5 w-full">

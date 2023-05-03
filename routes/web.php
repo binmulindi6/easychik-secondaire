@@ -139,7 +139,12 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('travails', [TravailController::class, 'index'])->name('travails.index');
 
     //Cotation
-    Route::get('cotations', [CotationController::class, 'index'])->name('cotations.index');
+    Route::get('cotations/evaluations', [CotationController::class, 'index'])->name('cotations.index');
+    Route::get('cotations/examens', [CotationController::class, 'examens'])->name('cotations.examens');
+    Route::get('cotations/evaluation/{id}', [CotationController::class, 'showEvaluation'])->name('cotations.evaluations.show');
+    Route::get('cotations/examens/{id}', [CotationController::class, 'showExamen'])->name('cotations.examens.show');
+    Route::post('cotations/examens/search', [CotationController::class, 'searchExamen'])->name('cotations.examens.search');
+    Route::post('cotations/evaluations/search', [CotationController::class, 'searchEvaluation'])->name('cotations.evaluations.search');
 
 
     //Eleves - Evaluations & Examens
