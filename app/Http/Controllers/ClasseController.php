@@ -87,11 +87,25 @@ class ClasseController extends Controller
         }
         $classe = Classe::findOrFail($id);
         $annee = AnneeScolaire::current();
+        $annees = AnneeScolaire::latest()->get();
+        // dd($annees);
 
         return view('classe.profile')
-            ->with('page_name', "Profile")
+            ->with('page_name', "Classe / ". $classe->nomComplet())
             ->with('annee_scolaire', $annee)
+            ->with('annees', $annees)
             ->with('classe', $classe);
+    }
+
+    public function Eleves($id)
+    {
+        $classe = Classe::findOrFail($id);
+        $eleves = $classe->eleves();
+
+        return view('classe.eleves')
+                ->with('page_name', $this->page . " / Eleves")
+                ->with('items', $eleves)
+                ->with('classe', $classe);
     }
 
     /**

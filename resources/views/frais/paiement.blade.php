@@ -67,11 +67,11 @@
                     <div class="w-full flex flex-row gap-4 justify-between">
                         <div class=" mt-4 w-full">
                             <x-label for="moyen_paiement" :value="__('Moyen de Paiement')" />
-                            <x-select :collection="$moyens" class="block mt-1 w-full" name='moyen_paiement' required></x-select>
+                            <x-select id="moyen-paiement" :collection="$moyens" class="block mt-1 w-full" name='moyen_paiement' required></x-select>
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="montant" :value="__('Montant Payé')" />
-                            <x-input id="montant" class="block mt-1 w-full" type="number" name="montant" :value="old('montant')"
+                            <x-input id="montant" class="block mt-1 w-full" type="number" mim="1" name="montant" :value="old('montant')"
                                 placeholder="ex: 20" required />
                             {{-- <span></span> --}}
                         </div>
@@ -79,7 +79,7 @@
                     <div class="w-full flex flex-row gap-4 justify-between">
                         <div class="mt-4 w-full">
                             <x-label for="type_frais" :value="__('Reference')" />
-                            <x-input id="montant" name="reference" type='text' class="block mt-1 w-full" :value="old('reference')" />
+                            <x-input id="reference" id="montant" name="reference" type='text' class="block mt-1 w-full" :value="old('reference')" />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="type_frais" :value="__('Date')" />
@@ -185,10 +185,11 @@
 @endsection
 
 
-<script defer>
-    // const inputType = document.querySelector(".frm-create");
-    // console.log(inputType);
-    // inputType.addEventListener('onChange', ()=>{
-    //     console.log(inputType.value);
-    // });
+<script>
+    const moyen = document.querySelector("#moyen-paiement");
+    const ref = document.querySelector("#reference");
+    console.log(moyen, ref);
+    inputType.addEventListener('onChange', ()=>{
+        console.log(inputType.value);
+    });
 </script>

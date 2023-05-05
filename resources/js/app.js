@@ -32,4 +32,6 @@ $("#cmd").click(function () {
     });
 });
 
+// var a = new String('oklm');
+
 Alpine.start();

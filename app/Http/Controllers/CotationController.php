@@ -70,7 +70,7 @@ class CotationController extends Controller
         return view('cotation.showEvaluation')
         ->with('evaluation', $evaluation)
         ->with('items', $eleveEvaluations)
-        ->with('page_name', $this->page_name . " Evaluations");
+        ->with('page_name', $this->page_name . " Evaluations " . $evaluation->cours->nom);
     }
     public function showExamen($id)
     {
@@ -80,7 +80,7 @@ class CotationController extends Controller
         return view('cotation.showExamen')
             ->with('examen', $examen)
             ->with('items', $eleveExamens)
-            ->with('page_name', $this->page_name . " Examens");
+            ->with('page_name', $this->page_name . " Examen " . $examen->cours->nom);
     }
 
 

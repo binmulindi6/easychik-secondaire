@@ -275,7 +275,7 @@
                                         {{ $item->classe(false) }}
                                     @endif
                                 </td>
-                        @if ( Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
+                        @if ( !Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
                             <td
                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                 <div class="flex justify-center gap-4 align-middle">
@@ -286,9 +286,11 @@
                                         action="{{ route('eleves.destroy', $item->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
+                                        @if (Auth::user()->isDirecteur())
                                         <button class="delete-btn" type="submit" title="Effacer">
                                             <i class="text-red-500 fa fa-solid fa-trash"></i>
                                         </button>
+                                        @endif
                                     </form>
                                 </div>
                             </td>

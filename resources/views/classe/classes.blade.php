@@ -98,9 +98,11 @@
                         <th
                             class="p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                             Enseignant</th>
+                        @if (!Auth::user()->isSecretaire())
                         <th
                             class="p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                             Action</th>
+                        @endif
                     </thead>
                     <tbody>
 
@@ -108,7 +110,11 @@
                             <tr class="">
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->niveau->numerotation . " " .$item->niveau->nom }}</td>
+                                    <a  class="p-1  hover:text-blue-500"
+                                        href="{{ route('classes.show', $item->id) }}">
+                                                {{ $item->niveau->numerotation . " " .$item->niveau->nom }}
+                                    </a>
+                                </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                     {{ $item->nom }}</td>
@@ -122,11 +128,17 @@
                                     @if ($item->user() !== null)
                                         {{ $item->user->employer->nom . ' ' . $item->user->employer->prenom }}
                                     @else
-                                        <a class="p-1  text-blue-500 underline"
-                                            href="{{ route('encadrements.linkClasse', $item->id) }}"> Enseignant indisponible </a>
+                                        @if (!Auth::user()->isSecretaire())
+                                            <a class="p-1  text-blue-500 underline"
+                                                href="{{ route('encadrements.linkClasse', $item->id) }}"> Enseignant indisponible </a>
+                                        @else
+                                            <span class="p-1  text-blue-500 underline"> Enseignant indisponible </span>
+                                        @endif
+                                        
                                     @endif
 
                                 </td>
+                                @if (!Auth::user()->isSecretaire())
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                     <div class="flex justify-center gap-4 align-middle">
@@ -141,6 +153,7 @@
                                         </form>
                                     </div>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
 

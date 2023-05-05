@@ -134,6 +134,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('classes/{id}/resultat/periode/{periode_id}/{annee_scolaire_id}', [ClasseController::class, 'resultatPeriode'])->name('classes.resultat.periode');
     Route::get('classes/{id}/resultat/trimestre/{trimestre_id}/{annee_scolaire_id}', [ClasseController::class, 'resultatTrimestre'])->name('classes.resultat.trimestre');
     Route::get('classes/{id}/resultat/bulletin/{annee_scolaire_id}', [ClasseController::class, 'resultatAnnee'])->name('classes.resultat.annee');
+    Route::get('classes/{id}/eleves', [ClasseController::class, 'eleves'])->name('classes.eleves');
 
     //Travails
     Route::get('travails', [TravailController::class, 'index'])->name('travails.index');

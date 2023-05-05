@@ -77,7 +77,7 @@
                     </a>
                 </li>
 
-                @if (Auth::user()->isAdmin() || Auth::user()->isDirecteur())
+                @if (Auth::user()->isDirecteur())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Ecole') ||
                                 str_contains($page_name, 'Annees Scolaires') ||
@@ -97,7 +97,8 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ecole</span>
                         </a>
                     </li>
-
+                @endif
+                @if (Auth::user()->isDirecteur() || Auth::user()->isSecretaire())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Classes') ||
                                 str_contains($page_name, 'Niveaux'))
@@ -116,7 +117,8 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Classes</span>
                         </a>
                     </li>
-
+                @endif
+                @if (Auth::user()->isDirecteur())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Frais'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -151,13 +153,13 @@
                                 class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-book text-size-sm">
                             </i>
                         </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enseignement</span>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enseignements</span>
                         </a>
                     </li>
 
                 @endif
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations'))
+                        @if ((str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations') )&& !str_contains($page_name, 'Classes'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('eleves.index') }}">
                             @else
@@ -250,8 +252,7 @@
                     </li>
 
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Classes') ||
-                                str_contains($page_name, 'Niveaux'))
+                        @if (str_contains($page_name, 'Classe /'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('classes.show', Auth::user()->classe->id) }}">
                             @else

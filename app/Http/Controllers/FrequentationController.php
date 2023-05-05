@@ -79,53 +79,61 @@ class FrequentationController extends Controller
 
         $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
 
-        if($eleve->classe()){
+        if(!is_null($eleve)){
+            if($eleve->classe()){
+                return redirect()->route('frequentations.create')->withErrors([
+                    'eleve_matricule' => 'L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire encours.",
+                    ])->onlyInput('classe_id');
+                    
+            }
+
+
+            $classe = Classe::find($request->classe_id);
+
+            $evaluations = $classe->currentEvaluations();
+            $examens = $classe->currentExamens();
+
+            
+            
+            if(count($evaluations) > 0){
+                foreach($evaluations as $ev){
+                    $eleve->evaluations()->attach($ev);
+                    $eleve->save();
+                }
+            }
+            
+            if(count($examens) > 0){
+                foreach($examens as $ex){
+                    $eleve->examens()->attach($ex);
+                    $eleve->save();
+                }
+            }
+            // dd(12);
+
+            $annee  = AnneeScolaire::find($request->annee_scolaire_id);
+
+            $frequentation = Frequentation::create();
+
+
+            //links 
+            $frequentation->eleve()->associate($eleve);
+            $frequentation->classe()->associate($classe);
+            $frequentation->annee_scolaire()->associate($annee);
+            // save
+            $frequentation->save();
+
+            //create resultat
+            $resultat = Resultat::create();
+            $resultat->frequentation()->associate($frequentation);
+            $resultat->save();
+
+            return redirect()->route('eleves.index');
+        }else{
             return redirect()->route('frequentations.create')->withErrors([
-                'eleve_matricule' => 'L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire encours.",
-                ])->onlyInput('classe_id');
+                'eleve_matricule' => 'l\'Eleve avec le matricule '. $request->eleve_matricule.' n\'existe pas dans le system',
+                ])->onlyInput('eleve_matricule');
                 
         }
-
-        $classe = Classe::find($request->classe_id);
-
-        $evaluations = $classe->currentEvaluations();
-        $examens = $classe->currentExamens();
-
-        
-        
-        if(count($evaluations) > 0){
-            foreach($evaluations as $ev){
-                $eleve->evaluations()->attach($ev);
-                $eleve->save();
-            }
-        }
-        
-        if(count($examens) > 0){
-            foreach($examens as $ex){
-                $eleve->examens()->attach($ex);
-                $eleve->save();
-            }
-        }
-        // dd(12);
-
-        $annee  = AnneeScolaire::find($request->annee_scolaire_id);
-
-        $frequentation = Frequentation::create();
-
-
-        //links 
-        $frequentation->eleve()->associate($eleve);
-        $frequentation->classe()->associate($classe);
-        $frequentation->annee_scolaire()->associate($annee);
-        // save
-        $frequentation->save();
-
-         //create resultat
-         $resultat = Resultat::create();
-         $resultat->frequentation()->associate($frequentation);
-         $resultat->save();
-
-        return redirect()->route('eleves.index');
     }
 
     /**

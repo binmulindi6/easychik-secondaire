@@ -119,25 +119,22 @@
                               <tbody>
 
                                   @if ($classe->frequentations->count() > 0)
-                                  @php
-                                      $frequentations = $classe->frequentations;
-                                  @endphp
-                                      {{-- @foreach ($classe->frequentations as $frequetation) --}}
+                                      @foreach ($annees as $annee)
                                           <tr class=" rounded-2xl hover:bg-slate-100">
                                               <td
                                                   class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
                                                   {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                      {{ $frequentations[0]->annee_scolaire === null ? 'null' : $frequentations[0]->annee_scolaire->nom }}
+                                                      {{ $annee === null ? 'null' : $annee->nom }}
                                                   {{-- </a> --}}
                                               </td>
                                               <td
                                                   class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
                                                   {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                      {{ $classe->frequentations->count() }}
+                                                      {{ count($classe->elevesAnnee($annee)) }}
                                                   {{-- </a> --}}
                                               </td>
                                           </tr>
-                                      {{-- @endforeach --}}
+                                      @endforeach
                                   @endif
                               </tbody>
                           </table>

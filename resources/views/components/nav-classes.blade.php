@@ -1,7 +1,7 @@
 <div class="flex flex-row justify-between gap-4">
             
     <div class="flex gap-5">
-        @if (str_contains('Classes',$pagename) || $pagename === "Classes / Edit")
+        @if ((str_contains('Classes',$pagename) || $pagename === "Classes / Edit") && !Auth::user()->isSecretaire())
             <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
             <div class="btn-create items-center hidden  justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
@@ -36,7 +36,7 @@
                 </div>
                 @endif
             </div>
-            @if (str_contains('Niveaux',$pagename))
+            @if (str_contains('Niveaux',$pagename) && !Auth::user()->isSecretaire())
             <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
             <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
@@ -55,7 +55,8 @@
                     </div>
                 @endif
             </div>
-        
+            @if (!Auth::user()->isSecretaire())
+                
             <div class=" btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
                 @if ( !str_contains("Niveaux",$pagename))
                     <a href="{{route('niveaux.index')}}">
@@ -71,6 +72,7 @@
                 </div>
                 @endif
             </div>
+            @endif
 
     </div>
 

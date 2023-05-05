@@ -57,7 +57,7 @@
                                         <tr class="rounded-2xl hover:bg-slate-100">
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                <a href="{{route('eleves.show', $item->id)}}" class="hover:cursor-pointer hover:text-blue-600">
+                                                <a href="{{route('eleves.show', $item->eleve_id)}}" class="hover:cursor-pointer hover:text-blue-600">
                                                 {{ $item->nom . " " .$item->prenom }}</a>
                                             </td>
                                             <td
