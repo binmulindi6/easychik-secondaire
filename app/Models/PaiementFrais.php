@@ -31,4 +31,11 @@ class PaiementFrais extends Model
     {
         return $this->belongsTo(Frais::class);
     }
+
+    public static function periode($debut, $fin){
+        // dd($debut);
+        return PaiementFrais::where('date','>=' , $debut)
+                                ->where('date', '<=', $fin)
+                                ->get();
+    }
 }

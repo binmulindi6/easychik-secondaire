@@ -43,6 +43,7 @@ use App\Http\Controllers\PaiementFraisController;
 use App\Http\Controllers\ParentAuthController;
 use App\Http\Controllers\ParrainController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RapportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -174,6 +175,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::post('annee-scolaires/search', [AnneeScolaireController::class, 'search'])->name('annees.search');
     Route::post('trimestres/search', [TrimestreController::class, 'search'])->name('trimestres.search');
     Route::post('periodes/search', [PeriodeController::class, 'search'])->name('periodes.search');
+    Route::post('paiements/search', [PaiementFraisController::class, 'search'])->name('paiements.search');
     Route::post('paiements/eleves/search', [PaiementFraisController::class, 'searchEleve'])->name('paiements.searchEleve');
     //Route::post('evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
 
@@ -194,6 +196,14 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::post('parents/authenticate', [ParrainController::class, 'authenticate'])->name('parents.authenticate');
     Route::put('parents/statut/{id}', [ParrainController::class, 'changeStatut'])->name('parents.statut');
     Route::get('date', [DateController::class, 'test']);
+    
+    //rapports
+    // Route::get('rapports', [RapportController::class, 'index'])->name('rapports.index');
+    Route::get('rapports/periode', [RapportController::class, 'periode'])->name('rapports.index');
+    Route::get('rapports/annuel', [RapportController::class, 'annuel'])->name('rapports.annuel');
+    Route::post('rapports/annuel', [RapportController::class, 'rapportAnnuel'])->name('rapports.annuel.get');
+    Route::post('rapports/periode', [RapportController::class, 'rapportPeriode'])->name('rapports.periode.get');
+
 
 
 });

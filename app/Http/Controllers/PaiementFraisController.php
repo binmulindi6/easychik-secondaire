@@ -91,32 +91,50 @@ class PaiementFraisController extends Controller
             'date' => ['required', 'string', 'max:255'],
             // 'reference' => ['string']
         ]);
-        dd($request->reference);
-        if($request->reference !== null){
-            $paiement = PaiementFrais::create([
-                'montant_paye' => $request->montant,
-                'reference' => $request->reference,
-                'date' => $request->date,
-            ]);
-        }else{
-            $paiement = PaiementFrais::create([
-                'montant_paye' => $request->montant,
-                // 'reference' => $request->reference,
-                'date' => $request->date,
-            ]);
-        }
-
-        // dd(10);
-
+        
         $frais = Frais::find($request->frais);
         $eleve = Eleve::find($request->eleve);
         $moyen = MoyenPaiement::find($request->moyen_paiement);
+        
+        //le montant est inferieur au montant attendu
+        if((int)$frais->montant >= (int)$request->montant){
+            $paiements = $eleve->currentFrequentation()->paiement_frais;
+                $total = 0;
+                foreach($paiements as $paye) {
+                    if($paye->frais->id === $frais->id){
+                        $total +=  (int)$paye->montant_paye;
+                    }
+                }
+            //le montant attendu est inferieur au montant restant a payer
+            if(((int)$frais->montant - $total) >= (int)$request->montant){
 
-        $paiement->frais()->associate($frais);
-        $paiement->frequentation()->associate($eleve->currentFrequentation());
-        $paiement->moyen_paiement()->associate($moyen);
-        $paiement->save();
-        return redirect()->route('paiements.index');
+                if($request->reference !== null){
+                    $paiement = PaiementFrais::create([
+                        'montant_paye' => $request->montant,
+                        'reference' => $request->reference,
+                        'date' => $request->date,
+                    ]);
+                }else{
+                    $paiement = PaiementFrais::create([
+                        'montant_paye' => $request->montant,
+                        // 'reference' => $request->reference,
+                        'date' => $request->date,
+                    ]);
+                }
+    
+                $paiement->frais()->associate($frais);
+                $paiement->frequentation()->associate($eleve->currentFrequentation());
+                $paiement->moyen_paiement()->associate($moyen);
+                $paiement->save();
+                return redirect()->route('paiements.show', $paiement->id);
+            }
+            return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
+                'montant' => 'Le Montant saisi de ' . $request->montant .' est supperieure au montant restant à payer par l\'élève '. $eleve->nom. '' ,
+                ])->onlyInput('montant');
+        }        
+        return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
+            'montant' => 'Le Montant saisi de ' . $request->montant .' est supperieure au montant total à payer pour \''. $frais->nom. '\'' ,
+            ])->onlyInput('montant');
         // dd(10);
         // redirect()->route('paiements.show', $paiement->id);
     }
@@ -177,6 +195,22 @@ class PaiementFraisController extends Controller
 
 
 
+    public function search(Request $request)
+    {
+        $items = PaiementFrais::join('frequentations', 'frequentations.id', 'paiement_frais.frequentation_id')
+            ->join('eleves', 'eleves.id', 'frequentations.eleve_id')
+            ->where('eleves.nom', 'like', '%' . $request->search . '%')
+            ->orWhere('eleves.prenom', 'like', '%' . $request->search . '%')
+            ->select('paiement_frais.*')
+            ->get();
+
+        // dd($items);
+        return view('frais.paiement')
+            ->with('page_name', 'Paiements')
+            ->with('search',  $request->search)
+            ->with('joker', '10')
+            ->with('items', $items);
+    }
     public function searchEleve(Request $request)
     {
         $items = Eleve::where('nom', 'like', '%' . $request->search . '%')

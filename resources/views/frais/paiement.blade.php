@@ -131,7 +131,7 @@
                             Action</th>
                     </thead>
                     <tbody>
-
+                        @if (count($items) > 0)
                         @foreach ($items as $item)
                                 <tr class="hover:bg-slate-100 cursor-pointer">
                                     <td
@@ -172,6 +172,13 @@
                                     </td>
                                 </tr>
                         @endforeach
+                        @else
+                        <tr>
+                            <th colspan="5" class=" text-red-500 pt-2">
+                                Aucun Paiement Enregisté
+                            </th>
+                        </tr>
+                        @endif
 
                     </tbody>
                 </table>
