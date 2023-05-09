@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : ven. 05 mai 2023 à 08:54
+-- Généré le : lun. 08 mai 2023 à 23:59
 -- Version du serveur : 5.7.39
 -- Version de PHP : 8.2.0
 
@@ -1978,7 +1978,8 @@ INSERT INTO `paiement_frais` (`id`, `montant_paye`, `reference`, `date`, `freque
 (4, 150, 'ref : 120201', '2023-04-18', 18, 2, 6, '2023-04-18 11:35:14', '2023-04-18 11:35:15', NULL),
 (5, 5000, 'ref : 120201', '2023-04-19', 18, 1, 15, '2023-04-18 22:17:30', '2023-04-18 22:17:30', NULL),
 (6, 80, 'ref : 1202058', '2023-04-19', 18, 2, 6, '2023-04-18 23:44:52', '2023-04-18 23:44:52', NULL),
-(7, 4000, '00', '2023-04-19', 18, 1, 15, '2023-04-18 23:45:25', '2023-04-18 23:45:25', NULL);
+(7, 4000, '00', '2023-04-19', 18, 1, 15, '2023-04-18 23:45:25', '2023-04-18 23:45:25', NULL),
+(8, 1000, '237 Bank du congo', '2023-04-07', 18, 2, 15, '2023-05-07 14:32:06', '2023-05-07 14:32:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -2642,7 +2643,7 @@ ALTER TABLE `niveaux`
 -- AUTO_INCREMENT pour la table `paiement_frais`
 --
 ALTER TABLE `paiement_frais`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `parrains`
