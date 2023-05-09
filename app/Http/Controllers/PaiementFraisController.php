@@ -91,7 +91,7 @@ class PaiementFraisController extends Controller
             'date' => ['required', 'string', 'max:255'],
             // 'reference' => ['string']
         ]);
-        
+
         $frais = Frais::find($request->frais);
         $eleve = Eleve::find($request->eleve);
         $moyen = MoyenPaiement::find($request->moyen_paiement);
@@ -129,11 +129,11 @@ class PaiementFraisController extends Controller
                 return redirect()->route('paiements.show', $paiement->id);
             }
             return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-                'montant' => 'Le Montant saisi de ' . $request->montant .' est supperieure au montant restant à payer par l\'élève '. $eleve->nom. '' ,
+                'montant' => 'Le Montant saisi de ' . $request->montant .' est supperieur au montant restant à payer par l\'élève '. $eleve->nom. '' ,
                 ])->onlyInput('montant');
         }        
         return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-            'montant' => 'Le Montant saisi de ' . $request->montant .' est supperieure au montant total à payer pour \''. $frais->nom. '\'' ,
+            'montant' => 'Le Montant saisi de ' . $request->montant .' est supperieurad au montant total à payer pour \''. $frais->nom. '\'' ,
             ])->onlyInput('montant');
         // dd(10);
         // redirect()->route('paiements.show', $paiement->id);

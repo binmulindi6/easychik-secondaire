@@ -6,13 +6,13 @@
             @if (!str_contains($pagename, 'Rapports / Annuel'))
                 <a href="{{ route('rapports.annuel') }}">
 
-                        <i class="relative top-0 leading-normal text-black fa fa-solid fa-money-bill text-size-sm"></i>
+                        <i class="relative top-0 leading-normal text-black fa fa-solid fa-list text-size-sm"></i>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Rapport Annuel</span>
                     
                 </a>
             @else
                 {{-- <div class="h-full w-full bg-red-500"> --}}
-                    <i class="relative top-0 leading-normal text-black fa fa-solid fa-money-bill text-size-sm"></i>
+                    <i class="relative top-0 leading-normal text-black fa fa-solid fa-list text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Rapport Annuel</span>
                 {{-- </div> --}}
             @endif
@@ -23,13 +23,13 @@
             @if (!str_contains($pagename, "Rapports / Periodique"))
                 <a href="{{ route('rapports.index') }}">
 
-                        <i class="relative top-0 leading-normal text-black fa fa-solid fa-money-bill text-size-sm"></i>
+                        <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-list text-size-sm"></i>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Rapport Periodique</span>
                     
                 </a>
             @else
                 {{-- <div class="h-full w-full bg-red-500"> --}}
-                    <i class="relative top-0 leading-normal text-black fa fa-solid fa-money-bill text-size-sm"></i>
+                    <i class="relative top-0 leading-normal text-black fa fa-solid fa-list text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Rapport Periodique</span>
                 {{-- </div> --}}
             @endif

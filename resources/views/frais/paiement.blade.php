@@ -88,6 +88,7 @@
                     </div>
                     <div class="mt-4">
                         <x-button>Enregistrer</x-button>
+                        <input type="reset" value="annuelr">
                     </div>
                 </form>
                 @endif
