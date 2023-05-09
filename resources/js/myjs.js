@@ -140,3 +140,19 @@ btnJokerPrint !== null && btnJokerPrint.addEventListener('click', ()=>{
 btnEdit !== null && btnEdit.addEventListener('click', ()=>{
     btnSave !== null && btnSave.classList.toggle('hidden');
 })
+
+//handle Changes
+const moyen = document.querySelector("#moyen-paiement");
+const ref = document.querySelector("#reference");
+// // console.log(ref);
+moyen !== null && moyen.addEventListener('change', () => {
+    let value = moyen.value
+    if (value === '2') {
+        ref.classList.add('block')
+        ref.classList.remove('hidden')
+    }else{
+        ref.classList.remove('block')
+        ref.classList.add('hidden')
+
+    }
+})

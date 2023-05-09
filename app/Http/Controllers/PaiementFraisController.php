@@ -89,14 +89,24 @@ class PaiementFraisController extends Controller
             'montant' => ['required', 'string', 'max:255'],
             'moyen_paiement' => ['required', 'string', 'max:255'],
             'date' => ['required', 'string', 'max:255'],
-            'reference' => ['string']
+            // 'reference' => ['string']
         ]);
+        dd($request->reference);
+        if($request->reference !== null){
+            $paiement = PaiementFrais::create([
+                'montant_paye' => $request->montant,
+                'reference' => $request->reference,
+                'date' => $request->date,
+            ]);
+        }else{
+            $paiement = PaiementFrais::create([
+                'montant_paye' => $request->montant,
+                // 'reference' => $request->reference,
+                'date' => $request->date,
+            ]);
+        }
 
-        $paiement = PaiementFrais::create([
-            'montant_paye' => $request->montant,
-            'reference' => $request->reference,
-            'date' => $request->date,
-        ]);
+        // dd(10);
 
         $frais = Frais::find($request->frais);
         $eleve = Eleve::find($request->eleve);

@@ -71,19 +71,19 @@
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="montant" :value="__('Montant Payé')" />
-                            <x-input id="montant" class="block mt-1 w-full" type="number" mim="1" name="montant" :value="old('montant')"
+                            <x-input  class="block mt-1 w-full" type="number" mim="1" name="montant" :value="old('montant')"
                                 placeholder="ex: 20" required />
                             {{-- <span></span> --}}
                         </div>
                     </div>
                     <div class="w-full flex flex-row gap-4 justify-between">
-                        <div class="mt-4 w-full">
+                        <div id="reference" class="mt-4 w-full">
                             <x-label for="type_frais" :value="__('Reference')" />
-                            <x-input id="reference" id="montant" name="reference" type='text' class="block mt-1 w-full" :value="old('reference')" />
+                            <input  name="reference" type='text' class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="" />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="type_frais" :value="__('Date')" />
-                            <x-input id="montant" name="date" type='date' class="block mt-1 w-full" :value="old('reference')" />
+                            <x-input id="montant" name="date" type='date' class="block mt-1 w-full" :value="old('date')" />
                         </div>
                     </div>
                     <div class="mt-4">
@@ -161,7 +161,7 @@
                                         <div class="flex justify-center gap-4 align-middle">
                                             <a href="{{ route('paiements.edit', $item->id) }}"><i
                                                     class="fa fa-solid fa-pen"></i></a>
-                                            <form class="delete-form"
+                                            <form class="delete-form hidden"
                                                 action="{{ route('paiements.destroy', $item->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
@@ -186,10 +186,10 @@
 
 
 <script>
-    const moyen = document.querySelector("#moyen-paiement");
-    const ref = document.querySelector("#reference");
-    console.log(moyen, ref);
-    inputType.addEventListener('onChange', ()=>{
-        console.log(inputType.value);
-    });
+    // const moyen = document.querySelector("#moyen-paiement");
+    // const ref = document.querySelector("#reference");
+    // console.log(moyen, ref);
+    // inputType.addEventListener('onChange', ()=>{
+    //     console.log(inputType.value);
+    // });
 </script>
