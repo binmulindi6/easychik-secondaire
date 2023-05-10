@@ -18,7 +18,7 @@
 
         @if (isset($error) && $error !== null)
             <div class=" flex text-center justify-center items-center p-2 bg-white rounded-2xl">
-                <span class="text-red-500 font-semibold ">L'eleve Choisis : <span class="text-black">{{$error}}</span> ne frequente aucunne pour l'annee scolaire encours veuillez l'ajouter dans une classe puis reesaayer</span>
+                <span class="text-red-500 font-semibold ">L'eleve Choisis : <span class="text-black">{{$error}}</span> ne frequente aucunne pour l'annee scolaire en cours veuillez l'ajouter dans une classe puis reesaayer</span>
             </div>
         @endif
 

@@ -21,9 +21,7 @@ class FrequentationController extends Controller
 
     public function index()
     {   
-        $frequentations = Frequentation::latest()
-           ->limit(20)
-            ->get();
+        $frequentations = Frequentation::current();
 
         $annee = AnneeScolaire::current();
         // dd(Auth::user()->classe);
@@ -82,7 +80,7 @@ class FrequentationController extends Controller
         if(!is_null($eleve)){
             if($eleve->classe()){
                 return redirect()->route('frequentations.create')->withErrors([
-                    'eleve_matricule' => 'L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire encours.",
+                    'eleve_matricule' => 'L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire en cours.",
                     ])->onlyInput('classe_id');
                     
             }
@@ -231,7 +229,7 @@ class FrequentationController extends Controller
             ->orWhere('eleves.nom', 'like', '%' . $request->search . '%')
             ->orWhere('eleves.prenom', 'like', '%' . $request->search . '%')
             ->orWhere('classes.nom', 'like', '%' . $request->search . '%')
-            // ->orWhere('classes.niveau', 'like', '%' . $request->search . '%')
+            ->orderBy('annee_scolaires.nom', 'desc')
 
             /*->orWhere('matricule', 'like', '%' . $request->search . '%')
             ->orWhere('lieu_naissance', 'like', '%' . $request->search . '%')

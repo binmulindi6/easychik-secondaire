@@ -19,7 +19,14 @@ class FraisController extends Controller
     public function index()
     {
         // dd(10);
+        $niveaux = count(Niveau::all());
         $frais = Frais::latest()->get();
+        
+        // $data = array();
+        // foreach($frais as $ff){
+        //     // if()
+        // }
+
         $types = TypeFrais::all();
         $niveaux = Niveau::all();
         $modes = ModePaiement::all();

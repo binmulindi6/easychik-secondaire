@@ -23,7 +23,8 @@ class PaiementFraisController extends Controller
      */
     public function index()
     {
-        $frais = PaiementFrais::latest()->get();
+       
+        $frais = PaiementFrais::current();
         $types = TypeFrais::all();
         $niveaux = Niveau::all();
         $modes = ModePaiement::all();

@@ -1,4 +1,4 @@
-<div class="flex flex-col justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
+<div class="flex flex-col-reverse justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
     <div class="flex flex-row gap-4 sm-max:justify-center">
 
         <div class="flex gap-5">

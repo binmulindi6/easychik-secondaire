@@ -126,7 +126,7 @@ class RapportController extends Controller
             'annee' => ['string', 'max:255', 'required'],
         ]);
         
-        dd($request->annee);
+        // dd($request->annee);
         $annees = AnneeScolaire::orderBy('nom')->get();
         $current = AnneeScolaire::findOrFail($request->annee);
         $paiements = PaiementFrais::periode($current->date_debut, $current->date_fin);

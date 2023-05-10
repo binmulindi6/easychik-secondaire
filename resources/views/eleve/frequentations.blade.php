@@ -52,9 +52,9 @@
             @else
                 @if (isset($matricule))
                     @if (Auth::user()->isEnseignant() !== null && Auth::user()->isEnseignant())
-                    <span class="font-bold text-base"> Ajouter l'eleve dans ma Classe pour l'annee Scolaire Encours</span>
+                    <span class="font-bold text-base"> Ajouter l'eleve dans ma Classe pour l'annee Scolaire en cours</span>
                     @else
-                        <span class="font-bold text-base"> Ajouter l'eleve dans une Classe pour l'annee Scolaire Encours</span>
+                        <span class="font-bold text-base"> Ajouter l'eleve dans une Classe pour l'annee Scolaire en cours</span>
                     @endif
                 @else
                     <p class="font-bold text-base"> Ajouter une Frequentation</p>

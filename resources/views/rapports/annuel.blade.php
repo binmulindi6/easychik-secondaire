@@ -10,9 +10,9 @@
                 <form action="{{route('rapports.annuel.get')}}" method="post" class="flex items-center gap-2">
                     @csrf
                     <x-label class="">Annee Scolaire :</x-label>
-                    <div class="w-60 h-10 flex flex-row justify-end items-center gap-2">
-                        <x-select :val="$current" :collection="$annees" class="block mt-1 w-full" name='annee' required></x-select>
-                        <x-button>choisir</x-button>
+                    <div class="w-40 h-10 flex flex-row justify-end items-center gap-2 text-center">
+                        <x-select :val="$current" :submitOnChange="true" :collection="$annees" class="block mt-1 w-full" name='annee' required></x-select>
+                        {{-- <x-button>choisir</x-button> --}}
                     </div>
                 </form>
             </div>

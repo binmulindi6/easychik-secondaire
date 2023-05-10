@@ -15,6 +15,14 @@ class Frequentation extends Model
 {
     use HasFactory,SoftDeletes;
 
+    public static function current(){
+        $current = AnneeScolaire::current();
+
+        return self::where('annee_scolaire_id', $current->id)
+                        ->latest()
+                        ->limit(20)
+                        ->get();
+    }
     //links
     function annee_scolaire(){
         return $this->belongsTo(AnneeScolaire::class);

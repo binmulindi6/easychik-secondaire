@@ -59,7 +59,7 @@
                 </form>
             @else
                 @if (isset($user))
-                    <p class="font-bold text-base"> Assigner une Classe à L'Enseignant pour l'annee Scolaire Encours</p>
+                    <p class="font-bold text-base"> Assigner une Classe à L'Enseignant pour l'annee Scolaire en cours</p>
                 @else
                     <p class="font-bold text-base"> Ajouter un Encadrement</p>
                 @endif

@@ -19,6 +19,17 @@ class PaiementFrais extends Model
         'date'
     ];
 
+    public static function current()
+    {
+        $current = AnneeScolaire::current();
+        return self::join('frequentations', 'frequentations.id', 'paiement_frais.frequentation_id')
+                    ->where('frequentations.annee_scolaire_id', $current->id)
+                    ->select("paiement_frais.*")
+                    ->latest()
+                    ->get();
+        # code...
+    }
+
     public function moyen_paiement()
     {
         return $this->belongsTo(MoyenPaiement::class);

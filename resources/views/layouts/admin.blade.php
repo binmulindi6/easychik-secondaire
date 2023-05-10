@@ -27,24 +27,25 @@
     <aside
         class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-2xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
         aria-expanded="false">
-        <div class="h-19 mt-3 flex justify-center">
-            <a class="flex flex-col justify-center items-center m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700" href="{{ route('dashboard') }}">
+        <div class="h-19 mt-3 flex flex-col justify-center items-center">
+            <a class="flex  m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700" href="{{ route('dashboard') }}">
                 <span class="font-bold text-blue-500 text-3xl  py-1 px-4 rounded-md">S.A.S</span>
+            </a>
                 @if (Auth::user()->isAdmin())
-                    <span class="font-bold text-blue-500 uppercase">Admin</span>
+                    <span class="font-bold text-slate-700 uppercase">Admin</span>
                 @endif
                 @if (Auth::user()->isDirecteur())
-                    <span class="font-bold text-blue-500 uppercase">Direction</span>
+                    <span class="font-bold text-slate-700 uppercase">Direction</span>
                 @endif
                 @if (Auth::user()->isParent())
-                    <span class="font-bold text-blue-500 uppercase">Parent</span>
+                    <span class="font-bold text-slate-700 uppercase">Parent</span>
                 @endif
                 @if (Auth::user()->isSecretaire())
-                    <span class="font-bold text-blue-500  uppercase">Secretariat</span>
+                    <span class="font-bold text-slate-700  uppercase">Secretariat</span>
                 @endif
                 @if (Auth::user()->isEnseignant())
-                    <span class="font-bold text-blue-500  uppercase">
-                        @if (Auth::user()->classe())
+                    <span class="font-bold text-slate-700  uppercase">
+                        @if (Auth::user()->classe() !== null)
                             {{Auth::user()->classe->niveau->nom . ' ' . Auth::user()->classe->nom}}
                         @else
                             Enseignant
@@ -52,9 +53,9 @@
                     </span>
                 @endif
                 @if (isset(session()->get('currentYear')->nom) && session()->get('currentYear')->nom !== null)
-                    <span class="font-bold text-blue-500 rounded-md">{{session()->get('currentYear')->nom}}</span>
+                    <span class="font-bold text-slate-500 rounded-md">{{session()->get('currentYear')->nom}}</span>
                 @endif
-            </a>
+            
         </div>
 
         <hr class="h-px mb-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparen" />
@@ -68,7 +69,7 @@
                         <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                             href="{{ route('dashboard') }}">
                         @else
-                            <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                            <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                 href="{{ route('dashboard') }}">
                     @endif
                     <div
@@ -89,7 +90,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('ecole.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('ecole.index') }}">
                         @endif
                         <div
@@ -107,7 +108,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('classes.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('classes.index') }}">
                         @endif
                         <div
@@ -126,7 +127,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('frais.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('frais.index') }}">
                         @endif
                         <div
@@ -146,7 +147,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('categorie-cours.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('categorie-cours.index') }}">
                         @endif
                         <div
@@ -160,29 +161,31 @@
                     </li>
 
                 @endif
-                    <li class="mt-0.5 w-full">
-                        @if ((str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations') )&& !str_contains($page_name, 'Classes'))
-                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
-                                href="{{ route('eleves.index') }}">
-                            @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                    @if (!Auth::user()->isEnseignant() || (Auth::user()->isEnseignant() && Auth::user()->classe() !== null))
+                        <li class="mt-0.5 w-full">
+                            @if ((str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations') )&& !str_contains($page_name, 'Classes'))
+                                <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                     href="{{ route('eleves.index') }}">
-                        @endif
-                        <div
-                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i
-                                class="relative top-0 leading-normal text-red-500 fa fa-solid fa-chalkboard-user text-size-sm"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Eleves</span>
-                        </a>
-                    </li>
+                                @else
+                                    <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                        href="{{ route('eleves.index') }}">
+                            @endif
+                            <div
+                                class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                                <i
+                                    class="relative top-0 leading-normal text-red-500 fa fa-solid fa-chalkboard-user text-size-sm"></i>
+                            </div>
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Eleves</span>
+                            </a>
+                        </li>
+                    @endif
                     {{-- @if (Auth::user()->isParent())
                         <li class="mt-0.5 w-full">
                             @if (str_contains($page_name, 'Frais'))
                                 <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                     href="{{ route('eleves.paiements.show') }}">
                                 @else
-                                    <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                    <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                         href="{{ route('eleves.paiements.show') }}">
                             @endif
                             <div
@@ -201,7 +204,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('paiements.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('paiements.index') }}">
                         @endif
                         <div
@@ -214,7 +217,7 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->isAdmin() || Auth::user()->isEnseignant())
+                @if (Auth::user()->isEnseignant() && Auth::user()->classe() !== null)
                     <li class="mt-0.5 w-full">
                         @if ((str_contains($page_name, 'Travails') ||
                                 str_contains($page_name, 'Evaluations') ||
@@ -224,7 +227,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('travails.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('travails.index') }}">
                         @endif
                         <div
@@ -241,7 +244,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('cotations.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('cotations.index') }}">
                         @endif
                         <div
@@ -252,13 +255,13 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Cotations </span>
                         </a>
                     </li>
-
+                    
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Classe /'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('classes.show', Auth::user()->classe->id) }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('classes.show', Auth::user()->classe->id) }}">
                         @endif
                         <div
@@ -278,7 +281,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('employers.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('employers.index') }}">
                         @endif
                         <div
@@ -294,12 +297,12 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('users.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('users.index') }}">
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-user"></i>
+                            <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-users"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Utilisateurs</span>
                         </a>
@@ -312,12 +315,12 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('parents.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('parents.index') }}">
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-user"></i>
+                            <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-users"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Parents</span>
                         </a>
@@ -330,7 +333,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('rapports.annuel') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('rapports.annuel') }}">
                         @endif
                         <div
@@ -349,7 +352,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('messages.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('messages.index') }}">
                         @endif
                         <div
@@ -374,7 +377,7 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('profile.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('profile.index') }}">
                     @endif
                         <div
@@ -389,12 +392,12 @@
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('settings.index') }}">
                             @else
-                                <a class=" hover:bg-blue-500/13 dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('settings.index') }}">
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-blue-700 text-size-sm fa fa-solid fa-cog"></i>
+                            <i class="relative top-0 leading-normal text-slate-900 text-size-sm fa fa-solid fa-cog"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Parametres</span>
                     </a>
@@ -471,7 +474,7 @@
                                         @csrf
                                         <button type="submit"
                                             class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand ">
-                                            <i fixed-plugin-button-nav class=" text-red-500 fa fa-lock"
+                                            <i fixed-plugin-button-nav class=" text-red-500 fa fa-right-from-bracket"
                                                 title="logout"></i>
                                             <span class="hidden sm:inline">Deconnexion</span>
                                         </button title="logout">
@@ -535,7 +538,7 @@
         <!-- end Navbar -->
 
         <!-- cards -->
-        <div class="w-full px-6 py-6 mx-auto">
+        <div class="w-full h-full px-6 py-6 mx-auto">
             @yield('content')
         </div>
         <!-- end cards -->

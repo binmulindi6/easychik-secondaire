@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Date\DateController;
 
 class SettingController extends Controller
@@ -13,7 +14,7 @@ class SettingController extends Controller
     {   
         $annees = AnneeScolaire::orderBy('nom')->get();
         $current = AnneeScolaire::current();
-        // dd(10);
+        // dd(Auth::user()->classe());
         
         return view('settings.settings')
                     ->with('page_name', $this->page)
