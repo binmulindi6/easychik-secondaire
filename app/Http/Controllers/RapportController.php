@@ -14,7 +14,8 @@ class RapportController extends Controller
     protected $page_name = 'Rapports';
 
     public function annuel()
-    {   $annees = AnneeScolaire::all();
+    {   
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $current = AnneeScolaire::current();
 
         $paiements = PaiementFrais::periode($current->date_debut, $current->date_fin);
@@ -124,8 +125,9 @@ class RapportController extends Controller
         $request->validate([
             'annee' => ['string', 'max:255', 'required'],
         ]);
-        // dd($request->annee);
-        $annees = AnneeScolaire::all();
+        
+        dd($request->annee);
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $current = AnneeScolaire::findOrFail($request->annee);
         $paiements = PaiementFrais::periode($current->date_debut, $current->date_fin);
         // dd($paiements);

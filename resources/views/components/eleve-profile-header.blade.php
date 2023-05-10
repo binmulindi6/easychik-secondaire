@@ -39,7 +39,7 @@
                     <div class="relativeright-0">
                     </div>
                     <ul class="relative flex flex-wrap gap-2  list-none " role="tablist">
-                        @if (Auth::user()->isSecretaire() || Auth::user()->isEnseignant() || Auth::user()->isParent() && $data->currentFrequentation())
+                        @if (Auth::user()->isSecretaire() || Auth::user()->isEnseignant() || Auth::user()->isParent() && ($data->currentFrequentation() !== null))
                             <li
                                 class=" cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                                 <a href="{{route('eleves.paiements.show', [$data->id, $data->currentFrequentation()->id])}}"

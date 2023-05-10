@@ -18,7 +18,7 @@
                     <div class=" frm-create hidden container bg-white shadow-2xl rounded-5 p-5">
             @endif
             @if (isset($self))
-                <p class="font-bold text-base"> Edit Annees Scolaire </p>
+                <p class="font-bold text-base"> Modifier Annees Scolaire </p>
                 <form method="PUT" action="{{ route('annee-scolaires.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
@@ -45,7 +45,7 @@
                             <x-button>Enregistrer</x-button>
                         </div>
                         <div class="mt-4">
-                            <x-button class="bg-red-500">ajouter</x-button>
+                            <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
                         </div>
                     </div>
                 </form>
@@ -77,7 +77,7 @@
                             <x-button>ajouter</x-button>
                         </div>
                         <div class="mt-4">
-                            <x-button class="bg-red-500">annuler</x-button>
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
                         </div>
                     </div>
                 </form>

@@ -17,7 +17,7 @@ class TrimestreController extends Controller
     public function index()
     {
         $trimestres = Trimestre::all();
-        $annees = AnneeScolaire::all();
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.trimestres')
             ->with('page_name', $this->page_name)
@@ -99,7 +99,7 @@ class TrimestreController extends Controller
     {
         $trimestres = Trimestre::all();
         $trimestre = Trimestre::find($id);
-        $annees = AnneeScolaire::all();
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.trimestres')
             ->with('page_name', $this->page_name . " / Edit")
@@ -150,7 +150,7 @@ class TrimestreController extends Controller
     public function search(Request $request)
     {
 
-        $annees = AnneeScolaire::all();
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $anneeEncours = AnneeScolaire::current();
         $items = Trimestre::where('trimestres.nom', 'like', '%' . $request->search . '%')
             //->join('annee_scolaires', 'annee_scolaires.id', '=', 'trimestres.annee_scolaire_id')

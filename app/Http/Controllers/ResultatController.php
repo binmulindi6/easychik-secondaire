@@ -197,17 +197,23 @@ class ResultatController extends Controller
         $annee = AnneeScolaire::findOrFail($annee_scolaire_id);
         $trimestres = $annee->trimestres;
         if($trimestres->count() != 3){
-            abort(404);
+                $examenT1 = null;
+                $periode1 = null;
+                $periode2 = null;
         }
         
         foreach ($trimestres as $trimestre) {
             if($trimestre->periodes->count() != 2){
-                abort(404);
+                $examenT1 = null;
+                $periode1 = null;
+                $periode2 = null;
             }
             if($trimestre->examens->count() <= 0){
-                echo(0);
-                dd($trimestre->examens->count());
-                abort(404);
+                // echo(0);
+                // dd($trimestre->examens->count());
+                $examenT1 = null;
+                $periode1 = null;
+                $periode2 = null;
             }
             
         }

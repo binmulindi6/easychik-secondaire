@@ -21,10 +21,10 @@ class EncadrementController extends Controller
         // dd(session()->all());
 
         $encadrements = Encadrement::latest()
-                        ->limit(10)
+                       ->limit(20)
                         ->get();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
-        $annees = AnneeScolaire::all();
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $users = User::where('isAdmin', '=', '0')
                 ->where('parrain_id', null)
                 ->get();
@@ -109,11 +109,11 @@ class EncadrementController extends Controller
     public function edit($id)
     {
         $encadrements = Encadrement::latest()
-                ->limit(10)
+               ->limit(20)
                 ->get();
         $encadrement = Encadrement::find($id);
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
-        $annees = AnneeScolaire::all();
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $users = User::where('isAdmin', '=', '0')->where('parrain_id', null)->get();
         // dd($users);
         return view('users.encadrements')

@@ -21,12 +21,16 @@ class AnneeScolaire extends Model
     ];
 
     public static function current(){
-        return DateController::currentAnnee();
+        if(session()->get('currentYear') !== null){
+            return session()->get('currentYear');
+        }else{
+            return DateController::currentAnnee();
+        }
     }
 
     public  function isCurrent(){
 
-        if($this == AnneeScolaire::current()){
+        if($this->id === AnneeScolaire::current()->id){
             return true;
         } 
         return false;

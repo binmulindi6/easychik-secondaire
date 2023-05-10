@@ -31,11 +31,12 @@ class EleveController extends Controller
     protected $page = 'Eleves';
     protected $parent;
 
-    public function index() 
+    public function index(Request $request)
     {   
+        // dd(session()->get('currentYear'));
         // dd($_SESSION['current']);
         $eleves = Eleve::latest()
-                ->limit(10)
+               ->limit(20)
                 ->get();
         if (DateController::checkYears()) {
             if (Auth::user()->isParent()) {
@@ -51,7 +52,7 @@ class EleveController extends Controller
             
             if (Auth::user()->isAdmin()){
                 $eleves = Eleve::latest()
-                ->limit(10)
+               ->limit(20)
                 ->get();
             }
             $lastmatricule = Eleve::all()->last()->matricule;

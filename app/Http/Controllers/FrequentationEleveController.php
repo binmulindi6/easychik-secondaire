@@ -18,7 +18,7 @@ class FrequentationEleveController extends Controller
         $frequentations = Frequentation::all();
         $eleve = Eleve::findOrFail($id);
         $classes = Classe::orderBy('niveau_id','asc')->get();
-        $annees = AnneeScolaire::all();
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $current = AnneeScolaire::current();
 
         if(Auth::user()->isEnseignant()){

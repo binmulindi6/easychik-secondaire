@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : lun. 08 mai 2023 à 23:59
+-- Généré le : mer. 10 mai 2023 à 10:21
 -- Version du serveur : 5.7.39
 -- Version de PHP : 8.2.0
 
@@ -44,8 +44,9 @@ CREATE TABLE `annee_scolaires` (
 
 INSERT INTO `annee_scolaires` (`id`, `nom`, `date_debut`, `date_fin`, `created_at`, `updated_at`, `deleted_at`, `selected`) VALUES
 (1, '2022-2023', '2022-09-02', '2023-07-02', '2022-08-24 14:55:26', '2022-11-17 18:33:09', NULL, 0),
-(2, '2023-2024', '2023-09-02', '2024-07-02', '2022-08-29 19:21:58', '2022-11-17 18:33:34', '2022-11-17 23:09:03', 0),
-(3, '2024-2025', '2024-09-02', '2025-07-02', '2022-09-15 14:02:08', '2022-11-19 10:32:50', NULL, 0);
+(2, '2023-2024', '2023-09-02', '2024-07-02', '2022-08-29 19:21:58', '2022-11-17 18:33:34', NULL, 0),
+(3, '2024-2025', '2024-09-02', '2025-07-02', '2022-09-15 14:02:08', '2023-05-09 16:13:38', '2023-05-09 16:13:38', 0),
+(4, '2021-2022', '2021-09-22', '2022-07-02', '2023-05-09 16:26:55', '2023-05-09 16:26:55', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1748,7 +1749,9 @@ INSERT INTO `frequentations` (`id`, `eleve_id`, `classe_id`, `annee_scolaire_id`
 (29, 33, 5, 1, '2023-04-13 21:47:46', '2023-04-13 21:47:46', NULL),
 (30, 34, 1, 1, '2023-04-13 21:55:53', '2023-04-13 21:55:53', NULL),
 (31, 15, 8, 1, '2023-04-14 13:14:34', '2023-04-14 13:14:34', NULL),
-(32, 21, 5, 3, '2023-04-18 22:57:06', '2023-04-18 22:57:06', NULL);
+(32, 21, 5, 3, '2023-04-18 22:57:06', '2023-05-09 17:23:51', '2023-05-09 17:23:51'),
+(33, 21, 2, 2, '2023-05-09 16:01:42', '2023-05-09 16:01:42', NULL),
+(34, 21, 8, 4, '2023-05-09 17:25:28', '2023-05-09 17:25:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -1780,7 +1783,7 @@ INSERT INTO `messages` (`id`, `objet`, `contenu`, `expediteur`, `destinateur`, `
 (7, 'Tuna sema', '<span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">Messages</span>\r\n                            <span class=\"ml-1 duration-300 opacity-100 pointer-events-none ease\">10</span>', 5, 10, '2023-04-16 22:16:35', '2023-04-16 22:16:35', NULL, NULL),
 (8, 'Paiement Frais Scolaires', 'Bytes\r\nLists\r\nRich TextHTML\r\nCopy\r\nLorem ipsum dolor sit amet consectetur adipiscing elit netus semper ultricies quisque, eu eros himenaeos odio nullam vel praesent pharetra ante malesuada penatibus, accumsan elementum hac dis arcu platea nec quam aptent luctus. Cubilia litora libero phasellus mollis tempus augue mattis, porttitor dis dignissim lectus nisi nulla hac conubia, nullam aliquam tortor faucibus luctus facilisis. Laoreet donec erat taciti ad mollis, aenean fermentum nostra. Enim at natoque parturient nisl velit vehicula curae suspendisse tempus, himenaeos vulputate gravida nam egestas euismod lacus nostra aptent, in eu luctus convallis vestibulum sapien netus rhoncus', 5, 8, '2023-04-17 09:43:31', '2023-05-01 15:28:57', '2023-05-01 15:28:57', NULL),
 (9, 'Paiement Frais Scolaires', 'Bytes\r\nLists\r\nRich TextHTML\r\nCopy\r\nLorem ipsum dolor sit amet consectetur adipiscing elit netus semper ultricies quisque, eu eros himenaeos odio nullam vel praesent pharetra ante malesuada penatibus, accumsan elementum hac dis arcu platea nec quam aptent luctus. Cubilia litora libero phasellus mollis tempus augue mattis, porttitor dis dignissim lectus nisi nulla hac conubia, nullam aliquam tortor faucibus luctus facilisis. Laoreet donec erat taciti ad mollis, aenean fermentum nostra. Enim at natoque parturient nisl velit vehicula curae suspendisse tempus, himenaeos vulputate gravida nam egestas euismod lacus nostra aptent, in eu luctus convallis vestibulum sapien netus rhoncus', 5, 10, '2023-04-17 09:43:32', '2023-04-17 09:43:32', NULL, NULL),
-(10, 'Demande De Derogation', 'sagittis. Massa rhoncus sed risus primis fames non parturient, molestie scelerisque nullam nibh feugiat convallis, dictum interdum proin malesuada suspendisse sagittis. Ullamcorper', 8, 5, '2023-04-17 11:22:15', '2023-04-23 23:45:01', '2023-04-23 23:45:01', NULL);
+(10, 'Demande De Derogation', 'sagittis. Massa rhoncus sed risus primis fames non parturient, molestie scelerisque nullam nibh feugiat convallis, dictum interdum proin malesuada suspendisse sagittis. Ullamcorper', 8, 5, '2023-04-17 11:22:15', '2023-05-10 08:06:29', '2023-05-10 08:06:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -2046,7 +2049,13 @@ INSERT INTO `periodes` (`id`, `nom`, `date_debut`, `date_fin`, `trimestre_id`, `
 (4, 'QUATRIEME PERIODE', '2023-01-31', '2023-03-21', 2, '2022-08-24 15:11:31', '2022-11-17 19:19:42', NULL),
 (5, 'CINQUIME PERIODE', '2023-03-22', '2022-05-10', 3, '2022-08-24 15:11:49', '2022-11-17 19:21:47', NULL),
 (6, 'SIXIEME PERIODE', '2023-05-11', '2023-07-20', 3, '2022-08-24 15:12:04', '2022-11-17 19:22:25', NULL),
-(7, 'PREMIERE PERIODE', '2000-01-12', '2022-01-12', 7, '2022-08-30 03:30:41', '2022-11-17 20:21:21', '2022-11-17 20:21:21');
+(7, 'PREMIERE PERIODE', '2000-01-12', '2022-01-12', 7, '2022-08-30 03:30:41', '2022-11-17 20:21:21', '2022-11-17 20:21:21'),
+(8, 'PREMIERE PERIODE', '2021-09-02', '2021-10-20', 9, '2023-05-09 16:59:31', '2023-05-09 16:59:31', NULL),
+(9, 'DEUXIEME PERIODE', '2021-10-21', '2021-12-11', 9, '2023-05-09 17:00:01', '2023-05-09 17:00:01', NULL),
+(10, 'TROISIEME PERIODE', '2021-12-12', '2022-12-30', 10, '2023-05-09 17:00:57', '2023-05-09 17:05:08', NULL),
+(11, 'QUATRIEME PERIODE', '2022-01-31', '2022-03-21', 10, '2023-05-09 17:01:44', '2023-05-09 17:01:44', NULL),
+(12, 'CINQUIEME PERIODE', '2022-03-22', '2022-05-10', 11, '2023-05-09 17:02:13', '2023-05-09 17:02:39', NULL),
+(13, 'SIXIEME PERIODE', '2022-05-11', '2022-02-07', 11, '2023-05-09 17:15:32', '2023-05-09 17:15:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -2126,7 +2135,9 @@ INSERT INTO `resultats` (`id`, `periode1`, `periode2`, `periode3`, `periode4`, `
 (25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19, '2023-05-02 13:49:10', '2023-05-02 13:49:10', NULL),
 (26, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 20, '2023-05-02 13:49:10', '2023-05-02 13:49:10', NULL),
 (27, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 21, '2023-05-02 13:49:11', '2023-05-02 13:49:11', NULL),
-(28, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 22, '2023-05-02 13:49:11', '2023-05-02 13:49:11', NULL);
+(28, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 22, '2023-05-02 13:49:11', '2023-05-02 13:49:11', NULL),
+(29, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 33, '2023-05-09 16:01:42', '2023-05-09 16:01:42', NULL),
+(30, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 34, '2023-05-09 17:25:28', '2023-05-09 17:25:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -2154,7 +2165,10 @@ INSERT INTO `trimestres` (`id`, `nom`, `date_debut`, `date_fin`, `annee_scolaire
 (2, 'DEUXIEME TRIMESTRE', '2022-12-12', '2023-03-21', 1, '2022-08-24 15:08:24', '2022-11-19 10:30:27', NULL),
 (3, 'TROISIEME TRIMESTRE', '2023-03-22', '2023-07-02', 1, '2022-08-24 15:09:17', '2022-11-17 19:20:10', NULL),
 (7, 'PREMIER TRIMESTRE', '2023-01-15', '2024-04-14', 2, '2022-09-02 02:29:56', '2022-11-17 19:20:34', '2023-04-13 15:31:33'),
-(8, 'PREMIER TRIMESTRE', '2024-09-15', '2025-09-15', 3, '2022-09-15 14:03:24', '2022-11-19 11:05:07', NULL);
+(8, 'PREMIER TRIMESTRE', '2024-09-15', '2025-09-15', 3, '2022-09-15 14:03:24', '2022-11-19 11:05:07', NULL),
+(9, 'PREMIER TRIMESTRE', '2021-09-02', '2021-12-11', 4, '2023-05-09 16:45:23', '2023-05-09 16:45:23', NULL),
+(10, 'DEUXIEME TRIMESTRE', '2021-12-12', '2022-03-21', 4, '2023-05-09 16:45:55', '2023-05-09 16:45:55', NULL),
+(11, 'TROISIEME TRIMESTRE', '2022-03-22', '2022-07-02', 4, '2023-05-09 16:46:47', '2023-05-09 17:07:35', NULL);
 
 -- --------------------------------------------------------
 
@@ -2499,7 +2513,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `annee_scolaires`
 --
 ALTER TABLE `annee_scolaires`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `categorie_cours`
@@ -2607,7 +2621,7 @@ ALTER TABLE `frais`
 -- AUTO_INCREMENT pour la table `frequentations`
 --
 ALTER TABLE `frequentations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
@@ -2655,7 +2669,7 @@ ALTER TABLE `parrains`
 -- AUTO_INCREMENT pour la table `periodes`
 --
 ALTER TABLE `periodes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `personal_access_tokens`
@@ -2667,13 +2681,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT pour la table `resultats`
 --
 ALTER TABLE `resultats`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT pour la table `trimestres`
 --
 ALTER TABLE `trimestres`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `type_evaluations`

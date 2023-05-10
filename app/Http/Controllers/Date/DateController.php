@@ -61,7 +61,7 @@ class DateController extends Controller
         $today = strtotime(date("Y-m-d"));
 
         //$currentAnneeScolaire = AnneeScolaire::where('is_current', 1)->first();
-        $anneeScolaires = AnneeScolaire::all();
+        $anneeScolaires = AnneeScolaire::orderBy('nom')->get();
 
         foreach ($anneeScolaires as $anneeScolaire) {
             $debut = strtotime($anneeScolaire->date_debut);
@@ -76,7 +76,7 @@ class DateController extends Controller
             return AnneeScolaire::where('selected', 1)->first();
         }
         //dd(11);
-        return AnneeScolaire::all()->first();
+        return AnneeScolaire::latest()->first();
     }
 
 

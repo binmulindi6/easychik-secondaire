@@ -143,7 +143,7 @@
                                     </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        {{ $item->frequentation->eleve->classe(false)}}</td>
+                                        {{ $item->frequentation->classe->nomCourt()}}</td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                         {{ $item->frais->nom}}</td>

@@ -55,8 +55,9 @@
                             <x-button>Enregistrer</x-button>
                         </div>
                         <div class="mt-4">
-                            <x-button class="bg-red-500">Annuler</x-button>
+                            <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
                         </div>
+
                     </div>
                 </form>
             @else
@@ -68,8 +69,17 @@
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="nom" :value="__('Nom')" />
-                            <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
-                                :value="old('nom')" required />
+                            <select name="nom" id="nom"
+                                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                                required>
+                                <option disabled selected> Choisir le nom du Trimestre </option>
+                                <option value="PREMIERE PERIODE">PREMIERE PERIODE</option>
+                                <option value="DEUXIEME PERIODE">DEUXIEME PERIODE</option>
+                                <option value="TROISIEME CINQUIEMEPERIODE">TROISIEME PERIODE</option>
+                                <option value="QUATRIEME PERIODE">QUATRIEME PERIODE</option>
+                                <option value="CINQUIEME PERIODE">CINQUIEME PERIODE</option>
+                                <option value="SIXIEME PERIODE">SIXIEME  PERIODE</option>
+                            </select>
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="trimestre" :value="__('Trimestre')" />
@@ -93,7 +103,7 @@
                             <x-button>ajouter</x-button>
                         </div>
                         <div class="mt-4">
-                            <x-button class="bg-red-500">annuler</x-button>
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
                         </div>
                     </div>
                 </form>

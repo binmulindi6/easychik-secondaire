@@ -45,7 +45,7 @@
                             <x-button>Enregistrer</x-button>
                         </div>
                         <div class="mt-4">
-                            <x-button class="bg-red-500">ajouter</x-button>
+                            <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
                         </div>
                     </div>
                 </form>
@@ -69,9 +69,9 @@
                         <div class="mt-4">
                             <x-button>ajouter</x-button>
                         </div>
-                        {{-- <div class="mt-4">
-                            <x-button class="bg-red-500">annuler</x-button>
-                        </div> --}}
+                        <div class="mt-4">
+                            <x-button-annuleR type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
                     </div>
                 </form>
             @endif

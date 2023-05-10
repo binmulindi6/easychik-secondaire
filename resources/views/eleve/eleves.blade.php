@@ -267,12 +267,12 @@
                                     {{ $item->adresse }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    @if ($item->classe(false) === null)
+                                    @if ($item->currentFrequentation() === null)
                                         <a class="text-blue-500 underline"
                                             href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
                                         </a>
                                     @else
-                                        {{ $item->classe(false) }}
+                                        {{ $item->currentFrequentation()->classe->nomCourt() }}
                                     @endif
                                 </td>
                         @if ( !Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)

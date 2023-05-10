@@ -22,7 +22,7 @@ class EvaluationController extends Controller
     public function index()
     {
         $evaluations = Evaluation::latest()
-            ->limit(10)
+           ->limit(20)
             ->get();
         $cours = Cours::orderBy('nom', 'asc')->get();
 

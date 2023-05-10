@@ -21,7 +21,7 @@ class ExamenController extends Controller
     public function index()
     {
         $examens = Examen::latest()
-            ->limit(10)
+           ->limit(20)
             ->get();
         $cours = Cours::orderBy('nom', 'asc')->get();
 

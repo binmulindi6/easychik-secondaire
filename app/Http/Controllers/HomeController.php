@@ -70,10 +70,10 @@ class HomeController extends Controller
     public function chart()
         {
         
-            $annee = AnneeScolaire::all();
+            $annee = AnneeScolaire::orderBy('nom')->get();
             $freq = Frequentation::all();
             $data = array();
-            $data['annees'] = array('2021-2022');  
+            $data['annees'] = array('2020-2021');  
             $data['frequentations'] = array('0');  
             foreach($annee as $year){
                 $freqs = count($year->frequentations);

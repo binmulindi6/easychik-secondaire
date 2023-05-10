@@ -44,6 +44,7 @@ use App\Http\Controllers\ParentAuthController;
 use App\Http\Controllers\ParrainController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportController;
+use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -203,6 +204,11 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('rapports/annuel', [RapportController::class, 'annuel'])->name('rapports.annuel');
     Route::post('rapports/annuel', [RapportController::class, 'rapportAnnuel'])->name('rapports.annuel.get');
     Route::post('rapports/periode', [RapportController::class, 'rapportPeriode'])->name('rapports.periode.get');
+
+    //settings
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('settings/store', [SettingController::class, 'store'])->name('settings.store');
+
 
 
 

@@ -44,7 +44,7 @@ class PaiementFraisController extends Controller
     public function create()
     {
         $eleves = Eleve::latest()
-                ->limit(10)
+               ->limit(20)
                 ->get();
 
         return view('frais.eleves')

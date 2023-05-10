@@ -13,10 +13,10 @@ class UserEncadrement extends Controller
     public static function create($id)
     {   $page = "Encadrements / Create";
         $encadrements = Encadrement::latest()
-                        ->limit(10)
+                       ->limit(20)
                         ->get();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
-        $annees = AnneeScolaire::all();
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $users = User::where('isAdmin', '=', '0')->where('parrain_id', null)->get();
         $user = User::find($id);
         $current = AnneeScolaire::current();
@@ -46,10 +46,10 @@ class UserEncadrement extends Controller
     public static function createClasse($id)
     {   $page = "Encadrements / Create";
         $encadrements = Encadrement::latest()
-                        ->limit(10)
+                       ->limit(20)
                         ->get();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
-        $annees = AnneeScolaire::all();
+        $annees = AnneeScolaire::orderBy('nom')->get();
         $userz = User::where('isAdmin', '=', '0')
                     // ->where('isActive', 1)
                     ->where('parrain_id', null)->get();

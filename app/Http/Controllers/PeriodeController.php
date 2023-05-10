@@ -19,7 +19,7 @@ class PeriodeController extends Controller
 
     public function index()
     {
-        $periodes = Periode::all();
+        $periodes = Periode::latest()->get();
         $trimestres = Trimestre::all();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.periodes')

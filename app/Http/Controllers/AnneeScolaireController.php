@@ -16,7 +16,7 @@ class AnneeScolaireController extends Controller
     protected $page_name = "Annees Scolaires";
     public function index()
     {
-        $anneeScolaires = AnneeScolaire::all();
+        $anneeScolaires = AnneeScolaire::orderBy('nom')->get();
         return view('ecole.annees')
             ->with('page_name', $this->page_name)
             ->with('items', $anneeScolaires);
@@ -86,7 +86,7 @@ class AnneeScolaireController extends Controller
      */
     public function edit($id)
     {
-        $anneeScolaires = AnneeScolaire::all();
+        $anneeScolaires = AnneeScolaire::orderBy('nom')->get();
         $annee = AnneeScolaire::find($id);
         return view('ecole.annees')
             ->with('page_name', $this->page_name . " / Edit")

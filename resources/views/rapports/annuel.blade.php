@@ -22,7 +22,7 @@
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <caption id="header" class="text-xs py-2 text-gray-900 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             
-                            <span class="font-semibold text-8">
+                            <span class="font-semibold">
                                 Rapport annuel de paiements des frais  {{$current->nom}}
                             </span>
                         

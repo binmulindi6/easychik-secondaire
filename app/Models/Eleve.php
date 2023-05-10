@@ -54,13 +54,15 @@ class Eleve extends Model
                // //dd($annee->nom, AnneeScolaire::current()->nom, $annee->isCurrent());
                // //dd($annee->isCurrent());
                foreach($frequentations as $frequentation){
-                    if ($frequentation->annee_scolaire->isCurrent()) {
-                         $classe_id = $frequentation->classe_id;
-                         $classe = Classe::find($classe_id);
-                         if ($instance) {
-                              return $classe;
+                    if($frequentation->annee_scolaire !== null){
+                         if ($frequentation->annee_scolaire->isCurrent()) {
+                              $classe_id = $frequentation->classe_id;
+                              $classe = Classe::find($classe_id);
+                              if ($instance) {
+                                   return $classe;
+                              }
+                              return $classe->niveau->numerotation . "e " . $classe->nom;;
                          }
-                         return $classe->niveau->numerotation . "e " . $classe->nom;;
                     }
                }
           }
@@ -75,10 +77,12 @@ class Eleve extends Model
                // $annee = AnneeScolaire::withTrashed()->find($annee_id);
 
                //dd($annee->nom, AnneeScolaire::current()->nom, $annee->isCurrent());
-               //dd($annee->isCurrent());
+               // dd($frequentations[1]->annee_scolaire->isCurrent());
                foreach($frequentations as $frequentation){
-                    if ($frequentation->annee_scolaire->isCurrent()) {
-                         return $frequentation;
+                    if($frequentation->annee_scolaire !== null){
+                         if ($frequentation->annee_scolaire->isCurrent()) {
+                              return $frequentation;
+                         }
                     }
                }
           }
