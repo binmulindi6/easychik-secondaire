@@ -89,9 +89,9 @@
             </form>
         </div>
 
-        <div class=" flex flex-row w-full justify-between gap-5">
+        <div class=" flex flex-col-reverse md:flex-row w-full justify-between gap-5">
 
-            <div class="flex flex-col gap-2 w-1/3">
+            <div class="flex flex-col gap-2 w-full md:w-1/3">
                 <div class="shadow-2xl text-center relative bg-white rounded-5 p-5 w-full  z-20">
                     <span class="text-center font-bold text-base"> Historique de Frequentations </span>
                     <div class="flex-auto px-0 pt-0 pb-2">

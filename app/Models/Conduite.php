@@ -19,4 +19,8 @@ class Conduite extends Model
     public function eleves(){
         return $this->hasMany(Eleve::class);
     }
+
+    public function annee(){
+        dd(20);
+    }
 }

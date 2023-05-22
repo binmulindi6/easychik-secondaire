@@ -571,6 +571,8 @@ class ResultatController extends Controller
             "annee" => ['required', 'string', 'max:255'],
         ]);
 
+        dd($request->decision);
+
         $eleve = Eleve::findOrFail($eleve_id);
         $annee = AnneeScolaire::findOrFail($annee_id);
 

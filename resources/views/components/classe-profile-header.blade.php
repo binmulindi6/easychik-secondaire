@@ -30,6 +30,12 @@
               </li>
             @else
               <li class=" w-20 cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                <a href="{{route('classes.cours', $data->id)}}" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
+                  <i class="fa fa-solid fa-book"></i>
+                  <span class="ml-2">Cours</span>
+                </a>
+              </li>
+              <li class=" w-20 cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                 <a href="{{route('classes.eleves', $data->id)}}" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
                   <i class="fa fa-solid fa-chalkboard-user"></i>
                   <span class="ml-2">Eleves</span>

@@ -1,189 +1,124 @@
 @extends('layouts.admin')
 
 @section('content')
-
     <div class="container flex flex-col justify-between gap-5">
-
-        <x-nav-enseignement :pagename="$page_name"> </x-nav-enseignement>
-
-        @if (isset($item))
-            <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
-        @else
-            @if ($page_name == 'Cours/Edit' || $page_name == 'Cours/Create')
-                <div class="frm-create bg-white rounded-5 shadow-2xl container p-5">
-                @else
-                    <div class="hidden frm-create bg-white rounded-5 shadow-2xl container p-5">
-            @endif
-            @if (isset($self))
-                <p class="font-bold text-base"> Edit Cours </p>
-                <form method="PUT" action="{{ route('cours.update', $self->id) }}">
-                    @csrf
-                    {{ method_field('PUT') }}
-                    <!-- Email Address -->
- 
-    <div class="mt-4">
-        <x-label for="categorie_cours" :value="__('Categorie Cours')" />
-        <x-select :val="$self->categorie_cours" :collection="$categories" class="block mt-1 w-full" name='categorie_cours' required> </x-select>
-        <div class="flex gap-5">
-            <div class="mt-4 w-full">
-                <x-label for="nom" :value="__('Nom du Cours')" />
-                <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
-                    placeholder="ex: Geographie..." required />
-            </div>
-            <div class="mt-4 w-full">
-                <x-label for="classe" :value="__('Classe')" />
-                <x-select :val="$self->classe" :collection="$classes" class="block mt-1 w-full" name='classe' required> </x-select>
-            </div>
-        </div>
-        <div class="flex gap-5">
-            <div class="mt-4 w-full">
-                <x-label for="max_periode" :value="__('Note Maximum Periode')" />
-                <x-input id="max_periode" class="block mt-1 w-full" type="text" name="max_periode" :value="$self->max_periode"
-                    placeholder="ex: 20" required />
-            </div>
-            <div class="mt-4 w-full">
-                <x-label for="max_examen" :value="__('Note Maximum Examen')" />
-                <x-input id="max_examen" class="block mt-1 w-full" type="text" name="max_examen" :value="$self->max_examen"
-                    placeholder="ex: 40" required />
-            </div>
-        </div>
-        <div class="mt-4">
-            <x-button>Enregistrer</x-button>
-        </div>
-        </form>
-    @else
-        <p class="font-bold text-base"> Ajouter un Cours</p>
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li class="text-red-500">{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('cours.store') }}">
-            @method('POST')
-            @csrf
-            <!-- Email Address -->
-            <div class="mt-4">
-                <x-label for="categorie_cours" :value="__('Categorie Cours')" />
-                <x-select :collection="$categories" class="block mt-1 w-full" name='categorie_cours' required> </x-select>
-            </div>
-            <div class="flex gap-5">
-                <div class="mt-4 w-full">
-                    <x-label for="nom" :value="__('Nom du Cours')" />
-                    <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')"
-                        placeholder="ex: Geographie..." required />
-                </div>
-                <div class="mt-4 w-full">
-                    <x-label for="classe" :value="__('Classe')" />
-                    <x-select :collection="$classes" class="block mt-1 w-full" name='classe' required> </x-select>
-                </div>
-            </div>
-            <div class="flex gap-5">
-                <div class="mt-4 w-full">
-                    <x-label for="max_periode" :value="__('Note Maximum Periode')" />
-                    <x-input id="max_periode" class="block mt-1 w-full" type="text" name="max_periode" :value="old('max_periode')"
-                        placeholder="ex: 20" required />
-                </div>
-                <div class="mt-4 w-full">
-                    <x-label for="max_examen" :value="__('Note Maximum Examen')" />
-                    <x-input id="max_examen" class="block mt-1 w-full" type="text" name="max_examen" :value="old('max_examen')"
-                        placeholder="ex: 40" required />
-                </div>
-            </div>
-            <div class="mt-4">
-                <x-button>ajouter</x-button>
-            </div>
-        </form>
-        @endif
-    </div>
-    @endif
-
-
+       <x-classe-profile-header :data="$classe" :print="true"></x-classe-profile-header>
+        
     @if (isset($items))
-        @if ($page_name == 'Cours/Edit' || $page_name == 'Cours/Create')
-            <div class="hidden display bg-white shadow-2xl rounded-5 container p-5">
+        @if ($page_name == 'Eleves/Edit' || $page_name == 'Eleves/Create')
+            <div
+                class="display container p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
             @else
-                <div class="display bg-white shadow-2xl rounded-5 container p-5">
+                <div
+                    class="display container  p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
         @endif
 
-        <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-            <h6>Cours</h6>
-        </div>
+        {{-- <div class=" flex justify-between pb-0 mb-0 bg-white rounded-t-2xl">
+            <h6>Eleves</h6>
+        </div> --}}
         <div class="flex-auto px-0 pt-0 pb-2">
-            <div class="p-0 overflow-x-auto">
-                <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+            <div class="pt-5 overflow-x-auto">
+                <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                    <caption class="font-bold text-center uppercase align-middle bg-transparent shadow-none text-xl border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                         liste des Cours 
+                    </caption>
+                    <caption class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xl border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                         classe de {{ $classe->nomComplet()}}
+                    </caption>
                     <thead class="align-bottom">
                         <th
-                            class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                            Nom</th>
+                            class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            Intitulé </th>
                         <th
-                            class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                            Categorie Cours</th>
+                            class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            Categorie</th>
                         <th
-                            class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                            Classe</th>
-                        <th
-                            class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-1 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                             Max Periode </th>
                         <th
-                            class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                            Max Examen </th>
+                            class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            Max Trimestre </th>
+                        {{-- <th
+                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            Nom du Pere </th>
                         <th
-                            class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                            Classe</th>
-                        <th
-                            class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                            Action</th>
+                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            Nom de la Mere </th> --}}
+                        {{-- <th
+                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            Adresse </th> --}}
+                        {{-- <th
+                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            Classe </th> --}}
+                        {{-- @if ( Auth::user()->isAdmin() || !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
+                            <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                                colspan="2">action</th>
+                        @endif --}}
                     </thead>
                     <tbody>
 
                         @foreach ($items as $item)
-                            <tr class="">
+                            <tr class=" rounded-2xl hover:bg-slate-100">
                                 <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->nom }}</td>
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                    {{$item->nom}}
+                                </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->categorie_cours->nom }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->classe->nomCourt() }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->max_periode }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->max_examen }}</td>
+                                {{-- <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                    {{ $item->nom_pere }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }} </td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
-                                    <div class="flex justify-center gap-4 align-middle">
-                                        <a title="Modifier" href="{{ route('cours.edit', $item->id) }}"><i
-                                                class="fa fa-solid fa-pen"></i></a>
-                                        <form class="delete-form" action="{{ route('cours.destroy', $item->id) }}"
-                                            method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button title="Effacer" type="submit"><i
-                                                    class="text-red-500 fa fa-solid fa-trash"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                                    {{ $item->nom_mere }}</td> --}}
+                                {{-- <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                    {{ $item->adresse }}</td> --}}
+                                {{-- <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                    @if ($item->classe(false) === null)
+                                        <a class="text-blue-500 underline"
+                                            href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
+                                        </a>
+                                    @else
+                                        {{ $item->classe(false) }}
+                                    @endif
+                                </td> --}}
+                        @if ( Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
+                            <td
+                                class="p-1 text-size-sm hidden text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
+                                <div class="flex justify-center gap-4 align-middle">
+                                    <a href="{{ route('eleves.edit', $item->id) }}" title="Modifier">
+                                        <i class="fa fa-solid fa-pen"></i>
+                                    </a>
+                                    {{-- <form class="delete-form" class="delete-form"
+                                        action="{{ route('eleves.destroy', $item->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="delete-btn" type="submit" title="Effacer">
+                                            <i class="text-red-500 fa fa-solid fa-trash"></i>
+                                        </button>
+                                    </form> --}}
+                                </div>
+                            </td>
+                        @endif
+                        </tr>
+    @endforeach
 
-                    </tbody>
-                </table>
-
-            </div>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
     @endif
+    </div>
     </div>
 
 @endsection

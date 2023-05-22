@@ -87,7 +87,7 @@ class ClasseController extends Controller
         }
         $classe = Classe::findOrFail($id);
         $annee = AnneeScolaire::current();
-        $annees = AnneeScolaire::latest()->get();
+        $annees = AnneeScolaire::orderBy('nom', 'desc')->get();
         // dd($annees);
 
         return view('classe.profile')
@@ -105,6 +105,18 @@ class ClasseController extends Controller
         return view('classe.eleves')
                 ->with('page_name', $this->page . " / Eleves")
                 ->with('items', $eleves)
+                ->with('classe', $classe);
+    }
+
+    public function cours($id)
+    {
+        $classe = Classe::findOrFail($id);
+        $cours = $classe->cours;
+        // dd($cours);
+
+        return view('classe.cours')
+                ->with('page_name', $this->page . " / Cours")
+                ->with('items', $cours)
                 ->with('classe', $classe);
     }
 
