@@ -17,6 +17,8 @@
 
 
     <!-- Scripts -->
+    {{-- <script type="text/javascript" src="{{asset('')}}"></script> --}}
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 

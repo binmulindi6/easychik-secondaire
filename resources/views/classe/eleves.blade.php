@@ -18,6 +18,7 @@
         </div> --}}
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="pt-5 overflow-x-auto">
+                <x-button id="btn-export">export</x-button>
                 <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                     <caption class="font-bold text-center uppercase align-middle bg-transparent shadow-none text-xl border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                          liste des eleves 

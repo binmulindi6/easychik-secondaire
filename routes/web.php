@@ -13,11 +13,17 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\EleveController;
+use App\Http\Controllers\FraisController;
 use App\Http\Controllers\UserEncadrement;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\NiveauController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ParrainController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RapportController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TravailController;
 use App\Http\Controllers\ConduiteController;
 use App\Http\Controllers\CotationController;
@@ -27,24 +33,19 @@ use App\Http\Controllers\ResultatController;
 use App\Http\Controllers\Date\DateController;
 use App\Http\Controllers\TrimestreController;
 use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\ParentAuthController;
 use App\Http\Controllers\Admin\EcoleController;
 use App\Http\Controllers\EleveExamenController;
 use App\Http\Controllers\EncadrementController;
+use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\AnneeScolaireController;
-use App\Http\Controllers\FrequentationController;
-use App\Http\Controllers\CategorieCoursController;
 use App\Http\Controllers\EleveConduiteController;
+use App\Http\Controllers\FrequentationController;
+use App\Http\Controllers\PaiementFraisController;
+use App\Http\Controllers\CategorieCoursController;
 use App\Http\Controllers\TypeEvaluationController;
 use App\Http\Controllers\EleveEvaluationController;
-use App\Http\Controllers\FraisController;
 use App\Http\Controllers\FrequentationEleveController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\PaiementFraisController;
-use App\Http\Controllers\ParentAuthController;
-use App\Http\Controllers\ParrainController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RapportController;
-use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -209,6 +210,9 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('settings/store', [SettingController::class, 'store'])->name('settings.store');
 
+    //import Excel
+    Route::get('import/excel', [ImportExcelController::class, 'index'])->name('import.excel.index');
+    Route::post('import/excel', [ImportExcelController::class, 'import'])->name('import.excel.post');
 
 
 

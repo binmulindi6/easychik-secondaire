@@ -1,6 +1,5 @@
 import "./delete";
 // import "./bootstrap";
-import "./myjs";
 import "./fa.min";
 import "./countup";
 //import './Chart.extension';
@@ -9,6 +8,8 @@ import "./charts";
 import "./perfect-scrollbar.min";
 import "./sidenav-burger";
 import "./perfect-scrollbar";
+import "./toExcel";
+import "./myjs";
 // import "./argon-dashboard-tailwind";
 
 import "./popper";

@@ -51,6 +51,7 @@
             <div  class="container w-full flex justify-center"> 
                 @if ($examenT1 != null && $periode1 != null && $periode2 != null && $examenT2 != null && $periode3 != null && $periode4 != null && $examenT3 != null && $periode5 != null && $periode6 != null )
                     <div  class="w-full flex flex-col justify-center items-center h-full">
+                        <x-button id="btn-export">export</x-button>
                     <table id="printable" class="border-2xl print:w-60 border-collapse text-xs m-5">
                         <thead>
                             <th colspan="12" class="border p-0.5 uppercase text-left" >
