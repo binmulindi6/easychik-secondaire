@@ -88,6 +88,7 @@ class ClasseController extends Controller
         $classe = Classe::findOrFail($id);
         $annee = AnneeScolaire::current();
         $annees = AnneeScolaire::orderBy('nom', 'desc')->get();
+        // $annees = AnneeScolaire::orderBy('nom', 'desc')->get();
         // dd($annees);
 
         return view('classe.profile')

@@ -78,40 +78,23 @@
                                     {{ $item->nom_pere }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->nom_mere }}</td> --}}
-                                {{-- <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->adresse }}</td> --}}
-                                {{-- <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    @if ($item->classe(false) === null)
-                                        <a class="text-blue-500 underline"
-                                            href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
-                                        </a>
-                                    @else
-                                        {{ $item->classe(false) }}
-                                    @endif
-                                </td> --}}
-                        {{-- @if ( Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
-                            <td
-                                class="p-1 text-size-sm hidden text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
-                                <div class="flex justify-center gap-4 align-middle">
-                                    <a href="{{ route('eleves.edit', $item->id) }}" title="Modifier">
-                                        <i class="fa fa-solid fa-pen"></i>
-                                    </a>
-                                    <form class="delete-form" class="delete-form"
-                                        action="{{ route('eleves.destroy', $item->id) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="delete-btn" type="submit" title="Effacer">
-                                            <i class="text-red-500 fa fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        @endif --}}
-                        </tr>
-    @endforeach
+                                    {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }} </td>
+                                <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
+                                    <div class="flex justify-center gap-4 align-middle">
+                                        <a title="Modifier" href="{{ route('cours.edit', $item->id) }}"><i
+                                                class="fa fa-solid fa-pen"></i></a>
+                                        <form class="delete-form" action="{{ route('cours.destroy', $item->id) }}"
+                                            method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button title="Effacer" type="submit"><i
+                                                    class="text-red-500 fa fa-solid fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
 
     </tbody>
     </table>
