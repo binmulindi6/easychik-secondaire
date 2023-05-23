@@ -41,4 +41,15 @@ class EleveExamenController extends Controller
 
 
     }
+    public function updateViaApi(Request $request,$id){
+        //dd($id);
+        $request->validate([
+            'note_obtenu' => ['required','string','max:255']
+        ]);
+        // dd($request->note_obtenu);
+        EleveExamen::set($id,$request->note_obtenu);
+        return 'succes';
+
+
+    }
 }

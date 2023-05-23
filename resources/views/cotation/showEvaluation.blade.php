@@ -54,7 +54,7 @@
                                 @if (Auth::user()->isEnseignant() && Auth::user()->classe())
                                 {{-- @die(Auth::user()->classe->id) --}}
                                     {{-- @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id) --}}
-                                        <tr class="rounded-2xl hover:bg-slate-100">
+                                        <tr id="tr{{$item->id}}" class="rounded-2xl hover:bg-slate-100">
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                 <a href="{{route('eleves.show', $item->eleve_id)}}" class="hover:cursor-pointer hover:text-blue-600">
@@ -62,13 +62,16 @@
                                             </td>
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                                <form action="{{route('eleves.evaluations.update', $item->id)}}" method="POST" class="flex justify-center items-center gap-2">
+                                                <form id="frm{{$item->id}}" action="{{route('eleves.evaluations.update.api', $item->id)}}" method="POST" class="flex justify-center items-center gap-2">
                                                     @method('PUT')
                                                     @csrf
-                                                    <x-input class="px-2 py-2 rounded w-20 text-center h-8" type="number" max='{{$evaluation->note_max}}' name="note_obtenu" id="" value="{{ $item->note_obtenu }}"/>
-                                                        <input type="hidden" name="back" value="00">
-                                                    <x-button type="submit" class="px-2 h-7 hover:opacity-100"> ✅</x-button>
+                                                    <x-input id="ev{{$item->id}}" class="px-2 py-2 rounded w-20 text-center h-8" type="number" max='{{$evaluation->note_max}}' name="note_obtenu" value="{{ $item->note_obtenu }}"/>
+                                                    <input type="hidden" name="back" value="00">
+                                                    <input id="token{{$item->id}}" type="hidden" name="token" value="{{ csrf_token() }}">
+                                                    <x-button id="{{$item->id}}" type="submit" class="btn-corriger px-2 h-7 hover:opacity-100" > ✅</x-button>
+                                                    {{-- <x-button type="submit" class="btn-corriger px-2 h-7 hover:opacity-100" onclick="postData({{$item->id}})"> ✅</x-button> --}}
                                                 </form>
+                                                <span id="err{{$item->id}}" class="text-red-500 text-3"></span>
                                             </td>
                                             {{-- <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
@@ -112,4 +115,8 @@
     @endif
     </div>
 
+    <script>
+   
+    </script>
 @endsection
+

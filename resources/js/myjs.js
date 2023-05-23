@@ -1,3 +1,8 @@
+import axios from "axios";
+
+// const queryString = window.location;
+// const link = queryString.origin;
+// const link2 = link === "http://sas.test" ? link : link+"/sas/public"
 
 const btn_create_eleve = document.querySelector("[btn-create-eleves]");
 const btn_show_eleves = document.querySelector("[btn-display-eleves]");
@@ -38,8 +43,15 @@ const frmIdentity = document.querySelector(".frm-identity");
 const btnEdit = document.querySelector('.btn-edit');
 const btnSave = document.querySelector('.btn-save');
 
-console.log(myBtn)
+// console.log(myBtn)
 ///joker btn
+
+///BTN Corriger
+const btnCorriger = document.querySelectorAll('.btn-corriger');
+
+
+
+
 
 myBtn !== null && myBtn.forEach((jokerBtn) => {
     jokerBtn.addEventListener('click', (e)=>{
@@ -155,4 +167,41 @@ moyen !== null && moyen.addEventListener('change', () => {
         ref.classList.add('hidden')
 
     }
+})
+
+
+btnCorriger && btnCorriger.forEach(btn => {
+    btn.addEventListener('click', (e)=> {
+        e.preventDefault();
+        
+        const id = btn.id;
+        const value = document.getElementById('ev' + id).value;
+        const max = document.getElementById('ev' + id).max;
+        const token = document.getElementById('token' + id).value;
+        const frm =  document.getElementById('frm' + id)
+        const link  = frm.action;
+        const err = document.getElementById('err' + id)
+
+        err.innerHTML = ''
+
+        if (value <= max) {
+            // axios.put(link,
+            //     {
+            //         "_token" : token,
+            //         'note_obtenu' : value,
+            //     }
+            // ).then(e => {
+            //     console.log(e)
+            //     document.getElementById('tr' + id).classList.toggle('hidden');
+            // })
+            // .catch(e => {
+            //     console.log(e)
+            // })
+
+        } else {
+            err.innerHTML = "La note inserer est superieure a la note max"
+        }
+        
+        e.preventDefault();
+    })
 })

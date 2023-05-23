@@ -37,12 +37,21 @@
 
     </div>
         {{-- @if ($pagename === 'Paiements / Facture') --}}
-        <span
-            class="justify-end min-w-30 cursor-pointer z-30 text-center px-3 py-1  bg-gray-300 hover:bg-white rounded-xl">
-            <span id="joker-print" class="z-30 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
-                <i class="fa fa-solid fa-print text-blue-500"></i>
-                <span class="mr-2">Imprimer le Rapport</span>
+        <div class="flex flex-row gap-5 justify-end ">
+            <span
+                class="min-w-30 cursor-pointer z-30 text-center px-3 py-1  bg-gray-300 hover:bg-white rounded-xl">
+                <span id="btn-export" class="z-30 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
+                    <i class="fa fa-solid fa-file-export text-blue-500"></i>
+                    <span class="mr-2">Exporter le Rapport</span>
+                </span>
             </span>
-        </span>
+            <span
+                class="min-w-30 cursor-pointer z-30 text-center px-3 py-1  bg-gray-300 hover:bg-white rounded-xl">
+                <span id="joker-print" class="z-30 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
+                    <i class="fa fa-solid fa-print text-blue-500"></i>
+                    <span class="mr-2">Imprimer le Rapport</span>
+                </span>
+            </span>
+        </div>
         {{-- @endif --}}
 </div>

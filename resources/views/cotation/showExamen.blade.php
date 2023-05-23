@@ -62,12 +62,13 @@
                                             </td>
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                                <form action="{{route('eleves.examens.update', $item->id)}}" method="POST" class="flex justify-center items-center gap-2">
+                                                <form  id="frm{{$item->id}}" action="{{route('eleves.examens.update.api', $item->id)}}" method="POST" class="flex justify-center items-center gap-2">
                                                     @method('PUT')
                                                     @csrf
-                                                    <x-input class="px-2 py-2 rounded w-20 text-center h-8" type="number" max='{{$examen->note_max}}' name="note_obtenu" id="" value="{{ $item->note_obtenu }}"/>
+                                                    <x-input id="ev{{$item->id}}" class="px-2 py-2 rounded w-20 text-center h-8" type="number" max='{{$examen->note_max}}' name="note_obtenu" value="{{ $item->note_obtenu }}"/>
                                                     <input type="hidden" name="back" value="00">
-                                                    <x-button type="submit" class="px-2 h-7 hover:opacity-100"> ✅</x-button>
+                                                    <input id="token{{$item->id}}" type="hidden" name="token" value="{{ csrf_token() }}">
+                                                    <x-button id="{{$item->id}}" type="submit" class="btn-corriger px-2 h-7 hover:opacity-100"> ✅</x-button>
                                                 </form>
                                             </td>
                                             {{-- <td

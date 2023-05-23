@@ -105,8 +105,8 @@
                 @endif
                 @if (Auth::user()->isDirecteur() || Auth::user()->isSecretaire())
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Classes') ||
-                                str_contains($page_name, 'Niveaux'))
+                        @if ((str_contains($page_name, 'Classes') ||
+                                str_contains($page_name, 'Niveaux')) && !str_contains($page_name, 'Eleves'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('classes.index') }}">
                             @else
@@ -165,7 +165,7 @@
                 @endif
                     @if (!Auth::user()->isEnseignant() || (Auth::user()->isEnseignant() && Auth::user()->classe() !== null))
                         <li class="mt-0.5 w-full">
-                            @if ((str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations') )&& !str_contains($page_name, 'Classes'))
+                            @if ((str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations') ) && !str_contains($page_name, 'Classes'))
                                 <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                     href="{{ route('eleves.index') }}">
                                 @else
@@ -202,7 +202,7 @@
                     @endif --}}
                 @if( Auth::user()->isSecretaire())
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Paiements'))
+                        @if (str_contains($page_name, 'Paiements') && !str_contains($page_name, 'Eleves'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('paiements.index') }}">
                             @else
@@ -363,7 +363,7 @@
                         </div>
                             <div class="w-full flex flex-row items-center gap-5">
                                 <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Messages</span>
-                                <span class="p-flex justify-center font-bold text-4 text-red-500">{{Auth::unread()}}</span>
+                                <span class="p-flex justify-center font-bold text-4 text-red-500">{{Auth::unread() && count(Auth::unread())}}</span>
                             </div>
                         </a>
                     </li>
@@ -490,7 +490,9 @@
                             <div
                                 class="block font-semibold text-white transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-1">
                                 <i class="fa fa-bell sm:mr-1"></i>
-                                <span class="hidden sm:inline"></span>
+                                @if ((Auth::user()->isDirecteur() || Auth::user()->isParent()) && Auth::unread())
+                                <span class=" sm:inline">{{count(Auth::unread())}}</span>
+                                @endif
                             </div>
                         </li>
 
@@ -508,29 +510,35 @@
                             </a>
                         </li>
 
-                        <div id="notify-popper" class="opacity-0 bg-white rounded-2 p-2 shadow-2xl">
-                            <li class="relative">
-                                <div
-                                    class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
-                                    <div class="flex py-1">
-                                        <div class="my-auto">
-                                            <span
-                                                class=" bg-blue-300 inline-flex items-center justify-center mr-4 text-white text-size-sm h-9 w-9 max-w-none rounded-xl">
-                                            </span>
-                                        </div>
-                                        <div class="flex flex-col justify-center">
-                                            <h6 class="mb-1 font-normal leading-normal dark:text-white text-size-sm">
-                                                <span class="font-semibold">New message</span> from Laur
-                                            </h6>
-                                            <p
-                                                class="mb-0 leading-tight text-size-xs text-slate-400 dark:text-white/80">
-                                                <i class="mr-1 fa fa-clock"></i>
-                                                13 minutes ago
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                        <div id="notify-popper" class="opacity-0 bg-white rounded-2 p-2 shadow-2xl pr-2">
+                            @if (Auth::unread() && count(Auth::unread()) > 0)
+                                @foreach (Auth::unread() as $item)
+                                    <li class="relative">
+                                        <a href="{{route('messages.show', $item->id)}}"
+                                            class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
+                                                <div class="flex py-1">
+                                                        <div class="my-auto">
+                                                            <span
+                                                                class=" bg-blue-300 flex items-center justify-center mr-4 text-white text-size-sm h-9 w-9 max-w-none rounded-xl">
+                                                                <i class="fa fa-message sm:mr-1"></i>
+                                                            </span>
+                                                        </div>
+                                                            <div class="flex flex-col justify-center">
+                                                                <h6 class="mb-1 font-normal leading-normal dark:text-white text-size-sm">
+                                                                    <span class="font-semibold">Nouveau message de </span> {{$item->from()->email}}
+                                                                </h6>
+                                                                <p
+                                                                    class="mb-0 leading-tight text-size-xs text-slate-400 dark:text-white/80">
+                                                                    <i class="mr-1 fa fa-clock"></i>
+                                                                    13 minutes ago
+                                                                </p>
+                                                            </div>
+                                                    </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endif
+                                
                         </div>
                     </ul>
                 </div>
@@ -540,7 +548,7 @@
         <!-- end Navbar -->
 
         <!-- cards -->
-        <div class="w-full h-full px-6 py-6 mx-auto">
+        <div class="w-full h-full p-2 md:p-6 mx-auto">
             @yield('content')
         </div>
         <!-- end cards -->

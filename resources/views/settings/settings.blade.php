@@ -31,17 +31,17 @@
                     <span class="text-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia tenetur iure facere adipisci quasi dicta illo necessitatibus, molestias, a laudantium sint reprehenderit dolores animi consequuntur nihil aut at ipsum numquam?</span>
                 </div>
                 <div class="flex flex-col gap-1 pb-2 border-b">
-                    <form ction="{{ route('logout') }} method="post" class="flex items-center justify-between gap-2 w-full">
+                    <form action="{{ route('logout') }}" method="post" class="flex items-center justify-between gap-2 w-full">
                         @csrf
-                        <span class="font-semibold text-4 text-slate-700">Se Seconnecter</span>
+                        <span class="font-semibold text-4 text-slate-700">Se Deconnecter</span>
                         <div class="w-30 md:w-40  h-10 flex flex-row justify-end items-center gap-2">
                             {{-- <x-select :submitOnChage="true" :val="$current" :collection="$annees" class="block mt-1 w-full" name='annee' required></x-select> --}}
                             <button type="submit"
-                                class="p-0 w-30 md:w-40  bg-red-500  hover:bg-red-600 rounded-2 py-2 text-white font-semibold transition-all text-size-sm ease-nav-brand ">
+                                class="p-0 w-30 md:w-40  bg-red-500  hover:bg-blue-500  rounded-2 py-2 text-white font-semibold transition-all text-size-sm ease-nav-brand ">
                                 <i fixed-plugin-button-nav class=" text-black fa fa-right-from-bracket"
                                     title="logout"></i>
                                 <span class="hidden sm:inline">Deconnexion</span>
-                            </button title="deconnexio">
+                            </button title="deconnexion">
                         </div>
                     </form>
                     <span class="text-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia tenetur iure facere adipisci quasi dicta illo necessitatibus, molestias, a laudantium sint reprehenderit dolores animi consequuntur nihil aut at ipsum numquam?</span>

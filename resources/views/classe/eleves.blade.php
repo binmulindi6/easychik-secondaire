@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
+        <x-back :link="route('classes.show', $classe->id)"></x-back>
        <x-classe-profile-header :data="$classe" :print="true"></x-classe-profile-header>
         
     @if (isset($items))
@@ -18,7 +19,6 @@
         </div> --}}
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="pt-5 overflow-x-auto">
-                <x-button id="btn-export">export</x-button>
                 <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                     <caption class="font-bold text-center uppercase align-middle bg-transparent shadow-none text-xl border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                          liste des eleves 
@@ -100,24 +100,24 @@
                                         {{ $item->classe(false) }}
                                     @endif
                                 </td> --}}
-                        @if ( Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
+                        {{-- @if ( Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
                             <td
                                 class="p-1 text-size-sm hidden text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                 <div class="flex justify-center gap-4 align-middle">
                                     <a href="{{ route('eleves.edit', $item->id) }}" title="Modifier">
                                         <i class="fa fa-solid fa-pen"></i>
                                     </a>
-                                    {{-- <form class="delete-form" class="delete-form"
+                                    <form class="delete-form" class="delete-form"
                                         action="{{ route('eleves.destroy', $item->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button class="delete-btn" type="submit" title="Effacer">
                                             <i class="text-red-500 fa fa-solid fa-trash"></i>
                                         </button>
-                                    </form> --}}
+                                    </form>
                                 </div>
                             </td>
-                        @endif
+                        @endif --}}
                         </tr>
     @endforeach
 

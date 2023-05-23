@@ -32,7 +32,7 @@
                         @if (isset($debut))
                         <caption id="header" class="text-xs py-2 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             
-                                <span class="font-semibold text-8">
+                                <span class="font-semibold text-4">
                                     Rapport de paiements des frais du {{$debut}} au {{$fin}}
                                 </span>
                             

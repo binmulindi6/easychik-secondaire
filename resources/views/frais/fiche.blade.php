@@ -72,9 +72,9 @@
                 </table>
         </div>
 
-        <div class="flex flex-row flex-wrap justify-center gap-4 w-full lg:w-3/4">
+        <div class="flex flex-col md:flex-row justify-center gap-4 w-full md:w-3/4">
             @foreach ($data as $frr)
-                <div class="flex flex-col gap-2 items-center w-2/6">
+                <div class="flex flex-col gap-2 items-center w-full md:w-2/6">
                     <span class="font-semibold uppercase">{{$frr['frais']->nom}}</span>
                     <table class="">
                         <thead>

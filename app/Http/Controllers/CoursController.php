@@ -20,7 +20,7 @@ class CoursController extends Controller
         $cours = Cours::all();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $categories = CategorieCours::orderBy('nom', 'asc')->get();
-        return view('classe.cours')
+        return view('ecole.cours')
                     ->with('page_name', $this->page_name)
                     ->with('items', $cours)
                     ->with('classes', $classes)
@@ -106,7 +106,7 @@ class CoursController extends Controller
         $cours = Cours::all();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $categories = CategorieCours::orderBy('nom', 'asc')->get();
-        return view('classe.cours')
+        return view('ecole.cours')
                 ->with('page_name', $this->page_name . "/Edit")
                 ->with('self', $cour)
                 ->with('items', $cours)

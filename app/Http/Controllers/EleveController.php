@@ -78,10 +78,10 @@ class EleveController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $r)
     {
         $this->page = "Eleves/Create";
-        return $this->index();
+        return $this->index($r);
     }
 
     /**
@@ -145,6 +145,7 @@ class EleveController extends Controller
             return  $this->update($request, $id);
         }
         $eleve = Eleve::findOrFail($id);
+        // dd($eleve->conduites);
         
         ////JOKER
         // $classe = Classe::find($eleve->classe()->id);
@@ -343,12 +344,12 @@ class EleveController extends Controller
             ->with('last_matricule', $matricule);
     }
 
-    public function linkParent($parent)
+    public function linkParent(Request $request,$parent)
     {
         $this->parent = $parent;
         $this->page = 'Eleve-Parent';
 
-        return $this->index();
+        return $this->index($request);
     }
 
     public function fichePaiements($id)
@@ -391,7 +392,7 @@ class EleveController extends Controller
         // dd($data[0]['frais']);
 
         return view('frais.fiche')
-                    ->with('page_name', 'Paiements')
+                    ->with('page_name', 'Eleves / Paiements')
                     ->with('paiements', $paiements)
                     ->with('annees', $annees)
                     ->with('freq', $freq)

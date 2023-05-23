@@ -36,4 +36,12 @@ class EleveEvaluationController extends Controller
         }
         return redirect()->route('eleves.evaluations' ,[intval($request->eleve), intval($request->periode)]);
     }
+    public function updateViaApi(Request $request, $id){
+        $request->validate([
+            'note_obtenu' => ['required','string','max:255'],
+        ]);
+        EleveEvaluation::set($id,$request->note_obtenu);
+        // $x = intval($request->eleve);
+        return 'succes';
+    }
 }

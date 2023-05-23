@@ -207,11 +207,12 @@ class PaiementFraisController extends Controller
 
         // dd($items);
         return view('frais.paiement')
-            ->with('page_name', 'Paiements')
+            ->with('page_name', 'Paiements / Search')
             ->with('search',  $request->search)
             ->with('joker', '10')
             ->with('items', $items);
     }
+
     public function searchEleve(Request $request)
     {
         $items = Eleve::where('nom', 'like', '%' . $request->search . '%')
@@ -221,7 +222,7 @@ class PaiementFraisController extends Controller
             ->get();
 
         return view('frais.eleves')
-            ->with('page_name', 'Paiements')
+            ->with('page_name', 'Paiements / Search / Eleve')
             ->with('search',  $request->search)
             ->with('joker', '10')
             ->with('items', $items);

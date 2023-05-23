@@ -396,7 +396,9 @@ class ResultatController extends Controller
                     
                     //annees
                     ->with('resultatAnnee', $resultat->annee)
-                    //
+                    //decision
+                    ->with('decision', $resultat->decision)
+
                     ->with('annee_scolaire', $annee)
                     ->with('trimestre', $trimestre)
                     ->with('eleve', $eleve);
@@ -569,7 +571,10 @@ class ResultatController extends Controller
             "trimestre2" => ['required', 'string', 'max:255'],
             "trimestre3" => ['required', 'string', 'max:255'],
             "annee" => ['required', 'string', 'max:255'],
+            "decision" => ['required', 'string', 'max:255'],
         ]);
+
+        // dd($request->decision);
 
         $eleve = Eleve::findOrFail($eleve_id);
         $annee = AnneeScolaire::findOrFail($annee_id);
@@ -592,6 +597,7 @@ class ResultatController extends Controller
         $resultat->trimestre2 = $request->trimestre2;
         $resultat->trimestre3 = $request->trimestre3;
         $resultat->annee = $request->annee;
+        $resultat->decision = $request->decision;
         // dd($resultat);
         $resultat->save();
         return back();

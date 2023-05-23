@@ -62,7 +62,7 @@
             @endif
         </div>
 
-            @if (str_contains('Frequentations', $pagename) && !Auth::user()->isParent())
+            @if (str_contains('Frequentations', $pagename) && Auth::user()->isSecretaire())
                 <div
                     class="btn-create items-center  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
                 @else

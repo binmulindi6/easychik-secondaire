@@ -46,21 +46,21 @@
         <x-eleve-profile-header :data="$eleve" :print="true" > </x-eleve-profile-header> 
 
 
-        <div  class="  flex flex-col gap-2 bg-white rounded-xl shadow-xxs w-full p-5  items-center">
+        <div  class="  flex flex-col gap-2 bg-white rounded-xl shadow-xxs w-full  items-center overflow-x-scroll">
             <div class="w-full flex flex-row justify-between">
             <div  class="container w-full flex justify-center"> 
                 @if ($examenT1 != null && $periode1 != null && $periode2 != null && $examenT2 != null && $periode3 != null && $periode4 != null && $examenT3 != null && $periode5 != null && $periode6 != null )
                     <div  class="w-full flex flex-col justify-center items-center h-full">
-                        <x-button id="btn-export">export</x-button>
+                        {{-- <x-button id="btn-export">export</x-button> --}}
                     <table id="printable" class="border-2xl print:w-60 border-collapse text-xs m-5">
                         <thead>
-                            <th colspan="12" class="border p-0.5 uppercase text-left" >
+                            <th colspan="12" class="border p-1 uppercase text-left" >
                                 <span class="upercase w-full">ecole: {{env("ECOLE")}}</span><br>
                                 <span class="upercase w-full">ville: {{env("VILLE")}}                               </span> <br>
                                 <span class="upercase w-full">Commune/Ter (1) : {{env("COMMUNE")}}</span> <br>
                                 <span class="upercase w-full">code : {{env("CODE")}}</span><br>
                             </th>
-                            <th colspan="12" class="border py-1 px-2 uppercase text-left" >
+                            <th colspan="12" class="border p-1 px-2 uppercase text-left" >
                                 
                                 <span class="upercase w-full">ELEVE : {{$eleve->nomComplet()}} sexe: {{$eleve->sexe}}</span><br>
                                 <span class="upercase w-full">NE (e) a : {{$eleve->lieu_naissance}} le: 
@@ -496,27 +496,103 @@
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
                                     {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteGeneral * 100 / ($maxGeneral), 1)}}%</td> --}}
                                 </tr>
+                                <tr>
+                                    <td colspan="24" class="border p-4">
+                                        <form class="mr-4 flex flex-row justify-between" action="{{route('resultat.bulletin.store', [$annee_scolaire->id,$eleve->id])}}" method="post">
+                                            <div class="flex flex-col gap-2">
+
+                                                @if ($decision === null)
+                                                    <div class="flex flex-row gap-1 items-center">
+                                                        @if (Auth::user()->isEnseignant())
+                                                            @if ($pourcAnnee >= env("REUSSITE"))
+                                                                <x-input checked :submitOnChange="true" type="radio" name="decision" value="passe"></x-input>
+                                                            @else
+                                                                <x-input :submitOnChange="true" type="radio" name="decision" value="passe"></x-input>
+                                                            @endif
+                                                        @else
+                                                            @if ($pourcAnnee >= env("REUSSITE"))
+                                                                <x-input disabled checked type="radio" name="decision" value="passe"></x-input>
+                                                            @else
+                                                                <x-input disabled type="radio" name="decision" value="passe"></x-input>
+                                                            @endif
+                                                        @endif
+                                                        <span class="uppercase">: L'eleve Passe dans la classe supperieure.</span>
+                                                    </div>
+                                                    <div class="flex flex-row gap-1 items-center">
+                                                        @if (Auth::user()->isEnseignant())
+                                                            @if ($pourcAnnee < env("REUSSITE"))
+                                                                <x-input checked :submitOnChange="true" type="radio" name="decision" value="double"> </x-input>
+                                                            @else
+                                                                <x-input :submitOnChange="true" type="radio" name="decision" value="double"> </x-input>
+                                                            @endif
+                                                        @else
+                                                            @if ($pourcAnnee < env("REUSSITE"))
+                                                                <x-input checked disabled type="radio" name="decision" value="double"> </x-input>
+                                                            @else
+                                                                <x-input disabled type="radio" name="decision" value="double"> </x-input>
+                                                            @endif
+                                                        @endif
+                                                        <span class="uppercase">: L'eleve double la classe.</span>
+                                                    </div>
+                                                @else
+                                                    <div class="flex flex-row gap-1 items-center">
+                                                        @if (Auth::user()->isEnseignant())
+                                                            @if ($decision === "passe")
+                                                                <x-input checked :submitOnChange="true" type="radio" name="decision" value="passe"></x-input>
+                                                            @else
+                                                                <x-input :submitOnChange="true" type="radio" name="decision" value="passe"></x-input>
+                                                            @endif
+                                                        @else
+                                                            @if ($decision === "passe")
+                                                                <x-input disabled checked type="radio" name="decision" value="passe"></x-input>
+                                                            @else
+                                                                <x-input disabled type="radio" name="decision" value="passe"></x-input>
+                                                            @endif
+                                                        @endif
+                                                        <span class="uppercase">: L'eleve Passe dans la classe supperieure.</span>
+                                                    </div>
+                                                    <div class="flex flex-row gap-1 items-center">
+                                                        @if (Auth::user()->isEnseignant())
+                                                            @if ($decision === 'double')
+                                                                <x-input checked :submitOnChange="true" type="radio" name="decision" value="double"> </x-input>
+                                                            @else
+                                                                <x-input :submitOnChange="true" type="radio" name="decision" value="double"> </x-input>
+                                                            @endif
+                                                        @else
+                                                            @if ($decision === 'double')
+                                                                <x-input checked disabled type="radio" name="decision" value="double"> </x-input>
+                                                            @else
+                                                                <x-input disabled type="radio" name="decision" value="double"> </x-input>
+                                                            @endif
+                                                        @endif
+                                                        <span class="uppercase">: L'eleve double la classe.</span>
+                                                    </div>
+                                                @endif
+
+                                            </div>    
+                                                @csrf
+                                                <input type="hidden" name="periode1" value="{{$pourcP1}}">
+                                                <input type="hidden" name="periode2" value="{{$pourcP2}}">
+                                                <input type="hidden" name="periode3" value="{{$pourcP3}}">
+                                                <input type="hidden" name="periode4" value="{{$pourcP4}}">
+                                                <input type="hidden" name="periode5" value="{{$pourcP5}}">
+                                                <input type="hidden" name="periode6" value="{{$pourcP6}}">
+                                                <input type="hidden" name="examen1" value="{{$pourcEx1}}">
+                                                <input type="hidden" name="examen2" value="{{$pourcEx2}}">
+                                                <input type="hidden" name="examen3" value="{{$pourcEx3}}">
+                                                <input type="hidden" name="trimestre1" value="{{$pourcTrim1}}">
+                                                <input type="hidden" name="trimestre2" value="{{$pourcTrim2}}">
+                                                <input type="hidden" name="trimestre3" value="{{$pourcTrim3}}">
+                                                <input type="hidden" name="annee" value="{{$pourcAnnee}}">
+                                                @if (($resultatP1 !== $pourcP1 || $resultatP2 !== $pourcP2 || $resultatP3 !== $pourcP3 || $resultatP4 !== $pourcP4 || $resultatP5 !== $pourcP5 || $resultatP6 !== $pourcP6 || $resultatEx1 !== $pourcEx1 || $resultatEx2 !== $pourcEx2 || $resultatEx3 !== $pourcEx3 || $resultatTri1 !== $pourcTrim1 || $resultatTri2 !== $pourcTrim2 || $resultatTri3 !== $pourcTrim3 || $resultatAnnee !== $pourcAnnee) && Auth::user()->isEnseignant())
+                                                    <x-button title="Valider le bulletin">Valider ✅</x-button>
+                                                @endif
+                                        </form>
+                                        
+                                    </td>
+                                </tr>
                         </tfoot>
                     </table>
-                    @if (($resultatP1 !== $pourcP1 || $resultatP2 !== $pourcP2 || $resultatP3 !== $pourcP3 || $resultatP4 !== $pourcP4 || $resultatP5 !== $pourcP5 || $resultatP6 !== $pourcP6 || $resultatEx1 !== $pourcEx1 || $resultatEx2 !== $pourcEx2 || $resultatEx3 !== $pourcEx3 || $resultatTri1 !== $pourcTrim1 || $resultatTri2 !== $pourcTrim2 || $resultatTri3 !== $pourcTrim3 || $resultatAnnee !== $pourcAnnee) && Auth::user()->isEnseignant())
-                        <form class="mr-4 self-end" action="{{route('resultat.bulletin.store', [$annee_scolaire->id,$eleve->id])}}" method="post">
-                            @csrf
-                            <input type="hidden" name="periode1" value="{{$pourcP1}}">
-                            <input type="hidden" name="periode2" value="{{$pourcP2}}">
-                            <input type="hidden" name="periode3" value="{{$pourcP3}}">
-                            <input type="hidden" name="periode4" value="{{$pourcP4}}">
-                            <input type="hidden" name="periode5" value="{{$pourcP5}}">
-                            <input type="hidden" name="periode6" value="{{$pourcP6}}">
-                            <input type="hidden" name="examen1" value="{{$pourcEx1}}">
-                            <input type="hidden" name="examen2" value="{{$pourcEx2}}">
-                            <input type="hidden" name="examen3" value="{{$pourcEx3}}">
-                            <input type="hidden" name="trimestre1" value="{{$pourcTrim1}}">
-                            <input type="hidden" name="trimestre2" value="{{$pourcTrim2}}">
-                            <input type="hidden" name="trimestre3" value="{{$pourcTrim3}}">
-                            <input type="hidden" name="annee" value="{{$pourcAnnee}}">
-                            <x-button title="Valider le bulletin">Valider ✅</x-button>
-                        </form>
-                    @endif
                     </div>
                 @else
                     <p class="text-bold text-2xl text-red-500 text-center">

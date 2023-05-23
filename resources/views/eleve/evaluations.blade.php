@@ -2,10 +2,7 @@
 
 @section('content')
     <div class=" flex flex-col gap-5 md:p-5">
-        <a href="{{ route('eleves.show', $eleve->id) }}"
-            class="p-2 bg-white rounded-full w-8 h-8 flex justify-center items-center">
-            <i class="fa fa-solid fa-arrow-left"></i>
-        </a>
+        <x-back :link="route('eleves.show', $eleve->id)"></x-back>
 
 
         @if (isset($periode))

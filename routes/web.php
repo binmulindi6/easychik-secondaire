@@ -62,7 +62,12 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
+///Apis
 Route::get('/charts', [HomeController::class, 'chart']);
+Route::put('api/eleves/evaluations/{pivot}', [EleveEvaluationController::class, 'updateViaApi'])->name('eleves.evaluations.update.api');
+Route::put('api/eleves/examens/{pivot}', [EleveExamenController::class, 'updateViaApi'])->name('eleves.examens.update.api');
+
+
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'isActive'])->name('dashboard');
 
 // //Route::get('/current-year', [DateController::class, 'test']);
@@ -138,6 +143,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('classes/{id}/resultat/trimestre/{trimestre_id}/{annee_scolaire_id}', [ClasseController::class, 'resultatTrimestre'])->name('classes.resultat.trimestre');
     Route::get('classes/{id}/resultat/bulletin/{annee_scolaire_id}', [ClasseController::class, 'resultatAnnee'])->name('classes.resultat.annee');
     Route::get('classes/{id}/eleves', [ClasseController::class, 'eleves'])->name('classes.eleves');
+    Route::get('classes/{id}/cours', [ClasseController::class, 'cours'])->name('classes.cours');
 
     //Travails
     Route::get('travails', [TravailController::class, 'index'])->name('travails.index');
