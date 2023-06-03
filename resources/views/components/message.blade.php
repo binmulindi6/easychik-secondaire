@@ -11,7 +11,8 @@
     <div class="flex flex-col">
         <div class="flex flex-row justify-between items-center pl-3">
             <span class="font-semibold text-4">
-                {{$object}} : {{$from}}
+                {{$object}} 
+                : {{$from}}
             </span>
             <span class=" text-3 text-slate-400">
                 {{$time}}
