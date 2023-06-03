@@ -1031,7 +1031,7 @@ INSERT INTO `eleve_evaluation` (`id`, `eleve_id`, `evaluation_id`, `note_obtenu`
 	(2088, 5, 79, 0, '2023-05-04 13:26:03', '2023-05-04 13:26:03', NULL),
 	(2089, 25, 79, 19, '2023-05-04 13:26:03', '2023-05-04 11:27:07', NULL),
 	(2090, 31, 79, 3, '2023-05-04 13:26:03', '2023-05-04 11:26:59', NULL),
-	(2091, 9, 79, 0, '2023-05-04 13:26:03', '2023-05-04 13:26:03', NULL),
+	(2091, 9, 79, 3, '2023-05-04 13:26:03', '2023-06-01 13:09:58', NULL),
 	(2092, 7, 79, 0, '2023-05-04 13:26:03', '2023-05-04 13:26:03', NULL),
 	(2093, 10, 79, 0, '2023-05-04 13:26:03', '2023-05-04 13:26:03', NULL),
 	(2094, 3, 79, 0, '2023-05-04 13:26:03', '2023-05-04 13:26:03', NULL),
@@ -1387,19 +1387,21 @@ CREATE TABLE IF NOT EXISTS `employers` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `matricule` (`matricule`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table sas.employers: ~8 rows (approximately)
 /*!40000 ALTER TABLE `employers` DISABLE KEYS */;
 INSERT INTO `employers` (`id`, `matricule`, `nom`, `prenom`, `date_naissance`, `sexe`, `formation`, `diplome`, `niveau_etude`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'P01/2022', 'Abraham', 'Tommy', '2000-01-12', 'M', 'Informatique', 'Licence', 'licence', '2022-08-23 22:49:59', '2022-09-11 14:08:39', NULL),
+	(1, 'P01/2022', 'Abraham', 'Tommy', '2000-01-12', 'M', 'Informatique', 'Licence', 'licence', '2022-08-23 22:49:59', '2023-06-01 13:42:21', NULL),
 	(2, 'P02/2022', 'Lokenze', 'Nathalie', '2022-08-24', 'F', 'Aviation', 'licence', 'A0', '2022-08-24 13:28:51', '2022-09-13 07:55:41', NULL),
 	(3, 'P03/2022', 'Jean-luc Mulindi', 'Gouver', '2022-04-05', 'M', 'Langue', 'Master', 'Master', '2022-08-27 05:11:47', '2023-04-13 18:56:23', NULL),
 	(4, 'P04/2022', 'Tanya Molisho', 'Nickel', '2022-08-10', 'F', 'Mathematique', 'D\'Etat', 'G3', '2022-08-27 05:26:27', '2023-04-13 01:27:38', NULL),
 	(5, '000/20221', 'Enseignant', 'Gouver', '2022-08-17', 'M', 'Droit Civile', 'Master', 'MCL', '2022-08-27 05:27:33', '2022-08-27 05:27:40', '2022-08-27 05:27:40'),
 	(6, 'P05/2022', 'Muhoza', 'Clayton Zeptoman', '1999-06-12', 'M', 'Informatique', 'Licence', 'Master', '2022-09-13 08:21:07', '2022-09-15 15:17:44', '2022-09-15 15:17:44'),
 	(8, 'P06/2022', 'Ndioni Tonobunu', 'Makunn', '2022-11-23', 'M', 'Mathematique', 'Master', 'Master', '2022-11-23 12:37:11', '2022-11-23 12:37:11', NULL),
-	(9, 'P07/2023', 'Ingabire', 'Christa', '2001-05-12', 'F', 'Comptabilité', 'Licence', 'L1', '2023-04-13 01:48:13', '2023-04-13 01:48:13', NULL);
+	(9, 'P07/2023', 'Ingabire', 'Christa', '2001-05-12', 'F', 'Comptabilité', 'Licence', 'L1', '2023-04-13 01:48:13', '2023-04-13 01:48:13', NULL),
+	(10, 'P08/2023', 'Kak Kakisingi', 'Charly', '1995-02-01', 'M', 'Informatique', 'Licence', 'L2', '2023-05-30 15:15:22', '2023-05-30 15:15:22', NULL),
+	(11, 'P09/2023', 'Bakanyize', 'Honoré', '1960-06-02', 'M', 'Aucune', 'Aucun', 'Aucun', '2023-06-02 14:59:28', '2023-06-02 14:59:28', NULL);
 /*!40000 ALTER TABLE `employers` ENABLE KEYS */;
 
 -- Dumping structure for table sas.employer_fonction
@@ -1414,19 +1416,21 @@ CREATE TABLE IF NOT EXISTS `employer_fonction` (
   KEY `table_employer_fonction_fonction_id_foreign` (`fonction_id`),
   CONSTRAINT `table_employer_fonction_employer_id_foreign` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`id`),
   CONSTRAINT `table_employer_fonction_fonction_id_foreign` FOREIGN KEY (`fonction_id`) REFERENCES `fonctions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table sas.employer_fonction: ~8 rows (approximately)
 /*!40000 ALTER TABLE `employer_fonction` DISABLE KEYS */;
 INSERT INTO `employer_fonction` (`id`, `employer_id`, `fonction_id`, `created_at`, `updated_at`) VALUES
 	(5, 5, 1, NULL, NULL),
-	(11, 1, 1, NULL, NULL),
 	(12, 2, 2, NULL, NULL),
 	(16, 6, 9, NULL, NULL),
 	(17, 8, 2, NULL, NULL),
 	(19, 4, 2, NULL, NULL),
 	(20, 9, 10, NULL, NULL),
-	(21, 3, 11, NULL, NULL);
+	(21, 3, 11, NULL, NULL),
+	(22, 10, 9, NULL, NULL),
+	(29, 1, 9, NULL, NULL),
+	(30, 11, 8, NULL, NULL);
 /*!40000 ALTER TABLE `employer_fonction` ENABLE KEYS */;
 
 -- Dumping structure for table sas.encadrements
@@ -1445,7 +1449,7 @@ CREATE TABLE IF NOT EXISTS `encadrements` (
   CONSTRAINT `encadrements_annee_scolaire_id_foreign` FOREIGN KEY (`annee_scolaire_id`) REFERENCES `annee_scolaires` (`id`),
   CONSTRAINT `encadrements_classe_id_foreign` FOREIGN KEY (`classe_id`) REFERENCES `classes` (`id`),
   CONSTRAINT `encadrements_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table sas.encadrements: ~4 rows (approximately)
 /*!40000 ALTER TABLE `encadrements` DISABLE KEYS */;
@@ -1453,7 +1457,9 @@ INSERT INTO `encadrements` (`id`, `user_id`, `annee_scolaire_id`, `classe_id`, `
 	(1, 3, 1, 1, '2023-04-01 15:20:12', '2023-04-01 15:20:13', NULL),
 	(2, 4, 1, 2, '2023-04-01 15:20:10', '2023-04-01 15:20:11', NULL),
 	(4, 6, 1, 5, '2023-04-03 08:57:59', '2023-04-03 13:03:00', NULL),
-	(5, 2, 1, 8, '2023-04-13 20:34:25', '2023-04-13 18:16:00', '2023-04-13 18:16:00');
+	(5, 2, 1, 8, '2023-04-13 20:34:25', '2023-04-13 18:16:00', '2023-04-13 18:16:00'),
+	(6, 3, 1, 14, '2023-06-02 15:16:21', '2023-06-02 15:16:21', '2023-06-02 17:43:37'),
+	(7, 4, 1, 1, '2023-06-02 15:17:05', '2023-06-02 15:17:05', '2023-06-02 17:43:10');
 /*!40000 ALTER TABLE `encadrements` ENABLE KEYS */;
 
 -- Dumping structure for table sas.evaluations
@@ -1615,11 +1621,11 @@ CREATE TABLE IF NOT EXISTS `fonctions` (
 -- Dumping data for table sas.fonctions: ~11 rows (approximately)
 /*!40000 ALTER TABLE `fonctions` DISABLE KEYS */;
 INSERT INTO `fonctions` (`id`, `nom`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'admin', '2022-08-23 22:48:42', '2022-08-23 22:48:42', NULL),
+	(1, 'admin', '2022-08-23 22:48:42', '2023-05-30 15:12:17', '2023-05-30 15:12:17'),
 	(2, 'Enseignant', '2022-08-24 17:04:55', '2022-08-24 17:04:56', NULL),
 	(3, 'Directeur de Discipline', '2022-08-26 12:19:10', '2023-04-13 01:11:54', '2023-04-13 01:11:54'),
 	(4, 'Proviseur', '2022-08-26 12:20:36', '2022-09-03 11:38:57', NULL),
-	(5, 'Prefet', '2022-08-26 12:21:09', '2022-08-26 12:21:09', NULL),
+	(5, 'Prefet', '2022-08-26 12:21:09', '2023-05-30 15:10:34', '2023-05-30 15:10:34'),
 	(6, 'Zamu', '2022-08-27 02:42:35', '2022-08-27 02:59:34', '2022-08-27 02:59:34'),
 	(7, 'Ingenieure de son', '2022-08-27 03:00:11', '2022-08-27 03:00:15', '2022-08-27 03:00:15'),
 	(8, 'Ouvrier', '2022-09-11 14:43:28', '2022-09-11 14:43:28', NULL),
@@ -1740,7 +1746,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   KEY `messages_destinateur_foreign` (`destinateur`),
   CONSTRAINT `messages_destinateur_foreign` FOREIGN KEY (`destinateur`) REFERENCES `users` (`id`),
   CONSTRAINT `messages_expediteur_foreign` FOREIGN KEY (`expediteur`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table sas.messages: ~8 rows (approximately)
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
@@ -1752,7 +1758,8 @@ INSERT INTO `messages` (`id`, `objet`, `contenu`, `expediteur`, `destinateur`, `
 	(7, 'Tuna sema', '<span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Messages</span>\r\n                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">10</span>', 5, 10, '2023-04-17 00:16:35', '2023-04-17 00:16:35', NULL, NULL),
 	(8, 'Paiement Frais Scolaires', 'Bytes\r\nLists\r\nRich TextHTML\r\nCopy\r\nLorem ipsum dolor sit amet consectetur adipiscing elit netus semper ultricies quisque, eu eros himenaeos odio nullam vel praesent pharetra ante malesuada penatibus, accumsan elementum hac dis arcu platea nec quam aptent luctus. Cubilia litora libero phasellus mollis tempus augue mattis, porttitor dis dignissim lectus nisi nulla hac conubia, nullam aliquam tortor faucibus luctus facilisis. Laoreet donec erat taciti ad mollis, aenean fermentum nostra. Enim at natoque parturient nisl velit vehicula curae suspendisse tempus, himenaeos vulputate gravida nam egestas euismod lacus nostra aptent, in eu luctus convallis vestibulum sapien netus rhoncus', 5, 8, '2023-04-17 11:43:31', '2023-05-01 17:28:57', '2023-05-01 17:28:57', NULL),
 	(9, 'Paiement Frais Scolaires', 'Bytes\r\nLists\r\nRich TextHTML\r\nCopy\r\nLorem ipsum dolor sit amet consectetur adipiscing elit netus semper ultricies quisque, eu eros himenaeos odio nullam vel praesent pharetra ante malesuada penatibus, accumsan elementum hac dis arcu platea nec quam aptent luctus. Cubilia litora libero phasellus mollis tempus augue mattis, porttitor dis dignissim lectus nisi nulla hac conubia, nullam aliquam tortor faucibus luctus facilisis. Laoreet donec erat taciti ad mollis, aenean fermentum nostra. Enim at natoque parturient nisl velit vehicula curae suspendisse tempus, himenaeos vulputate gravida nam egestas euismod lacus nostra aptent, in eu luctus convallis vestibulum sapien netus rhoncus', 5, 10, '2023-04-17 11:43:32', '2023-04-17 11:43:32', NULL, NULL),
-	(10, 'Demande De Derogation', 'sagittis. Massa rhoncus sed risus primis fames non parturient, molestie scelerisque nullam nibh feugiat convallis, dictum interdum proin malesuada suspendisse sagittis. Ullamcorper', 8, 5, '2023-04-17 13:22:15', '2023-05-10 10:06:29', '2023-05-10 10:06:29', NULL);
+	(10, 'Demande De Derogation', 'sagittis. Massa rhoncus sed risus primis fames non parturient, molestie scelerisque nullam nibh feugiat convallis, dictum interdum proin malesuada suspendisse sagittis. Ullamcorper', 8, 5, '2023-04-17 13:22:15', '2023-06-02 13:39:34', '2023-06-02 13:39:34', NULL),
+	(11, 'Test Up Dates', 'Proin imperdiet tortor ad ridiculus maecenas lacus vehicula montes, venenatis curabitur urna aliquam rhoncus in sociis, condimentum pellentesque primis volutpat dictum dignissim eleifend. Cum sodales hac interdum cursus condimentum pretium risus parturient, quis dictumst curabitur inceptos aptent nascetur mollis mus magnis, mauris varius eget per turpis ut etiam.', 5, 8, '2023-06-02 03:34:02', '2023-06-02 04:20:17', '2023-06-02 04:20:17', NULL);
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 
 -- Dumping structure for table sas.migrations
@@ -1763,7 +1770,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sas.migrations: ~77 rows (approximately)
+-- Dumping data for table sas.migrations: ~76 rows (approximately)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2013_08_23_182726_create_fonctions_table', 1),
@@ -1952,8 +1959,8 @@ CREATE TABLE IF NOT EXISTS `parrains` (
 -- Dumping data for table sas.parrains: ~2 rows (approximately)
 /*!40000 ALTER TABLE `parrains` DISABLE KEYS */;
 INSERT INTO `parrains` (`id`, `nom`, `prenom`, `sexe`, `telephone`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(3, 'Mulindi', 'Jean Bavon', 'M', '+243971355590', '2023-04-12 10:36:45', '2023-04-12 10:36:45', NULL),
-	(4, 'masumbuko', 'muderhwa', 'M', '+243971355590', '2023-04-13 14:38:00', '2023-04-13 14:38:00', NULL);
+	(3, 'Mulindi Kabanga', 'Jean Bavon', 'M', '+243971355590', '2023-04-12 10:36:45', '2023-06-01 14:09:49', NULL),
+	(4, 'masumbuko muderhwa', 'jean mado', 'M', '+243971355590', '2023-04-13 14:38:00', '2023-06-01 14:03:47', NULL);
 /*!40000 ALTER TABLE `parrains` ENABLE KEYS */;
 
 -- Dumping structure for table sas.password_resets
@@ -2119,9 +2126,9 @@ CREATE TABLE IF NOT EXISTS `type_evaluations` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sas.type_evaluations: ~3 rows (approximately)
+-- Dumping data for table sas.type_evaluations: ~4 rows (approximately)
 /*!40000 ALTER TABLE `type_evaluations` DISABLE KEYS */;
 INSERT INTO `type_evaluations` (`id`, `nom`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Interrogation', '2022-08-31 13:07:05', '2022-08-31 13:07:06', NULL),
@@ -2167,19 +2174,20 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `users_parrain_id_foreign` (`parrain_id`),
   CONSTRAINT `users_employer_id_foreign` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`id`),
   CONSTRAINT `users_parrain_id_foreign` FOREIGN KEY (`parrain_id`) REFERENCES `parrains` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table sas.users: ~8 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `email`, `email_verified_at`, `password`, `remember_token`, `isAdmin`, `isActive`, `employer_id`, `created_at`, `updated_at`, `deleted_at`, `parrain_id`) VALUES
-	(2, 'dev.binmulindi6@gmail.com', NULL, '$2y$10$eiqD9nLmn36y86Sd528Gou8vAUnFV9Bsyv3vdy5de6rtsEhFfCgji', 'WCKcbK8Hyi1Ms7kjeNXIs8pclpfOjeIlo6VBs0ZOyb1ozCbSlcxVUitifmfX', 1, 1, 1, '2022-08-23 21:00:54', '2022-08-23 21:00:54', NULL, NULL),
+	(2, 'dev.binmulindi6@gmail.com', NULL, '$2y$10$eiqD9nLmn36y86Sd528Gou8vAUnFV9Bsyv3vdy5de6rtsEhFfCgji', 'VyS3bAE7Mlg8XMKCOTEfhMqCnjv6STQzfQ8o39herpRWNKwo34455wFkzgmE', 1, 1, 1, '2022-08-23 21:00:54', '2022-08-23 21:00:54', NULL, NULL),
 	(3, 'nathalie@gmail.com', NULL, '$2y$10$vPNI6fyNN2Qk7CZ6ql6W.eWL.z9PPTyjy0RP/baU611dIVT8t/IMO', NULL, 0, 1, 2, '2022-08-24 12:21:20', '2023-04-12 16:08:05', NULL, NULL),
-	(4, 'jaysonmakunn@gmail.com', NULL, '$2y$10$/qrGogOzJGphKZRpEioxzuD2/0LOuosmzIPHpLziyAuYH6reJENTK', NULL, 0, 0, 8, '2022-11-23 12:39:12', '2023-04-14 22:23:26', NULL, NULL),
+	(4, 'jaysonmakunn@gmail.com', NULL, '$2y$10$UuTz3qfW1Al8WX4vygTdPulavvANo7yKYfsYh9E.R6.r8qhBKE.vC', NULL, 0, 1, 8, '2022-11-23 12:39:12', '2023-06-02 15:19:24', NULL, NULL),
 	(5, 'jeanlucmulindi@gmail.com', NULL, '$2y$10$nUsIZ36MIj95XxeCFEFdZuvoZACjj71vXzP.VU8VMpRjZ8UglUF7S', NULL, 0, 1, 3, '2023-04-02 13:58:19', '2023-04-13 18:58:36', NULL, NULL),
 	(6, 'nickelmolisho@gmail.com', NULL, '$2y$10$EVTCnKc7AUzQnKj7DJeG2uuOrobT96xq2Un9NOUUiJHmZ5AFCsuma', NULL, 0, 1, 4, '2023-04-03 08:34:38', '2023-04-10 01:03:26', NULL, NULL),
 	(8, 'mulindi@gmail.com', NULL, '$2y$10$iIbkdMP32BxEjfgWxYxLWu7i24mPxQnopLquxDyD94FRaupuDvkQC', NULL, 0, 1, NULL, '2023-04-12 10:36:45', '2023-04-16 21:52:46', NULL, 3),
 	(9, 'christa@gmail.com', NULL, '$2y$10$1gNddZoCWRmEvdJH057YD.1Qm2pi4n65htyTqz15JPSe9YCtm4Y26', NULL, 0, 1, 9, '2023-04-13 01:48:51', '2023-04-13 01:49:10', NULL, NULL),
-	(10, 'masumbukomuderhwa@gmail.com', NULL, '$2y$10$ym7/iFK9pj84EOvRkCW8yuCI4p2jhcDitVfzl6m6SONoxNrQt1/yW', NULL, 0, 1, NULL, '2023-04-13 14:38:01', '2023-04-13 14:38:24', NULL, 4);
+	(10, 'masumbukomuderhwa@gmail.com', NULL, '$2y$10$ym7/iFK9pj84EOvRkCW8yuCI4p2jhcDitVfzl6m6SONoxNrQt1/yW', NULL, 0, 1, NULL, '2023-04-13 14:38:01', '2023-04-13 14:38:24', NULL, 4),
+	(13, 'charly@gmail.com', NULL, '$2y$10$av9TM7j6ldo6a2i9k7jNjeVNXx7eMRIJPwl4tnGO2Jyn6rbTBMrF.', NULL, 0, 0, 10, '2023-05-30 15:42:06', '2023-05-30 15:42:06', NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
