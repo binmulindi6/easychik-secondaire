@@ -529,7 +529,7 @@
 
             <div id="notify-popper" class="opacity-0 bg-white rounded-2 p-2 shadow-2xl pr-2">
                 @if (Auth::unread() > 0)
-                    @foreach (Auth::unread() as $item)
+                    @foreach (Auth::unreadMessages() as $item)
                         <li class="relative">
                             <a href="{{route('messages.show', $item->id)}}"
                                 class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">

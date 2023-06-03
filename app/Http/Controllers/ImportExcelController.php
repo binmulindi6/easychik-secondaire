@@ -24,7 +24,7 @@ class ImportExcelController extends Controller
         ]);
         $file = $request->file('excel_file');
 
-        // dd($file);
+        dd($file);
 
         if($file->isValid()){
             $path = $file->path();
