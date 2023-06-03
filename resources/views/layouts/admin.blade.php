@@ -508,7 +508,7 @@
                     class="block font-semibold text-white transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-1">
                     <i class="fa fa-bell sm:mr-1"></i>
                     @if (Auth::user()->isDirecteur() || Auth::user()->isParent())
-                    <span class=" sm:inline">{{count(Auth::unread())}}</span>
+                    <span class=" sm:inline">{{Auth::unread()}}</span>
                     @endif
                 </div>
             </li>
@@ -528,7 +528,7 @@
             </li>
 
             <div id="notify-popper" class="opacity-0 bg-white rounded-2 p-2 shadow-2xl pr-2">
-                @if (count(Auth::unread()) > 0)
+                @if (Auth::unread() > 0)
                     @foreach (Auth::unread() as $item)
                         <li class="relative">
                             <a href="{{route('messages.show', $item->id)}}"
