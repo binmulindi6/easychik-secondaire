@@ -17,7 +17,26 @@ class AnneeScolaireController extends Controller
     public function index()
     {
         $anneeScolaires = AnneeScolaire::orderBy('nom')->get();
+
+        $annee = AnneeScolaire::current();
+        if (isset($annee->nom)) {
+            $date = explode('-', $annee->nom)[1];
+            $annees = [];
+            for ($i=0; $i < 3; $i++) { 
+                array_push($annees, $date . "-" .(int)$date+1);
+                $date = (int)$date+1;
+            }
+        }else{
+            $date = date_format(date_create(), 'Y');
+            $annees = [];
+            for ($i=0; $i < 3; $i++) { 
+                array_push($annees, $date . "-" .(int)$date+1);
+                $date = (int)$date+1;
+            }
+        }
+
         return view('ecole.annees')
+            ->with('annees', $annees)
             ->with('page_name', $this->page_name)
             ->with('items', $anneeScolaires);
     }
@@ -87,9 +106,25 @@ class AnneeScolaireController extends Controller
     public function edit($id)
     {
         $anneeScolaires = AnneeScolaire::orderBy('nom')->get();
-        $annee = AnneeScolaire::find($id);
+        $annee = AnneeScolaire::findOrFail($id);
+        if (isset($annee->nom)) {
+            $date = explode('-', $annee->nom)[1];
+            $annees = [];
+            for ($i=0; $i < 3; $i++) { 
+                array_push($annees, $date . "-" .(int)$date+1);
+                $date = (int)$date+1;
+            }
+        }else{
+            $date = date_format(date_create(), 'Y');
+            $annees = [];
+            for ($i=0; $i < 3; $i++) { 
+                array_push($annees, $date . "-" .(int)$date+1);
+                $date = (int)$date+1;
+            }
+        }
         return view('ecole.annees')
             ->with('page_name', $this->page_name . " / Edit")
+            ->with('annees', $annees)
             ->with('self', $annee)
             ->with('items', $anneeScolaires);
     }

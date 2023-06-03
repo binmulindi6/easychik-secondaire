@@ -110,7 +110,7 @@ class EmployerController extends Controller
             //dd(10);
             return  $this->update($request, $id);
         }
-        dd("show");
+        abort(404);
     }
 
     /**
@@ -165,14 +165,21 @@ class EmployerController extends Controller
         $employer->diplome = $request->diplome;
         $employer->niveau_etude = $request->niveau_etude;
 
-        $fonction = Fonction::find($request->fonction);
+        if ($request->fonction !== null) {
+            $fonction = Fonction::find($request->fonction);
 
-        //detach all 
-        $employer->fonctions()->detach();;
+            //detach all 
+            $employer->fonctions()->detach();
+    
+            $employer->fonctions()->attach($fonction);
+        }
 
-        $employer->fonctions()->attach($fonction);
         $employer->save();
 
+        if (isset($request->back)) {
+            return back();
+        }
+        
         return redirect()->route('employers.index');
     }
 
@@ -189,4 +196,16 @@ class EmployerController extends Controller
 
         return redirect()->route('employers.index');
     }
+
+
+public function linkEmployer()
+{
+    $employers = Employer::latest()->get();
+    // dd($employers[0]->user);
+        return view('users.employers')
+            ->with('page_name', 'Link Employé')
+            ->with('items', $employers)
+            ->with('link', true);
+}
+
 }

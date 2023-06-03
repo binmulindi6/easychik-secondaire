@@ -27,8 +27,14 @@
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="nom" :value="__('Nom')" />
-                            <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
-                                :value="$self->nom" required />
+                            <select name="nom" id="nom" 
+                                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                                required>
+                                <option  hidden selected value="{{$self->nom}}"> {{$self->nom}} </option>
+                                <option value="PREMIER TRIMESTRE">PREMIER TRIMESTRE</option>
+                                <option value="DEUXIEME TRIMESTRE">DEUXIEME TRIMESTRE</option>
+                                <option value="TROISIEMETRIMESTRE">TROISIEME TRIMESTRE</option>
+                        </select>
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />

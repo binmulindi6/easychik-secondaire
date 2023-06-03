@@ -41,16 +41,27 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
         
+        // dd(10);
+
         $matricule = $request->matricule;
         $employer = Employer::where('matricule',$matricule)->first();
         //dd('here');
 
         if(!is_null($employer)){
-            $user = User::create([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                //'name' => $request->name,
-            ]);
+            if ($employer->fonction->nom === 'Informaticien') {
+                $user = User::create([
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'isAdmin' => 1,
+                    'isActive' => 1,
+                ]);
+            }else{
+                $user = User::create([
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    
+                ]);
+             }
             $user->employer()->associate($employer);
             $user->save();
             dd($user);
@@ -66,5 +77,6 @@ class RegisteredUserController extends Controller
             ])->onlyInput('matricule');
             
         }
+        return redirect('users.index');
     }
 }

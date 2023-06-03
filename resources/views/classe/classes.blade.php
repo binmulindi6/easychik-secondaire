@@ -36,8 +36,13 @@
                         <x-select :val="$self->user" :collection="$users" class="block mt-1 w-full" name='user' required>
                         </x-select>
                     </div> --}}
-                    <div class="mt-4">
-                        <x-button>Enregistrer</x-button>
+                    <div class="flex gap-10">
+                        <div class="mt-4">
+                            <x-button>Enregistrer</x-button>
+                        </div>
+                        <div class="mt-4">
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
                     </div>
                 </form>
             @else
@@ -67,8 +72,13 @@
                         <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')"
                             placeholder="ex: A,B,C" required />
                     </div>
-                    <div class="mt-4">
-                        <x-button>ajouter</x-button>
+                    <div class="flex gap-10">
+                        <div class="mt-4">
+                            <x-button>ajouter</x-button>
+                        </div>
+                        <div class="mt-4">
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
                     </div>
                 </form>
             @endif

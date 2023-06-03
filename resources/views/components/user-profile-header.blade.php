@@ -38,7 +38,7 @@
                 <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                     role="tab" aria-selected="false">
                     <i class="fa fa-solid fa-id-card"></i>
-                    <span class="ml-2">Identité Complete</span>
+                    <span class="ml-2">Informations Compte</span>
                 </a>
             {{-- </li>
             <li class="z-30 flex-auto text-center">

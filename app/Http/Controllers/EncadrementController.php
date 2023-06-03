@@ -67,17 +67,28 @@ class EncadrementController extends Controller
         $classe = Classe::find($request->classe_id);
         $annee  = AnneeScolaire::find($request->annee_scolaire_id);
         
-        $encadrement = Encadrement::create();
+        $enc = Encadrement::where('annee_scolaire_id', $annee->id)
+                            ->where('classe_id', $classe->id)
+                            ->first();
+                            
+        if($enc === null){
+            dd($enc);
+            $encadrement = Encadrement::create();
         
-        //links 
-        // dd($encadrement);
-        $encadrement->user()->associate($user);
-        $encadrement->classe()->associate($classe);
-        $encadrement->annee_scolaire()->associate($annee);
-        // save
-        $encadrement->save();
-        
-        return redirect()->route('encadrements.index');
+            //links 
+            // dd($encadrement);
+            $encadrement->user()->associate($user);
+            $encadrement->classe()->associate($classe);
+            $encadrement->annee_scolaire()->associate($annee);
+            // save
+            $encadrement->save();
+            
+            return redirect()->route('encadrements.index');
+        }
+        return redirect()->route('encadrements.create')->withErrors([
+            'classe_id' => 'Cet Employer n\'existe pas dans le system',
+            'user_id' => 'Cet Employer n\'existe pas dans le system',
+            ])->onlyInput('matricule');
 
     }
 

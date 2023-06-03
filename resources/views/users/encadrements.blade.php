@@ -52,9 +52,9 @@
                         <div class="mt-4">
                             <x-button>Enregistrer</x-button>
                         </div>
-                        {{-- <div class="mt-4">
+                        <div class="mt-4">
                             <x-button class="bg-red-500">annuler</x-button>
-                        </div> --}}
+                        </div>
                     </div>
                 </form>
             @else
@@ -111,12 +111,17 @@
                                 <x-select :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required></x-select>
                             @endif
                     </div>
-                    <div class="flex gap-10">
-                        <div class="mt-4">
-                            <x-button>ajouter</x-button>
+
+                        <div class="flex gap-10">
+                            <div class="mt-4">
+                                <x-button>Ajouter</x-button>
+                            </div>
+                            <div class="mt-4">
+                                <x-button-annuler class="bg-red-500">annuler</x-button-annuler>
+                            </div>
                         </div>
                         
-                    </div>
+
                 </form>
             @endif
     </div>

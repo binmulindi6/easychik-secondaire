@@ -9,7 +9,20 @@
     @if (isset($val))
         <option selected hidden value="{{ $val->id }}">
             @if (isset($val->email))
-                {{ $val->employer->nom . ' ' . $val->employer->prenom }}
+                @if (isset($only))
+                    @if ($only === "Parent")
+                        @if($val->isParent())
+                            {{ $val->parrain->nom . ' ' . $val->parrain->prenom }}
+                        @endif
+                    @endif
+                    @if ($only === "Enseignant")
+                        @if($val->isEnseignant())
+                            {{ $val->employer->nom . ' ' . $val->employer->prenom }}
+                        @endif
+                    @endif
+                @else
+                    {{ $val->employer->nom . ' ' . $val->employer->prenom }}
+                @endif
             @else
                 @if (isset($val->niveau))
                     {{ $val->niveau->nom . ' ' . $val->nom }}
@@ -28,7 +41,7 @@
     @if(isset($all))
     <option value="all"> {{$all}} </option>
     @endif
-    @if ($collection !== null)
+    @if (isset($collection) && $collection !== null)
         @if (isset($only))
             @foreach ($collection as $item)
                 @if ($only === "Enseignant")
@@ -36,6 +49,15 @@
                         <option value="{{ $item->id }}">
                             @if (isset($item->email))
                                 {{ $item->employer->nom . ' ' . $item->employer->prenom }}
+                            @endif
+                        </option>
+                    @endif
+                @endif
+                @if ($only === "Parent")
+                    @if($item->isParent())
+                        <option value="{{ $item->id }}">
+                            @if (isset($item->email))
+                                {{ $item->parrain->nom . ' ' . $item->parrain->prenom }}
                             @endif
                         </option>
                     @endif

@@ -8,7 +8,7 @@
         @else
             <x-nav-messages :pagename="$page_name"></x-nav-users>
         @endif
-        @if ($page_name == 'Messages / Create')
+        @if ($page_name == 'Messages / Compose')
         <div class="frm-create shadow-2xl container p-4 bg-white rounded-5">
             @else
             <div class="frm-create shadow-2xl hidden container p-4 bg-white rounded-5">
@@ -26,9 +26,12 @@
                                     <x-input disabled id="objet" class="block mt-1 w-full" type="text"  value="La Direction" required autofocus />
                                     <input type="hidden" name='destinateur' value="Direction"/>
                                 @else
+                                    @if(isset($to))
+                                    <x-select :only="'Parent'" :all="'Tout les Parents'" :val="$to" class="block mt-1 w-full" name='destinateur' required> </x-select>
+                                    @else
                                     <x-input disabled id="objet" class="block mt-1 w-full" type="text"  value="Tout les Parents" required autofocus />
                                     <input type="hidden" name='destinateur' value="Parents"/>
-                                    {{-- <x-select :collection="$users" class="block mt-1 w-full" name='user_id' required> </x-select> --}}
+                                    @endif
                                 @endif
                             </div>
                             <div class="mt-4 w-full">
@@ -43,11 +46,11 @@
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
-                            <x-button type='submit'>Envoyé</x-button>
+                            <x-button>Envoyer</x-button>
                         </div>
-                        {{-- <div class="mt-4">
-                            <x-button class="bg-red-500">annuler</x-button>
-                        </div> --}}
+                        <div class="mt-4">
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
                     </div>
                 </form>
                     
@@ -66,7 +69,7 @@
                     <div class="flex flex-col gap-2">
                         @foreach ($items as $item)
                             <a href="{{route('messages.show', $item->id)}}">
-                                <x-message :state="$item->isReaden()" :from="$item->objet" :message="$item->contenu" :time="$item->created_at"></x-message>
+                                <x-message :state="$item->isReaden()" :from="$item->from()->email" :object="$item->objet" :message="$item->contenu" :time="$item->created_at"></x-message>
                             </a>
                         @endforeach
                         
@@ -88,7 +91,7 @@
                     <div class="flex flex-col gap-2">
                         @foreach ($sents as $sent)
                             <a href="{{route('messages.show', $sent->id)}}">
-                                <x-message :from="$sent->objet" :message="$sent->contenu" :time="$item->created_at"></x-message>
+                                <x-message :from="$sent->to()->email" :object="$sent->objet" :message="$sent->contenu" :time="$item->created_at"></x-message>
                             </a>
                         @endforeach
                         
@@ -99,12 +102,20 @@
 
                 @if ($page_name === 'Messages / Show')
                     <div class="show container p-5 bg-white rounded-5 shadow-2xl">
-                    <div class=" pb-0 mb-0 bg-white rounded-t-2xl">
-                        @if ($message->from() === Auth::user())
-                        <h6>Message envoyé</h6>
+                    <div class="flex flex-row w-full mr-5 justify-between pb-0 mb-0 bg-white rounded-t-2xl">
+                        @if ($message->from()->id === Auth::user()->id)
+                            <h6>Message envoyé</h6>
+                            <form class="delete-form " action="{{ route('messages.destroy', $message->id) }}"
+                                method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" title="effacer"><i
+                                        class="text-red-500 fa fa-solid fa-trash hover:bg-slate-200 p-2 rounded-full"></i></button>
+                            </form>
                         @else
-                        <h6>Message reçu</h6>
+                            <h6>Message reçu</h6>
                         @endif
+                        
                     </div>
                     <div class="flex flex-col gap-1">
                         

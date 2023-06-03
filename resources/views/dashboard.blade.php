@@ -63,12 +63,19 @@
                         <div>
                           <p class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">Eleves</p>
                           <h5 class="mb-2 font-bold dark:text-white">{{$eleves}}</h5>
-
+                          <p class="mb-0 dark:text-white dark:opacity-60">
+                            <span class="font-bold leading-normal text-size-sm text-emerald-500">F:</span>
+                            {{$filles}}
+                          </p>
+                          <p class="mb-0 dark:text-white dark:opacity-60">
+                            <span class="font-bold leading-normal text-size-sm text-emerald-500">M:</span>
+                            {{$garcons}}
+                          </p>
                         </div>
                       </div>
                       <div class="px-3 text-right basis-1/3">
                         <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-red-600 to-orange-600">
-                          <i class="fa fa-solid fa-user text-size-lg relative top-3.5 text-white"></i>
+                          <i class="fa fa-solid fa-chalkboard-user text-size-lg relative top-3.5 text-white"></i>
                         </div>
                       </div>
                     </div>

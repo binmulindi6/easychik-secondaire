@@ -70,7 +70,7 @@
                             <x-button>ajouter</x-button>
                         </div>
                         <div class="mt-4">
-                            <x-button-annuleR type='reset' class="bg-red-500"></x-button-annuler>
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
                         </div>
                     </div>
                 </form>
@@ -121,8 +121,8 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   text-blue-500 underline">
                                     <div class="flex justify-center gap-4 align-middle">
-                                        <a href="{{ route('conduites.edit', $item->id) }}"><i
-                                                class="fa fa-solid fa-pen"></i></a>
+                                        {{-- <a href="{{ route('conduites.edit', $item->id) }}"><i
+                                                class="fa fa-solid fa-pen"></i></a> --}}
                                         <form class="delete-form" action="{{ route('conduites.destroy', $item->id) }}"
                                             method="post">
                                             @csrf

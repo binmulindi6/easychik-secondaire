@@ -99,6 +99,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::resource('cours', CoursController::class);
     Route::get('eleve-parent/{parent}', [EleveController::class, 'linkParent'])->name('eleve-parent.link');
     Route::resource('eleves', EleveController::class);
+    Route::get('employers/link', [EmployerController::class, 'linkEmployer'])->name('employers.link');
     Route::resource('employers', EmployerController::class);
     Route::resource('evaluations', EvaluationController::class);
     Route::resource('examens', ExamenController::class);
@@ -121,6 +122,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('eleve-parent/{parent}/{eleve}', [ParrainController::class, 'linkParentEleve'])->name('parent-eleve.link');
     Route::resource('parents', ParrainController::class);
     Route::resource('messages', MessageController::class);
+    Route::get('messages/create/{id}', [MessageController::class, 'toUser'])->name('messages.to');
     Route::resource('frais', FraisController::class);
     Route::get('paiements/eleves/create/{id}', [PaiementFraisController::class, 'linkEleve'])->name('paiements.linkEleve');
     Route::resource('paiements', PaiementFraisController::class);
@@ -191,6 +193,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('users/update/{id}', [UserController::class, 'show'])->name('users.update');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('users/create/employer/{id}', [UserController::class, 'create'])->name('users.create.employer');
     Route::post('users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('users/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::get('users/show', [UserController::class, 'show'])->name('users.show');

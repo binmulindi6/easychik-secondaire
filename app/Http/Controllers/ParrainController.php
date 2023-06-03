@@ -63,8 +63,6 @@ class ParrainController extends Controller
             $parent = Parrain::create([
                 'nom' => $request->nom,
                 'prenom' => $request->prenom,
-                // 'email' => $request->email,
-                // 'password' => Hash::make($request->password),
                 'telephone' => $request->telephone,
             ]);
             $parent->save();
@@ -89,9 +87,19 @@ class ParrainController extends Controller
      * @param  \App\Models\Parrain  $parrain
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
-        //
+        if ($request->_method == 'PUT') {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255'],
+                'prenom' => ['required', 'string', 'max:255'],
+                'telephone' => ['required', 'string', 'max:255'],
+            ]);
+
+            //dd(10);
+            return  $this->update($request, $id);
+        }
+        abort(404);
     }
 
     /**
@@ -120,9 +128,37 @@ class ParrainController extends Controller
      * @param  \App\Models\Parrain  $parrain
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Parrain $parrain)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nom' => ['required', 'string', 'max:255'],
+            'prenom' => ['required', 'string', 'max:255'],
+            'telephone' => ['required', 'string', 'max:255'],
+        ]);
+
+        $parent = Parrain::findOrFail($id);
+        $parent->nom = $request->nom;
+        $parent->prenom = $request->prenom;
+        $parent->telephone = $request->telephone;
+
+        $parent->save();
+
+        if (isset($request->password)) {
+            
+            $request->validate([
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
+
+            $user = User::where('parrain_id',$id)->first();
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
+
+        if (isset($request->back)) {
+            return back();
+        }
+        
+        return redirect()->route('parents.index');
     }
 
     /**
@@ -131,7 +167,7 @@ class ParrainController extends Controller
      * @param  \App\Models\Parrain  $parrain
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Parrain $parrain)
+    public function destroy($id)
     {
         //
     }

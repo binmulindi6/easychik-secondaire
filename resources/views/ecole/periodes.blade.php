@@ -116,11 +116,6 @@
             @else
                 <div class="display container p-5 bg-white rounded-5 shadow-2xl">
         @endif
-
-
-        <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-            <h6>Ajouter une Periode</h6>
-        </div>
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">

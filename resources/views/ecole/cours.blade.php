@@ -21,35 +21,40 @@
                     {{ method_field('PUT') }}
                     <!-- Email Address -->
  
-    <div class="mt-4">
-        <x-label for="categorie_cours" :value="__('Categorie Cours')" />
-        <x-select :val="$self->categorie_cours" :collection="$categories" class="block mt-1 w-full" name='categorie_cours' required> </x-select>
-        <div class="flex gap-5">
-            <div class="mt-4 w-full">
-                <x-label for="nom" :value="__('Nom du Cours')" />
-                <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
-                    placeholder="ex: Geographie..." required />
-            </div>
-            <div class="mt-4 w-full">
-                <x-label for="classe" :value="__('Classe')" />
-                <x-select :val="$self->classe" :collection="$classes" class="block mt-1 w-full" name='classe' required> </x-select>
-            </div>
-        </div>
-        <div class="flex gap-5">
-            <div class="mt-4 w-full">
-                <x-label for="max_periode" :value="__('Note Maximum Periode')" />
-                <x-input id="max_periode" class="block mt-1 w-full" type="text" name="max_periode" :value="$self->max_periode"
-                    placeholder="ex: 20" required />
-            </div>
-            <div class="mt-4 w-full">
-                <x-label for="max_examen" :value="__('Note Maximum Examen')" />
-                <x-input id="max_examen" class="block mt-1 w-full" type="text" name="max_examen" :value="$self->max_examen"
-                    placeholder="ex: 40" required />
-            </div>
-        </div>
-        <div class="mt-4">
-            <x-button>Enregistrer</x-button>
-        </div>
+                <div class="mt-4">
+                    <x-label for="categorie_cours" :value="__('Categorie Cours')" />
+                    <x-select :val="$self->categorie_cours" :collection="$categories" class="block mt-1 w-full" name='categorie_cours' required> </x-select>
+                    <div class="flex gap-5">
+                        <div class="mt-4 w-full">
+                            <x-label for="nom" :value="__('Nom du Cours')" />
+                            <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
+                                placeholder="ex: Geographie..." required />
+                        </div>
+                        <div class="mt-4 w-full">
+                            <x-label for="classe" :value="__('Classe')" />
+                            <x-select :val="$self->classe" :collection="$classes" class="block mt-1 w-full" name='classe' required> </x-select>
+                        </div>
+                    </div>
+                    <div class="flex gap-5">
+                        <div class="mt-4 w-full">
+                            <x-label for="max_periode" :value="__('Note Maximum Periode')" />
+                            <x-input id="max_periode" class="block mt-1 w-full" type="text" name="max_periode" :value="$self->max_periode"
+                                placeholder="ex: 20" required />
+                        </div>
+                        <div class="mt-4 w-full">
+                            <x-label for="max_examen" :value="__('Note Maximum Examen')" />
+                            <x-input id="max_examen" class="block mt-1 w-full" type="text" name="max_examen" :value="$self->max_examen"
+                                placeholder="ex: 40" required />
+                        </div>
+                    </div>
+                    <div class="flex gap-10">
+                        <div class="mt-4">
+                            <x-button>Enregistrer</x-button>
+                        </div>
+                        <div class="mt-4">
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
+                    </div>
         </form>
     @else
         <p class="font-bold text-base"> Ajouter un Cours</p>
@@ -95,8 +100,13 @@
                         placeholder="ex: 40" required />
                 </div>
             </div>
-            <div class="mt-4">
-                <x-button>ajouter</x-button>
+            <div class="flex gap-10">
+                <div class="mt-4">
+                    <x-button>ajouter</x-button>
+                </div>
+                <div class="mt-4">
+                    <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                </div>
             </div>
         </form>
         @endif

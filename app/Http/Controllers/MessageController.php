@@ -21,6 +21,8 @@ class MessageController extends Controller
     {   
         // $messages = Message::latest()->get();
         
+        $items = Message::where('destinateur', Auth::user()->id)->latest()->get();
+
         if(Auth::user()->isDirecteur()){
             $users = User::where('parrain_id', '!=', null)->get();
             $items = Message::where('destinateur', Auth::user()->id)->latest()->get();
@@ -36,7 +38,7 @@ class MessageController extends Controller
         // dd($items);
 
         return view('users.messages')
-                ->with('users', $users)
+                // ->with('users', $users)
                 ->with('items', $items)
                 ->with('sents', $sent)
                 ->with('page_name', $this->page_name);
@@ -53,6 +55,23 @@ class MessageController extends Controller
        
     }
 
+    public function toUser($id){
+        $user = User::findOrFail($id);
+
+        if(Auth::user()->isDirecteur()){
+            $users = User::where('parrain_id', '!=', null)->get();
+            $items = Message::where('destinateur', Auth::user()->id)->latest()->get();
+            $sent = Message::where('expediteur', Auth::user()->id)->latest()->get();
+        }
+        // dd($user);
+        return view('users.messages')
+                ->with('users', $users)
+                ->with('items', $items)
+                ->with('sents', $sent)
+                ->with('to', $user)
+                ->with('page_name', $this->page_name . ' / Compose');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -67,6 +86,9 @@ class MessageController extends Controller
             'contenu' => ['required', 'string'],
         ]);
         // dd(User::Directeurs());
+
+        // dd($request->destinateur);
+
         //to direction
         if($request->destinateur === 'Direction'){
             $users = User::Directeurs();
@@ -79,13 +101,22 @@ class MessageController extends Controller
                     'destinateur' => $user->id,
                 ]);
             }
-        }
+        }else{
+            //to parents
+            if($request->destinateur === 'all'){
+                $users = User::Parents();
 
-        //to parents
-        if($request->destinateur === 'Parents'){
-            $users = User::Parents();
+                foreach($users as $user){
+                    Message::create([
+                        'objet' => $request->objet,
+                        'contenu' => $request->contenu,
+                        'expediteur' => Auth::user()->id,
+                        'destinateur' => $user->id,
+                    ]);
+                }
+            }else{
+                $user = User::findOrFail($request->destinateur);
 
-            foreach($users as $user){
                 Message::create([
                     'objet' => $request->objet,
                     'contenu' => $request->contenu,
@@ -162,6 +193,9 @@ class MessageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = Message::find($id);
+
+        $message->destroy();
+        return redirect()->route('messages');
     }
 }

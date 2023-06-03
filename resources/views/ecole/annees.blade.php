@@ -25,8 +25,14 @@
                     <!-- Email Address -->
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
-                            required />
+                        <select name="nom" id="nom"
+                                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                                required>
+                                <option  selected value="{{$self->nom}}"> {{$self->nom}} </option>
+                                @foreach ($annees as $item)
+                                    <option value="PREMIER TRIMESTRE">{{$item}}</option>
+                                @endforeach
+                        </select>
                     </div>
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">
@@ -57,8 +63,14 @@
                     <!-- Email Address -->
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')"
-                            required />
+                        <select name="nom" id="nom"
+                                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                                required>
+                                <option disabled selected> Choisir le nom de L'Annee Scolaire </option>
+                                @foreach ($annees as $item)
+                                    <option value="PREMIER TRIMESTRE">{{$item}}</option>
+                                @endforeach
+                        </select>
                     </div>
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">

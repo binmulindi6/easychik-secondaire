@@ -20,6 +20,10 @@ class HomeController extends Controller
     {   
         if(Auth::user()->isAdmin() || Auth::user()->isDirecteur()){
             $eleves = Eleve::count() > 0 ? Eleve::count() : 0;
+
+            $filles = Eleve::where('sexe','F')->count() > 0 ? Eleve::where('sexe','F')->count() : 0 ;
+            $garcons = $eleves - $filles;
+
             $employers = Employer::count() > 0 ? Employer::count() : 0;
             $classes = Classe::count() > 0 ? Classe::count() : 0;
             $users = User::count() > 0 ? User::count() : 0;
@@ -28,6 +32,8 @@ class HomeController extends Controller
                 'eleves' => $eleves,
                 'employers' => $employers,
                 'classes' => $classes,
+                'filles' => $filles,
+                'garcons' =>$garcons,
                 'users' => $users,
             ]);
         }

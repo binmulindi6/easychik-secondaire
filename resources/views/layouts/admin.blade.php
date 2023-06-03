@@ -105,8 +105,7 @@
                 @endif
                 @if (Auth::user()->isDirecteur() || Auth::user()->isSecretaire())
                     <li class="mt-0.5 w-full">
-                        @if ((str_contains($page_name, 'Classes') ||
-                                str_contains($page_name, 'Niveaux')) && !str_contains($page_name, 'Eleves'))
+                        @if ((str_contains($page_name, 'Classes') || str_contains($page_name, 'Niveaux')) && !str_contains($page_name, 'Eleves'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('classes.index') }}">
                             @else
@@ -163,7 +162,7 @@
                     </li>
 
                 @endif
-                    @if (!Auth::user()->isEnseignant() || (Auth::user()->isEnseignant() && Auth::user()->classe() !== null))
+                    @if ((!Auth::user()->isEnseignant() && !Auth::user()->isAdmin()) || (Auth::user()->isEnseignant() && Auth::user()->classe() !== null))
                         <li class="mt-0.5 w-full">
                             @if ((str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations') ) && !str_contains($page_name, 'Classes'))
                                 <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -277,7 +276,24 @@
                     </li>
                     
                 @endif
-                @if (Auth::user()->isAdmin())
+                @if (Auth::user()->isDirecteur())
+                    <li class="mt-0.5 w-full">
+                        @if (str_contains($page_name, 'Enseignants'))
+                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                                href="{{ route('users.index') }}">
+                            @else
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                    href="{{ route('users.index') }}">
+                        @endif
+                        <div
+                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
+                            <i class="relative top-0 leading-normal text-emerald-500 text-size-sm fa fa-solid fa-user"></i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enseignants</span>
+                        </a>
+                    </li>
+                @endif
+                @if (Auth::user()->isAdmin() || Auth::user()->isDirecteur())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Employers'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -293,7 +309,8 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employers</span>
                         </a>
                     </li>
-
+                @endif
+                @if (Auth::user()->isAdmin())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Utilisateurs') || str_contains($page_name, 'Encadrements') || str_contains($page_name, 'Parents'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -363,7 +380,7 @@
                         </div>
                             <div class="w-full flex flex-row items-center gap-5">
                                 <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Messages</span>
-                                <span class="p-flex justify-center font-bold text-4 text-red-500">{{Auth::unread() && count(Auth::unread())}}</span>
+                                <span class="p-flex justify-center font-bold text-4 text-red-500">{{Auth::unread() && Auth::unread()}}</span>
                             </div>
                         </a>
                     </li>

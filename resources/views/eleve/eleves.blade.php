@@ -94,8 +94,13 @@
                         <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse" :value="$self->adresse"
                             required />
                     </div>
-                    <div class="mt-4">
-                        <x-button>Enregistrer</x-button>
+                    <div class="flex gap-10">
+                        <div class="mt-4">
+                            <x-button>Enregistrer</x-button>
+                        </div>
+                        <div class="mt-4">
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
                     </div>
                 </form>
             @else
@@ -173,8 +178,13 @@
                             :value="old('adresse')" required />
                     </div>
 
-                    <div class="mt-4">
-                        <x-button>ajouter</x-button>
+                    <div class="flex gap-10">
+                        <div class="mt-4">
+                            <x-button>ajouter</x-button>
+                        </div>
+                        <div class="mt-4">
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
                     </div>
                 </form>
             @endif
@@ -238,18 +248,26 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                     @if (isset($parent) && $parent != null)
-                                        <a href="{{ route('parent-eleve.link', [$parent,$item->id]) }}">
+                                        <a class="hover:text-red-400" href="{{ route('parent-eleve.link', [$parent,$item->id]) }}">
                                             {{ $item->matricule }}
                                         </a>
                                     @else
-                                        <a href="{{ route('eleves.show', $item->id) }}">
+                                        <a class="hover:text-red-400" href="{{ route('eleves.show', $item->id) }}">
                                             {{ $item->matricule }}
                                         </a>
                                     @endif
                                 </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->nom . ' ' . $item->prenom }}</td>
+                                    @if (isset($parent) && $parent != null)
+                                        <a class="hover:text-red-400" href="{{ route('parent-eleve.link', [$parent,$item->id]) }}">
+                                            {{ $item->nom . ' ' . $item->prenom }}</td>
+                                        </a>
+                                    @else
+                                        <a class="hover:text-red-400" href="{{ route('eleves.show', $item->id) }}">
+                                            {{ $item->nom . ' ' . $item->prenom }}</td>
+                                        </a>
+                                    @endif
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->sexe }}</td>

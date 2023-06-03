@@ -36,12 +36,15 @@ const myBtn = document.querySelectorAll(".my-btn");
 
 //Show Eleve
 
-const btnIdentity = document.querySelector(".btn-identity");
-const frmIdentity = document.querySelector(".frm-identity");
+const btnIdentity = document.querySelectorAll(".btn-identity");
+const frmIdentity = document.querySelectorAll(".frm-identity");
 //console.log(btnIdentity);
 
 const btnEdit = document.querySelector('.btn-edit');
 const btnSave = document.querySelector('.btn-save');
+
+const btnEdit1 = document.querySelector('.btn-edit1');
+const btnSave1 = document.querySelector('.btn-save1');
 
 // console.log(myBtn)
 ///joker btn
@@ -116,10 +119,15 @@ myBtn !== null && myBtn.forEach((jokerBtn) => {
 
 
 
-if (btnIdentity !== null) {
-    btnIdentity.addEventListener("click", () => {
-       frmIdentity !== null && frmIdentity.classList.toggle("hidden");
+if (btnIdentity !== null && btnIdentity.length > 0 && frmIdentity !== null && frmIdentity.length > 0) {
+    btnIdentity.forEach(btn => {
+        btn.addEventListener("click", () => {
+            frmIdentity.forEach( frm => {
+                frm.classList.toggle("hidden");
+            })
+         });
     });
+    
 }
 
 
@@ -152,6 +160,9 @@ btnJokerPrint !== null && btnJokerPrint.addEventListener('click', ()=>{
 btnEdit !== null && btnEdit.addEventListener('click', ()=>{
     btnSave !== null && btnSave.classList.toggle('hidden');
 })
+btnEdit1 !== null && btnEdit1.addEventListener('click', ()=>{
+    btnSave1 !== null && btnSave1.classList.toggle('hidden');
+})
 
 //handle Changes
 const moyen = document.querySelector("#moyen-paiement");
@@ -183,22 +194,24 @@ btnCorriger && btnCorriger.forEach(btn => {
         const err = document.getElementById('err' + id)
 
         err.innerHTML = ''
-
-        if (value <= max) {
-            // axios.put(link,
-            //     {
-            //         "_token" : token,
-            //         'note_obtenu' : value,
-            //     }
-            // ).then(e => {
-            //     console.log(e)
-            //     document.getElementById('tr' + id).classList.toggle('hidden');
-            // })
-            // .catch(e => {
-            //     console.log(e)
-            // })
+        console.log(value, max)
+        if (Number(value) <= Number(max)) {
+            
+            axios.put(link,
+                {
+                    "_token" : token,
+                    'note_obtenu' : value,
+                }
+            ).then(e => {
+                console.log(e)
+                document.getElementById('tr' + id).classList.toggle('hidden');
+            })
+            .catch(e => {
+                console.log(e)
+            })
 
         } else {
+            // console.log(Number(value) <= Number(max));
             err.innerHTML = "La note inserer est superieure a la note max"
         }
         

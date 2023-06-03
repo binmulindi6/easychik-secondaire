@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnneeScolaire;
 use Rules\Password;
 use App\Models\User;
 use App\Models\Employer;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Session\Session;
-use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -29,15 +30,16 @@ class UserController extends Controller
         ->latest()
         ->get();
         
-        // dd(10);
+        // dd($users);
         return view('users.users')
-            ->with('page_name', $page_name)
+            ->with('page_name', Auth::user()->isAdmin() ? $page_name : 'Enseignants')
             ->with('items', $users);
     }
 
-    public function create()
+    public function create($id = null)
     {
         $page_name = 'Utilisateurs';
+        $id !== null && $employe = Employer::findOrFail($id);
         $users = User::where('isAdmin', 0)->where('parrain_id', null)
         ->latest()
         ->get();
@@ -45,6 +47,7 @@ class UserController extends Controller
         // dd(10);
         return view('users.users')
             ->with('page_name', $page_name . " / Create")
+            ->with('employe', isset($employe) ? $employe : null)
             ->with('items', $users);
     }
 
@@ -116,7 +119,7 @@ class UserController extends Controller
             //dd(10);
             return  $this->update($request, $id);
         }
-        dd("show");
+        abort(404);
     }
 
     /**
@@ -152,6 +155,11 @@ class UserController extends Controller
             $user = User::find($id);
             $user->password = Hash::make($request->password);
             $user->save();
+
+            if (isset($request->back)) {
+                return back();
+            }
+
           return  redirect()->route('users.index');
 
 

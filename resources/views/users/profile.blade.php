@@ -3,7 +3,65 @@
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
         <x-user-profile-header :data="$user" />
-    <div class="frm-identity hidden bg-white container shadow-2xl rounded-5 p-5">
+      <div class="frm-identity hidden container p-5 bg-white rounded-5 shadow-2xl">
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+          <div class="flex items-center">
+            {{-- <p class="mb-0 dark:text-white/80">Edit Profile</p> --}}
+            <span class="leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">
+              Informations du Compte
+            </span>
+              <button type="button" class="btn-edit inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-size-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Modifier Mot de Passe</button>
+          </div>
+            <form method="PUT" action="{{ route('users.update',$user->id) }}">
+                @csrf
+                {{ method_field('PUT') }}
+                <!-- Name -->
+                {{-- <div>
+                    <x-label for="matricule" :value="__('Matricule de L\'Employé')" />
+    
+                    <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule" :value="$user->employer->matricule" readonly required autofocus />
+                </div>   --}}
+    
+                <!-- Email Address -->
+                <div class="mt-4">
+                    <x-label for="email" :value="__('Email ou Nom Utilisateur')" />
+    
+                    <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="$user->email" readonly required />
+                </div>
+    
+                <div class=" btn-save hidden flex flex-col w-full">
+                  <!-- Password -->
+                  <div class="mt-4">
+                      <x-label for="password" :value="__('Nouveau Mot de Passe')" />
+      
+                      <x-input id="password" class="block mt-1 w-full"
+                                      type="password"
+                                      name="password"
+                                      required autocomplete="new-password" />
+                  </div>
+      
+                  <!-- Confirm Password -->
+                  <div class="mt-4">
+                      <x-label for="password_confirmation" :value="__('Confirmer le Nouveau Mot de Passe')" />
+                      <input type='hidden' name='back' value='true'/>
+      
+                      <x-input id="password_confirmation" class="block mt-1 w-full"
+                                      type="password"
+                                      name="password_confirmation" required />
+                  </div>
+      
+                  <div class="flex gap-10">
+                      <div class="mt-4">
+                          <x-button>Enregistrer</x-button>
+                      </div>
+                      <div class="mt-4">
+                          <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
+                      </div>
+                  </div>
+                </div>
+            </form>
+      </div>
+    <div class="frm-identity  bg-white container shadow-2xl rounded-5 p-5">
       <div class="container">
             @if ($errors->any())
                 @foreach ($errors as $error)
@@ -15,24 +73,20 @@
             <div class="flex items-center">
               {{-- <p class="mb-0 dark:text-white/80">Edit Profile</p> --}}
               <span class="leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">
-                @if (!Auth::user()->isParent())
-                Informations D'employé
-                @else
-                Informations du Compte
-                @endif   
+                Informations Personnel  
               </span>
-                <button type="button" class="btn-edit inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-size-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Modifier</button>
+                <button type="button" class="btn-edit1 inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-size-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Modifier</button>
               </div>
               @if (!Auth::user()->isParent())
-                <form method="PUT" action="{{ route('parents.update', $self->id) }}">
+                <form method="PUT" action="{{ route('employers.update', $self->id) }}">
                   @csrf
                   {{ method_field('PUT') }}
                   <!-- Email Address -->
                   <div class="flex flex-col md:flex-row md:gap-5">
                       <div class="mt-4 w-full">
                           <x-label for="matricule" :value="__('Matricule')" />
-                          <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
-                              :value="$self->matricule" required />
+                          <x-input id="mtricule" class="block mt-1 w-full" type="text" name="matricule"
+                              :value="$self->matricule" required readonly/>
                       </div>
                       <div class="mt-4 w-full">
                           <x-label for="nom" :value="__('Nom et Post-Nom')" />
@@ -91,20 +145,51 @@
                   {{-- <div class="mt-4 w-full"> --}}
                       {{-- <x-label for="nom" :value="__('Fonction')" /> --}}
                       {{-- @if() --}}
-                      @if (!Auth::user()->isParent())
-                        <input type="hidden" value={{$self->fonctions[0]}} name="fonction">
-                      @endif
+                        <input type="hidden" value={{$self->fonctions[0]->id}} name="fonction">
+                        <input type='hidden' name='back' value='true'/>
                       {{-- <x-select :hidden="true" :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select> --}}
                   {{-- </div> --}}
-                  <div class="flex gap-5">
-                      <div class="btn-save mt-4 hidden">
-                          <x-button>Enregistrer</x-button>
+                  <div class="btn-save1 hidden flex gap-10">
+                    <div class="mt-4">
+                        <x-button>Enregistrer</x-button>
+                    </div>
+                    <div class="mt-4">
+                        <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
+                    </div>
+                </div>
+              </form>
+              @else
+                <form method="PUT" action="{{ route('parents.update', $self->id) }}">
+                  @csrf
+                  {{ method_field('PUT') }}
+                  <!-- Email Address -->
+                  <div class="flex flex-col md:flex-row md:gap-5">
+                      <div class="mt-4 w-full">
+                          <x-label for="nom" :value="__('Nom et Post-Nom')" />
+                          <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
+                              :value="$self->nom" required />
                       </div>
-                      <!--div class="mt-4">
-                                  <x-button>Annuler</x-button>
-                              </div-->
-
+                      <div class="mt-4 w-full">
+                          <x-label for="prenom" :value="__('Prenom')" />
+                          <x-input id="prenom" class="block mt-1 w-full" type="text" name="prenom"
+                              :value="$self->prenom" required />
+                      </div>
                   </div>
+
+                  <div class="mt-4 w-full">
+                    <x-label for="prenom" :value="__('Telephone')" />
+                    <input type='hidden' name='back' value='true'/> 
+                    <x-input id="telephone" class="block mt-1 w-full" type="text" name="telephone" :value="$self->telephone" required />
+                  </div>
+                
+                  <div class="btn-save1 hidden flex gap-10">
+                    <div class="mt-4">
+                        <x-button>Enregistrer</x-button>
+                    </div>
+                    <div class="mt-4">
+                        <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
+                    </div>
+                </div>
               </form>
               @endif
             @endif

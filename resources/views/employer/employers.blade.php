@@ -164,6 +164,7 @@
                             <x-label for="diplome" :value="__('Diplome')" />
                             <select class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="diplome" id="diplome" required>
                                 <option disabled selected>Selectionner une option</option>
+                                <option value="Aucun">Aucun</option>
                                 <option value="D'Etat">D'Etat</option>
                                 <option value="Graduat">Graduat</option>
                                 <option value="Licence">Licence</option>
@@ -177,6 +178,7 @@
                             <x-label for="niveau_etude" :value="__('Niveau d\'etude ')" />
                             <select class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="niveau_etude" id="niveau_etude" required>
                                 <option disabled selected>Selectionner une option</option>
+                                <option value="Aucun">Aucun</option>
                                 <option value="D6">D6</option>
                                 <option value="G1">G1</option>
                                 <option value="G2">G2</option>
@@ -213,7 +215,11 @@
         @endif
 
         <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-            <h6>Employers</h6>
+           @if (isset($link))
+           <h6>Choisir un Employé</h6>
+           @else
+           <h6>Employé</h6>
+           @endif
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
@@ -248,7 +254,7 @@
                             Action</th>
                     </thead>
                     <tbody>
-
+                        
                         @foreach ($items as $item)
                             <tr class="">
                                 <td
