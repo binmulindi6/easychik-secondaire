@@ -463,109 +463,117 @@
               </li> -->
 
 
-                        <li id="profile" class="flex items-center">
-                            <div
-                                class=" p-0 text-white font-semibold transition-all text-size-sm ease-nav-brand cursor-pointer hover:bg-slate-300 rounded-2 px-2 py-1">
-                                <i fixed-plugin-button-nav class="cursor-pointer fa fa-user" title="logout"></i>
-                                @if (Auth::user()->parrain_id === null)
-                                    <span class="hidden sm:inline">Bienvenu, {{ Auth::user()->employer->prenom }}</span>
-                                @else
-                                    <span class="hidden sm:inline">Bienvenu, {{ Auth::user()->parrain->prenom }}</span>
-                                @endif
-                            </div>
-                        </li>
+              <li id="profile" class="flex items-center">
+                <div
+                    class=" p-0 text-white font-semibold transition-all text-size-sm ease-nav-brand cursor-pointer hover:bg-slate-300 rounded-2 px-2 py-1">
+                    <i fixed-plugin-button-nav class="cursor-pointer fa fa-user" title="logout"></i>
+                    @if (Auth::user()->parrain_id === null)
+                        <span class="hidden sm:inline">Bienvenu, {{ Auth::user()->employer->prenom }}</span>
+                    @else
+                        <span class="hidden sm:inline">Bienvenu, {{ Auth::user()->parrain->prenom }}</span>
+                    @endif
+                </div>
+            </li>
 
-                        <div id="profile-popper" class="opacity-0 bg-white rounded p-2 shadow-2xl">
-                            <li class="relative">
-                                <a class=" cursor-pointer flex justify-center dkr:hover:bg-slate-900 ease py-2 clear-both  w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors"
-                                    href="{{ url('profile') }}">
-                                    <div
-                                        class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand">
-                                        <i class="text-blue-500 fa fa-user sm:mr-1"></i>
-                                        <span class="hidden sm:inline">Profile</span>
-                                    </div>
-                                </a>
-
-                                <div
-                                    class=" cursor-pointer flex justify-center dkr:hover:bg-slate-900 ease py-2 clear-both  w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
-                                    <form id="profile" class="flex items-center px-4"
-                                        action="{{ route('logout') }}" method="post">
-                                        @csrf
-                                        <button type="submit"
-                                            class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand ">
-                                            <i fixed-plugin-button-nav class=" text-red-500 fa fa-right-from-bracket"
-                                                title="logout"></i>
-                                            <span class="hidden sm:inline">Deconnexion</span>
-                                        </button title="logout">
-                                    </form>
-                                </div>
-
-                            </li>
+            <div id="profile-popper" class="opacity-0 bg-white rounded p-2 shadow-2xl">
+                <li class="relative">
+                    <a class=" cursor-pointer flex justify-center dkr:hover:bg-slate-900 ease py-2 clear-both  w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors"
+                        href="{{ url('profile') }}">
+                        <div
+                            class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand">
+                            <i class="text-blue-500 fa fa-user sm:mr-1"></i>
+                            <span class="hidden sm:inline">Profile</span>
                         </div>
+                    </a>
 
-                        <li id="notify" class="flex items-center">
-                            <div
-                                class="block font-semibold text-white transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-1">
-                                <i class="fa fa-bell sm:mr-1"></i>
-                                <span class="hidden sm:inline"></span>
-                            </div>
-                        </li>
+                    <div
+                        class=" cursor-pointer flex justify-center dkr:hover:bg-slate-900 ease py-2 clear-both  w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
+                        <form id="profile" class="flex items-center px-4"
+                            action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button type="submit"
+                                class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand ">
+                                <i fixed-plugin-button-nav class=" text-red-500 fa fa-right-from-bracket"
+                                    title="logout"></i>
+                                <span class="hidden sm:inline">Deconnexion</span>
+                            </button title="logout">
+                        </form>
+                    </div>
 
-                        <li class="flex items-center xl:hidden">
-                            <a href="javascript:;"
-                                class="block  text-white font-semibold transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-2"
-                                sidenav-trigger>
-                                <div class="w-4.5 overflow-hidden">
-                                    <i
-                                        class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                                    <i
-                                        class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                                    <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                                </div>
+                </li>
+            </div>
+
+            <li id="notify" class="flex items-center">
+                <div
+                    class="block font-semibold text-white transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-1">
+                    <i class="fa fa-bell sm:mr-1"></i>
+                    @if (Auth::user()->isDirecteur() || Auth::user()->isParent())
+                    <span class=" sm:inline">{{count(Auth::unread())}}</span>
+                    @endif
+                </div>
+            </li>
+
+            <li class="flex items-center xl:hidden">
+                <a href="javascript:;"
+                    class="block  text-white font-semibold transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-2"
+                    sidenav-trigger>
+                    <div class="w-4.5 overflow-hidden">
+                        <i
+                            class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                        <i
+                            class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                        <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                    </div>
+                </a>
+            </li>
+
+            <div id="notify-popper" class="opacity-0 bg-white rounded-2 p-2 shadow-2xl pr-2">
+                @if (count(Auth::unread()) > 0)
+                    @foreach (Auth::unread() as $item)
+                        <li class="relative">
+                            <a href="{{route('messages.show', $item->id)}}"
+                                class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
+                                    <div class="flex py-1">
+                                            <div class="my-auto">
+                                                <span
+                                                    class=" bg-blue-300 flex items-center justify-center mr-4 text-white text-size-sm h-9 w-9 max-w-none rounded-xl">
+                                                    <i class="fa fa-message sm:mr-1"></i>
+                                                </span>
+                                            </div>
+                                                <div class="flex flex-col justify-center">
+                                                    <h6 class="mb-1 font-normal leading-normal dark:text-white text-size-sm">
+                                                        <span class="font-semibold">Nouveau message de </span> {{$item->from()->email}}
+                                                    </h6>
+                                                    <p
+                                                        class="mb-0 leading-tight text-size-xs text-slate-400 dark:text-white/80">
+                                                        <i class="mr-1 fa fa-clock"></i>
+                                                        13 minutes ago
+                                                    </p>
+                                                </div>
+                                        </div>
                             </a>
                         </li>
-
-                        <div id="notify-popper" class="opacity-0 bg-white rounded-2 p-2 shadow-2xl">
-                            <li class="relative">
-                                <div
-                                    class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
-                                    <div class="flex py-1">
-                                        <div class="my-auto">
-                                            <span
-                                                class=" bg-blue-300 inline-flex items-center justify-center mr-4 text-white text-size-sm h-9 w-9 max-w-none rounded-xl">
-                                            </span>
-                                        </div>
-                                        <div class="flex flex-col justify-center">
-                                            <h6 class="mb-1 font-normal leading-normal dark:text-white text-size-sm">
-                                                <span class="font-semibold">New message</span> from Laur
-                                            </h6>
-                                            <p
-                                                class="mb-0 leading-tight text-size-xs text-slate-400 dark:text-white/80">
-                                                <i class="mr-1 fa fa-clock"></i>
-                                                13 minutes ago
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </div>
-                    </ul>
-                </div>
+                    @endforeach
+                @endif
+                    
             </div>
-        </nav>
-
-        <!-- end Navbar -->
-
-        <!-- cards -->
-        <div class="w-full h-full px-6 py-6 mx-auto">
-            @yield('content')
-        </div>
-        <!-- end cards -->
-
-
-
-    </main>
+        </ul>
     </div>
+</div>
+</nav>
+
+<!-- end Navbar -->
+
+<!-- cards -->
+<div class="w-full h-full md:p-6 mx-auto">
+@yield('content')
+</div>
+<!-- end cards -->
+
+
+
+</main>
+</div>
 </body>
 
 </html>
