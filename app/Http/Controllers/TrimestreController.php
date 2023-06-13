@@ -55,19 +55,29 @@ class TrimestreController extends Controller
         ]);
 
         //dd($request->nom);
-        $trimestre = Trimestre::create([
-            'nom' => $request->nom,
-            'date_debut' => $request->date_debut,
-            'date_fin' => $request->date_fin,
-        ]);
-
         $annee = AnneeScolaire::find($request->annee_scolaire);
-        $trimestre->annee_scolaire()->associate($annee);
-        $trimestre->save();
+        $trim = Trimestre::where('annee_scolaire_is',$annee->id)
+                        ->where('nom', $request->nom);
+        if($trim === null){
+            $trimestre = Trimestre::create([
+                'nom' => $request->nom,
+                'date_debut' => $request->date_debut,
+                'date_fin' => $request->date_fin,
+            ]);
 
-        //$annee->trimestres()->associate($trimestre);
+            $trimestre->annee_scolaire()->associate($annee);
+            $trimestre->save();
 
-        return redirect()->route('trimestres.index');
+            //$annee->trimestres()->associate($trimestre);
+
+            return redirect()->route('trimestres.index');
+        }else{
+            return redirect('trimestres/create')
+                        ->withErrors([
+                            'nom' => 'Il existe deja un '. $request->nom . ' pour l\'annee scolaire '. $annee->nom
+                        ]);
+                        // ->withInput();
+        }
     }
 
     /**

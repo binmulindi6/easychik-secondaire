@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Eleve;
-use App\Models\Classe;
+// use App\Models\Classe;
 use App\Models\Periode;
-use App\Models\Fonction;
+// use App\Models\Fonction;
 use App\Models\Trimestre;
 use App\Models\EleveExamen;
-use Illuminate\Support\Arr;
+// use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use App\Models\Frequentation;
-use Illuminate\Http\JsonResponse;
+// use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Middleware\TrimStrings;
+// use App\Http\Middleware\TrimStrings;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Contracts\Support\Jsonable;
+// use Illuminate\Support\Facades\Date;
+// use Illuminate\Contracts\Support\Jsonable;
 use App\Http\Controllers\Date\DateController;
 
 class EleveController extends Controller
@@ -55,10 +55,9 @@ class EleveController extends Controller
                ->limit(20)
                 ->get();
             }
-            $lastmatricule = Eleve::all()->last()->matricule;
-            $initial = explode('/', $lastmatricule, -1)[0];
-            $middle = str_replace('E', '', $initial);
-            $matricule = 'E' . intval($middle) + 1 . '/' . date('Y');
+            
+            $matricule = Eleve::getLastMatricule();
+
             //return $eleves;
             // return response()->json([
             //     "eleves" => $eleves
@@ -67,6 +66,7 @@ class EleveController extends Controller
             return view('eleve.eleves')
                 ->with('page_name', $this->page)
                 ->with('items', $eleves)
+                // ->with('imported', count($eleves))
                 ->with('parent', $this->parent)
                 ->with('last_matricule', $matricule);
         }

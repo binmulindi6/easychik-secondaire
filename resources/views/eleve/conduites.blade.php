@@ -18,10 +18,19 @@
                     <div class="frm-create shadow-2xl hidden container p-4 bg-white rounded-5">
             @endif
             @if (isset($self))
-                <p class="font-bold text-base"> Edit Frequentation </p>
-                <form method="PUT" action="{{ route('eleveconduites.update', $self->id) }}">
-                    @csrf
+                <span class="font-bold text-base"> Modifier la Consuite de l'eleve {{$eleve->nom}} pour la {{$periode->nom}} </span>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li class="text-red-500">{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form method="POST" action="{{ route('eleveconduites.update', $self->id) }}">
                     {{ method_field('PUT') }}
+                    @csrf
                     <!-- Email Address -->
                     <div class="flex justify-between gap-5">
                         <div class="mt-4 w-full">
@@ -31,10 +40,11 @@
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="classe" :value="__('Classe')" />
-                            <x-select :val="$self->classe" :collection="$conduites" class="block mt-1 w-full" name='classe_id'
+                            <x-select :val="$self->conduite" :collection="$conduites" class="block mt-1 w-full" name='id_conduite'
                                 required> </x-select>
                         </div>
                     </div>
+                    <input type="hidden" name="id_periode" value="{{$periode->id}}">
                     {{-- <div class="mt-4">
                         <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
                         <x-select :val="$self->annee_scolaire" :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id'
@@ -45,7 +55,7 @@
                             <x-button>Enregistrer</x-button>
                         </div>
                         <div class="mt-4">
-                            <x-button class="bg-red-500">annuler</x-button>
+                            <x-button-annuler :back="true">annuler</x-button-annuler>
                         </div>
                     </div>
                 </form>
@@ -102,7 +112,10 @@
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
-                            <x-button>Enregister</x-button>
+                            <x-button>Enregistrer</x-button>
+                        </div>
+                        <div class="mt-4">
+                            <x-button-annuler :back="true" >annuler</x-button-annuler>
                         </div>
                     </div>
                 </form>

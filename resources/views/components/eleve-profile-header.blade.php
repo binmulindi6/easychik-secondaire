@@ -34,7 +34,7 @@
                     
                 </div>
             </div>
-            @if (isset($eleves) && isset($index))
+            @if (isset($eleves) && isset($index) && !isset($print))
                 <div class="px-3 mx-auto mt-4 sm:my-auto sm:mr-0  md:flex-none">
                     <div class="relativeright-0">
                     </div>
@@ -128,6 +128,18 @@
                                     <span class="mr-2">Imprimer le  Bulletin</span>
                                 </span>
                             </li>
+
+                            @if (!Auth::user()->isParent() && isset($index) && isset($eleves) && isset($annee))
+                            <li
+                                class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    href="{{ route('resultat.bulletin', [$annee->id,$eleves->count() === $index + 1 ? $eleves[0]->id : $eleves[$index + 1]->id]) }}"
+                                    role="tab" aria-selected="false" title="Eleve Suivant">
+                                    <span class="mr-2">Suivant</span>
+                                    <i class="fa fa-solid fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            @endif
                             </ul>
                         </div>
             @endif

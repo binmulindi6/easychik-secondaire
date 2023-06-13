@@ -89,6 +89,11 @@ class Eleve extends Model
           return null;
      }
 
+     public function resultat()
+     {
+          return $this->currentFrequentation()->resultat;
+     }
+
      //bulletinPeriode() to get points from periode
      public function bulletinPeriode($periode)
      {   
@@ -152,5 +157,20 @@ class Eleve extends Model
 
      public function parrain(){
           return $this->belongsTo(Parrain::class);
+     }
+
+     public static function getLastMatricule(){
+          
+          // dd(count(Eleve::all()));
+          if(count(Eleve::all()) > 1){
+               $lastmatricule = Eleve::all()->last()->matricule;
+               $initial = explode('/', $lastmatricule, -1)[0];
+               $middle = str_replace('E', '', $initial);
+               $matricule = 'E' . intval($middle) + 1 . '/' . date('Y');
+          }else{
+               $matricule = 'E1/' . date('Y');
+          }
+
+          return $matricule;
      }
 }

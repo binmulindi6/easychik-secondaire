@@ -43,7 +43,7 @@
             class="p-2 bg-white rounded-full w-8 h-8 flex justify-center items-center">
             <i class="fa fa-solid fa-arrow-left"></i>
         </a>
-        <x-eleve-profile-header :data="$eleve" :print="true" > </x-eleve-profile-header> 
+        <x-eleve-profile-header :data="$eleve" :print="true" :index="$index" :eleves="$eleves" :pagename="$page_name" :annee="$annee_scolaire" > </x-eleve-profile-header> 
 
 
         <div  class="  flex flex-col gap-2 bg-white rounded-xl shadow-xxs w-full  items-center overflow-x-scroll">
@@ -63,7 +63,7 @@
                             <th colspan="12" class="border p-1 px-2 uppercase text-left" >
                                 
                                 <span class="upercase w-full">ELEVE : {{$eleve->nomComplet()}} sexe: {{$eleve->sexe}}</span><br>
-                                <span class="upercase w-full">NE (e) a : {{$eleve->lieu_naissance}} le: 
+                                <span class="upercase w-full">NE (e) à : {{$eleve->lieu_naissance}}, le 
                                     @php
                                         $date = date_create($eleve->date_naissance);
                                         echo date_format($date, "d/m/Y");
@@ -429,14 +429,18 @@
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
                                     <td class="border p-0.5 font-normal text-center" >
                                         @if ($cond1)
-                                            {{$cond1->conduite->abbreviation}}
+                                            <a href="{{route('eleveconduites.edit',[$eleve->id,$p3->id])}}" class="hover:text-blue-500 hover:text-5" title="modifier la conduite">   
+                                                {{$cond1->conduite->abbreviation}}
+                                            </a>
                                         @else
                                             <a href="{{route('conduites.link',[$eleve->id,$p1->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
                                         @endif
                                     </td>
                                     <td class="border p-0.5 font-normal text-center" >
                                         @if ($cond2)
-                                            {{$cond2->conduite->abbreviation}}
+                                            <a href="{{route('eleveconduites.edit',[$eleve->id,$p3->id])}}" class="hover:text-blue-500 hover:text-5" title="modifier la conduite">   
+                                                {{$cond2->conduite->abbreviation}}
+                                            </a>
                                         @else
                                             <a href="{{route('conduites.link',[$eleve->id,$p2->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
                                         @endif
@@ -451,14 +455,18 @@
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
                                     <td class="border p-0.5 font-normal text-center" >
                                         @if ($cond3)
-                                            {{$cond3->conduite->abbreviation}}
+                                            <a href="{{route('eleveconduites.edit',[$eleve->id,$p3->id])}}" class="hover:text-blue-500 hover:text-5" title="modifier la conduite">   
+                                                {{$cond3->conduite->abbreviation}}
+                                            </a>
                                         @else
                                             <a href="{{route('conduites.link',[$eleve->id,$p3->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
                                         @endif
                                     </td>
                                     <td class="border p-0.5 font-normal text-center" >
                                         @if ($cond4)
-                                            {{$cond4->conduite->abbreviation}}
+                                            <a href="{{route('eleveconduites.edit',[$eleve->id,$p3->id])}}" class="hover:text-blue-500 hover:text-5" title="modifier la conduite">   
+                                                {{$cond4->conduite->abbreviation}}
+                                            </a>
                                         @else
                                             <a href="{{route('conduites.link',[$eleve->id,$p4->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
                                         @endif
@@ -473,14 +481,18 @@
                                     <td class="border p-0.5 font-normal text-center bg-slate-400" ></td>
                                     <td class="border p-0.5 font-normal text-center" >
                                         @if ($cond6)
-                                            {{$cond6->conduite->abbreviation}}
+                                            <a href="{{route('eleveconduites.edit',[$eleve->id,$p3->id])}}" class="hover:text-blue-500 hover:text-5" title="modifier la conduite">   
+                                                {{$cond6->conduite->abbreviation}}
+                                            </a>
                                         @else
                                             <a href="{{route('conduites.link',[$eleve->id,$p5->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
                                         @endif
                                     </td>
                                     <td class="border p-0.5 font-normal text-center" >
                                         @if ($cond6)
-                                            {{$cond6->conduite->abbreviation}}
+                                            <a href="{{route('eleveconduites.edit',[$eleve->id,$p3->id])}}" class="hover:text-blue-500 hover:text-5" title="modifier la conduite">   
+                                                {{$cond6->conduite->abbreviation}}
+                                            </a>
                                         @else
                                             <a href="{{route('conduites.link',[$eleve->id,$p6->id])}}" class="text-blue-500 text-5" title="enregistrer la conduite">+</a>
                                         @endif

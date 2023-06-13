@@ -231,4 +231,48 @@ class Classe extends Model
         return $resultats;
     }
 
+    public function reussites()
+    {
+         $resultats = $this->resultats();
+
+         $reussites = [];
+         foreach($resultats as $resultat){
+            if($resultat->decision === 'passe'){
+                $reussites[] = $resultat;
+            }
+         }
+    }
+
+    public function resultatsTries()
+    {
+        $data = [];
+        $data['classe'] = $this;
+        $reussites = [];
+        $echecs = [];
+        $non_classes = [];
+        $eleves = $this->eleves();
+        // dd($eleves);
+        foreach($eleves as $eleve){
+            if ($eleve->resultat() === null) {
+                $nc[] = $eleve;
+            }else{
+                // dd($eleve->resultat());
+                if ($eleve->resultat()->decision === 'passe') {
+                    $reussites[] = $eleve;
+                }else{
+                    if ($eleve->resultat()->decision === 'double') {
+                        $echecs[] = $eleve;
+                    }else{
+                        $non_classes[] = $eleve;
+                    }
+                }
+            }
+        }
+        $data['reussites'] = $reussites;
+        $data['echecs'] = $echecs;
+        $data['non_classe'] = $non_classes;
+
+        return $data;
+    }
+
 }

@@ -20,6 +20,7 @@
             @endif
             @if (isset($self))
                 <p class="font-bold text-base"> Edit Trimestres </p>
+                <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 <form method="PUT" action="{{ route('trimestres.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
@@ -65,6 +66,7 @@
                 </form>
             @else
                 <p class="font-bold text-base"> Ajouter un Trimestre </p>
+                <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 <form method="POST" action="{{ route('trimestres.store') }}">
                     @method('POST')
                     @csrf

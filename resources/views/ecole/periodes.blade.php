@@ -22,6 +22,7 @@
             @endif
             @if (isset($self))
                 <p class="font-bold text-base"> Edit Periodes </p>
+                <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 <form method="PUT" action="{{ route('periodes.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
@@ -61,7 +62,8 @@
                     </div>
                 </form>
             @else
-                <p class="font-bold text-base"> Create Periodes </p>
+                <p class="font-bold text-base"> Ajouter Periodes </p>
+                <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 <form method="POST" action="{{ route('periodes.store') }}">
                     @method('POST')
                     @csrf

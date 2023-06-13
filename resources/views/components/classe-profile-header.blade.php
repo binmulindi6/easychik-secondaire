@@ -21,8 +21,8 @@
             @if (isset($print))
               <li
                 id="btn-export"
-                  class=" cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                    <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                  class=" cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                    <a class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                       role="tab" aria-selected="false">
                       <i class="fa fa-solid fa-file-export"></i>
                       <span class="ml-2">Exporter la liste </span>
@@ -30,22 +30,22 @@
               </li>
               <li
                 id="joker-print"
-                  class=" cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                    <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                  class=" cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                    <a class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                       role="tab" aria-selected="false">
                       <i class="fa fa-solid fa-print"></i>
                       <span class="ml-2">Imprimer la liste </span>
                     </a>
               </li>
             @else
-              <li class=" w-20 cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                <a href="{{route('classes.cours', $data->id)}}" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
+              <li class=" w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                <a href="{{route('classes.cours', $data->id)}}" class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
                   <i class="fa fa-solid fa-book"></i>
                   <span class="ml-2">Cours</span>
                 </a>
               </li>
-              <li class=" w-20 cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                <a href="{{route('classes.eleves', $data->id)}}" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
+              <li class=" w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                <a href="{{route('classes.eleves', $data->id)}}" class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
                   <i class="fa fa-solid fa-chalkboard-user"></i>
                   <span class="ml-2">Eleves</span>
                 </a>
@@ -54,8 +54,8 @@
                 
             {{-- </li>
             
-            <li class="z-30 flex-auto text-center">
-              <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
+            <li class="z-10 flex-auto text-center">
+              <a class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
                 <i class="ni ni-settings-gear-65"></i>
                 <span class="ml-2">Settings</span>
               </a>

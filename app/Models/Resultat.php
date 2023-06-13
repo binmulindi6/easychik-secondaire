@@ -15,6 +15,7 @@ class Resultat extends Model
         ''
     ];
 
+    // public function 
 
     public function frequentation(){
         return $this->belongsTo(Frequentation::class);

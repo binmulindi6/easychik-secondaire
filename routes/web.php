@@ -31,6 +31,7 @@ use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\FonctionController;
 use App\Http\Controllers\ResultatController;
 use App\Http\Controllers\Date\DateController;
+use App\Http\Controllers\PassationController;
 use App\Http\Controllers\TrimestreController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ParentAuthController;
@@ -113,7 +114,9 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('encadrements/create/user/{id}', [UserEncadrement::class, 'create'])->name('encadrements.link');
     Route::resource('encadrements', EncadrementController::class);
     Route::resource('niveaux', NiveauController::class);
-    Route::get('conduites/create/eleve/{eleve_id}/periode/{periode_id}', [EleveConduiteController::class, 'create'])->name('conduites.link');
+    Route::get('eleveconduites/create/eleve/{eleve_id}/periode/{periode_id}', [EleveConduiteController::class, 'create'])->name('conduites.link');
+    Route::get('eleveconduites/edit/eleve/{eleve_id}/periode/{periode_id}', [EleveConduiteController::class, 'edit'])->name('eleveconduites.edit');
+    Route::put('eleveconduites/update/eleve', [EleveConduiteController::class, 'update'])->name('eleveconduites.update');
     // Route::get('conduites/create/eleve/{eleve_id}/periode/{periode_id}/{from}', [EleveConduiteController::class, 'create'])->name('conduites.link');
     Route::post('conduites/store', [EleveConduiteController::class, 'store'])->name('eleveconduites.store');
     Route::resource('conduites', ConduiteController::class);
@@ -220,8 +223,14 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::post('settings/store', [SettingController::class, 'store'])->name('settings.store');
 
     //import Excel
-    Route::get('import/excel', [ImportExcelController::class, 'index'])->name('import.excel.index');
-    Route::post('import/excel', [ImportExcelController::class, 'import'])->name('import.excel.post');
+    Route::get('import/excel/eleves', [ImportExcelController::class, 'index'])->name('import.excel.index');
+    Route::post('import/excel/eleves', [ImportExcelController::class, 'importEleves'])->name('import.excel.post');
+    Route::post('import/excel/eleves/store', [ImportExcelController::class, 'storeImportedEleves'])->name('import.excel.eleves.store');
+    
+    //passation
+    Route::get('passations', [PassationController::class, 'index'])->name('passations.index');
+    Route::get('passations/classe/{id}', [PassationController::class, 'classe'])->name('passations.classe');
+
 
 
 

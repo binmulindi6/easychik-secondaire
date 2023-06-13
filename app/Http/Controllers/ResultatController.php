@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnneeScolaire;
-use App\Models\Conduite;
+use PDO;
 use App\Models\Eleve;
-use App\Models\EleveConduite;
 use App\Models\Periode;
-use App\Models\Evaluation;
-use Illuminate\Http\Request;
-use App\Models\EleveEvaluation;
-use App\Models\Frequentation;
+use App\Models\Conduite;
 use App\Models\Resultat;
 use App\Models\Trimestre;
+use App\Models\Evaluation;
+use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
+use App\Models\EleveConduite;
+use App\Models\Frequentation;
+use App\Models\EleveEvaluation;
 use Illuminate\Support\Facades\DB;
-use PDO;
+use Illuminate\Support\Facades\Auth;
 
 class ResultatController extends Controller
 {
@@ -315,6 +316,22 @@ class ResultatController extends Controller
             }
             //dd(102);
         }
+
+        $eleves = Eleve::all();
+        if (Auth::user()->isEnseignant()) {
+            if(Auth::user()->classe() !== null){
+                $eleves = Auth::user()->classe->eleves();
+                // dd($eleves);
+            }
+        }
+        ///joker
+        $index = 0;
+        for ($i = 0; $i < $eleves->count(); $i++) {
+            if ($eleves[$i]->id === $eleve->id) {
+                $index = $i;
+                break;
+            }
+        }
         
 
         // return view('classe.bulletin')
@@ -330,6 +347,9 @@ class ResultatController extends Controller
                     ->with('noteExT1', $noteExT1)
                     ->with('noteTri1', $noteTri1)
                     ->with('maxTri1', $maxTri1)
+
+                    ->with('index', $index)
+                    ->with('eleves', $eleves)
 
 
                     ->with('examenT2', $examenT2)

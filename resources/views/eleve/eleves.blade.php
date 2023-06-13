@@ -26,6 +26,7 @@
             @endif
             @if (isset($self))
                 <p class="font-bold text-base"> Edit Eleve </p>
+                <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 <form method="PUT" action="{{ route('eleves.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
@@ -191,6 +192,12 @@
     </div>
     @endif
 
+    @if(isset($imported))
+        <div
+                    class="display text-center font-semibold container p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
+                ✅ {{$imported}} Eleves Importés avec succes
+        </div>
+    @endif
 
     @if (isset($items))
         @if ($page_name == 'Eleves/Edit' || $page_name == 'Eleves/Create')

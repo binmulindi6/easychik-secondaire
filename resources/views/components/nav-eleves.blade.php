@@ -112,9 +112,26 @@
 
 </div>
 
-@if (!Auth::user()->isParent())
     <div
-        class="relative shadow-xl justify-end flex flex-wrap items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
+        class="relative shadow-xl justify-end flex flex-row gap-4  items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
+
+        @if ((str_contains($pagename, 'Eleves') || str_contains($pagename, 'Import')) && Auth::user()->isSecretaire())
+            <div
+                class="w-full items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                {{-- @if ($pagename != 'Eleves' && $pagename != 'Eleves/Create' && $pagename != 'Eleves/Edit') --}}
+                    <a href="{{ route('import.excel.index') }}">
+                        <div>
+                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-upload text-size-sm"></i>
+                            <span
+                                class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Importer Eleves</span>
+                        </div>
+                    </a>
+                {{-- @endif --}}
+            </div>
+        @endif
+@if (!Auth::user()->isParent() && !str_contains($pagename, 'Import'))
+
+
         @if (str_contains($pagename, 'Eleve-Parent'))
             @if (isset($parent))
                 <form class="w-full" action="{{ route('eleve-parent.search', $parent) }}" method="post">
@@ -144,7 +161,7 @@
                 placeholder="Search..." />
         @endif
         </form>
+        @endif
     </div>
-@endif
-
+    
 </div>
