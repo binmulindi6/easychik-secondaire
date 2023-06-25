@@ -92,14 +92,13 @@
                         <x-select :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction'
                             required> </x-select>
                     </div>
-                    <div class="flex gap-5">
+                    <div class="flex gap-10">
                         <div class="mt-4">
                             <x-button>Enregistrer</x-button>
                         </div>
-                        <!--div class="mt-4">
-                                    <x-button>Annuler</x-button>
-                                </div-->
-
+                        <div class="mt-4">
+                            <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
                     </div>
                 </form>
             @else
@@ -195,13 +194,13 @@
                         <x-label for="nom" :value="__('Fonction')" />
                         <x-select :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select>
                     </div>
-                    <div class="flex gap-5">
+                    <div class="flex gap-10">
                         <div class="mt-4">
                             <x-button>Ajouter</x-button>
                         </div>
-                        {{-- <div class="mt-4">
-                            <x-button>Annuler</x-button>
-                        </div> --}}
+                        <div class="mt-4">
+                            <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                        </div>
                     </div>
                 </form>
             @endif
@@ -226,31 +225,31 @@
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                     <thead class="align-bottom">
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Matricule </th>
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Nom, Prenom </th>
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Date de Naissance</th>
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Sexe</th>
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Formation</th>
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Diplome</th>
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Niveau d'etude</th>
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Fonction</th>
                         <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Action</th>
                     </thead>
                     <tbody>
@@ -289,13 +288,13 @@
                                     <div class="flex justify-center gap-4 align-middle">
                                         <a title="modifier" href="{{ route('employers.edit', $item->id) }}"><i
                                                 class="fa fa-solid fa-pen"></i></a>
-                                        <form class="delete-form" action="{{ route('employers.destroy', $item->id) }}"
+                                        {{-- <form class="delete-form" action="{{ route('employers.destroy', $item->id) }}"
                                             method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="effacer"><i
                                                     class="text-red-500 fa fa-solid fa-trash"></i></button>
-                                        </form>
+                                        </form> --}}
                                     </div>
                                 </td>
                             </tr>

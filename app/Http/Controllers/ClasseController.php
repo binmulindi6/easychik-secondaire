@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Frais;
 use App\Models\Classe;
 use App\Models\Niveau;
 use App\Models\Periode;
+use App\Models\Trimestre;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use App\Models\CategorieCours;
-use App\Models\Trimestre;
 use Illuminate\Support\Facades\DB;
 
 class ClasseController extends Controller
@@ -23,10 +24,10 @@ class ClasseController extends Controller
     protected $page = "Classes";
 
     public function index()
-    {   
+    {
 
 
-        $classes = Classe::orderBy('niveau_id','asc')->get();
+        $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $niveaux = Niveau::all();
         //$user = User::where('id',)
         // dd($classes[2]);
@@ -92,7 +93,7 @@ class ClasseController extends Controller
         // dd($annees);
 
         return view('classe.profile')
-            ->with('page_name', "Classes / ". $classe->nomComplet())
+            ->with('page_name', "Classes / " . $classe->nomComplet())
             ->with('annee_scolaire', $annee)
             ->with('annees', $annees)
             ->with('classe', $classe);
@@ -104,9 +105,9 @@ class ClasseController extends Controller
         $eleves = $classe->eleves();
 
         return view('classe.eleves')
-                ->with('page_name',"Classes / ". $classe->nomCourt() . " / Liste des Eleves")
-                ->with('items', $eleves)
-                ->with('classe', $classe);
+            ->with('page_name', "Classes / " . $classe->nomCourt() . " / Liste des Eleves")
+            ->with('items', $eleves)
+            ->with('classe', $classe);
     }
 
     public function cours($id)
@@ -116,9 +117,9 @@ class ClasseController extends Controller
         // dd($cours);
 
         return view('classe.cours')
-                 ->with('page_name',"Classes / ". $classe->nomCourt() . " / Liste des Cours")
-                ->with('items', $cours)
-                ->with('classe', $classe);
+            ->with('page_name', "Classes / " . $classe->nomCourt() . " / Liste des Cours")
+            ->with('items', $cours)
+            ->with('classe', $classe);
     }
 
     /**
@@ -143,7 +144,7 @@ class ClasseController extends Controller
         // dd($users);
         // $users = User::join('classes', 'users.id', '!=' , 'classes.user_id')
         //             ->get();
-                        // ->where('user.fonction');
+        // ->where('user.fonction');
 
 
         // ('classes', 'classes.user_id', '=', 'users.id')->get();
@@ -197,7 +198,7 @@ class ClasseController extends Controller
         return redirect()->route("classes.index");
     }
 
-    public function resultatPeriode($id,$periode_id,$annee_scolaire_id)
+    public function resultatPeriode($id, $periode_id, $annee_scolaire_id)
     {
         $classe = Classe::findOrFail($id);
         $periode = Periode::findOrFail($periode_id);
@@ -207,8 +208,8 @@ class ClasseController extends Controller
         $classResults = $classe->resultats();
         $res = array();
         // arsort($classResults);
-        foreach($classResults as $resultat){
-            if($resultat->frequentation->eleve !== null){
+        foreach ($classResults as $resultat) {
+            if ($resultat->frequentation->eleve !== null) {
                 $data = array();
                 $data['resultat'] = $this->checkPeriode($resultat, $periode);
                 $data['eleve'] = $resultat->frequentation->eleve->nomComplet();
@@ -218,19 +219,19 @@ class ClasseController extends Controller
         }
         arsort($res);
         $resultats = array();
-        foreach($res as $final ){
+        foreach ($res as $final) {
             array_push($resultats, $final);
         }
         // dd($resultats);  
 
         return view('classe.resultats')
-            ->with('page_name', "Resultats / Classe")
+            ->with('page_name', "Classes / " . $classe->nomCourt() . "  / Resultat / Periode")
             ->with('annee_scolaire', $annee)
             ->with('periode', $periode)
             ->with('data', $resultats)
             ->with('classe', $classe);
     }
-    public function resultatTrimestre($id,$trimestre_id,$annee_scolaire_id)
+    public function resultatTrimestre($id, $trimestre_id, $annee_scolaire_id)
     {
         $classe = Classe::findOrFail($id);
         $trimestre = Trimestre::findOrFail($trimestre_id);
@@ -241,8 +242,8 @@ class ClasseController extends Controller
         $res = array();
         // dd($trimestre);
         // arsort($classResults);
-        foreach($classResults as $resultat){
-            if($resultat->frequentation->eleve !== null){
+        foreach ($classResults as $resultat) {
+            if ($resultat->frequentation->eleve !== null) {
                 $data = array();
                 $data['resultat'] = $this->checkTrimestre($resultat, $trimestre);
                 $data['eleve'] = $resultat->frequentation->eleve->nomComplet();
@@ -252,19 +253,20 @@ class ClasseController extends Controller
         }
         arsort($res);
         $resultats = array();
-        foreach($res as $final ){
+        foreach ($res as $final) {
             array_push($resultats, $final);
         }
 
         return view('classe.resultats')
-            ->with('page_name', "Resultats / Classe")
+            // ->with('page_name', "Resultats / Classe")
+            ->with('page_name', "Classes / " . $classe->nomCourt() . "  / Resultat / Trimestre")
             ->with('annee_scolaire', $annee)
             ->with('trimestre', $trimestre)
             ->with('data', $resultats)
             ->with('classe', $classe);
     }
-    public function resultatAnnee($id,$annee_scolaire_id)
-    {   
+    public function resultatAnnee($id, $annee_scolaire_id)
+    {
         $classe = Classe::findOrFail($id);
         $annee = AnneeScolaire::findOrFail($annee_scolaire_id);
 
@@ -272,9 +274,9 @@ class ClasseController extends Controller
         $res = array();
         // dd($trimestre);
         // arsort($classResults);
-        foreach($classResults as $resultat){
+        foreach ($classResults as $resultat) {
             // dd($resultat);
-            if($resultat->frequentation->eleve !== null){
+            if ($resultat->frequentation->eleve !== null) {
                 $data = array();
                 $data['resultat'] = $resultat->annee;
                 $data['eleve'] = $resultat->frequentation->eleve->nomComplet();
@@ -284,12 +286,13 @@ class ClasseController extends Controller
         }
         arsort($res);
         $resultats = array();
-        foreach($res as $final ){
+        foreach ($res as $final) {
             array_push($resultats, $final);
         }
 
         return view('classe.resultats')
-            ->with('page_name', "Resultats / Classe")
+            // ->with('page_name', "Resultats / Classe")
+            ->with('page_name', "Classes / " . $classe->nomCourt() . "  / Resultat / Annee")
             ->with('annee_scolaire', $annee)
             ->with('data', $resultats)
             ->with('classe', $classe);
@@ -327,20 +330,143 @@ class ClasseController extends Controller
     public function checkTrimestre($resultat, $trimestre)
     {
         // dd($trimestre);
-        $trim = 0.00 ;
+        $trim = 0.00;
         switch ($trimestre->nom) {
-                case 'PREMIER TRIMESTRE':
-                    $trim = $resultat->trimestre1;
+            case 'PREMIER TRIMESTRE':
+                $trim = $resultat->trimestre1;
                 break;
-                case 'DEUXIEME TRIMESTRE':
-                    $trim = $resultat->trimestre2;
-                    break;
-                case 'TROISIEME TRIMESTRE':
-                    $trim = $resultat->trimestre3;
+            case 'DEUXIEME TRIMESTRE':
+                $trim = $resultat->trimestre2;
+                break;
+            case 'TROISIEME TRIMESTRE':
+                $trim = $resultat->trimestre3;
                 break;
         }
 
         return $trim;
     }
-}
 
+    ///paiemnts
+    public function fichePaiements($id)
+    {
+        $classe = Classe::findOrFail($id);
+        $eleves = $classe->eleves();
+        $frais = $classe->niveau->frais;
+
+        $datas = [];
+
+        foreach ($frais as $frai) {
+            $data['frais'] = $frai;
+            $data["solde"] = [];
+            $data["non-solde"] = [];
+            $totalFrais = (int)$frai->montant;
+            foreach ($eleves as $eleve) {
+                $paid = 0;
+                $paiements = $eleve->currentFrequentation()->paiement_frais;
+                foreach ($paiements as $paiement) {
+                if ($frai->id === $paiement->frais->id) {
+                        $paid += (int)$paiement->montant_paye;
+                    }
+                }
+                $holder = [];
+                // dd($paid);
+                if ($totalFrais === $paid) {
+                    $holder['eleve'] = $eleve;
+                    $holder['montant'] = $paid;
+                    $data["solde"][] = $holder;
+                } else {
+                    $holder['eleve'] = $eleve;
+                    $holder['montant'] = $paid;
+                    $data["non-solde"][] = $holder;
+                }
+            }
+            $datas[] = $data;
+        }
+        // dd($datas);
+        return view('classe.fiche')
+            ->with('page_name', "Classes / " . $classe->nomCourt() . " / Fiche des Paies")
+            ->with('items', $datas)
+            ->with('classe', $classe);
+    }
+
+    public function fichePaiementsFraisSolde($id_classe, $id_frais)
+    {
+        $classe = Classe::findOrFail($id_classe);
+        $frais = Frais::findOrFail($id_frais);
+        $eleves = $classe->eleves();
+        $annee = AnneeScolaire::current();
+
+
+        $datas = [];
+
+            $data = [];
+            $totalFrais = (int)$frais->montant;
+            foreach ($eleves as $eleve) {
+                $paid = 0;
+                $paiements = $eleve->currentFrequentation()->paiement_frais;
+                foreach ($paiements as $paiement) {
+                    if ($frais->id === $paiement->frais->id ) {
+                        $paid += (int)$paiement->montant_paye;
+                    }
+                }
+                $holder = [];
+                // dd($paid);
+                if ($totalFrais === $paid) {
+                    $holder['eleve'] = $eleve;
+                    $holder['montant'] = $paid;
+                    $datas[] = $holder;
+                }
+            }
+            // $datas[] = $holder;
+
+            // dd($datas);
+        
+            return view('classe.solde')
+            ->with('page_name', "Classes / " . $classe->nomCourt() . " / $frais->nom")
+            ->with('items', $datas)
+            ->with('frais', $frais)
+            ->with('annee', $annee)
+            ->with('classe', $classe);
+
+    }
+
+    public function fichePaiementsFraisNonSolde($id_classe, $id_frais)
+    {
+        $classe = Classe::findOrFail($id_classe);
+        $frais = Frais::findOrFail($id_frais);
+        $eleves = $classe->eleves();
+        $annee = AnneeScolaire::current();
+        
+        $datas = [];
+
+        $data = [];
+        $totalFrais = (int)$frais->montant;
+        foreach ($eleves as $eleve) {
+            $paid = 0;
+            $paiements = $eleve->currentFrequentation()->paiement_frais;
+            foreach ($paiements as $paiement) {
+                if ($frais->id === $paiement->frais->id) {
+                    $paid += (int)$paiement->montant_paye;
+                }
+            }
+            $holder = [];
+            // dd($paid);
+            if ($totalFrais > $paid) {
+                $holder['eleve'] = $eleve;
+                $holder['montant'] = $paid;
+                $datas[] = $holder;
+            }
+        }
+        // $datas[] = $data;
+
+        // dd($datas);
+
+        return view('classe.non-solde')
+            ->with('page_name', "Classes / " . $classe->nomCourt() . " / $frais->nom")
+            ->with('items', $datas)
+            ->with('frais', $frais)
+            ->with('annee', $annee)
+            ->with('classe', $classe);    
+
+    }
+}

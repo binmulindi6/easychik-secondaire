@@ -13,7 +13,7 @@ use App\Models\PaiementFrais;
 use Illuminate\Http\Request;
 
 class PaiementFraisController extends Controller
-{   
+{
     protected $page_name = "Paiements";
     protected $error;
     /**
@@ -23,7 +23,7 @@ class PaiementFraisController extends Controller
      */
     public function index()
     {
-       
+
         $frais = PaiementFrais::current();
         $types = TypeFrais::all();
         $niveaux = Niveau::all();
@@ -45,14 +45,14 @@ class PaiementFraisController extends Controller
     public function create()
     {
         $eleves = Eleve::latest()
-               ->limit(20)
-                ->get();
+            ->limit(20)
+            ->get();
 
         return view('frais.eleves')
-                ->with('page_name', $this->page_name)
-                ->with('joker', '10')
-                ->with('error', $this->error)
-                ->with('items', $eleves);
+            ->with('page_name', $this->page_name)
+            ->with('joker', '10')
+            ->with('error', $this->error)
+            ->with('items', $eleves);
     }
     public function linkEleve($id)
     {
@@ -60,20 +60,38 @@ class PaiementFraisController extends Controller
         $eleve = Eleve::findOrFail($id);
         if ($eleve->classe()) {
             $frais = $eleve->classe()->niveau->frais;
+            $paiementsEleve = $eleve->currentFrequentation()->paiement_frais;
+            $fraisNoPaye = []; //total payE
+            // $i = 1;
+            $total = 0;
+            foreach ($frais as $frai) {
+                foreach ($paiementsEleve as $paye) {
+                    if ($paye->frais->id === $frai->id) {
+                        $total +=  (int)$paye->montant_paye;
+                    }
+                }
+                //le montant total a payE est superieur au montant dja payE
+                if ((int)$frai->montant > $total) {
+                    $fraisNoPaye = $frai->id;
+                }
+                // $i++;
+            }
+            // dd($frais);
+            // dd($fraisNoPaye);
+
             $moyens = MoyenPaiement::all();
             $paiements = PaiementFrais::latest()->limit(10)->get();
 
             return view('frais.paiement')
-                    ->with('page_name', $this->page_name . ' / Create')
-                    ->with('eleve', $eleve)
-                    ->with('frais', $frais)
-                    ->with('moyens', $moyens)
-                    ->with('items', $paiements);
-        }else{
+                ->with('page_name', $this->page_name . ' / Create')
+                ->with('eleve', $eleve)
+                ->with('frais', $frais)
+                ->with('moyens', $moyens)
+                ->with('items', $paiements);
+        } else {
             $this->error = $eleve->nomComplet();
             return $this->create();
         }
-        
     }
 
     /**
@@ -96,46 +114,51 @@ class PaiementFraisController extends Controller
         $frais = Frais::find($request->frais);
         $eleve = Eleve::find($request->eleve);
         $moyen = MoyenPaiement::find($request->moyen_paiement);
-        
-        //le montant est inferieur au montant attendu
-        if((int)$frais->montant >= (int)$request->montant){
-            $paiements = $eleve->currentFrequentation()->paiement_frais;
-                $total = 0;
-                foreach($paiements as $paye) {
-                    if($paye->frais->id === $frais->id){
-                        $total +=  (int)$paye->montant_paye;
-                    }
-                }
-            //le montant attendu est inferieur au montant restant a payer
-            if(((int)$frais->montant - $total) >= (int)$request->montant){
 
-                if($request->reference !== null){
-                    $paiement = PaiementFrais::create([
-                        'montant_paye' => $request->montant,
-                        'reference' => $request->reference,
-                        'date' => $request->date,
-                    ]);
-                }else{
-                    $paiement = PaiementFrais::create([
-                        'montant_paye' => $request->montant,
-                        // 'reference' => $request->reference,
-                        'date' => $request->date,
-                    ]);
+        //le montant payer est inferieur ou egale au montant attendu(A PAYER pour le frais)
+        if ((int)$frais->montant >= (int)$request->montant) {
+            $paiements = $eleve->currentFrequentation()->paiement_frais;
+            $total = 0; //total payE
+            foreach ($paiements as $paye) {
+                if ($paye->frais->id === $frais->id) {
+                    $total +=  (int)$paye->montant_paye;
                 }
-    
-                $paiement->frais()->associate($frais);
-                $paiement->frequentation()->associate($eleve->currentFrequentation());
-                $paiement->moyen_paiement()->associate($moyen);
-                $paiement->save();
-                return redirect()->route('paiements.show', $paiement->id);
+            }
+            if ((int)$frais->montant !== $total) {
+                //le montant restant a payE est superieur ou egal au montant payer
+                if (((int)$frais->montant - $total) > (int)$request->montant) {
+
+                    if ($request->reference !== null) {
+                        $paiement = PaiementFrais::create([
+                            'montant_paye' => $request->montant,
+                            'reference' => $request->reference,
+                            'date' => $request->date,
+                        ]);
+                    } else {
+                        $paiement = PaiementFrais::create([
+                            'montant_paye' => $request->montant,
+                            // 'reference' => $request->reference,
+                            'date' => $request->date,
+                        ]);
+                    }
+
+                    $paiement->frais()->associate($frais);
+                    $paiement->frequentation()->associate($eleve->currentFrequentation());
+                    $paiement->moyen_paiement()->associate($moyen);
+                    $paiement->save();
+                    return redirect()->route('paiements.show', $paiement->id);
+                }
+                return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
+                    'montant' => 'Le Montant saisi de ' . $request->montant . ' est supperieur au montant restant à payer par l\'élève ' . $eleve->nom . ', le montant restant est de: ' . (int)$frais->montant - $total . 'pour \'' . $frais->nom . '',
+                ])->onlyInput('montant');
             }
             return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-                'montant' => 'Le Montant saisi de ' . $request->montant .' est supperieur au montant restant à payer par l\'élève '. $eleve->nom. '' ,
-                ])->onlyInput('montant');
-        }        
-        return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-            'montant' => 'Le Montant saisi de ' . $request->montant .' est supperieurad au montant total à payer pour \''. $frais->nom. '\'' ,
+                'montant' => 'L\'élève ' . $eleve->nom . ', a déjà payé la totalité attendu pour le(la) ' . $frais->nom . '',
             ])->onlyInput('montant');
+        }
+        return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
+            'montant' => 'Le Montant saisi de ' . $request->montant . ' est supperieur au montant total à payer pour \'' . $frais->nom . '\' qui est de ' . $frais->montant . $frais->type_frais->devise . ' ',
+        ])->onlyInput('montant');
         // dd(10);
         // redirect()->route('paiements.show', $paiement->id);
     }
@@ -151,9 +174,9 @@ class PaiementFraisController extends Controller
         $paiement = PaiementFrais::find($id);
         $annee = 'Annee Scolaire ' . $paiement->frequentation->annee_scolaire->nom;
         return view('frais.facture')
-                    ->with('page_name', $this->page_name . ' / Facture')
-                    ->with('annee', $annee)
-                    ->with('self', $paiement);
+            ->with('page_name', $this->page_name . ' / Facture')
+            ->with('annee', $annee)
+            ->with('self', $paiement);
 
         // dd($paiement);
     }

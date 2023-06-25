@@ -48,5 +48,4 @@ class Frequentation extends Model
                                 ->first();
     }
 
-
 }

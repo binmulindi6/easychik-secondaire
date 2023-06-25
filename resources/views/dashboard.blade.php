@@ -16,6 +16,14 @@
                           <div>
                             <p class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">Classes</p>
                             <h5 class="mb-2 font-bold dark:text-white">{{$classes}}</h5>
+                            <p class="mb-0 dark:text-white dark:opacity-60">
+                              <span class="font-bold leading-normal text-size-sm text-blue-500">Encadrées:</span>
+                              {{ $classesEncadrees}}
+                            </p>
+                            <p class="mb-0 dark:text-white dark:opacity-60">
+                              <span class="font-bold leading-normal text-size-sm text-red-500">Non Encadrées:</span>
+                              {{$classes - $classesEncadrees}}
+                            </p>
                           </div>
                         </div>
                         <div class="px-3 text-right basis-1/3">
@@ -38,10 +46,14 @@
                         <div>
                           <p class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">Employers</p>
                           <h5 class="mb-2 font-bold dark:text-white">{{$employers}}</h5>
-                          <!--p class="mb-0 dark:text-white dark:opacity-60">
-                            <span class="font-bold leading-normal text-size-sm text-emerald-500">+55%</span>
-                            since yesterday
-                          </p-->
+                          <p class="mb-0 dark:text-white dark:opacity-60">
+                            <span class="font-bold leading-normal text-size-sm text-blue-500">Femmes:</span>
+                            {{ $employers - $hommes}}
+                          </p>
+                          <p class="mb-0 dark:text-white dark:opacity-60">
+                            <span class="font-bold leading-normal text-size-sm text-blue-500">Hommes:</span>
+                            {{$hommes}}
+                          </p>
                         </div>
                       </div>
                       <div class="px-3 text-right basis-1/3">
@@ -61,14 +73,14 @@
                     <div class="flex flex-row -mx-3">
                       <div class="flex-none w-2/3 max-w-full px-3">
                         <div>
-                          <p class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">Eleves</p>
+                          <p class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">Eleves Inscrits</p>
                           <h5 class="mb-2 font-bold dark:text-white">{{$eleves}}</h5>
                           <p class="mb-0 dark:text-white dark:opacity-60">
-                            <span class="font-bold leading-normal text-size-sm text-emerald-500">F:</span>
+                            <span class="font-bold leading-normal text-size-sm text-blue-500">Filles:</span>
                             {{$filles}}
                           </p>
                           <p class="mb-0 dark:text-white dark:opacity-60">
-                            <span class="font-bold leading-normal text-size-sm text-emerald-500">M:</span>
+                            <span class="font-bold leading-normal text-size-sm text-blue-500">Garcons:</span>
                             {{$garcons}}
                           </p>
                         </div>
@@ -85,14 +97,22 @@
     
     
               <!-- card4 -->
-              <a href="{{route("users.index")}}" class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+              <a href="{{route("parents.index")}}" class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
                 <div class="relative flex flex-col min-w-0 break-words bg-white hover:bg-slate-200 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
                   <div class="flex-auto p-4">
                     <div class="flex flex-row -mx-3">
                       <div class="flex-none w-2/3 max-w-full px-3">
                         <div>
-                          <p class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">Utilisateurs</p>
+                          <p class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">Comptes Parents</p>
                           <h5 class="mb-2 font-bold dark:text-white">{{$users}}</h5>
+                          <p class="mb-0 dark:text-white dark:opacity-60">
+                            <span class="font-bold leading-normal text-size-sm text-blue-500">Actifs:</span>
+                            {{$usersActifs}}
+                          </p>
+                          <p class="mb-0 dark:text-white dark:opacity-60">
+                            <span class="font-bold leading-normal text-size-sm text-red-500">Inactifs:</span>
+                            {{$users - $usersActifs}}
+                          </p>
                         </div>
                       </div>
                       <div class="px-3 text-right basis-1/3">

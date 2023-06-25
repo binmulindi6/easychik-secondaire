@@ -86,7 +86,7 @@ class UserController extends Controller
                 ])->onlyInput('matricule');
                 
             }
-        return redirect()->route('users.create');
+        return redirect()->route('users');
     }
 
     public function changeStatut(Request $request, $id)

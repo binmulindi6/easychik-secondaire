@@ -115,7 +115,7 @@
     <div
         class="relative shadow-xl justify-end flex flex-row gap-4  items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
 
-        @if ((str_contains($pagename, 'Eleves') || str_contains($pagename, 'Import')) && Auth::user()->isSecretaire())
+        @if ((str_contains($pagename, 'Eleves') || str_contains($pagename, 'Import')) && (!str_contains($pagename, 'Show') && Auth::user()->isSecretaire() && !str_contains($pagename, 'Paiements')))
             <div
                 class="w-full items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
                 {{-- @if ($pagename != 'Eleves' && $pagename != 'Eleves/Create' && $pagename != 'Eleves/Edit') --}}

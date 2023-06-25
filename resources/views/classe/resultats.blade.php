@@ -2,6 +2,7 @@
 
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
+        <x-back :link="route('classes.show', $classe->id)"></x-back>
         <x-classe-profile-header :data="$classe" :print="true"/>
     <div class="frm-identity hidden bg-white container shadow-2xl rounded-5 p-5">
       <div class="container">
@@ -34,15 +35,15 @@
                         </caption>
                           <thead class="align-bottom">
                               <th
-                                  class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                  class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                   Place
                               </th>
                               <th
-                                  class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                  class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                  ELEVE
                               </th>
                               <th
-                                  class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                  class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                   Pourcentage
                               </th>
                           </thead>

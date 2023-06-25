@@ -130,23 +130,23 @@
                     <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                         <thead class="align-bottom">
                             <th
-                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Nom </th>
                             <th
-                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Email </th>
                             <th
-                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Fonction</th>
                             <th
-                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Classe</th>
                             <th
-                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Satut</th>
                             @if (!$page_name === 'Enseignants')
                                 <th
-                                    class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                     Action</th>
                             @endif
                         </thead>
@@ -231,12 +231,16 @@
                                             {{ $item->employer->fonctions[0]->nom }}</td>
                                         <td
                                             class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                            @if ($item->classe() === null)
-                                                <a class="text-blue-500 underline " href="{{ route('encadrements.link',$item->id) }}">
-                                                    assigner à une classe
-                                                </a>
+                                            @if ($item->isEnseignant())
+                                                @if ($item->classe() === null)
+                                                    <a class="text-blue-500 underline " href="{{ route('encadrements.link',$item->id) }}">
+                                                        assigner à une classe
+                                                    </a>
+                                                @else
+                                                    {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}
+                                                @endif
                                             @else
-                                                {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}
+                                                ---
                                             @endif
 
                                         </td>
@@ -269,13 +273,13 @@
                                             <div class="flex justify-center gap-4 align-middle">
                                                 <a title="modifier" href="{{ route('users.edit', $item->id) }}"><i
                                                         class="fa fa-solid fa-pen"></i></a>
-                                                <form class="delete-form" action="{{ route('users.destroy', $item->id) }}"
+                                                {{-- <form class="delete-form" action="{{ route('users.destroy', $item->id) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" title="effacer"><i
                                                             class="text-red-500 fa fa-solid fa-trash"></i></button>
-                                                </form>
+                                                </form> --}}
                                             </div>
                                         </td>
                                     </tr>

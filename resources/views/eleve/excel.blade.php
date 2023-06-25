@@ -49,28 +49,28 @@
                         <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500 border-collapse">
                             <thead class="align-bottom">
                                 <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Nom et Post-Nom </th>
                                 <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Prenom </th>
                                 <th
-                                    class="px-1 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-1 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Sexe </th>
                                 <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Lieu de Naissance </th>
                                 <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Date de Naissance </th>
                                 <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Nom du Pere </th>
                                 <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Nom de la Mere </th>
                                 <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Adresse </th>
                             </thead>
                             <tbody>

@@ -372,7 +372,7 @@ class EleveController extends Controller
         $freq = Frequentation::find($frequentation);
         $paiements = $freq->paiement_frais;
         $annees = $el->frequentations;
-        $curFreq = $el->currentFrequentation();
+        // $curFreq = $el->currentFrequentation();
         $frais = $freq->classe->niveau->frais;
 
         $data = array();
@@ -399,6 +399,6 @@ class EleveController extends Controller
                     ->with('frais', $frais)
                     ->with('data', $data)
                     ->with('item', $el);
-        dd(10);
+        
     }
 }

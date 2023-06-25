@@ -174,10 +174,16 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('eleves/{eleve}/evaluations/edit/{examen}', [EleveEvaluationController::class, 'edit'])->name('eleves.evaluations.edit');
     Route::put('eleves/evaluations/{pivot}', [EleveEvaluationController::class, 'update'])->name('eleves.evaluations.update');
 
-    //eleve fichePaie
-    Route::get('eleves/paiements/eleve/{id}', [EleveController::class, 'fichePaiements'])->name('eleves.paiements');
+    //eleve fichePaies
+
+    // Route::get('eleves/paiements/eleve/{id}', [EleveController::class, 'fichePaiements'])->name('eleves.paiements');
     Route::get('eleves/paiements/{eleve}/{frequentation}', [EleveController::class, 'showPaiements'])->name('eleves.paiements.show');
     Route::post('eleves/paiements/{eleve}', [EleveController::class, 'createPaiements'])->name('eleves.paiements.create');
+
+    //classe fichePaie
+    Route::get('classes/{id}/paiements', [ClasseController::class, 'fichePaiements'])->name('classes.paiements');
+    Route::get('classes/{classe}/frais/{frais}/solde', [ClasseController::class, 'fichePaiementsFraisSolde'])->name('classes.paiements.frais.solde');
+    Route::get('classes/{classe}/frais/{frais}/non-solde', [ClasseController::class, 'fichePaiementsFraisNonSolde'])->name('classes.paiements.frais.non_solde');
     
     //Searchs
     Route::post('eleves/search', [EleveController::class, 'search'])->name('eleves.search');
@@ -213,10 +219,12 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     
     //rapports
     // Route::get('rapports', [RapportController::class, 'index'])->name('rapports.index');
+    Route::get('rapports', [RapportController::class, 'index'])->name('rapports.index');
     Route::get('rapports/periode', [RapportController::class, 'periode'])->name('rapports.index');
     Route::get('rapports/annuel', [RapportController::class, 'annuel'])->name('rapports.annuel');
     Route::post('rapports/annuel', [RapportController::class, 'rapportAnnuel'])->name('rapports.annuel.get');
     Route::post('rapports/periode', [RapportController::class, 'rapportPeriode'])->name('rapports.periode.get');
+    Route::get('rapports/frequentations', [RapportController::class, 'rapportFrequentation'])->name('rapports.frequentations');
 
     //settings
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
