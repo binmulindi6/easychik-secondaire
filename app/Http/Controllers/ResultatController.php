@@ -413,6 +413,8 @@ class ResultatController extends Controller
                     ->with('resultatTri1', $resultat->trimestre1)
                     ->with('resultatTri2', $resultat->trimestre2)
                     ->with('resultatTri3', $resultat->trimestre3)
+
+                    // ->
                     
                     //annees
                     ->with('resultatAnnee', $resultat->annee)

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
-        <x-classe-profile-header :data="$classe" :print="true"/>
+        <x-classe-profile-header :data="$classe" :passation="true"/>
     <div class="frm-identity hidden bg-white container shadow-2xl rounded-5 p-5">
       <div class="container">
             @if ($errors->any())

@@ -4,9 +4,9 @@
 
     <div class="container flex flex-col justify-between gap-5">
         @if (isset($search))
-            <x-nav-cotation-travails :search="$search" :pagename="$page_name"></x-nav-cotation-travails>
+            <x-nav-cotation-travails :search="$search" :pagename="$page_name" :eleves="true" :examen="$examen"></x-nav-cotation-travails>
         @else
-            <x-nav-cotation-travails :pagename="$page_name"></x-nav-cotation-travails>
+            <x-nav-cotation-travails :pagename="$page_name" :eleves="true" :examen="$examen"></x-nav-cotation-travails>
         @endif
 
     @if (isset($items))

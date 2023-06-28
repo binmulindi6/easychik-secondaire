@@ -20,4 +20,8 @@ class Resultat extends Model
     public function frequentation(){
         return $this->belongsTo(Frequentation::class);
     }
+
+    public function conduiteFinal() {
+        
+    }
 }

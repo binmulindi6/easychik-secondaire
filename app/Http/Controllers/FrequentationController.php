@@ -133,7 +133,73 @@ class FrequentationController extends Controller
                 
         }
     }
+    public function storeApi(Request $request)
+    {       
+        
+        $request->validate([
+            'eleve_matricule' => ['required', 'string', 'max:255'],
+            'classe_id' => ['required', 'string', 'max:255'],
+            'annee_scolaire_id' => ['required', 'string', 'max:255'],
+        ]);
+        
+        $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
+        $annee  = AnneeScolaire::find($request->annee_scolaire_id);
+        
+        if(!is_null($eleve)){
+            if(($eleve->classe() && ($eleve->currentFrequentation()->annee_scolaire->id === $annee->id))){
+                return ('L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire en cours.");
+                
+            }
 
+            // return 'passed';
+            
+            $classe = Classe::find($request->classe_id);
+            
+            $evaluations = $classe->currentEvaluations();
+            $examens = $classe->currentExamens();
+            
+            
+            
+            if(count($evaluations) > 0){
+                foreach($evaluations as $ev){
+                    $eleve->evaluations()->attach($ev);
+                    $eleve->save();
+                }
+            }
+            
+            if(count($examens) > 0){
+                foreach($examens as $ex){
+                    $eleve->examens()->attach($ex);
+                    $eleve->save();
+                }
+            }
+            // dd(12);
+            
+            
+            $frequentation = Frequentation::create();
+            
+            
+            //links 
+            $frequentation->eleve()->associate($eleve);
+            $frequentation->classe()->associate($classe);
+            $frequentation->annee_scolaire()->associate($annee);
+            // save
+            $frequentation->save();
+            
+            //create resultat
+            $resultat = Resultat::create();
+            $resultat->frequentation()->associate($frequentation);
+            $resultat->save();
+            
+            return 'succes';
+        }else{
+            return 'l\'Eleve avec le matricule '. $request->eleve_matricule.' n\'existe pas dans le system';
+            
+        }
+        return 'oklm';
+        dd();
+    }
+    
     /**
      * Display the specified resource.
      *

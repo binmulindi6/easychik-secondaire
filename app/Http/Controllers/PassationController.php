@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnneeScolaire;
 use App\Models\Classe;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,14 +33,25 @@ class PassationController extends Controller
     public function classe($id)
     {
         $classe = Classe::findOrFail($id);
+        // dd(csrf_token());
         $resultats = $classe->resultatsTries();
+        $classeNiveauSup = $classe->classesDeNiveauSuperieur();
+        $classeMemeNiveau = $classe->classesDeMemeNiveau();
+        $annee = AnneeScolaire::next();
 
         // dd($resultats);
 
         return view('passation.classe')
                     ->with('page_name', 'Passations')
                     ->with('classe', $classe)
+                    ->with('annee', $annee)
+                    ->with('classeMemeNiveau', $classeMemeNiveau)
+                    ->with('classeNiveauSup', $classeNiveauSup)
                     ->with('resultats', $resultats);
     }
+
+    // public function () {
+        
+    // }
 
 }

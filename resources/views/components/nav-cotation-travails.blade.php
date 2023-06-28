@@ -53,8 +53,14 @@
 
 <div
     class="relative shadow-xl justify-end flex flex-wrap items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
+    @if (isset($eleves) && isset($evaluation))
+    <form class="w-full" action="{{ route('cotations.evaluations.eleves.search', $evaluation) }}" method="post">
+    @endif
+    @if (isset($eleves) && isset($examen))
+    <form class="w-full" action="{{ route('cotations.examens.eleves.search', $examen) }}" method="post">
+    @endif
     @if (str_contains($pagename, 'Evaluations'))
-        <form class="w-full" action="{{ route('cotations.evaluations.search') }}" method="post">
+    <form class="w-full" action="{{ route('cotations.evaluations.search') }}" method="post">
     @endif
     @if (str_contains($pagename, 'Examens'))
         <form class="w-full" action="{{ route('cotations.examens.search') }}" method="post">

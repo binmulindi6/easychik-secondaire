@@ -52,7 +52,14 @@ const btnSave1 = document.querySelector('.btn-save1');
 ///BTN Corriger
 const btnCorriger = document.querySelectorAll('.btn-corriger');
 
+///btn passation
+const btnsPassation = document.querySelectorAll('.btn-passation');
+const btnReussite = document.querySelector('#btn-reussites')
+const btnEchec = document.querySelector('#btn-echecs')
+const btnNonClasses = document.querySelector('#btn-non-classes')
 
+///views
+// const display
 
 
 

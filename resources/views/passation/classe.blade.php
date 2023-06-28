@@ -2,7 +2,7 @@
 
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
-        <x-classe-profile-header :data="$classe" :print="true" />
+        <x-classe-profile-header :data="$classe" :passation="true" />
         <div class="display shadow-2xl container p-4 bg-white rounded-5">
             <div id="printable" class="flex flex-col px-0 pt-0 ">
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
@@ -36,7 +36,7 @@
                         </th>
                         <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Conduite
+                            Affecter en
                         </th>
                     </thead>
                     <tbody>
@@ -58,25 +58,24 @@
                                     <span>{{ $resultat->resultat()->annee }} %</span>
 
                                 </td>
-                                {{-- <td
+                                <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    <form id="frm{{ $item->id }}"
-                                        action="{{ route('eleves.evaluations.update.api', $item->id) }}" method="POST"
+                                    <form id="frm{{ $resultat->id }}"
+                                        action="{{ route('eleves.examens.update.api', $resultat->id) }}" method="POST"
                                         class="flex justify-center items-center gap-2">
                                         @method('PUT')
                                         @csrf
-                                        <x-input id="ev{{ $item->id }}" class="px-2 py-2 rounded w-20 text-center h-8"
-                                            type="number" max='{{ $evaluation->note_max }}' name="note_obtenu"
-                                            value="{{ $item->note_obtenu }}" />
+                                        {{-- <x-input id="ev{{ $resultat->id }}" class="px-2 py-2 rounded w-20 text-center h-8"
+                                            type="number" name="note_obtenu"
+                                            value="{{ '33'}}" /> --}}
+                                            <x-select :collection="$classeNiveauSup" class="block w-60" name='classe_id' required> </x-select>
                                         <input type="hidden" name="back" value="00">
-                                        <input id="token{{ $item->id }}" type="hidden" name="token"
+                                        <input id="token{{ $resultat->id }}" type="hidden" name="token"
                                             value="{{ csrf_token() }}">
-                                        <x-button id="{{ $item->id }}" type="submit"
+                                        <x-button id="{{ $resultat->id }}" type="submit"
                                             class="btn-corriger px-2 h-7 hover:opacity-100"> ✅</x-button>
-                                        {{-- <x-button type="submit" class="btn-corriger px-2 h-7 hover:opacity-100" onclick="postData({{$item->id}})"> ✅</x-button> --}}
-                                    {{--</form>
-                                    <span id="err{{ $item->id }}" class="text-red-500 text-3"></span>
-                                </td> --}}
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -139,6 +138,24 @@
                                     <span>{{ $resultat->resultat()->annee }} %</span>
 
                                 </td>
+                                <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                    <form id="frm{{ $resultat->id }}"
+                                        action="{{ route('frequentations.api.store') }}" method="POST"
+                                        class="flex justify-center items-center gap-2">
+                                        {{-- @method('PUT') --}}
+                                        @csrf
+                                        <x-select id="classe{{$resultat->id}}" :collection="$classeMemeNiveau" class="block w-60" name='classe_id' required> </x-select>
+                                        <input id="token{{ $resultat->id }}" type="hidden" name="token"
+                                            value="{{ csrf_token() }}">
+                                        <input id="eleve{{ $resultat->id }}" type="hidden" name="token"
+                                            value="{{$resultat->id}}">
+                                        <input id="annee{{ $resultat->id }}" type="hidden" name="token"
+                                            value="{{$annee->id}}">
+                                        <x-button id="{{ $resultat->id }}" type="submit"
+                                            class="btn-corriger px-2 h-7 hover:opacity-100"> ✅</x-button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -177,10 +194,7 @@
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Pourcentage
                         </th>
-                        <th
-                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Conduite
-                        </th>
+
                     </thead>
                     <tbody>
 

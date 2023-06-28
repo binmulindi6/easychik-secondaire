@@ -28,6 +28,21 @@ class AnneeScolaire extends Model
         }
     }
 
+    public static function next(){
+
+        $annee = AnneeScolaire::current();
+        if ($annee !== null && isset($annee->nom)) {
+            // dd($annee);
+            $date = explode('-', $annee->nom)[1];
+            $nextName = $date . "-" .(int)$date+1;
+
+            $nextName = AnneeScolaire::where('nom', $nextName)->first();
+            return $nextName;
+        }
+        return null;
+
+    }
+
     public  function isCurrent(){
 
         if($this->id === AnneeScolaire::current()->id){

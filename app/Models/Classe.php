@@ -275,4 +275,36 @@ class Classe extends Model
         return $data;
     }
 
+    public function classesDeNiveauSuperieur() {
+        $niveau = $this->niveau->numerotation;
+        // dd($this);
+
+        return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
+                    ->where('numerotation', '=' , $niveau+1)
+                    ->orderBy('numerotation', 'asc')
+                    ->select('classes.*')
+                    ->get();
+    }
+
+    public function classesDeMemeNiveau() {
+        $niveau = $this->niveau->numerotation;
+        // dd($this);
+
+        return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
+                    ->where('numerotation', '=' , $niveau)
+                    ->orderBy('numerotation', 'asc')
+                    ->select('classes.*')
+                    ->get();
+    }
+    public function classesDeMemeInferieur() {
+        $niveau = $this->niveau->numerotation;
+        // dd($this);
+
+        return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
+                    ->where('numerotation', '<' , $niveau)
+                    ->orderBy('numerotation', 'asc')
+                    ->select('classes.*')
+                    ->get();
+    }
+
 }

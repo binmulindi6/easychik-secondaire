@@ -67,6 +67,8 @@ Route::get('/', function () {
 Route::get('/charts', [HomeController::class, 'chart']);
 Route::put('api/eleves/evaluations/{pivot}', [EleveEvaluationController::class, 'updateViaApi'])->name('eleves.evaluations.update.api');
 Route::put('api/eleves/examens/{pivot}', [EleveExamenController::class, 'updateViaApi'])->name('eleves.examens.update.api');
+//freqs
+Route::post('frequentation/store/api', [FrequentationController::class, 'storeApi'])->name('frequentations.api.store');
 
 
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'isActive'])->name('dashboard');
@@ -158,6 +160,8 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('cotations/examens', [CotationController::class, 'examens'])->name('cotations.examens');
     Route::get('cotations/evaluation/{id}', [CotationController::class, 'showEvaluation'])->name('cotations.evaluations.show');
     Route::get('cotations/examens/{id}', [CotationController::class, 'showExamen'])->name('cotations.examens.show');
+    Route::post('cotations/evaluations/{id}/eleves/search', [CotationController::class, 'searchEvaluationEleve'])->name('cotations.evaluations.eleves.search');
+    Route::post('cotations/examens/{id}/eleves/search', [CotationController::class, 'searchExamenEleve'])->name('cotations.examens.eleves.search');
     Route::post('cotations/examens/search', [CotationController::class, 'searchExamen'])->name('cotations.examens.search');
     Route::post('cotations/evaluations/search', [CotationController::class, 'searchEvaluation'])->name('cotations.evaluations.search');
 
@@ -239,7 +243,10 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('passations', [PassationController::class, 'index'])->name('passations.index');
     Route::get('passations/classe/{id}', [PassationController::class, 'classe'])->name('passations.classe');
 
+    //jpkers
 
+    Route::get('evaluations/joker/{id}', [EleveEvaluationController::class, 'joker']);
+    Route::get('examens/hack/{id}', [EleveExamenController::class, 'joker']);
 
 
 });
