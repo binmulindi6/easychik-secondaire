@@ -11,23 +11,23 @@ const terminal = document.querySelector('#my-terminal');
         terminal.scrollTop = terminal.scrollHeight
         // console.log(10)
 
-// const btn_create_eleve = document.querySelector("[btn-create-eleves]");
-// const btn_show_eleves = document.querySelector("[btn-display-eleves]");
-// const form_add_eleve = document.querySelector("[frm-create-eleves]");
-// const display_eleves = document.querySelector("[display-eleves]");
+const btn_create_eleve = document.querySelector("[btn-create-eleves]");
+const btn_show_eleves = document.querySelector("[btn-display-eleves]");
+const form_add_eleve = document.querySelector("[frm-create-eleves]");
+const display_eleves = document.querySelector("[display-eleves]");
 
-// const btn_create_frequentations = document.querySelector(
-//     "[btn-create-frequentations]"
-// );
-// const btn_show_frequentations = document.querySelector(
-//     "[btn-display-frequentations]"
-// );
-// const frm_frequentations = document.querySelector(
-//     "[frm-create-frequentations]"
-// );
-// const display_frequentations = document.querySelector(
-//     "[display-frequentations]"
-// );
+const btn_create_frequentations = document.querySelector(
+    "[btn-create-frequentations]"
+);
+const btn_show_frequentations = document.querySelector(
+    "[btn-display-frequentations]"
+);
+const frm_frequentations = document.querySelector(
+    "[frm-create-frequentations]"
+);
+const display_frequentations = document.querySelector(
+    "[display-frequentations]"
+);
 
 const btnCreate = document.querySelectorAll(".btn-create");
 const btnDispaly = document.querySelectorAll(".btn-display");
@@ -255,13 +255,13 @@ btnsPassation && btnsPassation.forEach(btn1 => {
     })
 })
 
-btnsPassation && btnReussite.addEventListener('click', () => {
+btnReussite && btnReussite.addEventListener('click', () => {
     displayReuissite.classList.remove('hidden')
 })
-btnsPassation && btnEchec.addEventListener('click', () => {
+btnEchec && btnEchec.addEventListener('click', () => {
     displayEchec.classList.remove('hidden')
 })
-btnsPassation && btnNonClasses.addEventListener('click', () => {
+btnNonClasses && btnNonClasses.addEventListener('click', () => {
     displayNonClasses.classList.remove('hidden')
 })
 
