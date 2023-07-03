@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Eleve;
+use App\Models\Logfile;
 use Illuminate\Http\Request;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 
 class ImportExcelController extends Controller
@@ -240,7 +241,8 @@ class ImportExcelController extends Controller
 
         foreach($eleves as $eleve){
             $matricule = Eleve::getLastMatricule();
-            Eleve::create([
+
+            $el = Eleve::create([
                 'matricule' => $matricule,
                 'nom' => $eleve['nom'],
                 'prenom' => $eleve['prenom'],
@@ -251,6 +253,11 @@ class ImportExcelController extends Controller
                 'adresse' => $eleve['adresse'],
                 'sexe' => $eleve['sexe'],
             ]);
+
+            Logfile::createLog(
+                'eleves',
+                $el->id
+            );
         }
 
         return redirect()->route('eleves.index')->with('imported', count($eleves));

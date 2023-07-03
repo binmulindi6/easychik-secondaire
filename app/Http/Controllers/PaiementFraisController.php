@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnneeScolaire;
 use App\Models\Eleve;
 use App\Models\Frais;
 use App\Models\Niveau;
+use App\Models\Logfile;
 use App\Models\TypeFrais;
 use App\Models\ModePaiement;
+use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 use App\Models\MoyenPaiement;
 use App\Models\PaiementFrais;
-use Illuminate\Http\Request;
 
 class PaiementFraisController extends Controller
 {
@@ -126,7 +127,7 @@ class PaiementFraisController extends Controller
             }
             if ((int)$frais->montant !== $total) {
                 //le montant restant a payE est superieur ou egal au montant payer
-                if (((int)$frais->montant - $total) > (int)$request->montant) {
+                if (((int)$frais->montant - $total) >= (int)$request->montant) {
 
                     if ($request->reference !== null) {
                         $paiement = PaiementFrais::create([
@@ -146,10 +147,14 @@ class PaiementFraisController extends Controller
                     $paiement->frequentation()->associate($eleve->currentFrequentation());
                     $paiement->moyen_paiement()->associate($moyen);
                     $paiement->save();
+                    Logfile::createLog(
+                        'paiement_frais',
+                        $paiement->id
+                    );
                     return redirect()->route('paiements.show', $paiement->id);
                 }
                 return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-                    'montant' => 'Le Montant saisi de ' . $request->montant . ' est supperieur au montant restant à payer par l\'élève ' . $eleve->nom . ', le montant restant est de: ' . (int)$frais->montant - $total . 'pour \'' . $frais->nom . '',
+                    'montant' => 'Le Montant saisi de ' . $request->montant . $frais->type_frais->devise . ' est supperieur au montant restant à payer par l\'élève ' . $eleve->nom . ', le montant restant est de : ' . (int)$frais->montant - $total . $frais->type_frais->devise . ' pour \'' . $frais->nom . '',
                 ])->onlyInput('montant');
             }
             return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
@@ -157,7 +162,7 @@ class PaiementFraisController extends Controller
             ])->onlyInput('montant');
         }
         return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-            'montant' => 'Le Montant saisi de ' . $request->montant . ' est supperieur au montant total à payer pour \'' . $frais->nom . '\' qui est de ' . $frais->montant . $frais->type_frais->devise . ' ',
+            'montant' => 'Le Montant saisi de ' . $request->montant . $frais->type_frais->devise . ' est supperieur au montant total à payer pour \'' . $frais->nom . '\' qui est de ' . $frais->montant . $frais->type_frais->devise . ' ',
         ])->onlyInput('montant');
         // dd(10);
         // redirect()->route('paiements.show', $paiement->id);
@@ -214,6 +219,11 @@ class PaiementFraisController extends Controller
     {
         $self = PaiementFrais::find($id);
         $self->delete();
+
+        Logfile::deleteLog(
+            'paiement_frais',
+            $self->id
+        );
         return redirect()->route('paiements.index');
     }
 

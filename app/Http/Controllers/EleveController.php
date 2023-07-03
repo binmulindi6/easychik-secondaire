@@ -4,20 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Eleve;
 // use App\Models\Classe;
-use App\Models\Periode;
+use App\Models\Logfile;
 // use App\Models\Fonction;
+use App\Models\Periode;
 use App\Models\Trimestre;
-use App\Models\EleveExamen;
 // use Illuminate\Support\Arr;
+use App\Models\EleveExamen;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
-use App\Models\Frequentation;
 // use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
+use App\Models\Frequentation;
 // use App\Http\Middleware\TrimStrings;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Date;
 // use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Date\DateController;
 
 class EleveController extends Controller
@@ -117,6 +118,10 @@ class EleveController extends Controller
             'adresse' => $request->adresse,
         ]);
 
+        Logfile::createLog(
+            'eleves',
+            $eleve->id
+        );
         return redirect()->route('frequentations.link', $eleve->id);
     }
 
@@ -241,7 +246,10 @@ class EleveController extends Controller
         $eleve->adresse = $request->adresse;
 
         $eleve->save();
-
+        Logfile::updateLog(
+            'eleves',
+            $eleve->id
+        );
         return redirect()->route('eleves.index');
     }
 
@@ -255,7 +263,10 @@ class EleveController extends Controller
     {
         $eleve = Eleve::find($id);
         $eleve->delete();
-
+        Logfile::deleteLog(
+            'eleves',
+            $eleve->id
+        );
         return redirect()->route('eleves.index');
     }
 

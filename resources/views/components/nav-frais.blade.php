@@ -38,11 +38,7 @@
             <div
                 class="my-btn items-center flex  justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
     @endif
-    @if ($pagename !== 'Paiements / Create')
-        <a href="{{ route('paiements.create') }}">
-        @else
-            <a>
-    @endif
+    <a href="{{ route('paiements.create') }}">
     <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enregistrer un Paiement</span>
     </a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logfile;
 use App\Models\Periode;
 use App\Models\Trimestre;
 use Illuminate\Http\Request;
@@ -65,6 +66,10 @@ class PeriodeController extends Controller
 
         //$periode->trimestre()->associate($trimestre);
         $periode->save();
+        Logfile::createLog(
+            'periodes',
+            $periode->id
+        );
 
         //$annee->trimestres()->associate($trimestre);
 
@@ -130,6 +135,10 @@ class PeriodeController extends Controller
         $periode->trimestre()->associate($trimestre);
         $periode->save();
 
+        Logfile::updateLog(
+            'periodes',
+            $periode->id
+        );
         return redirect()->route('periodes.index');
     }
 
@@ -143,6 +152,10 @@ class PeriodeController extends Controller
     {
         $periode = Periode::find($id);
         $periode->delete();
+        Logfile::deleteLog(
+            'periodes',
+            $periode->id
+        );
         return redirect()->route('periodes.index');
     }
 

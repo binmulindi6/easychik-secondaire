@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cours;
 use App\Models\Eleve;
 use App\Models\Examen;
+use App\Models\Logfile;
 use App\Models\trimestre;
 use Illuminate\Http\Request;
 use App\Models\TypeEvaluation;
@@ -81,6 +82,12 @@ class ExamenController extends Controller
         $examen->trimestre()->associate($trimestre);
 
         $examen->save();
+
+        Logfile::createLog(
+            'examens',
+            $examen->id
+        );
+
 
         //la classe de l'examen
         $classe = $cours->classe;
@@ -169,6 +176,11 @@ class ExamenController extends Controller
 
         $examen->save();
 
+        Logfile::updateLog(
+            'examens',
+            $examen->id
+        );
+
         return redirect()->route('examens.index');
     }
 
@@ -182,6 +194,12 @@ class ExamenController extends Controller
     {
         $examen = Examen::find($id);
         $examen->delete();
+
+        Logfile::deleteLog(
+            'examens',
+            $examen->id
+        );
+
         return redirect()->route('examens.index');
     }
 

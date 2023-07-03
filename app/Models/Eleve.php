@@ -89,6 +89,26 @@ class Eleve extends Model
           return null;
      }
 
+     public function nextFrequentation()
+     {
+          if (!$this->frequentations->isEmpty()) {
+               $frequentations = $this->frequentations;
+               // $annee_id = $frequetation->annee_scolaire_id;
+               // $annee = AnneeScolaire::withTrashed()->find($annee_id);
+               $next = AnneeScolaire::next();
+               //dd($annee->nom, AnneeScolaire::current()->nom, $annee->isCurrent());
+               // dd($frequentations[1]->annee_scolaire->isCurrent());
+               foreach($frequentations as $frequentation){
+                    if($frequentation->annee_scolaire !== null){
+                         if ($frequentation->annee_scolaire->id === $next->id) {
+                              return $frequentation;
+                         }
+                    }
+               }
+          }
+          return null;
+     }
+
      public function resultat()
      {
           return $this->currentFrequentation()->resultat;

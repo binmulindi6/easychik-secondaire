@@ -16,7 +16,7 @@
                     <span> Reçu Faiement</span>
                 </div> --}}
                 <div id="printable" class="max-w0 flex flex-col justify-center items-center p-5 border">
-                    <span class="uppercase font-semibold">S.A.S</span>
+                    <span class="uppercase font-semibold">{{env('ecole') ? env('ecole') : 'S.A.S'}}</span>
                     <span class="uppercase font-semibold">{{$annee}}</span>
                     <span class="uppercase font-semibold">Reçu N° : 00{{$self->id}}</span>
                     <table class="border-collapse mt-4">

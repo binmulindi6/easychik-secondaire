@@ -3,7 +3,7 @@
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
         <x-classe-profile-header :data="$classe" :passation="true" />
-        <div class="display shadow-2xl container p-4 bg-white rounded-5">
+        <div id="display-reussite" class="display-passation shadow-2xl container p-4 bg-white rounded-5">
             <div id="printable" class="flex flex-col px-0 pt-0 ">
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                     {{-- <caption class="text-center font-bold text-base uppercase"> Resultats
@@ -42,7 +42,8 @@
                     <tbody>
 
                         @foreach ($resultats['reussites'] as $index => $resultat)
-                            <tr class=" rounded-2xl hover:bg-slate-100 cursor-pointer">
+                            <tr id="tr{{$resultat->id }}" 
+                            class=" rounded-2xl hover:bg-slate-100 cursor-pointer">
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
                                     {{ $index + 1 }}
@@ -58,23 +59,24 @@
                                     <span>{{ $resultat->resultat()->annee }} %</span>
 
                                 </td>
-                                <td
+                                <td 
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    <form id="frm{{ $resultat->id }}"
-                                        action="{{ route('eleves.examens.update.api', $resultat->id) }}" method="POST"
-                                        class="flex justify-center items-center gap-2">
-                                        @method('PUT')
+                                    <form id="frm{{ $resultat->id }}" action="{{ route('frequentations.api.store') }}"
+                                        method="POST" class="flex justify-center items-center gap-2">
+                                        {{-- @method('PUT') --}}
                                         @csrf
-                                        {{-- <x-input id="ev{{ $resultat->id }}" class="px-2 py-2 rounded w-20 text-center h-8"
-                                            type="number" name="note_obtenu"
-                                            value="{{ '33'}}" /> --}}
-                                            <x-select :collection="$classeNiveauSup" class="block w-60" name='classe_id' required> </x-select>
-                                        <input type="hidden" name="back" value="00">
+                                        <x-select id="classe{{ $resultat->id }}" :collection="$classeNiveauSup" class="block w-60"
+                                            name='classe_id' required> </x-select>
                                         <input id="token{{ $resultat->id }}" type="hidden" name="token"
                                             value="{{ csrf_token() }}">
+                                        <input id="eleve{{ $resultat->id }}" type="hidden" name="token"
+                                            value="{{ $resultat->id }}">
+                                        <input id="annee{{ $resultat->id }}" type="hidden" name="token"
+                                            value="{{ $annee->id }}">
                                         <x-button id="{{ $resultat->id }}" type="submit"
-                                            class="btn-corriger px-2 h-7 hover:opacity-100"> ✅</x-button>
+                                            class="btn-affecter px-2 h-7 hover:opacity-100"> ✅</x-button>
                                     </form>
+                                    <span id="err{{$resultat->id}}" class="text-red-500 text-3"></span>
                                 </td>
                             </tr>
                         @endforeach
@@ -83,7 +85,7 @@
             </div>
         </div>
 
-        <div class="display shadow-2xl container p-4 bg-white rounded-5">
+        <div id="display-echec" class="display-passation hidden shadow-2xl container p-4 bg-white rounded-5">
             <div id="printable" class="flex flex-col px-0 pt-0 ">
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                     {{-- <caption class="text-center font-bold text-base uppercase"> Resultats
@@ -122,7 +124,8 @@
                     <tbody>
 
                         @foreach ($resultats['echecs'] as $index => $resultat)
-                            <tr class=" rounded-2xl hover:bg-slate-100 cursor-pointer">
+                            <tr id="tr{{$resultat->id }}"
+                                class=" rounded-2xl hover:bg-slate-100 cursor-pointer">
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
                                     {{ $index + 1 }}
@@ -138,23 +141,24 @@
                                     <span>{{ $resultat->resultat()->annee }} %</span>
 
                                 </td>
-                                <td
+                                <td 
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    <form id="frm{{ $resultat->id }}"
-                                        action="{{ route('frequentations.api.store') }}" method="POST"
-                                        class="flex justify-center items-center gap-2">
+                                    <form id="frm{{ $resultat->id }}" action="{{ route('frequentations.api.store') }}"
+                                        method="POST" class="flex justify-center items-center gap-2">
                                         {{-- @method('PUT') --}}
                                         @csrf
-                                        <x-select id="classe{{$resultat->id}}" :collection="$classeMemeNiveau" class="block w-60" name='classe_id' required> </x-select>
+                                        <x-select id="classe{{ $resultat->id }}" :collection="$classeMemeNiveau" class="block w-60"
+                                            name='classe_id' required> </x-select>
                                         <input id="token{{ $resultat->id }}" type="hidden" name="token"
                                             value="{{ csrf_token() }}">
                                         <input id="eleve{{ $resultat->id }}" type="hidden" name="token"
-                                            value="{{$resultat->id}}">
+                                            value="{{ $resultat->id }}">
                                         <input id="annee{{ $resultat->id }}" type="hidden" name="token"
-                                            value="{{$annee->id}}">
+                                            value="{{ $annee->id }}">
                                         <x-button id="{{ $resultat->id }}" type="submit"
-                                            class="btn-corriger px-2 h-7 hover:opacity-100"> ✅</x-button>
+                                            class="btn-affecter px-2 h-7 hover:opacity-100"> ✅</x-button>
                                     </form>
+                                    <span id="err{{$resultat->id}}" class="text-red-500 text-3"></span>
                                 </td>
                             </tr>
                         @endforeach
@@ -163,7 +167,7 @@
             </div>
         </div>
 
-        <div class="display shadow-2xl container p-4 bg-white rounded-5">
+        <div id="display-non-classes" class="display-passation hidden shadow-2xl container p-4 bg-white rounded-5">
             <div id="printable" class="flex flex-col px-0 pt-0 ">
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                     {{-- <caption class="text-center font-bold text-base uppercase"> Resultats

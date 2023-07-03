@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Eleve;
+use App\Models\Logfile;
 use App\Models\Evaluation;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
@@ -32,8 +33,12 @@ class EleveEvaluationController extends Controller
             'note_obtenu' => ['required', 'string', 'max:255'],
         ]);
         // dd($request->note_obtenu);
-        EleveEvaluation::set($id, $request->note_obtenu);
-        $x = intval($request->eleve);
+        // $ev = EleveEvaluation::set($id, $request->note_obtenu);
+        // $x = intval($request->eleve);
+        Logfile::updateLog(
+            'eleve_Evaluation',
+            $id
+        );
         if (isset($request->back)) {
             return back();
         }
@@ -45,7 +50,10 @@ class EleveEvaluationController extends Controller
             'note_obtenu' => ['required', 'string', 'max:255'],
         ]);
         EleveEvaluation::set($id, $request->note_obtenu);
-        // $x = intval($request->eleve);
+        Logfile::updateLog(
+            'eleve_Evaluation',
+            $id
+        );
         return 'succes';
     }
     public function joker($id)

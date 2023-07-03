@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnneeScolaire;
+use App\Models\Logfile;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 use Illuminate\Support\Facades\Date;
 
 class AnneeScolaireController extends Controller
@@ -22,16 +23,16 @@ class AnneeScolaireController extends Controller
         if (isset($annee->nom)) {
             $date = explode('-', $annee->nom)[1];
             $annees = [];
-            for ($i=0; $i < 3; $i++) { 
-                array_push($annees, $date . "-" .(int)$date+1);
-                $date = (int)$date+1;
+            for ($i = 0; $i < 3; $i++) {
+                array_push($annees, $date . "-" . (int)$date + 1);
+                $date = (int)$date + 1;
             }
-        }else{
+        } else {
             $date = date_format(date_create(), 'Y');
             $annees = [];
-            for ($i=0; $i < 3; $i++) { 
-                array_push($annees, $date . "-" .(int)$date+1);
-                $date = (int)$date+1;
+            for ($i = 0; $i < 3; $i++) {
+                array_push($annees, $date . "-" . (int)$date + 1);
+                $date = (int)$date + 1;
             }
         }
 
@@ -70,11 +71,14 @@ class AnneeScolaireController extends Controller
 
         //dd(10);
         //dd($request->nom);
-        AnneeScolaire::create([
-            'nom' => $request->nom,
-            'date_debut' => $request->date_debut,
-            'date_fin' => $request->date_fin,
-        ]);
+        Logfile::createLog(
+            'annee_scolaires',
+            AnneeScolaire::create([
+                'nom' => $request->nom,
+                'date_debut' => $request->date_debut,
+                'date_fin' => $request->date_fin,
+            ])->id
+        );
 
         return redirect()->route('annee-scolaires.index');
     }
@@ -110,16 +114,16 @@ class AnneeScolaireController extends Controller
         if (isset($annee->nom)) {
             $date = explode('-', $annee->nom)[1];
             $annees = [];
-            for ($i=0; $i < 3; $i++) { 
-                array_push($annees, $date . "-" .(int)$date+1);
-                $date = (int)$date+1;
+            for ($i = 0; $i < 3; $i++) {
+                array_push($annees, $date . "-" . (int)$date + 1);
+                $date = (int)$date + 1;
             }
-        }else{
+        } else {
             $date = date_format(date_create(), 'Y');
             $annees = [];
-            for ($i=0; $i < 3; $i++) { 
-                array_push($annees, $date . "-" .(int)$date+1);
-                $date = (int)$date+1;
+            for ($i = 0; $i < 3; $i++) {
+                array_push($annees, $date . "-" . (int)$date + 1);
+                $date = (int)$date + 1;
             }
         }
         return view('ecole.annees')
@@ -147,6 +151,10 @@ class AnneeScolaireController extends Controller
         $annee->date_fin = $request->date_fin;
 
         $annee->save();
+        Logfile::updateLog(
+            'annee_scolaires',
+            $annee->id
+        );
         return redirect()->route('annee-scolaires.index');
     }
 
@@ -160,6 +168,10 @@ class AnneeScolaireController extends Controller
     {
         $annee = AnneeScolaire::find($id);
         $annee->delete();
+        Logfile::deleteLog(
+            'annee_scolaires',
+            $annee->id
+        );
         return redirect()->route('annee-scolaires.index');
     }
 

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Eleve;
 use App\Models\User;
+use App\Models\Eleve;
+use App\Models\Logfile;
 use App\Models\Parrain;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
@@ -66,7 +67,10 @@ class ParrainController extends Controller
                 'telephone' => $request->telephone,
             ]);
             $parent->save();
-
+            Logfile::createLog(
+                'parrains',
+                $parent->id
+            );
             $user = User::create([
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -75,7 +79,10 @@ class ParrainController extends Controller
 
             $user->parrain()->associate($parent);
             $user->save();
-
+            Logfile::createLog(
+                'users',
+                $user->id
+            );
             return redirect()->route('parents.index');
             // return redirect()->route('parents.create');
 
@@ -142,6 +149,10 @@ class ParrainController extends Controller
         $parent->telephone = $request->telephone;
 
         $parent->save();
+        Logfile::updateLog(
+            'parrains',
+            $parent->id
+        );
 
         if (isset($request->password)) {
             
@@ -152,6 +163,10 @@ class ParrainController extends Controller
             $user = User::where('parrain_id',$id)->first();
             $user->password = Hash::make($request->password);
             $user->save();
+            Logfile::updateLog(
+                'users',
+                $user->id
+            );
         }
 
         if (isset($request->back)) {
@@ -169,7 +184,23 @@ class ParrainController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $parent = Parrain::find($id);
+        $user = $parent->user;
+        $user->isActive = 0;
+        
+        $user->save();
+        Logfile::updateLog(
+            'users',
+            $user->id
+        );
+        
+        $parent->delete();
+        Logfile::deleteLog(
+            'parrains',
+            $user->id
+        );
+
+        return back();
     }
 
     public function changeStatut(Request $request, $id){
@@ -182,6 +213,10 @@ class ParrainController extends Controller
             $user->isActive = 0;
         }
         $user->save();
+        Logfile::updateLog(
+            'users',
+            $user->id
+        );
 
         return redirect()->route('parents.index');
     }

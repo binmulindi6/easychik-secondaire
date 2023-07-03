@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cours;
 use App\Models\Classe;
+use App\Models\Logfile;
 use Illuminate\Http\Request;
 use App\Models\CategorieCours;
 
@@ -68,7 +69,10 @@ class CoursController extends Controller
         $cours->classe()->associate($classe);
         $cours->categorie_cours()->associate($categorie_cours);
         $cours->save();
-
+        Logfile::createLog(
+            'cours',
+            $cours->id
+        );
         return redirect()->route('cours.index');
     }
 
@@ -146,7 +150,10 @@ class CoursController extends Controller
         $cours->categorie_cours()->associate($categorie_cours);
         $cours->save();
         //dd($cours);
-
+        Logfile::updateLog(
+            'cours',
+            $cours->id
+        );
         return redirect()->route('cours.index');
     }
 
@@ -157,7 +164,12 @@ class CoursController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {   $cours = Cours::findOrFail($id);
+        $cours->destroy();
+        Logfile::deleteLog(
+            'cours',
+            $cours->id
+        );
+        return redirect()->route('cours.index');
     }
 }

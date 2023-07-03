@@ -288,6 +288,10 @@
                                     <div class="flex justify-center gap-4 align-middle">
                                         <a title="modifier" href="{{ route('employers.edit', $item->id) }}"><i
                                                 class="fa fa-solid fa-pen"></i></a>
+                                        @if ($item->user === null)
+                                        <a class="text-green-500" title="creer un compte" href="{{ route('users.create.employer', $item->id) }}"><i
+                                            class="fa fa-solid fa-user"></i></a>
+                                        @endif
                                         {{-- <form class="delete-form" action="{{ route('employers.destroy', $item->id) }}"
                                             method="post">
                                             @csrf

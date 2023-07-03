@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logfile;
 use App\Models\Employer;
 use App\Models\Fonction;
 use Illuminate\Http\Request;
@@ -82,6 +83,11 @@ class EmployerController extends Controller
         $fonction = Fonction::find($request->fonction);
         $employer->fonctions()->attach($fonction);
         $employer->save();
+
+        Logfile::createLog(
+            'employers',
+            $employer->id
+        );
 
         return redirect()->route('employers.index');
     }
@@ -175,7 +181,10 @@ class EmployerController extends Controller
         }
 
         $employer->save();
-
+        Logfile::updateLog(
+            'employers',
+            $employer->id
+        );
         if (isset($request->back)) {
             return back();
         }
@@ -193,7 +202,10 @@ class EmployerController extends Controller
     {
         $employer = Employer::find($id);
         $employer->delete();
-
+        Logfile::deleteLog(
+            'employers',
+            $employer->id
+        );
         return redirect()->route('employers.index');
     }
 

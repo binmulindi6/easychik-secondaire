@@ -20,6 +20,7 @@ class EcoleController extends Controller
                 if (DateController::checkPeriodes()) {
                     $annee = AnneeScolaire::current();
                     $trimestre = Trimestre::current();
+                    
                     $periode = Periode::current();
                     return view('ecole.index')
                         ->with('annee', $annee)

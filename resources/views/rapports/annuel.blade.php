@@ -26,7 +26,7 @@
                         class="text-xs py-2 text-gray-900 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
                         <span class="font-semibold text-4">
-                            Rapport annuel de paiements des frais {{ $current->nom }}
+                            Rapport annuel de perception des frais {{ $current->nom }}
                         </span>
 
                     </caption>
@@ -42,7 +42,7 @@
                                 mode paiement
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Montant payé
+                                Montant percu
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Total

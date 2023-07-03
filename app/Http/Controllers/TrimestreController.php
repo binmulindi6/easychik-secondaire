@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnneeScolaire;
+use App\Models\Logfile;
 use App\Models\Trimestre;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 
 class TrimestreController extends Controller
 {
@@ -67,7 +68,10 @@ class TrimestreController extends Controller
 
             $trimestre->annee_scolaire()->associate($annee);
             $trimestre->save();
-
+            Logfile::createLog(
+                'trimestres',
+                $trimestre->id
+            );
             //$annee->trimestres()->associate($trimestre);
 
             return redirect()->route('trimestres.index');
@@ -139,6 +143,10 @@ class TrimestreController extends Controller
         $trimestre->annee_scolaire()->associate($annee);
         $trimestre->save();
 
+        Logfile::updateLog(
+            'trimestres',
+            $trimestre->id
+        );
         return redirect()->route('trimestres.index');
     }
 
@@ -152,6 +160,11 @@ class TrimestreController extends Controller
     {
         $trimestre = Trimestre::find($id);
         $trimestre->delete();
+
+        Logfile::deleteLog(
+            'trimestres',
+            $trimestre->id
+        );
         return redirect()->route('trimestres.index');
     }
 

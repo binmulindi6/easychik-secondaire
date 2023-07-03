@@ -31,7 +31,7 @@
                                 required>
                                 <option  selected value="{{$self->nom}}"> {{$self->nom}} </option>
                                 @foreach ($annees as $item)
-                                    <option value="PREMIER TRIMESTRE">{{$item}}</option>
+                                    <option value="{{$item}}">{{$item}}</option>
                                 @endforeach
                         </select>
                     </div>
@@ -70,7 +70,7 @@
                                 required>
                                 <option disabled selected> Choisir le nom de L'Annee Scolaire </option>
                                 @foreach ($annees as $item)
-                                    <option value="PREMIER TRIMESTRE">{{$item}}</option>
+                                <option value="{{$item}}">{{$item}}</option>
                                 @endforeach
                         </select>
                     </div>

@@ -43,40 +43,49 @@ class RegisteredUserController extends Controller
         
         // dd(10);
 
+        // dd($userExist);
         $matricule = $request->matricule;
         $employer = Employer::where('matricule',$matricule)->first();
         //dd('here');
 
-        if(!is_null($employer)){
-            if ($employer->fonction->nom === 'Informaticien') {
-                $user = User::create([
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'isAdmin' => 1,
-                    'isActive' => 1,
-                ]);
-            }else{
-                $user = User::create([
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    
-                ]);
-             }
-            $user->employer()->associate($employer);
-            $user->save();
-            dd($user);
-            
-            event(new Registered($user));
-            
-            Auth::login($user);
-            
-            return redirect(RouteServiceProvider::HOME);
-        }else{
+        $userExist = User::where('employer_id', $employer->id)
+                            ->first();
+        if($userExist !== null){
             return back()->withErrors([
-                'email' => 'Cet Employer n\'existe pas dans le system',
+                'matricule' => 'Cet Employer possede déjà un compte utilisateur',
             ])->onlyInput('matricule');
-            
         }
-        return redirect('users.index');
+
+        // if(!is_null($employer)){
+        //     if ($employer->fonction->nom === 'Informaticien') {
+        //         $user = User::create([
+        //             'email' => $request->email,
+        //             'password' => Hash::make($request->password),
+        //             'isAdmin' => 1,
+        //             'isActive' => 1,
+        //         ]);
+        //     }else{
+        //         $user = User::create([
+        //             'email' => $request->email,
+        //             'password' => Hash::make($request->password),
+                    
+        //         ]);
+        //      }
+        //     $user->employer()->associate($employer);
+        //     $user->save();
+        //     dd($user);
+            
+        //     event(new Registered($user));
+            
+        //     Auth::login($user);
+            
+        //     return redirect(RouteServiceProvider::HOME);
+        // }else{
+        //     return back()->withErrors([
+        //         'email' => 'Cet Employer n\'existe pas dans le system',
+        //     ])->onlyInput('matricule');
+            
+        // }
+        // return redirect('users.index');
     }
 }

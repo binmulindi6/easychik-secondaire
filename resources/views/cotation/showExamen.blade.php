@@ -70,6 +70,7 @@
                                                     <input id="token{{$item->id}}" type="hidden" name="token" value="{{ csrf_token() }}">
                                                     <x-button id="{{$item->id}}" type="submit" class="btn-corriger px-2 h-7 hover:opacity-100"> ✅</x-button>
                                                 </form>
+                                                <span id="err{{$item->id}}" class="text-red-500 text-3"></span>
                                             </td>
                                             {{-- <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">

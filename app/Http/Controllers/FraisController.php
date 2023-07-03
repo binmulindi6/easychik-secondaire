@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Frais;
-use App\Models\ModePaiement;
 use App\Models\Niveau;
+use App\Models\Logfile;
 use App\Models\TypeFrais;
+use App\Models\ModePaiement;
 use Illuminate\Http\Request;
 
 class FraisController extends Controller
@@ -85,6 +86,11 @@ class FraisController extends Controller
                 $frais->mode_paiement()->associate($mode);
     
                 $frais->save();
+
+                Logfile::createLog(
+                    'frais',
+                    $frais->id
+                );
             }
 
         }else{
@@ -104,6 +110,11 @@ class FraisController extends Controller
             $frais->mode_paiement()->associate($mode);
 
             $frais->save();
+
+            Logfile::createLog(
+                'frais',
+                $frais->id
+            );
         }
         return redirect()->route('frais.index');
         // return "succes";
@@ -155,8 +166,13 @@ class FraisController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   
+        $frais = Frais::findOrFail($id);
+        abort(400);
+        Logfile::updateLog(
+            'frais',
+            $frais->id
+        );
     }
 
     /**
@@ -169,6 +185,12 @@ class FraisController extends Controller
     {
         $self = Frais::find($id);
         $self->delete();
+
+        Logfile::deleteLog(
+            'frais',
+            $self->id
+        );
+
         return redirect()->route('frais.index');
     }
 }

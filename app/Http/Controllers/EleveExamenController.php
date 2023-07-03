@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Eleve;
 use App\Models\Examen;
+use App\Models\Logfile;
 use App\Models\EleveExamen;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
@@ -35,7 +36,10 @@ class EleveExamenController extends Controller
         ]);
         // dd($request->note_obtenu);
         EleveExamen::set($id, $request->note_obtenu);
-        $x = intval($request->eleve);
+        Logfile::updateLog(
+            'eleve_examen',
+            $id
+        );
 
         if (isset($request->back)) {
             return back();
@@ -50,6 +54,10 @@ class EleveExamenController extends Controller
         ]);
         // dd($request->note_obtenu);
         EleveExamen::set($id, $request->note_obtenu);
+        Logfile::updateLog(
+            'eleve_examen',
+            $id
+        );
         return 'succes';
     }
 

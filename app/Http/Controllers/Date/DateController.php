@@ -63,6 +63,8 @@ class DateController extends Controller
         //$currentAnneeScolaire = AnneeScolaire::where('is_current', 1)->first();
         $anneeScolaires = AnneeScolaire::orderBy('nom')->get();
 
+        // dd($anneeScolaires);
+
         foreach ($anneeScolaires as $anneeScolaire) {
             $debut = strtotime($anneeScolaire->date_debut);
             $fin = strtotime($anneeScolaire->date_fin);
@@ -76,7 +78,7 @@ class DateController extends Controller
             return AnneeScolaire::where('selected', 1)->first();
         }
         //dd(11);
-        return AnneeScolaire::latest()->first();
+        return AnneeScolaire::orderBy('nom', 'desc')->first();
     }
 
 
@@ -84,13 +86,13 @@ class DateController extends Controller
     {
 
         $today = strtotime(date("Y-m-d"));
-        $currentAnneeScolaire = DateController::currentAnnee();
+        $currentAnneeScolaire = AnneeScolaire::current();
         $trimestres = Trimestre::where('annee_scolaire_id', $currentAnneeScolaire->id)->get();
-
         // if ($trimestres->count() < 3) {
-        //     dd(11);
-        // }
-        foreach ($trimestres as $trimestre) {
+            //     dd(11);
+            // }
+            // dd($trimestres);
+            foreach ($trimestres as $trimestre) {
             $debut = strtotime($trimestre->date_debut);
             $fin = strtotime($trimestre->date_fin);
             if ($today > $debut && $today < $fin) {
@@ -106,7 +108,7 @@ class DateController extends Controller
     {
 
         $today = strtotime(date("Y-m-d"));
-        $currentPeriode = DateController::currentTrimestre();
+        $currentPeriode = AnneeScolaire::current();
 
 
         $periodes = Periode::where('trimestre_id', $currentPeriode->id)->get();

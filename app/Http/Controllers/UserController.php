@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Rules\Password;
 use App\Models\User;
+use App\Models\Logfile;
 use App\Models\Employer;
+use App\Models\Fonction;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use Illuminate\Validation\Rules;
@@ -19,17 +21,17 @@ class UserController extends Controller
 
 
     public function index()
-    {   
+    {
         // $curent = AnneeScolaire::current();
         // $_SESSION['current'] = $curent;
         // // dd($_SESSION);
-        
+
         $page_name = 'Utilisateurs';
         $users = User::where('isAdmin', 0)
-        ->where('parrain_id', null)
-        ->latest()
-        ->get();
-        
+            ->where('parrain_id', null)
+            ->latest()
+            ->get();
+
         // dd($users);
         return view('users.users')
             ->with('page_name', Auth::user()->isAdmin() ? $page_name : 'Enseignants')
@@ -41,9 +43,9 @@ class UserController extends Controller
         $page_name = 'Utilisateurs';
         $id !== null && $employe = Employer::findOrFail($id);
         $users = User::where('isAdmin', 0)->where('parrain_id', null)
-        ->latest()
-        ->get();
-        
+            ->latest()
+            ->get();
+
         // dd(10);
         return view('users.users')
             ->with('page_name', $page_name . " / Create")
@@ -66,12 +68,21 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-        
+
         $matricule = $request->matricule;
-        $employer = Employer::where('matricule',$matricule)->first();
+        $employer = Employer::where('matricule', $matricule)->first();
         //dd('here');
 
-        if(!is_null($employer)){
+        $userExist = User::where('employer_id', $employer->id)
+            ->first();
+
+        if ($userExist !== null) {
+            return back()->withErrors([
+                'matricule' => 'Cet Employer possede déjà un compte utilisateur',
+            ])->onlyInput('matricule');
+        }
+
+        if (!is_null($employer)) {
             $user = User::create([
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -79,14 +90,18 @@ class UserController extends Controller
             ]);
             $user->employer()->associate($employer);
             $user->save();
+
+            Logfile::createLog(
+                'users',
+                $user->id
+            );
             redirect()->route('users.index');
-        }else{
+        } else {
             return back()->withErrors([
                 'email' => 'Cet Employer n\'existe pas dans le system',
-                ])->onlyInput('matricule');
-                
-            }
-        return redirect()->route('users');
+            ])->onlyInput('matricule');
+        }
+        return redirect()->route('users.index');
     }
 
     public function changeStatut(Request $request, $id)
@@ -99,6 +114,11 @@ class UserController extends Controller
             $user->isActive = 0;
         }
         $user->save();
+
+        Logfile::updateLog(
+            'users',
+            $user->id
+        );
 
         return redirect()->route('users.index');
     }
@@ -115,11 +135,23 @@ class UserController extends Controller
             $request->validate([
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
-            
+
             //dd(10);
             return  $this->update($request, $id);
         }
-        abort(404);
+        $user = User::findOrFail($id);
+        if ($user->isParent()) {
+            $self = $user->parrain;
+        } else {
+            $self = $user->employer;
+        }
+        // dd($user->isEnseignant());
+
+        return view('users.profile')
+            ->with('user', $user)
+            ->with('self', $self)
+            ->with('fonctions', Fonction::all())
+            ->with('page_name', 'Users / Show ');
     }
 
     /**
@@ -131,10 +163,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $users = User::where('isAdmin', 0)->where('parrain_id', null)
-                    ->latest()
-                    ->get();
+            ->latest()
+            ->get();
         $user = User::find($id);
-        
+
         // dd(10);
         return view('users.users')
             ->with('page_name', $this->page_name . " / Edit")
@@ -150,17 +182,23 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {       
+    {
         // dd(10);
-            $user = User::find($id);
-            $user->password = Hash::make($request->password);
-            $user->save();
+        $user = User::find($id);
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-            if (isset($request->back)) {
-                return back();
-            }
 
-          return  redirect()->route('users.index');
+        Logfile::updateLog(
+            'users',
+            $user->id
+        );
+
+        if (isset($request->back)) {
+            return back();
+        }
+
+        return  redirect()->route('users.index');
 
 
         // $fonction = Fonction::find($request->fonction);
@@ -185,6 +223,11 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
 
+
+        Logfile::deleteLog(
+            'users',
+            $user->id
+        );
         return redirect()->route('users.index');
     }
 }

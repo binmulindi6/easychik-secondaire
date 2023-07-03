@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Classe;
+use App\Models\Logfile;
 use App\Models\Encadrement;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
@@ -82,7 +83,10 @@ class EncadrementController extends Controller
             $encadrement->annee_scolaire()->associate($annee);
             // save
             $encadrement->save();
-            
+            Logfile::createLog(
+                'encadrements',
+                $encadrement->id
+            );
             return redirect()->route('encadrements.index');
         }
         return redirect()->route('encadrements.create')->withErrors([
@@ -158,7 +162,10 @@ class EncadrementController extends Controller
         $encadrement->annee_scolaire()->associate($annee);
         // save
         $encadrement->save();
-        
+        Logfile::updateLog(
+            'encadrements',
+            $encadrement->id
+        );
         return redirect()->route('encadrements.index');
     }
 
@@ -172,6 +179,11 @@ class EncadrementController extends Controller
     {
         $encadrement = Encadrement::find($id);
         $encadrement->delete();
+
+        Logfile::deleteLog(
+            'encadrements',
+            $encadrement->id
+        );
         return redirect()->route('encadrements.index');
     }
 }

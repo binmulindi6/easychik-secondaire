@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cours;
 use App\Models\Eleve;
+use App\Models\Logfile;
 use App\Models\Periode;
 use App\Models\Evaluation;
 use Illuminate\Http\Request;
@@ -87,6 +88,11 @@ class EvaluationController extends Controller
         $evaluation->type_evaluation()->associate($type_evaluation);
 
         $evaluation->save();
+
+        Logfile::createLog(
+            'evaluations',
+            $evaluation->id
+        );
 
         //la classe de l'evaluation
         $classe = $cours->classe;
@@ -190,6 +196,12 @@ class EvaluationController extends Controller
 
         $evaluation->save();
 
+        Logfile::updateLog(
+            'evaluations',
+            $evaluation->id
+        );
+
+
         return redirect()->route('evaluations.index');
     }
 
@@ -203,6 +215,12 @@ class EvaluationController extends Controller
     {
         $evaluation = Evaluation::find($id);
         $evaluation->delete();
+
+        Logfile::deleteLog(
+            'evaluations',
+            $evaluation->id
+        );
+
         return redirect()->route('evaluations.index');
     }
 

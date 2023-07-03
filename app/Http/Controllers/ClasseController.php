@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Frais;
 use App\Models\Classe;
 use App\Models\Niveau;
+use App\Models\Logfile;
 use App\Models\Periode;
 use App\Models\Trimestre;
 use Illuminate\Http\Request;
@@ -71,6 +72,10 @@ class ClasseController extends Controller
         $classe->niveau()->associate($niveau);
 
         $classe->save();
+        Logfile::createLog(
+            'classes',
+            $classe->id
+        );
 
         return redirect()->route("classes.index");
     }
@@ -181,6 +186,10 @@ class ClasseController extends Controller
         $classe->user()->associate($user);
 
         $classe->save();
+        Logfile::updateLog(
+            'classes',
+            $classe->id
+        );
 
         return redirect()->route("classes.index");
     }
@@ -195,6 +204,10 @@ class ClasseController extends Controller
     {
         $classe = Classe::find($id);
         $classe->delete();
+        Logfile::deleteLog(
+            'classes',
+            $classe->id
+        );
         return redirect()->route("classes.index");
     }
 

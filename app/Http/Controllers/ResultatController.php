@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use PDO;
 use App\Models\Eleve;
+use App\Models\Logfile;
 use App\Models\Periode;
 use App\Models\Conduite;
 use App\Models\Resultat;
@@ -539,7 +540,10 @@ class ResultatController extends Controller
         $resultat = $frequentation->resultat;
         
         $this->fillPeriode($resultat, $periode, $request->resultat);
-        // dd($resultat    );
+        Logfile::updateLog(
+            'resultats',
+            $resultat->id
+        );
 
         return back();
     }
@@ -570,6 +574,10 @@ class ResultatController extends Controller
         // dd($request->trimestre);
         $this->fillTrimestre($resultat, $trimestre, $request->examen, $request->trimestre);
 
+        Logfile::updateLog(
+            'resultats',
+            $resultat->id
+        );
         return back();
 
 
@@ -622,6 +630,10 @@ class ResultatController extends Controller
         $resultat->decision = $request->decision;
         // dd($resultat);
         $resultat->save();
+        Logfile::updateLog(
+            'resultats',
+            $resultat->id
+        );
         return back();
     }
 }

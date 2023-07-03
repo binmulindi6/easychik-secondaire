@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TypeEvaluation;
+use App\Models\Logfile;
 use Illuminate\Http\Request;
+use App\Models\TypeEvaluation;
 
 class TypeEvaluationController extends Controller
 {
@@ -40,9 +41,12 @@ class TypeEvaluationController extends Controller
             'nom' => ['required', 'string', 'max:255'],
         ]);
 
-        TypeEvaluation::create([
-            'nom' => $request->nom,
-        ]);
+        Logfile::createLog(
+            'type_evaluations',
+            TypeEvaluation::create([
+                'nom' => $request->nom,
+            ])->id
+        );
 
         return redirect()->route('type-evaluations.index');
     }
@@ -55,7 +59,7 @@ class TypeEvaluationController extends Controller
      */
     public function show(Request $request, $id)
     {
-        if($request->_method == 'PUT'){
+        if ($request->_method == 'PUT') {
             return  $this->update($request, $id);
         }
         dd("show");
@@ -72,8 +76,8 @@ class TypeEvaluationController extends Controller
         $type_valuations = TypeEvaluation::all();
         $type = TypeEvaluation::find($id);
         return view('classe.type-evaluations')
-                    ->with('self', $type)
-                    ->with('items', $type_valuations);
+            ->with('self', $type)
+            ->with('items', $type_valuations);
     }
 
     /**
@@ -84,7 +88,7 @@ class TypeEvaluationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         $request->validate([
             'nom' => ['required', 'string', 'max:255'],
         ]);
@@ -93,6 +97,10 @@ class TypeEvaluationController extends Controller
         $type->nom = $request->nom;
         $type->save();
 
+        Logfile::updateLog(
+            'type_evaluations',
+            $type->id
+        );
         return redirect()->route('type-evaluations.index');
     }
 
@@ -106,5 +114,11 @@ class TypeEvaluationController extends Controller
     {
         $type = TypeEvaluation::find($id);
         $type->delete();
+
+        Logfile::deleteLog(
+            'type_evaluations',
+            $type->id
+        );
+        return redirect()->route('type-evaluations.index');
     }
 }

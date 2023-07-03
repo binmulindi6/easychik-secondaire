@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategorieCours;
+use App\Models\Logfile;
 use Illuminate\Http\Request;
 
 class CategorieCoursController extends Controller
@@ -17,8 +18,8 @@ class CategorieCoursController extends Controller
     {
         $categorieCours = CategorieCours::all();
         return view('classe.categorie-cours')
-                    ->with('page_name', $this->page_name)
-                    ->with('items', $categorieCours);
+            ->with('page_name', $this->page_name)
+            ->with('items', $categorieCours);
     }
 
     /**
@@ -41,14 +42,16 @@ class CategorieCoursController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => ['required','string','max:255', 'unique:fonctions'],
+            'nom' => ['required', 'string', 'max:255', 'unique:fonctions'],
         ]);
 
         //dd($request->nom);
-
-        CategorieCours::create([
-            'nom' => $request->nom,
-        ]);
+        Logfile::createLog(
+            'categorie_cours',
+            CategorieCours::create([
+                'nom' => $request->nom,
+            ])->id
+        );
 
         return redirect()->route('categorie-cours.index');
     }
@@ -61,9 +64,9 @@ class CategorieCoursController extends Controller
      */
     public function show(Request $request, $id)
     {
-        if($request->_method == 'PUT'){
+        if ($request->_method == 'PUT') {
             $request->validate([
-                'nom' => ['required','string','max:255', 'unique:fonctions'],
+                'nom' => ['required', 'string', 'max:255', 'unique:fonctions'],
             ]);
             return  $this->update($request, $id);
         }
@@ -81,9 +84,9 @@ class CategorieCoursController extends Controller
         $categorie = CategorieCours::find($id);
         $categorieCours = CategorieCours::all();
         return view('classe.categorie-cours')
-                    ->with('page_name', $this->page_name . "/Edit")
-                    ->with('items', $categorieCours)
-                    ->with('self', $categorie);
+            ->with('page_name', $this->page_name . "/Edit")
+            ->with('items', $categorieCours)
+            ->with('self', $categorie);
     }
 
     /**
@@ -98,6 +101,10 @@ class CategorieCoursController extends Controller
         $categorie = CategorieCours::find($id);
         $categorie->nom = $request->nom;
         $categorie->save();
+        Logfile::updateLog(
+            'categorie_cours',
+            $categorie->id
+        );
         return redirect()->route('categorie-cours.index');
     }
 
@@ -111,6 +118,10 @@ class CategorieCoursController extends Controller
     {
         $categorie = CategorieCours::find($id);
         $categorie->delete();
+        Logfile::deleteLog(
+            'categorie_cours',
+            $categorie->id
+        );
         return redirect()->route('categorie-cours.index');
-    }       
+    }
 }

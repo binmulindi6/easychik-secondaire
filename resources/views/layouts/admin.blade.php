@@ -56,6 +56,8 @@
                 @endif
                 @if (isset(session()->get('currentYear')->nom) && session()->get('currentYear')->nom !== null)
                     <span class="font-bold text-slate-500 rounded-md">{{session()->get('currentYear')->nom}}</span>
+                @else
+                    <span class="font-bold text-slate-500 rounded-md">{{Auth::currentYear()->nom}}</span>
                 @endif
             
         </div>
@@ -124,7 +126,7 @@
                 @endif
                 @if (Auth::user()->isDirecteur())
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Frais'))
+                        @if (str_contains($page_name, 'Frais') &&  !str_contains($page_name, 'Rapport'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('frais.index') }}">
                             @else
@@ -289,7 +291,7 @@
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
                             <i class="relative top-0 leading-normal text-emerald-500 text-size-sm fa fa-solid fa-user"></i>
                         </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employers</span>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employés</span>
                         </a>
                     </li>
 
@@ -323,6 +325,23 @@
                             <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-users"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Utilisateurs</span>
+                        </a>
+                    </li>
+                @endif
+                @if (Auth::user()->isAdmin())
+                    <li class="mt-0.5 w-full">
+                        @if (str_contains($page_name, 'Historiques'))
+                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                                href="{{ route('logs') }}">
+                            @else
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                    href="{{ route('logs') }}">
+                        @endif
+                        <div
+                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
+                            <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-rectangle-list"></i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Historiques</span>
                         </a>
                     </li>
                 @endif
@@ -369,10 +388,10 @@
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Rapports'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
-                                href="{{ route('rapports.annuel') }}">
+                                href="{{ route('rapports') }}">
                             @else
                                 <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-                                    href="{{ route('rapports.annuel') }}">
+                                    href="{{ route('rapports') }}">
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">

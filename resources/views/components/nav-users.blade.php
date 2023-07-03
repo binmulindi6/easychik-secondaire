@@ -4,10 +4,10 @@
 
         @if (str_contains($pagename, 'Utilisateurs'))
             <div
-                class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                class="items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
             @else
                 <div
-                    class="btn-create items-center hidden  justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                    class="items-center hidden  justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
         @endif
         @if ($pagename === 'Utilisateurs')
             <a class="w-full" href="{{ route('employers.link') }}">
@@ -51,6 +51,7 @@
 @endif
 </div>
 
+@if (!Auth::user()->isAdmin())
 @if (str_contains($pagename, 'Encadrements'))
     <div
         class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
@@ -90,7 +91,9 @@
     @endif
 </div>
 @endif
+@endif
 
+@if (!Auth::user()->isAdmin())
 @if (!str_contains($pagename, 'Enseignants') && !str_contains($pagename, 'Encadrements'))
 
     @if (str_contains($pagename, 'Parents'))
@@ -100,40 +103,38 @@
             <div
                 class="btn-create items-center hidden  justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
     @endif
-    @if ($pagename === 'Parents / Edit')
-        <a class="w-full" href="{{ route('parents.create') }}">
+
+        @if ($pagename === 'Parents / Edit')
+            <a class="w-full" href="{{ route('parents.create') }}">
+                <div>
+                    <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Parent</span>
+                </div>
+            </a>
+        @else
             <div>
                 <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
                 <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Parent</span>
             </div>
-        </a>
-    @else
-        <div>
-            <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Parent</span>
+        @endif
         </div>
-    @endif
-    </div>
 
-    <div
-    @if (!str_contains($pagename, 'Parents'))
-    class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
-    <a href="{{ route('parents.index') }}">
-        <div>
-            <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-user text-size-sm"></i>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Parents</span>
-        </div>
-    </a>
-    @else
-    <div
-        class="btn-display items-center flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+        <div @if (!str_contains($pagename, 'Parents')) class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+        <a href="{{ route('parents.index') }}">
             <div>
                 <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-user text-size-sm"></i>
                 <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Parents</span>
             </div>
-        @endif
-    </div>
-
-
+        </a>
+        @else
+        <div
+            class="btn-display items-center flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                <div>
+                    <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-user text-size-sm"></i>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Parents</span>
+                </div> @endif
+            </div>
+    @endif
 @endif
+
 </div>

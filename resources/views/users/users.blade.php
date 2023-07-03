@@ -5,14 +5,17 @@
 
         <x-nav-users :pagename="$page_name"> </x-nav-users>
         @if ($page_name === 'Utilisateurs' &&  !count($errors) > 0 || $page_name === 'Enseignants')
-                <div class="frm-create hidden container p-5 bg-white rounded-5 shadow-2xl">
+                <div class="frm-create hidden container p-5 bg-white rounded-5 shadow-2xl ">
                 @else
-                    <div class="frm-create container p-5 bg-white rounded-5 shadow-2xl">
+                    <div class="frm-create flex flex-col gap-4 container p-5 bg-white rounded-5 shadow-2xl">
         @endif
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-4" :errors="$errors" />
                     
             @if (isset($self))
+                <span class="font-semibold text-5">
+                    Modifier Utilisateur
+                </span>
                 <form method="PUT" action="{{ route('users.update',$self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
@@ -59,6 +62,9 @@
                     </div>
                 </form>
             @else
+                <span class="font-semibold text-5">
+                    Ajouter un Utilisateur
+                </span>
                 <form method="POST" action="{{ route('users.store') }}">
                     @csrf
         
@@ -127,6 +133,7 @@
             </div>
             <div class="flex-auto px-0 pt-0 pb-2">
                 <div class="p-0 overflow-x-auto">
+
                     <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                         <thead class="align-bottom">
                             <th

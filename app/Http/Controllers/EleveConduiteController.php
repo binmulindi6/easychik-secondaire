@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Eleve;
+use App\Models\Logfile;
 use App\Models\Periode;
 use App\Models\Conduite;
-use App\Models\EleveConduite;
 use Illuminate\Http\Request;
+use App\Models\EleveConduite;
 
 class EleveConduiteController extends Controller
 {
@@ -66,6 +67,10 @@ class EleveConduiteController extends Controller
         
         
         $eleveConduite->save();
+        Logfile::createLog(
+            'eleve_conduites',
+            $eleveConduite->id
+        );
         
         return redirect()->route('resultat.periode', [$periode->id, $eleve->id]);
         // dd($eleve);
@@ -97,7 +102,10 @@ class EleveConduiteController extends Controller
 
 
         $eleveConduite->save();
-
+        Logfile::updateLog(
+            'eleve_conduites',
+            $eleveConduite->id
+        );
         return redirect()->route('resultat.periode', [$periode->id, $eleve->id]);
         // dd($eleve);
     }

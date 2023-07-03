@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Eleve;
 use App\Models\Classe;
+use App\Models\Logfile;
+use App\Models\Resultat;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use App\Models\Frequentation;
-use App\Models\Resultat;
 use Illuminate\Support\Facades\Auth;
 
 class FrequentationController extends Controller
@@ -120,10 +121,21 @@ class FrequentationController extends Controller
             // save
             $frequentation->save();
 
+            Logfile::createLog(
+                'frequentations',
+                $frequentation->id
+            );
+
             //create resultat
             $resultat = Resultat::create();
             $resultat->frequentation()->associate($frequentation);
             $resultat->save();
+
+            Logfile::createLog(
+                'resultats',
+                $resultat->id
+            );
+
 
             return redirect()->route('eleves.index');
         }else{
@@ -137,17 +149,18 @@ class FrequentationController extends Controller
     {       
         
         $request->validate([
-            'eleve_matricule' => ['required', 'string', 'max:255'],
+            'eleve_id' => ['required', 'string', 'max:255'],
             'classe_id' => ['required', 'string', 'max:255'],
             'annee_scolaire_id' => ['required', 'string', 'max:255'],
         ]);
+
         
-        $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
+        $eleve = Eleve::find($request->eleve_id);
         $annee  = AnneeScolaire::find($request->annee_scolaire_id);
         
         if(!is_null($eleve)){
-            if(($eleve->classe() && ($eleve->currentFrequentation()->annee_scolaire->id === $annee->id))){
-                return ('L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire en cours.");
+            if(($eleve->classe() && ($eleve->nextFrequentation() && $eleve->nextFrequentation()->annee_scolaire->id === $annee->id))){
+                return ('L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->nextFrequentation()->classe->nomCourt() . " Pour l'Annee Scolaire " . $annee->nom);
                 
             }
 
@@ -159,7 +172,16 @@ class FrequentationController extends Controller
             $examens = $classe->currentExamens();
             
             
+            $frequentation = Frequentation::create();
             
+            
+            //links 
+            $frequentation->eleve()->associate($eleve);
+            $frequentation->classe()->associate($classe);
+            $frequentation->annee_scolaire()->associate($annee);
+            // save
+            $frequentation->save();
+
             if(count($evaluations) > 0){
                 foreach($evaluations as $ev){
                     $eleve->evaluations()->attach($ev);
@@ -173,31 +195,26 @@ class FrequentationController extends Controller
                     $eleve->save();
                 }
             }
-            // dd(12);
-            
-            
-            $frequentation = Frequentation::create();
-            
-            
-            //links 
-            $frequentation->eleve()->associate($eleve);
-            $frequentation->classe()->associate($classe);
-            $frequentation->annee_scolaire()->associate($annee);
-            // save
-            $frequentation->save();
-            
+
+            Logfile::createLog(
+                'frequentations',
+                $frequentation->id
+            );
             //create resultat
             $resultat = Resultat::create();
             $resultat->frequentation()->associate($frequentation);
             $resultat->save();
-            
+
+            Logfile::createLog(
+                'resultats',
+                $resultat->id
+            );
+
             return 'succes';
         }else{
-            return 'l\'Eleve avec le matricule '. $request->eleve_matricule.' n\'existe pas dans le system';
+            return 'erreur cet eleve n\'existe pas';
             
         }
-        return 'oklm';
-        dd();
     }
     
     /**
@@ -263,6 +280,10 @@ class FrequentationController extends Controller
         $frequentation->annee_scolaire()->associate($annee);
         // save
         $frequentation->save();
+        Logfile::updateLog(
+            'frequentations',
+            $frequentation->id
+        );
         return redirect()->route('frequentations.index');
     }
 
@@ -276,6 +297,12 @@ class FrequentationController extends Controller
     {
         $frequentation = Frequentation::find($id);
         $frequentation->delete();
+
+        Logfile::deleteLog(
+            'frequentations',
+            $frequentation->id
+        );
+
         return redirect()->route('frequentations.index');
     }
 

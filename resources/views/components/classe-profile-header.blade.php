@@ -22,7 +22,7 @@
         </div>
         <div class="w-full max-w-full px-3 mx-auto mt-2">
             <div class="relative  right-0">
-                <ul class="relative flex flex-wrap p-1 list-none rounded-xl" nav-pills role="tablist">
+                <ul class="relative flex flex-wrap gap-4 p-1 list-none rounded-xl" nav-pills role="tablist">
                     @if (isset($print))
                         @if ($print !== false)
                             <li id="btn-export"
@@ -63,7 +63,7 @@
                                 </a>
                             </li>
                             <li
-                                class=" w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                class=" btn-passation w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                                 <a href="{{ route('classes.cours', $data->id) }}"
                                     class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                     nav-link href="javascript:;" role="tab" aria-selected="false">
@@ -72,28 +72,28 @@
                                 </a>
                             </li>
                         @else
-                            <li
-                                class=" w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                            <li id="btn-reussite"
+                                class=" btn-passation w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 bg-gray-300 hover:bg-gray-300 rounded-xl">
                                 <span id="btn-reussites"
-                                    class="btn-passation z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    class=" z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                     nav-link href="javascript:;" role="tab" aria-selected="false">
                                     <i class="fa fa-solid fa-chalkboard-user text-green-500"></i>
                                     <span class="ml-2">Reussites</span>
                                 </span>
                             </li>
-                            <li
-                                class=" w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                            <li id="btn-echecs"
+                                class=" btn-passation w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                                 <span id="btn-echecs"
-                                    class="btn-passation z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    class=" z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                     nav-link href="javascript:;" role="tab" aria-selected="false">
                                     <i class="fa fa-solid fa-chalkboard-user text-red-500"></i>
                                     <span class="ml-2">Echecs</span>
                                 </span>
                             </li>
-                            <li
-                                class=" w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                            <li id="btn-non-classes"
+                                class=" btn-passation w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                                 <span id="btn-non-classes"
-                                    class="btn-passation z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    class=" z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                     nav-link href="javascript:;" role="tab" aria-selected="false">
                                     <i class="fa fa-solid fa-chalkboard-user "></i>
                                     <span class="ml-2">Non-Classés</span>

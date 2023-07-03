@@ -47,6 +47,7 @@ use App\Http\Controllers\CategorieCoursController;
 use App\Http\Controllers\TypeEvaluationController;
 use App\Http\Controllers\EleveEvaluationController;
 use App\Http\Controllers\FrequentationEleveController;
+use App\Http\Controllers\LogfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -209,7 +210,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('users/create/employer/{id}', [UserController::class, 'create'])->name('users.create.employer');
     Route::post('users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('users/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::get('users/show', [UserController::class, 'show'])->name('users.show');
+    Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::put('users/{id}', [UserController::class, 'changeStatut'])->name('users.statut');
     Route::delete('users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
@@ -223,7 +224,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     
     //rapports
     // Route::get('rapports', [RapportController::class, 'index'])->name('rapports.index');
-    Route::get('rapports', [RapportController::class, 'index'])->name('rapports.index');
+    Route::get('rapports', [RapportController::class, 'index'])->name('rapports');
     Route::get('rapports/periode', [RapportController::class, 'periode'])->name('rapports.index');
     Route::get('rapports/annuel', [RapportController::class, 'annuel'])->name('rapports.annuel');
     Route::post('rapports/annuel', [RapportController::class, 'rapportAnnuel'])->name('rapports.annuel.get');
@@ -247,6 +248,12 @@ Route::middleware(['auth', 'isActive'])->group(function () {
 
     Route::get('evaluations/joker/{id}', [EleveEvaluationController::class, 'joker']);
     Route::get('examens/hack/{id}', [EleveExamenController::class, 'joker']);
+    
+    //logfiles
+    Route::get('logs', [LogfileController::class, 'index'])->name('logs');
+    Route::get('logs/{id}', [LogfileController::class, 'show'])->name('logs.show');
+    Route::put('logs/{id}', [LogfileController::class, 'restore'])->name('logs.restore');
+
 
 
 });

@@ -4,23 +4,30 @@ import axios from "axios";
 // const link = queryString.origin;
 // const link2 = link === "http://sas.test" ? link : link+"/sas/public"
 
-const btn_create_eleve = document.querySelector("[btn-create-eleves]");
-const btn_show_eleves = document.querySelector("[btn-display-eleves]");
-const form_add_eleve = document.querySelector("[frm-create-eleves]");
-const display_eleves = document.querySelector("[display-eleves]");
+const terminal = document.querySelector('#my-terminal');
 
-const btn_create_frequentations = document.querySelector(
-    "[btn-create-frequentations]"
-);
-const btn_show_frequentations = document.querySelector(
-    "[btn-display-frequentations]"
-);
-const frm_frequentations = document.querySelector(
-    "[frm-create-frequentations]"
-);
-const display_frequentations = document.querySelector(
-    "[display-frequentations]"
-);
+        /*  DISPALY SCROLL BAR ALWAYS DOWN */
+        if(terminal) 
+        terminal.scrollTop = terminal.scrollHeight
+        // console.log(10)
+
+// const btn_create_eleve = document.querySelector("[btn-create-eleves]");
+// const btn_show_eleves = document.querySelector("[btn-display-eleves]");
+// const form_add_eleve = document.querySelector("[frm-create-eleves]");
+// const display_eleves = document.querySelector("[display-eleves]");
+
+// const btn_create_frequentations = document.querySelector(
+//     "[btn-create-frequentations]"
+// );
+// const btn_show_frequentations = document.querySelector(
+//     "[btn-display-frequentations]"
+// );
+// const frm_frequentations = document.querySelector(
+//     "[frm-create-frequentations]"
+// );
+// const display_frequentations = document.querySelector(
+//     "[display-frequentations]"
+// );
 
 const btnCreate = document.querySelectorAll(".btn-create");
 const btnDispaly = document.querySelectorAll(".btn-display");
@@ -38,7 +45,7 @@ const myBtn = document.querySelectorAll(".my-btn");
 
 const btnIdentity = document.querySelectorAll(".btn-identity");
 const frmIdentity = document.querySelectorAll(".frm-identity");
-//console.log(btnIdentity);
+// console.log(btnIdentity);
 
 const btnEdit = document.querySelector('.btn-edit');
 const btnSave = document.querySelector('.btn-save');
@@ -54,10 +61,19 @@ const btnCorriger = document.querySelectorAll('.btn-corriger');
 
 ///btn passation
 const btnsPassation = document.querySelectorAll('.btn-passation');
-const btnReussite = document.querySelector('#btn-reussites')
+
+    //btns
+const btnReussite = document.querySelector('#btn-reussite')
 const btnEchec = document.querySelector('#btn-echecs')
 const btnNonClasses = document.querySelector('#btn-non-classes')
+    //displays
+const displayPassations = document.querySelectorAll('.display-passation')
+const displayReuissite = document.querySelector('#display-reussite')
+const displayEchec = document.querySelector('#display-echec')
+const displayNonClasses = document.querySelector('#display-non-classes')
 
+    //btns affecter
+const btnAffecter = document.querySelectorAll('.btn-affecter')
 ///views
 // const display
 
@@ -174,7 +190,7 @@ btnEdit1 !== null && btnEdit1.addEventListener('click', ()=>{
 //handle Changes
 const moyen = document.querySelector("#moyen-paiement");
 const ref = document.querySelector("#reference");
-// // console.log(ref);
+// console.log(ref);
 moyen !== null && moyen.addEventListener('change', () => {
     let value = moyen.value
     if (value === '2') {
@@ -201,7 +217,7 @@ btnCorriger && btnCorriger.forEach(btn => {
         const err = document.getElementById('err' + id)
 
         err.innerHTML = ''
-        console.log(value, max)
+        // console.log(value, max)
         if (Number(value) <= Number(max)) {
             
             axios.put(link,
@@ -215,6 +231,7 @@ btnCorriger && btnCorriger.forEach(btn => {
             })
             .catch(e => {
                 console.log(e)
+                err.innerHTML = "Une erreur s'est produite reessayer plus tard"
             })
 
         } else {
@@ -224,4 +241,76 @@ btnCorriger && btnCorriger.forEach(btn => {
         
         e.preventDefault();
     })
+})
+
+btnsPassation && btnsPassation.forEach(btn1 => {
+    btn1.addEventListener('click', () => {
+        btnsPassation.forEach(btn2 => {
+            btn2.classList.remove('bg-gray-300')
+        })
+        displayPassations && displayPassations.forEach(dsp => {
+            dsp.classList.add('hidden')
+        })
+        btn1.classList.add('bg-gray-300')
+    })
+})
+
+btnsPassation && btnReussite.addEventListener('click', () => {
+    displayReuissite.classList.remove('hidden')
+})
+btnsPassation && btnEchec.addEventListener('click', () => {
+    displayEchec.classList.remove('hidden')
+})
+btnsPassation && btnNonClasses.addEventListener('click', () => {
+    displayNonClasses.classList.remove('hidden')
+})
+
+
+///affecter
+
+btnAffecter && btnAffecter.forEach(btnAff => {
+    btnAff.addEventListener('click', (e)=> {
+        e.preventDefault();
+        
+        const id = btnAff.id;
+        const frm =  document.getElementById('frm' + id)
+        const link  = frm.action;
+        const classe = document.getElementById('classe' + id).value;
+        const token = document.getElementById('token' + id).value;
+        const eleve = document.getElementById('eleve' + id).value;
+        const annee = document.getElementById('annee' + id).value;
+        const err = document.getElementById('err' + id)
+
+
+        console.log(link)
+        if (!classe.includes('une') || !classe.includes('option')) {
+            
+            axios.post(link,
+                {
+                    "_token" : token,
+                    "eleve_id" : eleve,
+                    "classe_id" : classe,
+                    "annee_scolaire_id" : annee
+                }
+            ).then(e => {
+                console.log(e)
+                if(e.data === 'succes'){
+                document.getElementById('tr' + id).classList.toggle('hidden');
+                }else{
+                    err.innerHTML = e.data
+                }
+            })
+            .catch(e => {
+                console.log(e)
+                err.innerHTML = "Une erreur s'est produite reessayer plus tard"
+            })
+
+        } else {
+            // console.log(Number(value) <= Number(max));
+            err.innerHTML = "Veuillez choisir la classe"
+        }
+        
+        e.preventDefault();
+    }
+    )
 })
