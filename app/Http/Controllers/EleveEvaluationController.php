@@ -20,6 +20,8 @@ class EleveEvaluationController extends Controller
         $evaluation = Evaluation::findOrFail($evaluation_id);
         $pivot = EleveEvaluation::find($eleve->id, $evaluation->id);
 
+        // dd(10);
+
         return view('eleve.note')
             ->with('evaluation', $evaluation)
             ->with('self', $pivot)
@@ -32,9 +34,10 @@ class EleveEvaluationController extends Controller
         $request->validate([
             'note_obtenu' => ['required', 'string', 'max:255'],
         ]);
-        // dd($request->note_obtenu);
-        // $ev = EleveEvaluation::set($id, $request->note_obtenu);
-        // $x = intval($request->eleve);
+
+        $ev = EleveEvaluation::set($id, $request->note_obtenu);
+        $x = intval($request->eleve);
+        
         Logfile::updateLog(
             'eleve_Evaluation',
             $id

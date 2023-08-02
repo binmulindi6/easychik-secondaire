@@ -108,10 +108,8 @@ class DateController extends Controller
     {
 
         $today = strtotime(date("Y-m-d"));
-        $currentPeriode = AnneeScolaire::current();
 
-
-        $periodes = Periode::where('trimestre_id', $currentPeriode->id)->get();
+        $periodes = Periode::currents();
         //dd($periodes);
         foreach ($periodes as $periode) {
             $debut = strtotime($periode->date_debut);
@@ -120,9 +118,9 @@ class DateController extends Controller
                 return $periode;
             }
         }
-        $lastIndex = $periodes->count() - 1;
-        //dd($periodes[$lastIndex]);
-        return $periodes[$lastIndex];
+        $lastIndex = $periodes->count() > 0 ? $periodes->count() - 1 : null;
+        // dd($periodes->count());
+        return $lastIndex !== null ? $periodes[$lastIndex] : null;
     }
 
     public function test()

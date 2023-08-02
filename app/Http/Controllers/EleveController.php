@@ -9,17 +9,20 @@ use App\Models\Logfile;
 use App\Models\Periode;
 use App\Models\Trimestre;
 // use Illuminate\Support\Arr;
+use App\Models\Evaluation;
 use App\Models\EleveExamen;
 use Illuminate\Http\Request;
-use App\Models\AnneeScolaire;
 // use Illuminate\Http\JsonResponse;
-use App\Models\Frequentation;
+use App\Models\AnneeScolaire;
 // use App\Http\Middleware\TrimStrings;
-use Illuminate\Support\Facades\DB;
+use App\Models\Frequentation;
 // use Illuminate\Support\Facades\Date;
 // use Illuminate\Contracts\Support\Jsonable;
+use App\Models\TypeEvaluation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Date\DateController;
+use App\Models\Examen;
 
 class EleveController extends Controller
 {
@@ -33,30 +36,30 @@ class EleveController extends Controller
     protected $parent;
 
     public function index(Request $request)
-    {   
+    {
         // dd(session()->get('currentYear'));
         // dd($_SESSION['current']);
         $eleves = Eleve::latest()
-               ->limit(20)
-                ->get();
+            ->limit(20)
+            ->get();
         if (DateController::checkYears()) {
             if (Auth::user()->isParent()) {
-               $eleves = Auth::user()->parrain->eleves;
+                $eleves = Auth::user()->parrain->eleves;
             }
 
             if (Auth::user()->isEnseignant()) {
-                if(Auth::user()->classe() !== null){
+                if (Auth::user()->classe() !== null) {
                     $eleves = Auth::user()->classe->eleves();
                     // dd($eleves);
                 }
             }
-            
-            if (Auth::user()->isAdmin()){
+
+            if (Auth::user()->isAdmin()) {
                 $eleves = Eleve::latest()
-               ->limit(20)
-                ->get();
+                    ->limit(20)
+                    ->get();
             }
-            
+
             $matricule = Eleve::getLastMatricule();
 
             //return $eleves;
@@ -151,22 +154,22 @@ class EleveController extends Controller
         }
         $eleve = Eleve::findOrFail($id);
         // dd($eleve->conduites);
-        
+
         ////JOKER
         // $classe = Classe::find($eleve->classe()->id);
 
         // $evaluations = $classe->currentEvaluations();
         // $examens = $classe->currentExamens();
 
-        
-        
+
+
         // if(count($evaluations) > 0){
         //     foreach($evaluations as $ev){
         //         $eleve->evaluations()->attach($ev);
         //         $eleve->save();
         //     }
         // }
-        
+
         // if(count($examens) > 0){
         //     foreach($examens as $ex){
         //         $eleve->examens()->attach($ex);
@@ -176,10 +179,10 @@ class EleveController extends Controller
         // // dd(10);
         ///JOKER
 
-        
+
         $eleves = Eleve::all();
         if (Auth::user()->isEnseignant()) {
-            if(Auth::user()->classe() !== null){
+            if (Auth::user()->classe() !== null) {
                 $eleves = Auth::user()->classe->eleves();
                 // dd($eleves);
             }
@@ -275,6 +278,32 @@ class EleveController extends Controller
         $eleve = Eleve::findOrFail($eleve);
         $trimestre = Trimestre::findOrFail($trimestre);
 
+
+        //hacks
+        // $cours = $eleve->classe()->cours;
+        // foreach ($cours as $cour) {
+        //     // $type_evaluation = TypeEvaluation::findOrFail(1);
+
+        //     $evaluation = Examen::create([
+        //         'note_max' => $cour->max_examen,
+        //         'date_examen' => '2023-04-30',
+        //     ]);
+
+        //     $evaluation->cours()->associate($cour);
+        //     $evaluation->trimestre()->associate($trimestre);
+        //     // $evaluation->type_evaluation()->associate($type_evaluation);
+
+        //     $evaluation->save();
+
+        //     Logfile::createLog(
+        //         'examens',
+        //         $evaluation->id
+        //     );
+
+        //     $eleve->examens()->attach($evaluation);
+        //     $eleve->save();
+        // }
+
         $examens = $eleve->examens->reverse();
         // $examens = $eleve->examens;
         // dd($examens->reverse());
@@ -290,11 +319,34 @@ class EleveController extends Controller
         $eleve = Eleve::findOrFail($eleve);
         $periode = Periode::findOrFail($periode);
 
-        // $evaluations = $eleve->evaluations->reverse();
-        $evaluations = $eleve->evaluations;
-        //dd($evaluations[0]);
+        //hackeks
+        // $cours = $eleve->classe()->cours;
+        // foreach($cours as $cour){
+        //     $type_evaluation = TypeEvaluation::findOrFail(1);
 
-        // dd($evaluations[0]->periode->nom);
+        //     $evaluation = Evaluation::create([
+        //         'note_max' => $cour->max_periode,
+        //         'date_evaluation' => '2022-09-30',
+        //     ]);
+
+        //     $evaluation->cours()->associate($cour);
+        //     $evaluation->periode()->associate($periode);
+        //     $evaluation->type_evaluation()->associate($type_evaluation);
+
+        //     $evaluation->save();
+
+        //     Logfile::createLog(
+        //         'evaluations',
+        //         $evaluation->id
+        //     );
+
+        //     $eleve->evaluations()->attach($evaluation);
+        //     $eleve->save();
+
+        // }
+
+        $evaluations = $eleve->evaluations;
+
 
         return view('eleve.evaluations')
             ->with('evaluations', $evaluations)
@@ -355,7 +407,7 @@ class EleveController extends Controller
             ->with('last_matricule', $matricule);
     }
 
-    public function linkParent(Request $request,$parent)
+    public function linkParent(Request $request, $parent)
     {
         $this->parent = $parent;
         $this->page = 'Eleve-Parent';
@@ -364,7 +416,7 @@ class EleveController extends Controller
     }
 
     public function fichePaiements($id)
-    {   
+    {
         $frequentation = Frequentation::findOrFail($id);
         $eleve = Eleve::findOrFail($id);
     }
@@ -375,7 +427,7 @@ class EleveController extends Controller
             'frequentation' =>  ['required', 'string', 'max:255'],
         ]);
 
-        return redirect()->route('eleves.paiements.show',[$eleve, $request->frequentation]);
+        return redirect()->route('eleves.paiements.show', [$eleve, $request->frequentation]);
     }
     public function showPaiements($eleve, $frequentation)
     {
@@ -387,12 +439,12 @@ class EleveController extends Controller
         $frais = $freq->classe->niveau->frais;
 
         $data = array();
-        foreach($frais as $ff){
+        foreach ($frais as $ff) {
             $partials = array();
             $partials['frais'] = $ff;
             $total = 0;
-            foreach($paiements as $paye) {
-                if($paye->frais->id === $ff->id){
+            foreach ($paiements as $paye) {
+                if ($paye->frais->id === $ff->id) {
                     $total +=  (int)$paye->montant_paye;
                 }
             }
@@ -403,13 +455,12 @@ class EleveController extends Controller
         // dd($data[0]['frais']);
 
         return view('frais.fiche')
-                    ->with('page_name', 'Eleves / Paiements')
-                    ->with('paiements', $paiements)
-                    ->with('annees', $annees)
-                    ->with('freq', $freq)
-                    ->with('frais', $frais)
-                    ->with('data', $data)
-                    ->with('item', $el);
-        
+            ->with('page_name', 'Eleves / Paiements')
+            ->with('paiements', $paiements)
+            ->with('annees', $annees)
+            ->with('freq', $freq)
+            ->with('frais', $frais)
+            ->with('data', $data)
+            ->with('item', $el);
     }
 }

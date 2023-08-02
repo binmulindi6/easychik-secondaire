@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Cours;
 use App\Models\Classe;
 use App\Models\Logfile;
+use App\Models\Evaluation;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 use App\Models\CategorieCours;
+use App\Models\EleveExamen;
+use Illuminate\Support\Facades\DB;
 
 class CoursController extends Controller
 {
@@ -95,7 +99,14 @@ class CoursController extends Controller
 
             return  $this->update($request, $id);
         }
-        dd("show");
+        $cours = Cours::findOrFail($id);
+
+        // $periode1 = Evaluation::fiche($id,AnneeScolaire::current()->trimestre1()->periode1()->id);
+
+        return view('cours.show')
+        ->with('self', $cours)
+        ->with('page_name', $this->page_name . "/ Show");
+
     }
 
     /**

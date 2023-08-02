@@ -38,9 +38,10 @@
                         </select>
                         </div>
                         <div class="mt-4 w-full">
-                            <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
-                            <x-select :val="$self->annee_scolaire" :collection="$annees" :selected="$self->anne_scolaire" class="block mt-1 w-full"
-                                name='annee_scolaire' required> </x-select>
+                            <x-label for="annee_scolaire" :value="__('Annee Scolaire Encours')" />
+                            <x-input id="date_debut" class="block mt-1 w-full" type="text" name="annee_scolaire"
+                                :value="$self->annee_scolaire->nom" readonly required />
+                                <input type="hidden" name="annee_scolaire" value="{{$$self->annee_scolaire->id}}" required>
                         </div>
                     </div>
                     <div class="flex gap-5">
@@ -84,9 +85,12 @@
                             </select>
                         </div>
                         <div class="mt-4 w-full">
-                            <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
-                            <x-select :collection="$annees" class="block mt-1 w-full" name='annee_scolaire' required>
-                            </x-select>
+                            <x-label for="annee_scolaire" :value="__('Annee Scolaire Encours')" />
+                            <x-input id="date_debut" class="block mt-1 w-full" type="text" name="annee_scolaire"
+                                :value="$anneeEncours->nom" placeholder="{{$anneeEncours->nom}}" readonly required />
+                                <input type="hidden" name="annee_scolaire" value="{{$anneeEncours->id}}" required>
+                            {{-- <x-select :collection="$annees" class="block mt-1 w-full" name='annee_scolaire' required>
+                            </x-select> --}}
                         </div>
                     </div>
                     <div class="flex gap-5">

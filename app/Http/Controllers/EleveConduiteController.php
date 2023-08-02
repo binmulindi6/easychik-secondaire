@@ -55,6 +55,7 @@ class EleveConduiteController extends Controller
         ]);
 
         
+        // dd();
         $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
         $periode = Periode::find($request->id_periode);
         $conduite = Conduite::find($request->id_conduite);
@@ -64,7 +65,6 @@ class EleveConduiteController extends Controller
         $eleveConduite->eleve()->associate($eleve);
         $eleveConduite->periode()->associate($periode);
         $eleveConduite->conduite()->associate($conduite);
-        
         
         $eleveConduite->save();
         Logfile::createLog(

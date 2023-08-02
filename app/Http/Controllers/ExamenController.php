@@ -22,7 +22,7 @@ class ExamenController extends Controller
     public function index()
     {
         $examens = Examen::latest()
-           ->limit(20)
+        //    ->limit(20)
             ->get();
         $cours = Cours::orderBy('nom', 'asc')->get();
 
@@ -36,7 +36,8 @@ class ExamenController extends Controller
             // $cours = [];
         }
         
-        $trimestres = Trimestre::all();
+        $trimestres = Trimestre::currents();
+  
         return view('travails.examens')
             ->with('trimestres', $trimestres)
             ->with('cours', $cours)
@@ -138,7 +139,7 @@ class ExamenController extends Controller
                 $cours = Cours::where('classe_id', Auth::user()->classe->id)
                             ->orderBy('nom', 'asc')->get();
             }
-        $trimestres = Trimestre::all();
+        $trimestres = Trimestre::currents();
         return view('travails.examens')
             ->with('trimestres', $trimestres)
             ->with('cours', $cours)
@@ -218,7 +219,7 @@ class ExamenController extends Controller
                         ->orderBy('nom', 'asc')->get();
         }
 
-        $trimestres = Trimestre::all();
+        $trimestres = Trimestre::currents();
         return view('travails.examens')
             ->with('page_name', $this->page_name . " / Search")
             ->with('search',  $request->search)

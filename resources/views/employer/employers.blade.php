@@ -65,7 +65,7 @@
                     <div class="flex flex-col md:flex-row md:gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="date_naissance" :value="__('Date de Naissance')" />
-                            <x-input id="date-naissance" class="block mt-1 w-full" type="date" name="date_naissance"
+                            <x-input id="date-naissance" max="2002-01-01" class="block mt-1 w-full" type="date" name="date_naissance"
                                 :value="$self->date_naissance" required />
                         </div>
                         <div class="mt-4 w-full">
@@ -148,7 +148,7 @@
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="date_naissance" :value="__('Date de Naissance')" />
-                            <x-input id="date-naissance" class="block mt-1 w-full" type="date" name="date_naissance"
+                            <x-input id="date-naissance" max="2002-01-01" class="block mt-1 w-full" type="date" name="date_naissance"
                                 :value="old('')" required />
                         </div>
                         <div class="mt-4 w-full">

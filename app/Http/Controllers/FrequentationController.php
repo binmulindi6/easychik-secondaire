@@ -59,6 +59,38 @@ class FrequentationController extends Controller
         $this->page = 'Frequentations/Create';
         return $this->index();
     }
+    public function forceCreate($id)
+    {
+        $this->page = 'Frequentations/Create';
+        $frequentations = Frequentation::current();
+
+        $eleve =Eleve::findOrfail($id);
+
+        $annee = AnneeScolaire::current();
+        // dd(Auth::user()->classe);
+        if (Auth::user()->isEnseignant()) {
+            if(Auth::user()->classe() !== null){
+                $frequentations = Frequentation::where('annee_scolaire_id', $annee->id)
+                ->where('classe_id', Auth::user()->classe->id)
+                ->orderBy('frequentations.id', 'desc')
+               ->limit(20)
+                ->get();
+            }
+        }
+        
+        $classes = Classe::orderBy('niveau_id', 'asc')->get();
+        $annees = AnneeScolaire::orderBy('nom')->get();
+        // dd(10);
+        // dd(Auth::user()->classe);
+        return view('eleve.frequentations')
+            ->with('page_name', $this->page)
+            ->with('items', $frequentations)
+            ->with('annee', $annee)
+            ->with('classes', $classes)
+            ->with('force', $eleve)
+            ->with('classe', Auth::user()->classe() ? Auth::user()->classe : null)
+            ->with("annees", $annees);
+    }
 
 
 

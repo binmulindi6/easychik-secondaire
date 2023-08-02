@@ -74,7 +74,7 @@
                             <select name="nom" id="nom"
                                 class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
                                 required>
-                                <option disabled selected> Choisir le nom du Trimestre </option>
+                                <option disabled selected> Choisir le nom de la Periode </option>
                                 <option value="PREMIERE PERIODE">PREMIERE PERIODE</option>
                                 <option value="DEUXIEME PERIODE">DEUXIEME PERIODE</option>
                                 <option value="TROISIEME CINQUIEMEPERIODE">TROISIEME PERIODE</option>

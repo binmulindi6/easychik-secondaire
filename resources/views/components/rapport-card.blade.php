@@ -7,7 +7,7 @@
                     @if (str_contains($title, "Frais"))
                     <span class="fa fa-solid fa-money-bill rounded-full p-5 bg-zinc-100 text-8 shadow-xxs"></span>
                     @else
-                    <span class="fa fa-solid fa-chart rounded-full p-5 bg-zinc-100 text-8 shadow-xxs"></span>
+                    <span class="fa fa-solid fa-chart-line rounded-full p-5 bg-zinc-100 text-8 shadow-xxs"></span>
                     @endif
                     <div class="flex flex-col justify-center">
                         <span

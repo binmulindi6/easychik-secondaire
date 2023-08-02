@@ -57,14 +57,19 @@
                         <span class="font-bold text-base"> Ajouter l'eleve dans une Classe pour l'annee Scolaire en cours</span>
                     @endif
                 @else
-                    <p class="font-bold text-base"> Ajouter une Frequentation</p>
+                @if (isset($force))
+                    <span class="font-bold text-base"> Changer de classe pour l'eleve {{$force->nomComplet()}}</span>
+                    @else
+                        <p class="font-bold text-base"> Ajouter une Frequentation</p>
+                    @endif
                 @endif
 
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
-                                <li class="text-red-500">{{ $error }}</li>
+                                {{-- <li class="text-red-500">{{ $error }}</li> --}}
+                                {{$error}}
                             @endforeach
                         </ul>
                     </div>
@@ -82,11 +87,20 @@
                                     :value="$matricule" required readonly />
                             </div>
                         @else
+                            @if (isset($force))
+                            <div class="mt-4 w-full">
+                                <x-label for="matricule" :value="__('Matricule Eleve')" />
+                                <x-input id="matricule" class="block mt-1 w-full" type="text" name="eleve_matricule"
+                                    :value="$force->matricule" required readonly />
+                                    <input type="hidden" name="force" value="true">
+                            </div>
+                            @else
                             <div class="mt-4 w-full">
                                 <x-label for="matricule" :value="__('Matricule Eleve')" />
                                 <x-input id="matricule" class="block mt-1 w-full" type="text" name="eleve_matricule"
                                     :value="old('nom')" required />
                             </div>
+                            @endif
                         @endif
                         <div class="mt-4 w-full">
                             <x-label for="classe" :value="__('Classe')" />

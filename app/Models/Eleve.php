@@ -129,6 +129,7 @@ class Eleve extends Model
                ->get();
 
           $bulletin->isEmpty() ? $bulletin = null : "";
+          // dd($bulletin);
           return $bulletin;
      }
 

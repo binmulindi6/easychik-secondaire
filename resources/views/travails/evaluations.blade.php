@@ -151,7 +151,8 @@
 
                             @foreach ($items as $item)
                                 @if (Auth::user()->isEnseignant() && Auth::user()->classe())
-                                {{-- @die(Auth::user()->classe->id) --}}
+                                {{-- {{Auth::user()->classe->id}} --}}
+                                {{-- {{$item->cours->classe->id}} --}}
                                     @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id)
                                         <tr class="rounded-2xl hover:bg-slate-100">
                                             <td

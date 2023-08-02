@@ -20,9 +20,9 @@ class PeriodeController extends Controller
 
     public function index()
     {
-        $periodes = Periode::latest()->get();
-        $trimestres = Trimestre::all();
+        $periodes = Periode::currents();
         $anneeEncours = AnneeScolaire::current();
+        $trimestres = $anneeEncours->trimestres;
         return view('ecole.periodes')
             ->with('page_name', $this->page_name)
             ->with('anneeEncours', $anneeEncours)
@@ -103,10 +103,10 @@ class PeriodeController extends Controller
      */
     public function edit($id)
     {
-        $periodes = Periode::all();
+        $periodes = Periode::currents();
         $periode = Periode::findOrFail($id);
-        $trimestres = Trimestre::all();
         $anneeEncours = AnneeScolaire::current();
+        $trimestres = $anneeEncours->trimestres();
         return view('ecole.periodes')
             ->with('page_name', $this->page_name . "/Edit")
             ->with('anneeEncours', $anneeEncours)

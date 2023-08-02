@@ -39,7 +39,7 @@ class PassationController extends Controller
         $classeMemeNiveau = $classe->classesDeMemeNiveau();
         $annee = AnneeScolaire::next();
 
-        // dd($resultats);
+        // dd($annee);
 
         return view('passation.classe')
                     ->with('page_name', 'Passations')

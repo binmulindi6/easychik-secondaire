@@ -59,7 +59,6 @@ class Classe extends Model
     
     public function evaluations()
     {   
-        $annee = AnneeScolaire::current();
         $cours = $this->cours;
         $evs = array();
         if(count($cours) > 0){

@@ -107,7 +107,7 @@ class MessageController extends Controller
             }
         } else {
             //to parents
-            if ($request->destinateur === 'all') {
+            if ($request->destinateur === 'Parents') {
                 $users = User::Parents();
 
                 foreach ($users as $user) {
@@ -122,6 +122,7 @@ class MessageController extends Controller
                     );
                 }
             } else {
+                // dd(2);
                 $user = User::findOrFail($request->destinateur);
                 Logfile::createLog(
                     'messages',

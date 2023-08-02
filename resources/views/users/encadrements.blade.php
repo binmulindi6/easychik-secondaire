@@ -94,7 +94,7 @@
                         <div class="mt-4 w-full">
                             <x-label for="classe" :value="__('Classe')" />
                             @if (isset($classe))
-                                <x-select :val="$classe" disabled :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
+                                <x-select :val="$classe" disabled :collection="$classes" class="block mt-1 w-full"> </x-select>
                                 <input type="hidden" name="classe_id" value="{{$classe->id}}">
                             @else
                                 <x-select :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
@@ -105,8 +105,8 @@
                     <div class="mt-4">
                         <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
                             @if (isset($user) || isset($classe) && isset($current))
-                                <x-select disabled readonly :val="$current" :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required> </x-select>
-                                <input type="hidden" name="user_id" value="{{$current->id}}">
+                                <x-select disabled readonly :val="$current" :collection="$annees" class="block mt-1 w-full"> </x-select>
+                                <input type="hidden" name="annee_scolaire_id" value="{{$current->id}}">
                             @else
                                 <x-select :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required></x-select>
                             @endif

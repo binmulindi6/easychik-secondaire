@@ -27,7 +27,7 @@ class ResultatController extends Controller
         $eleve = Eleve::findOrFail($eleve_id);
         $periode = Periode::findOrFail($periode_id);
         $evs = $eleve->evaluations;
-        
+        // dd('dd');
         $conduite = EleveConduite::where('eleve_id', '=', $eleve->id)
                             ->where('periode_id', '=', $periode->id)
                             ->first();
@@ -197,6 +197,9 @@ class ResultatController extends Controller
         //dd($eleve->classe(true));
         
         $annee = AnneeScolaire::findOrFail($annee_scolaire_id);
+        
+        // dd($annee->trimestre3()->periode5());
+
         $trimestres = $annee->trimestres;
         if($trimestres->count() != 3){
                 $examenT1 = null;
@@ -220,9 +223,9 @@ class ResultatController extends Controller
             
         }
         //trimestres
-        $trimestre1 = $trimestres[0];
-        $trimestre2 = $trimestres[1];
-        $trimestre3 = $trimestres[2];
+        $trimestre1 = $annee->trimestre1();
+        $trimestre2 = $annee->trimestre2();
+        $trimestre3 = $annee->trimestre3();
         
         //periodes
         $p1 = $trimestre1->periodes[0];
@@ -452,7 +455,7 @@ class ResultatController extends Controller
                 $resultat->periode6 = $data;
                 break;
         }
-
+        // dd(10);
         $resultat->save();
     }
     //check periode
@@ -472,7 +475,7 @@ class ResultatController extends Controller
             case 'QUATRIEME PERIODE':
                 $data = $resultat->periode4;
                 break;
-            case 'CINQUIME PERIODE':
+            case 'CINQUIEME PERIODE':
                 $data = $resultat->periode5;
                 break;
             case 'SIXIEME PERIODE':

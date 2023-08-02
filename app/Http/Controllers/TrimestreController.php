@@ -17,7 +17,7 @@ class TrimestreController extends Controller
     protected $page_name = "Trimestres";
     public function index()
     {
-        $trimestres = Trimestre::all();
+        $trimestres = Trimestre::currents();
         $annees = AnneeScolaire::orderBy('nom')->get();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.trimestres')
@@ -111,7 +111,7 @@ class TrimestreController extends Controller
      */
     public function edit($id)
     {
-        $trimestres = Trimestre::all();
+        $trimestres = Trimestre::currents();
         $trimestre = Trimestre::find($id);
         $annees = AnneeScolaire::orderBy('nom')->get();
         $anneeEncours = AnneeScolaire::current();

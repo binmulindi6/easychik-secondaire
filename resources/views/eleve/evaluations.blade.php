@@ -34,7 +34,7 @@
                                     <th
                                         class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                         Date Examen</th>
-                                    @if (!Auth::user()->isParent())
+                                    @if (Auth::user()->isParent())
                                         <th
                                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                             Action</th>
@@ -58,7 +58,7 @@
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                     {{ $item->date_examen }}</td>
-                                                @if (!Auth::user()->isParent())
+                                                @if (Auth::user()->isParent())
                                                     <td
                                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                         <div class="flex justify-center gap-4 align-middle">
@@ -91,7 +91,7 @@
                 <div id="fiche-evaluation" class="display hidden shadow-2xl p-5  flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
                     <div class="conatiner w-full flex justify-center">
                         @if ($examens != null)
-                        <table class="border-collapse w-full max-w-160">
+                        <table id="printable" class="border-collapse w-full max-w-160">
                             <caption class="uppercase font-bold text-xs pb-2">Fiche des cotes Examens
                                 {{ $trimestre->nom }} Annee Scolaire {{ $trimestre->annee_scolaire->nom }}
                             </caption>
@@ -140,7 +140,7 @@
                                 <thead class="align-bottom">
                                     <th
                                         class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                        Cours </th>
+                                        Evaluation </th>
                                     <th
                                         class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                         Note Obtenu</th>
@@ -150,7 +150,7 @@
                                     <th
                                         class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                         Date Evaluation</th>
-                                    @if (!Auth::user()->isParent())
+                                    @if (Auth::user()->isEnseignant() )
                                         <th
                                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                             Action</th>
@@ -165,7 +165,7 @@
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
 
-                                                    {{ $item->type_evaluation->nom . ' ' . $item->cours->nom }}
+                                                    {{ $item->type_evaluation->nom}} <span class="font-semibold text-slate-700">{{$item->cours->nom }}</span>
                                                 </td>
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
@@ -176,7 +176,7 @@
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                     {{ $item->date_evaluation }}</td>
-                                                @if (!Auth::user()->isParent())
+                                                @if (Auth::user()->isEnseignant())
                                                     <td
                                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                         <div class="flex justify-center gap-4 align-middle">
@@ -209,7 +209,7 @@
             
                     <div class="conatiner w-full flex justify-center">
                         @if ($evaluations != null)
-                            <table class="border-collapse w-full max-w-160">
+                            <table id="printable" class="border-collapse w-full max-w-160">
                                 <caption class="uppercase font-bold text-xs pb-2">Fiche des cotes 
                                     {{ $periode->nom . ', ' . $periode->trimestre->nom . ' Annee Scolaire' . $periode->trimestre->annee_scolaire->nom }}
                                 </caption>

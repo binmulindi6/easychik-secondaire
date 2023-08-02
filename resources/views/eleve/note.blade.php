@@ -34,7 +34,7 @@
                 <x-label for="note_obtenu" :value="'Note Obtenu sur : ' . $examen->note_max" />
             @endif
             <div class="flex w-full flex-row gap-2 ">
-                <x-input id="matricule" class="block mt-1" type="text" name="note_obtenu" :value="($self->note_obtenu)" required />
+                <x-input id="matricule" class="block mt-1" type="text" name="note_obtenu" :value="($self->note_obtenu)" required autofocus/>
                 <input type="hidden" name="eleve" value="{{$eleve->id}}">
                 @if (isset($evaluation))
                     <input type="hidden" name="periode" value="{{$evaluation->periode->id}}">

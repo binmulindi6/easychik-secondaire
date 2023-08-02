@@ -38,8 +38,8 @@
 </style>
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
-        <x-back :link="route('classes.show', $classe->id)"></x-back>
-        <x-classe-profile-header :data="$classe" :print="true"></x-classe-profile-header>
+        <x-back :back="true"></x-back>
+        <x-cours-profile-header :data="$self" ></x-classe-profile-header>
 
         @if (isset($items))
             @if ($page_name == 'Eleves/Edit' || $page_name == 'Eleves/Create')
@@ -100,9 +100,7 @@
                                 <tr class=" rounded-2xl hover:bg-slate-100">
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        <a href="{{route('cours.show', $item->id)}}" class="hover:text-blue-500 font-semibold">
-                                            {{ $item->nom }}
-                                        </a>
+                                        {{ $item->nom }}
                                     </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">

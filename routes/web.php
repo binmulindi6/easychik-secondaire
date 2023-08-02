@@ -195,6 +195,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::post('eleves/search/{parent}', [EleveController::class, 'searchEleve'])->name('eleve-parent.search');
     Route::post('examens/search', [ExamenController::class, 'search'])->name('examens.search');
     Route::post('evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
+    Route::get('frequentations/create/force/{id}', [FrequentationController::class, 'forceCreate'])->name('frequentations.create.force');
     Route::post('frequentations/search', [FrequentationController::class, 'search'])->name('frequentations.search');
     Route::post('annee-scolaires/search', [AnneeScolaireController::class, 'search'])->name('annees.search');
     Route::post('trimestres/search', [TrimestreController::class, 'search'])->name('trimestres.search');

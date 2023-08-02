@@ -73,7 +73,7 @@ class EncadrementController extends Controller
                             ->first();
                             
         if($enc === null){
-            dd($enc);
+            // dd($enc);
             $encadrement = Encadrement::create();
         
             //links 

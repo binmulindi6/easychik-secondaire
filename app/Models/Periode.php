@@ -31,6 +31,15 @@ class Periode extends Model
         } 
         return false;
     }
+    public static function currents(){
+
+        $curr = AnneeScolaire::current();
+
+        return Periode::join('trimestres', 'trimestre_id', 'trimestres.id')
+                        ->where('annee_scolaire_id', $curr->id)
+                        ->select('periodes.*')
+                        ->get();
+    }
 
     public function trimestre()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnneeScolaire;
 use App\Models\Cours;
 use App\Models\Eleve;
 use App\Models\Logfile;
@@ -22,8 +23,11 @@ class EvaluationController extends Controller
     protected $page_name = 'Evaluations';
     public function index()
     {
-        $evaluations = Evaluation::latest()
-           ->limit(20)
+        $evaluations = Evaluation::join('periodes','periodes.id','periode_id')
+                        ->join('trimestres','trimestres.id','periodes.trimestre_id')
+                        ->where('trimestres.annee_scolaire_id',AnneeScolaire::current()->id)
+                        ->orderBy('periodes.id', 'desc')
+        //    ->limit(20)
             ->get();
         $cours = Cours::orderBy('nom', 'asc')->get();
 
@@ -31,13 +35,15 @@ class EvaluationController extends Controller
             if(Auth::user()->classe()){
                 $cours = Cours::where('classe_id', Auth::user()->classe->id)
                         ->orderBy('nom', 'asc')->get();
+                        // dd('d');
             }else{
                 $cours = null;
             }
             // $cours = [];
         }
 
-        $periodes = Periode::all();
+        $periodes = Periode::currents();
+        // dd($periodes);
         $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
         return view('travails.evaluations')
             ->with('type_evaluations', $type_evaluations)
@@ -153,7 +159,7 @@ class EvaluationController extends Controller
                         ->orderBy('nom', 'asc')->get();
         }
 
-        $periodes = Periode::all();
+        $periodes = Periode::currents();
         $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
         return view('travails.evaluations')
             ->with('type_evaluations', $type_evaluations)
@@ -243,7 +249,7 @@ class EvaluationController extends Controller
                         ->orderBy('nom', 'asc')->get();
         }
 
-        $periodes = Periode::all();
+        $periodes = Periode::currents();
         $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
         return view('travails.evaluations')
             ->with('page_name', $this->page_name . " / Search")
