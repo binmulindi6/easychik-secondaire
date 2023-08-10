@@ -31,8 +31,8 @@
                                 placeholder="ex: Geographie..." required />
                         </div>
                         <div class="mt-4 w-full">
-                            <x-label for="classe" :value="__('Classe')" />
-                            <x-select :val="$self->classe" :collection="$classes" class="block mt-1 w-full" name='classe' required> </x-select>
+                            <x-label for="classe" :value="__('Niveau')" />
+                            <x-select :val="$self->niveau" :collection="$niveaux" class="block mt-1 w-full" name='niveau' required> </x-select>
                         </div>
                     </div>
                     <div class="flex gap-5">
@@ -84,8 +84,8 @@
                         placeholder="ex: Geographie..." required />
                 </div>
                 <div class="mt-4 w-full">
-                    <x-label for="classe" :value="__('Classe')" />
-                    <x-select :collection="$classes" class="block mt-1 w-full" name='classe' required> </x-select>
+                    <x-label for="classe" :value="__('Niveau')" />
+                    <x-select :collection="$niveaux" class="block mt-1 w-full" name='niveau' required> </x-select>
                 </div>
             </div>
             <div class="flex gap-5">
@@ -134,9 +134,9 @@
                         <th
                             class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Categorie Cours</th>
-                        <th
+                        {{-- <th
                             class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Classe</th>
+                            Niveau</th> --}}
                         <th
                             class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Max Periode </th>
@@ -145,7 +145,7 @@
                             Max Examen </th>
                         <th
                             class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Classe</th>
+                            Niveau</th>
                         <th
                             class="p-1 p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Action</th>
@@ -160,9 +160,9 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->categorie_cours->nom }}</td>
-                                <td
+                                {{-- <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->classe->nomCourt() }}</td>
+                                    {{ $item->niveau->nom }}</td> --}}
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->max_periode }}</td>
@@ -171,7 +171,7 @@
                                     {{ $item->max_examen }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }} </td>
+                                    {{ $item->niveau->nom}} </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                     <div class="flex justify-center gap-4 align-middle">

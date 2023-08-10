@@ -14,7 +14,7 @@
                 <div class="frm-create hidden container bg-white shadow-2xl rounded-5 p-5">
             @endif
                 @if (isset($self))
-                    <p class="font-bold text-base"> Edit Fonction </p>
+                    <p class="font-bold text-base"> Modifier Fonction </p>
                     <form method="PUT" action="{{ route('fonctions.update', $self->id) }}">
                         @csrf
                         {{ method_field('PUT') }}
@@ -36,7 +36,7 @@
                         </div>
                     </form>
                 @else
-                    <p class="font-bold text-base"> Create Fonction </p>
+                    <p class="font-bold text-base"> Ajouter une Fonction </p>
                     <form method="POST" action="{{ route('fonctions.store') }}">
                         @method('POST')
                         @csrf

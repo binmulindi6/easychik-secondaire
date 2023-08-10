@@ -463,4 +463,14 @@ class EleveController extends Controller
             ->with('data', $data)
             ->with('item', $el);
     }
+
+
+    ///carte
+
+    public function carte($id)
+    {
+        $eleve = Eleve::findOrFail($id);
+       return view('eleve.carte')
+       ->with('eleve',$eleve);
+    }
 }

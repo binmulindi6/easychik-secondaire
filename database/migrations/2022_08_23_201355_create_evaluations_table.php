@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
             $table->integer('note_max');
-            $table->foreignId('type_evaluation_id')->constrained();
-            $table->foreignId('cours_id')->constrained();
-            $table->foreignId('periode_id')->constrained();
+            $table->foreignId('type_evaluation_id')->nullable()->constrained();
+            $table->foreignId('cours_id')->nullable()->constrained();
+            $table->foreignId('classe_id')->nullable()->constrained();
+            $table->foreignId('periode_id')->nullable()->constrained();
             $table->date('date_evaluation');
             $table->timestamps();
         });

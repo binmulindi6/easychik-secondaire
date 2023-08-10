@@ -26,9 +26,13 @@
                             {{ $data->classe(false) }}
                         </p>
                     @else
-                        <a class="text-blue-500 underline"
-                            href="{{ route('frequentations.link', $data->id) }}"> Ajouter dans une classe
-                        </a>
+                    @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+                    <a class="text-blue-500 underline"
+                        href="{{ route('frequentations.link', $data->id) }}"> Ajouter dans une classe
+                    </a>
+                    @else
+                        {{'Pas Inscrit(e)'}}
+                    @endif
                     @endif
                     
                     
@@ -51,6 +55,15 @@
                             </li>
                         @endif
 
+                        <li
+                            id="{{route('eleves.carte', $data->id)}}"
+                            class="btn-carte cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                            <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                role="tab" aria-selected="false">
+                                <i class="fa fa-solid fa-id-card"></i>
+                                <span class="ml-2">Carte D'Eleve</span>
+                            </a>
+                        </li>
                         <li
                             class="btn-identity cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                             <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"

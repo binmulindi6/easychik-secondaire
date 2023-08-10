@@ -21,7 +21,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->boolean("isAdmin")->default(0);
             $table->boolean("isActive")->default(0);
-            $table->foreignId('employer_id')->constrained();
+            $table->foreignId('employer_id')->nullable()->constrained();
             
             $table->timestamps();
         });

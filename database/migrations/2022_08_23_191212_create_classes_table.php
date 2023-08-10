@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             // $table->integer('niveau');
             $table->string('nom');
+            $table->foreignId('niveau_id')->constrained();
             // $table->foreignId('user_id')->constrained()->nullable();
             $table->timestamps();
         });

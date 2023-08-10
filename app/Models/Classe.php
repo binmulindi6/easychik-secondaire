@@ -4,7 +4,10 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Cours;
+use App\Models\Examen;
 use App\Models\Niveau;
+use App\Models\Horaire;
+use App\Models\Evaluation;
 use App\Models\Encadrement;
 use App\Models\Frequentation;
 use Illuminate\Support\Facades\DB;
@@ -48,100 +51,117 @@ class Classe extends Model
     }
 
     public function niveau()
-    {
+    {   
         return $this->belongsTo(Niveau::class);
     }
 
     public function cours()
     {
-        return $this->hasMany(Cours::class);
+        // dd(10);
+        return $this->niveau->cours;
     }
     
     public function evaluations()
     {   
-        $cours = $this->cours;
-        $evs = array();
-        if(count($cours) > 0){
-            foreach($cours as $cour){
-                if (count($cour->evaluations) > 0) {
-                    foreach($cour->evaluations as $evaluation){
-                        array_push($evs, $evaluation);
-                    }
-                }
-                // dd($cour->evaluations);
-            }
-        }
-        return $evs;
-        // dd($evs[0]->periode);
-
-        // // $evaluations = 
-        // return($cours[2]->evaluations[0]->periode);
-        // // return $this->hasMany(Cours::class);
+        return $this->hasMany(Evaluation::class);
     }
+    public function horaires()
+    {   
+        return $this->hasMany(Horaire::class);
+    }
+    // public function evaluations()
+    // {   
+    //     $cours = $this->cours;
+    //     $evs = array();
+    //     if(count($cours) > 0){
+    //         foreach($cours as $cour){
+    //             if (count($cour->evaluations) > 0) {
+    //                 foreach($cour->evaluations as $evaluation){
+    //                     array_push($evs, $evaluation);
+    //                 }
+    //             }
+    //             // dd($cour->evaluations);
+    //         }
+    //     }
+    //     return $evs;
+    //     // dd($evs[0]->periode);
+
+    //     // // $evaluations = 
+    //     // return($cours[2]->evaluations[0]->periode);
+    //     // // return $this->hasMany(Cours::class);
+    // }
 
     public function currentEvaluations()
     {   
-        $annee = AnneeScolaire::current();
-        $cours = $this->cours;
-        $evs = array();
-        if(count($cours) > 0){
-            foreach($cours as $cour){
-                if (count($cour->evaluations) > 0) {
-                    foreach($cour->evaluations as $evaluation){
-                        if($evaluation->periode !== null && $evaluation->periode->trimestre->annee_scolaire->id === $annee->id){
-                            array_push($evs, $evaluation);
-                        }
-                    
-                    }
-                }
-            }
-        }
-
-        return $evs;
-        // dd($evs[0]->periode);
-
-        // // $evaluations = 
-        // return($cours[2]->evaluations[0]->periode);
-        // // return $this->hasMany(Cours::class);
+        return Evaluation::currents($this->id);
     }
+    // public function currentEvaluations()
+    // {   
+    //     $annee = AnneeScolaire::current();
+    //     $cours = $this->cours;
+    //     $evs = array();
+    //     if(count($cours) > 0){
+    //         foreach($cours as $cour){
+    //             if (count($cour->evaluations) > 0) {
+    //                 foreach($cour->evaluations as $evaluation){
+    //                     if($evaluation->periode !== null && $evaluation->periode->trimestre->annee_scolaire->id === $annee->id){
+    //                         array_push($evs, $evaluation);
+    //                     }
+                    
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return $evs;
+    // }
+
+    // public function examens()
+    // {   
+    //     $annee = AnneeScolaire::current();
+    //     $cours = $this->cours;
+    //     $evs = array();
+    //     if(count($cours) > 0){
+    //         foreach($cours as $cour){
+    //             if (count($cour->examens) > 0) {
+    //                 foreach($cour->examens as $examen){
+    //                     array_push($evs, $examen);
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return $evs;
+    // }
 
     public function examens()
     {   
-        $annee = AnneeScolaire::current();
-        $cours = $this->cours;
-        $evs = array();
-        if(count($cours) > 0){
-            foreach($cours as $cour){
-                if (count($cour->examens) > 0) {
-                    foreach($cour->examens as $examen){
-                        array_push($evs, $examen);
-                    }
-                }
-            }
-        }
-
-        return $evs;
+        return $this->hasMany(Examen::class);
     }
     
     public function currentExamens()
     {   
-        $annee = AnneeScolaire::current();
-        $cours = $this->cours;
-        $evs = array();
-        if(count($cours) > 0){
-            foreach($cours as $cour){
-                if (count($cour->examens) > 0) {
-                    foreach($cour->examens as $examen){
-                        if($examen->trimestre !== null && $examen->trimestre->annee_scolaire->id === $annee->id){
-                            array_push($evs, $examen);
-                        }
-                    }
-                }
-            }
-        }
-
-        return $evs;
+        return Examen::currents($this->id);
     }
+    // public function currentExamens()
+    // {   
+    //     $annee = AnneeScolaire::current();
+    //     $cours = $this->cours;
+    //     $evs = array();
+    //     if(count($cours) > 0){
+    //         foreach($cours as $cour){
+    //             if (count($cour->examens) > 0) {
+    //                 foreach($cour->examens as $examen){
+    //                     if($examen->trimestre !== null && $examen->trimestre->annee_scolaire->id === $annee->id){
+    //                         array_push($evs, $examen);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return $evs;
+    // }
 
 
 
@@ -305,5 +325,7 @@ class Classe extends Model
                     ->select('classes.*')
                     ->get();
     }
+
+    
 
 }

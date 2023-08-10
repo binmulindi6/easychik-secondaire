@@ -47,13 +47,13 @@
                         <a class="w-full" href="{{route('fonctions.create')}}">
                             <div>
                                 <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Fonction</span>
+                                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter une Fonction</span>
                             </div>
                         </a>
                     @else
                         <div>
                             <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Fonction</span>
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter une Fonction</span>
                         </div>
                     @endif
                 </div>

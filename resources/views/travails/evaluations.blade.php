@@ -34,7 +34,7 @@
                     </div>
                     <div class="mt-4">
                         <x-label for="note_max" :value="__('Note Maximum')" />
-                        <x-input id="note-max" class="block mt-1 w-full" type="text" name="note_max" :value="$self->note_max"
+                        <x-input id="note-max" class="block mt-1 w-full" type="number" name="note_max" :value="$self->note_max"
                             placeholder="ex: 10" required />
                     </div>
                     <div class="mt-4">
@@ -84,7 +84,7 @@
                     </div>
                     <div class="mt-4">
                         <x-label for="note_max" :value="__('Note Maximum')" />
-                        <x-input id="note-max" class="block mt-1 w-full" type="text" name="note_max" :value="old('note_max')"
+                        <x-input id="note-max" class="block mt-1 w-full" type="number" name="note_max" :value="old('note_max')"
                             placeholder="ex: 1,2,3" required />
                     </div>
                     <div class="mt-4">
@@ -131,9 +131,9 @@
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Cours </th>
-                            <th
+                            {{-- <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                Classe </th>
+                                Classe </th> --}}
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Note Max</th>
@@ -153,7 +153,7 @@
                                 @if (Auth::user()->isEnseignant() && Auth::user()->classe())
                                 {{-- {{Auth::user()->classe->id}} --}}
                                 {{-- {{$item->cours->classe->id}} --}}
-                                    @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id)
+                                    @if (Auth::user()->classe() && $item->cours->niveau->id === Auth::user()->classe->niveau->id)
                                         <tr class="rounded-2xl hover:bg-slate-100">
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
@@ -161,9 +161,10 @@
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                                 {{ $item->cours->nom }}</td>
-                                            <td
+                                            {{-- <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                                {{ $item->cours->classe->nomCourt() }}</td>
+                                                {{ $item->cours->classe->nomCourt() }}
+                                            </td> --}}
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                                 {{ $item->note_max }}</td>
@@ -201,7 +202,8 @@
                                             {{ $item->cours->nom }}</td>
                                         <td
                                             class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                            {{ $item->cours->classe->nomCourt() }}</td>
+                                            {{-- {{ $item->cours->classe->nomCourt() }} --}}
+                                        </td>
                                         <td
                                             class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                             {{ $item->note_max }}</td>

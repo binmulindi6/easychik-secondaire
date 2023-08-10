@@ -118,7 +118,7 @@ class ClasseController extends Controller
     public function cours($id)
     {
         $classe = Classe::findOrFail($id);
-        $cours = $classe->cours;
+        $cours = $classe->cours();
         // dd($cours);
 
         return view('classe.cours')

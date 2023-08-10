@@ -18,23 +18,23 @@
 
     <!-- Scripts -->
     {{-- <script type="text/javascript" src="{{asset('')}}"></script> --}}
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         body {
             /* display: none; */
         }
-    
+
         /* @page{
                     size: a4 portrait;
                     /* margin: 500px;
                     /* display: none; */
         /* background: #000; */
         /*} */
-    
+
         @media print {
-    
+
             /* @page{
                         size: a4 portrait;
                         margin: 1%;
@@ -42,7 +42,7 @@
             body {
                 background: #fff;
             }
-    
+
             #printable {
                 /* min-width: 23cm; */
                 margin: auto;
@@ -55,7 +55,7 @@
                 /* display: none; */
                 /* background: #000; */
             }
-    
+
         }
     </style>
 </head>
@@ -68,36 +68,37 @@
         class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-2xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
         aria-expanded="false">
         <div class="h-19 mt-3 flex flex-col justify-center items-center">
-            <a class="flex  m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700" href="{{ route('dashboard') }}">
+            <a class="flex  m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700"
+                href="{{ route('dashboard') }}">
                 <span class="font-bold text-blue-500 text-3xl  py-1 px-4 rounded-md">S.A.S</span>
             </a>
-                @if (Auth::user()->isAdmin())
-                    <span class="font-bold text-slate-700 uppercase">Admin</span>
-                @endif
-                @if (Auth::user()->isDirecteur())
-                    <span class="font-bold text-slate-700 uppercase">Direction</span>
-                @endif
-                @if (Auth::user()->isParent())
-                    <span class="font-bold text-slate-700 uppercase">Parent</span>
-                @endif
-                @if (Auth::user()->isSecretaire())
-                    <span class="font-bold text-slate-700  uppercase">Secretariat</span>
-                @endif
-                @if (Auth::user()->isEnseignant())
-                    <span class="font-bold text-slate-700  uppercase">
-                        @if (Auth::user()->classe() !== null)
-                            {{Auth::user()->classe->niveau->nom . ' ' . Auth::user()->classe->nom}}
-                        @else
-                            Enseignant
-                        @endif
-                    </span>
-                @endif
-                @if (isset(session()->get('currentYear')->nom) && session()->get('currentYear')->nom !== null)
-                    <span class="font-bold text-slate-500 rounded-md">{{session()->get('currentYear')->nom}}</span>
-                @else
-                    <span class="font-bold text-slate-500 rounded-md">{{Auth::currentYear()->nom}}</span>
-                @endif
-            
+            @if (Auth::user()->isAdmin())
+                <span class="font-bold text-slate-700 uppercase">Admin</span>
+            @endif
+            @if (Auth::user()->isDirecteur())
+                <span class="font-bold text-slate-700 uppercase">Direction</span>
+            @endif
+            @if (Auth::user()->isParent())
+                <span class="font-bold text-slate-700 uppercase">Parent</span>
+            @endif
+            @if (Auth::user()->isSecretaire())
+                <span class="font-bold text-slate-700  uppercase">Secretariat</span>
+            @endif
+            @if (Auth::user()->isEnseignant())
+                <span class="font-bold text-slate-700  uppercase">
+                    @if (Auth::user()->classe() !== null)
+                        {{ Auth::user()->classe->niveau->nom . ' ' . Auth::user()->classe->nom }}
+                    @else
+                        Enseignant
+                    @endif
+                </span>
+            @endif
+            @if (isset(session()->get('currentYear')->nom) && session()->get('currentYear')->nom !== null)
+                <span class="font-bold text-slate-500 rounded-md">{{ session()->get('currentYear')->nom }}</span>
+            @else
+                <span class="font-bold text-slate-500 rounded-md">{{ Auth::currentYear()->nom }}</span>
+            @endif
+
         </div>
 
         <hr class="h-px mb-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparen" />
@@ -116,7 +117,8 @@
                     @endif
                     <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                        <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-television text-size-sm"></i>
+                        <i
+                            class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-television text-size-sm"></i>
                     </div>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Dashboard</span>
                     </a>
@@ -164,7 +166,7 @@
                 @endif
                 @if (Auth::user()->isDirecteur())
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Frais') &&  !str_contains($page_name, 'Rapport'))
+                        @if (str_contains($page_name, 'Frais') && !str_contains($page_name, 'Rapport'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('frais.index') }}">
                             @else
@@ -173,18 +175,15 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i
-                                class="relative top-0 leading-normal text-black fa fa-solid fa-money-bill text-size-sm">
+                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-money-bill text-size-sm">
                             </i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Frais</span>
                         </a>
                     </li>
-                    
+
                     <li class="mt-0.5 w-full">
-                        @if (
-                                str_contains($page_name, 'Categories Cours') ||
-                                str_contains($page_name, 'Cours'))
+                        @if (str_contains($page_name, 'Categories Cours') || str_contains($page_name, 'Cours'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('categorie-cours.index') }}">
                             @else
@@ -193,8 +192,7 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i
-                                class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-book text-size-sm">
+                            <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-book text-size-sm">
                             </i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enseignements</span>
@@ -202,25 +200,30 @@
                     </li>
 
                 @endif
-                    @if ((!Auth::user()->isEnseignant() && !Auth::user()->isAdmin()) || (Auth::user()->isEnseignant() && Auth::user()->classe() !== null))
-                        <li class="mt-0.5 w-full">
-                            @if ((str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations') ) && !str_contains($page_name, 'Classes') && !str_contains($page_name, 'Frequentations')) 
-                                <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                @if (
+                    (!Auth::user()->isEnseignant() && !Auth::user()->isAdmin()) ||
+                        (Auth::user()->isEnseignant() && Auth::user()->classe() !== null))
+                    <li class="mt-0.5 w-full">
+                        @if (
+                            (str_contains($page_name, 'Eleves') || str_contains($page_name, 'Frequentations')) &&
+                                !str_contains($page_name, 'Classes') &&
+                                !str_contains($page_name, 'Frequentations'))
+                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                                href="{{ route('eleves.index') }}">
+                            @else
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                     href="{{ route('eleves.index') }}">
-                                @else
-                                    <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-                                        href="{{ route('eleves.index') }}">
-                            @endif
-                            <div
-                                class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                                <i
-                                    class="relative top-0 leading-normal text-red-500 fa fa-solid fa-chalkboard-user text-size-sm"></i>
-                            </div>
-                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Eleves</span>
-                            </a>
-                        </li>
-                    @endif
-                    {{-- @if (Auth::user()->isParent())
+                        @endif
+                        <div
+                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                            <i
+                                class="relative top-0 leading-normal text-red-500 fa fa-solid fa-chalkboard-user text-size-sm"></i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Eleves</span>
+                        </a>
+                    </li>
+                @endif
+                {{-- @if (Auth::user()->isParent())
                         <li class="mt-0.5 w-full">
                             @if (str_contains($page_name, 'Frais'))
                                 <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -239,7 +242,7 @@
                             </a>
                         </li>
                     @endif --}}
-                @if( Auth::user()->isSecretaire())
+                @if (Auth::user()->isSecretaire())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Paiements') && !str_contains($page_name, 'Eleves'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -250,8 +253,7 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i
-                                class="relative top-0 leading-normal text-black fa fa-solid fa-money-bill text-size-sm">
+                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-money-bill text-size-sm">
                             </i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Paiements</span>
@@ -260,11 +262,12 @@
                 @endif
                 @if (Auth::user()->isEnseignant() && Auth::user()->classe() !== null)
                     <li class="mt-0.5 w-full">
-                        @if ((str_contains($page_name, 'Travails') ||
+                        @if (
+                            (str_contains($page_name, 'Travails') ||
                                 str_contains($page_name, 'Evaluations') ||
-                                str_contains($page_name, 'Examens'))
-                                    && !str_contains($page_name, 'Cotations') && !str_contains($page_name, 'Eleves')
-                                )
+                                str_contains($page_name, 'Examens')) &&
+                                !str_contains($page_name, 'Cotations') &&
+                                !str_contains($page_name, 'Eleves'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('travails.index') }}">
                             @else
@@ -296,7 +299,7 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Cotations </span>
                         </a>
                     </li>
-                    
+
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Classe /'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -307,15 +310,49 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i
-                                class="relative top-0 leading-normal text-black fa fa-solid fa-chalkboard text-size-sm">
+                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-chalkboard text-size-sm">
                             </i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ma Classe</span>
                         </a>
                     </li>
-                    
+                    <li class="mt-0.5 w-full">
+                        @if (str_contains($page_name, 'Horaire'))
+                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                                href="{{ route('horaires.show', Auth::user()->classe->id) }}">
+                            @else
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                    href="{{ route('horaires.show', Auth::user()->classe->id) }}">
+                        @endif
+                        <div
+                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-calendar-days text-size-sm">
+                            </i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Horaires</span>
+                        </a>
+                    </li>
                 @endif
+                @if (!Auth::user()->isEnseignant())
+                <li class="mt-0.5 w-full">
+                    @if (str_contains($page_name, 'Horaire'))
+                        <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                            href="{{ route('horaires.index') }}">
+                        @else
+                            <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                href="{{ route('horaires.index') }}">
+                    @endif
+                    <div
+                        class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                        <i class="relative top-0 leading-normal text-black fa fa-solid fa-calendar-days text-size-sm">
+                        </i>
+                    </div>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Horaires des Cours</span>
+                    </a>
+                </li>
+                @endif
+
+
                 @if (Auth::user()->isDirecteur())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Employers'))
@@ -327,7 +364,8 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-emerald-500 text-size-sm fa fa-solid fa-user"></i>
+                            <i
+                                class="relative top-0 leading-normal text-emerald-500 text-size-sm fa fa-solid fa-user"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employés</span>
                         </a>
@@ -343,7 +381,8 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-cyan-500-500 text-size-sm fa fa-solid fa-user"></i>
+                            <i
+                                class="relative top-0 leading-normal text-cyan-500-500 text-size-sm fa fa-solid fa-user"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enseignants</span>
                         </a>
@@ -351,7 +390,9 @@
                 @endif
                 @if (Auth::user()->isAdmin())
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Utilisateurs') || str_contains($page_name, 'Encadrements') || str_contains($page_name, 'Parents'))
+                        @if (str_contains($page_name, 'Utilisateurs') ||
+                                str_contains($page_name, 'Encadrements') ||
+                                str_contains($page_name, 'Parents'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('users.index') }}">
                             @else
@@ -377,13 +418,14 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-rectangle-list"></i>
+                            <i
+                                class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-rectangle-list"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Historiques</span>
                         </a>
                     </li>
                 @endif
-                
+
                 @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Parents'))
@@ -401,28 +443,27 @@
                         </a>
                     </li>
                 @endif
-                
+
                 @if (Auth::user()->isSecretaire())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Passations'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
-                                href="{{ route('passations.index') }}"
-                                >
+                                href="{{ route('passations.index') }}">
                             @else
                                 <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-                                    href="{{ route('passations.index') }}"
-                                    >
+                                    href="{{ route('passations.index') }}">
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-chart-simple"></i>
+                            <i
+                                class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-chart-simple"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Passation de Classe</span>
                         </a>
                     </li>
                 @endif
-                
-                @if( Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+
+                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Rapports'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -433,15 +474,14 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i
-                                class="relative top-0 leading-normal text-black fa fa-solid fa-list text-size-sm">
+                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-list text-size-sm">
                             </i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Rapports</span>
                         </a>
                     </li>
                 @endif
-                @if(Auth::user()->isDirecteur() || Auth::user()->isParent())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isParent())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Messages'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -452,12 +492,14 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-message"></i>
+                            <i
+                                class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-message"></i>
                         </div>
-                            <div class="w-full flex flex-row items-center gap-5">
-                                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Messages</span>
-                                <span class="p-flex justify-center font-bold text-4 text-red-500">{{Auth::unread() && Auth::unread()}}</span>
-                            </div>
+                        <div class="w-full flex flex-row items-center gap-5">
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Messages</span>
+                            <span
+                                class="p-flex justify-center font-bold text-4 text-red-500">{{ Auth::unread() && Auth::unread() }}</span>
+                        </div>
                         </a>
                     </li>
                 @endif
@@ -469,32 +511,32 @@
 
                 <li class="mt-0.5 w-full">
                     @if (str_contains($page_name, 'Profile'))
-                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                        <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                            href="{{ route('profile.index') }}">
+                        @else
+                            <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                 href="{{ route('profile.index') }}">
-                            @else
-                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-                                    href="{{ route('profile.index') }}">
                     @endif
-                        <div
-                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-blue-700 text-size-sm fa fa-solid fa-user"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Profile</span>
+                    <div
+                        class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                        <i class="relative top-0 leading-normal text-blue-700 text-size-sm fa fa-solid fa-user"></i>
+                    </div>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Profile</span>
                     </a>
                 </li>
                 <li class="mt-0.5 w-full">
                     @if (str_contains($page_name, 'Parametres'))
-                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                        <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                            href="{{ route('settings.index') }}">
+                        @else
+                            <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                                 href="{{ route('settings.index') }}">
-                            @else
-                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-                                    href="{{ route('settings.index') }}">
-                        @endif
-                        <div
-                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-slate-900 text-size-sm fa fa-solid fa-cog"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Parametres</span>
+                    @endif
+                    <div
+                        class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                        <i class="relative top-0 leading-normal text-slate-900 text-size-sm fa fa-solid fa-cog"></i>
+                    </div>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Parametres</span>
                     </a>
                 </li>
 
@@ -532,93 +574,97 @@
                 <input type="text" class="pl-9 text-size-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" placeholder="Type here..." />
               </div>
             </div-->
-         <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full gap-2">
+                    <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full gap-2">
                         <!-- online builder btn  -->
                         <!-- <li class="flex items-center">
                 <a class="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center text-blue-500 uppercase align-middle transition-all ease-in bg-transparent border border-blue-500 border-solid rounded-lg shadow-none cursor-pointer leading-pro text-size-xs hover:-translate-y-px active:shadow-xs hover:border-blue-500 active:bg-blue-500 active:hover:text-blue-500 hover:text-blue-500 tracking-tight-rem hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
               </li> -->
 
 
-              <li id="profile" class="flex items-center">
-                <div
-                    class=" p-0 text-white font-semibold transition-all text-size-sm ease-nav-brand cursor-pointer hover:bg-slate-300 rounded-2 px-2 py-1">
-                    <i fixed-plugin-button-nav class="cursor-pointer fa fa-user" title="logout"></i>
-                    @if (Auth::user()->parrain_id === null)
-                        <span class="hidden sm:inline">Bienvenu, {{ Auth::user()->employer->prenom }}</span>
-                    @else
-                        <span class="hidden sm:inline">Bienvenu, {{ Auth::user()->parrain->prenom }}</span>
-                    @endif
-                </div>
-            </li>
+                        <li id="profile" class="flex items-center">
+                            <div
+                                class=" p-0 text-white font-semibold transition-all text-size-sm ease-nav-brand cursor-pointer hover:bg-slate-300 rounded-2 px-2 py-1">
+                                <i fixed-plugin-button-nav class="cursor-pointer fa fa-user" title="logout"></i>
+                                @if (Auth::user()->parrain_id === null)
+                                    <span class="hidden sm:inline">Bienvenu,
+                                        {{ Auth::user()->employer->prenom }}</span>
+                                @else
+                                    <span class="hidden sm:inline">Bienvenu,
+                                        {{ Auth::user()->parrain->prenom }}</span>
+                                @endif
+                            </div>
+                        </li>
 
-            <div id="profile-popper" class="opacity-0 bg-white rounded p-2 shadow-2xl">
-                <li class="relative">
-                    <a class=" cursor-pointer flex justify-center dkr:hover:bg-slate-900 ease py-2 clear-both  w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors"
-                        href="{{ url('profile') }}">
-                        <div
-                            class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand">
-                            <i class="text-blue-500 fa fa-user sm:mr-1"></i>
-                            <span class="hidden sm:inline">Profile</span>
+                        <div id="profile-popper" class="opacity-0 bg-white rounded p-2 shadow-2xl">
+                            <li class="relative">
+                                <a class=" cursor-pointer flex justify-center dkr:hover:bg-slate-900 ease py-2 clear-both  w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors"
+                                    href="{{ url('profile') }}">
+                                    <div
+                                        class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand">
+                                        <i class="text-blue-500 fa fa-user sm:mr-1"></i>
+                                        <span class="hidden sm:inline">Profile</span>
+                                    </div>
+                                </a>
+
+                                <div
+                                    class=" cursor-pointer flex justify-center dkr:hover:bg-slate-900 ease py-2 clear-both  w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
+                                    <form id="profile" class="flex items-center px-4"
+                                        action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                        <button type="submit"
+                                            class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand ">
+                                            <i fixed-plugin-button-nav class=" text-red-500 fa fa-right-from-bracket"
+                                                title="logout"></i>
+                                            <span class="hidden sm:inline">Deconnexion</span>
+                                        </button title="logout">
+                                    </form>
+                                </div>
+
+                            </li>
                         </div>
-                    </a>
 
-                    <div
-                        class=" cursor-pointer flex justify-center dkr:hover:bg-slate-900 ease py-2 clear-both  w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
-                        <form id="profile" class="flex items-center px-4"
-                            action="{{ route('logout') }}" method="post">
-                            @csrf
-                            <button type="submit"
-                                class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand ">
-                                <i fixed-plugin-button-nav class=" text-red-500 fa fa-right-from-bracket"
-                                    title="logout"></i>
-                                <span class="hidden sm:inline">Deconnexion</span>
-                            </button title="logout">
-                        </form>
-                    </div>
+                        <li id="notify" class="flex items-center">
+                            <div
+                                class="block font-semibold text-white transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-1">
+                                <i class="fa fa-bell sm:mr-1"></i>
+                                @if (Auth::user()->isDirecteur() || Auth::user()->isParent())
+                                    <span class=" sm:inline">{{ Auth::unread() }}</span>
+                                @endif
+                            </div>
+                        </li>
 
-                </li>
-            </div>
+                        <li class="flex items-center xl:hidden">
+                            <a href="javascript:;"
+                                class="block  text-white font-semibold transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-2"
+                                sidenav-trigger>
+                                <div class="w-4.5 overflow-hidden">
+                                    <i
+                                        class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                                    <i
+                                        class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                                    <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                                </div>
+                            </a>
+                        </li>
 
-            <li id="notify" class="flex items-center">
-                <div
-                    class="block font-semibold text-white transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-1">
-                    <i class="fa fa-bell sm:mr-1"></i>
-                    @if (Auth::user()->isDirecteur() || Auth::user()->isParent())
-                    <span class=" sm:inline">{{Auth::unread()}}</span>
-                    @endif
-                </div>
-            </li>
-
-            <li class="flex items-center xl:hidden">
-                <a href="javascript:;"
-                    class="block  text-white font-semibold transition-all ease-nav-brand text-size-sm hover:bg-slate-300 rounded-2 px-2 py-2"
-                    sidenav-trigger>
-                    <div class="w-4.5 overflow-hidden">
-                        <i
-                            class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                        <i
-                            class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                        <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                    </div>
-                </a>
-            </li>
-
-            <div id="notify-popper" class="opacity-0 bg-white rounded-2 p-2 shadow-2xl pr-2">
-                @if (Auth::unread() > 0)
-                    @foreach (Auth::unreadMessages() as $item)
-                        <li class="relative">
-                            <a href="{{route('messages.show', $item->id)}}"
-                                class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
-                                    <div class="flex py-1">
-                                            <div class="my-auto">
-                                                <span
-                                                    class=" bg-blue-300 flex items-center justify-center mr-4 text-white text-size-sm h-9 w-9 max-w-none rounded-xl">
-                                                    <i class="fa fa-message sm:mr-1"></i>
-                                                </span>
-                                            </div>
+                        <div id="notify-popper" class="opacity-0 bg-white rounded-2 p-2 shadow-2xl pr-2">
+                            @if (Auth::unread() > 0)
+                                @foreach (Auth::unreadMessages() as $item)
+                                    <li class="relative">
+                                        <a href="{{ route('messages.show', $item->id) }}"
+                                            class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors">
+                                            <div class="flex py-1">
+                                                <div class="my-auto">
+                                                    <span
+                                                        class=" bg-blue-300 flex items-center justify-center mr-4 text-white text-size-sm h-9 w-9 max-w-none rounded-xl">
+                                                        <i class="fa fa-message sm:mr-1"></i>
+                                                    </span>
+                                                </div>
                                                 <div class="flex flex-col justify-center">
-                                                    <h6 class="mb-1 font-normal leading-normal dark:text-white text-size-sm">
-                                                        <span class="font-semibold">Nouveau message de </span> {{$item->from()->email}}
+                                                    <h6
+                                                        class="mb-1 font-normal leading-normal dark:text-white text-size-sm">
+                                                        <span class="font-semibold">Nouveau message de </span>
+                                                        {{ $item->from()->email }}
                                                     </h6>
                                                     <p
                                                         class="mb-0 leading-tight text-size-xs text-slate-400 dark:text-white/80">
@@ -626,33 +672,33 @@
                                                         13 minutes ago
                                                     </p>
                                                 </div>
-                                        </div>
-                            </a>
-                        </li>
-                    @endforeach
-                @endif
-                    
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endif
+
+                        </div>
+                    </ul>
+                </div>
             </div>
-        </ul>
+        </nav>
+
+        <!-- end Navbar -->
+
+        <!-- cards -->
+        <div class="w-full h-full md:p-6 mx-auto ">
+            @yield('content')
+        </div>
+        <div class="w-full h-full md:p-6 mx-auto hidden">
+            <x-settings></x-settings>
+        </div>
+        <!-- end cards -->
+
+
+
+    </main>
     </div>
-</div>
-</nav>
-
-<!-- end Navbar -->
-
-<!-- cards -->
-<div class="w-full h-full md:p-6 mx-auto ">
-    @yield('content')
-</div>
-<div class="w-full h-full md:p-6 mx-auto hidden">
-    <x-settings></x-settings>
-</div>
-<!-- end cards -->
-
-
-
-</main>
-</div>
 </body>
 
 </html>

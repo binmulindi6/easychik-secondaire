@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cours;
 use App\Models\Eleve;
+use App\Models\Classe;
 use App\Models\Examen;
 use App\Models\Logfile;
 use App\Models\trimestre;
@@ -21,23 +22,28 @@ class ExamenController extends Controller
     protected $page_name = 'Examens';
     public function index()
     {
-        $examens = Examen::latest()
-        //    ->limit(20)
-            ->get();
+        $examens = Examen::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
 
-        if(Auth::user()->isEnseignant()){
-            if(Auth::user()->classe()){
-                $cours = Cours::where('classe_id', Auth::user()->classe->id)
-                        ->orderBy('nom', 'asc')->get();
-            }else{
+        if (Auth::user()->isEnseignant()) {
+            if (Auth::user()->classe()) {
+                $examens = Examen::where('classe_id',  Auth::user()->classe->id)
+                    ->latest()
+                    //    ->limit(20)
+                    ->get();
+                $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
+                    ->orderBy('nom', 'asc')->get();
+            } else {
                 $cours = null;
             }
             // $cours = [];
+        } else {
+            abort(401);
         }
-        
+
+
         $trimestres = Trimestre::currents();
-  
+
         return view('travails.examens')
             ->with('trimestres', $trimestres)
             ->with('cours', $cours)
@@ -70,15 +76,22 @@ class ExamenController extends Controller
             'date_examen' => ['required', 'string', 'max:255'],
         ]);
 
+        if (Auth::user()->classe()) {
+        } else {
+            abort(401);
+        }
+
         $cours = Cours::findOrFail($request->cours);
         $trimestre = Trimestre::findOrFail($request->trimestre);
-        //dd($periode->isCurrent());
+         //la classe actuelle
+         $classe = Classe::findOrFail(Auth::user()->classe->id);
 
         $examen = Examen::create([
             'note_max' => $request->note_max,
             'date_examen' => $request->date_examen,
         ]);
 
+        $examen->classe()->associate($classe);
         $examen->cours()->associate($cours);
         $examen->trimestre()->associate($trimestre);
 
@@ -90,8 +103,7 @@ class ExamenController extends Controller
         );
 
 
-        //la classe de l'examen
-        $classe = $cours->classe;
+        
         //eleves de la classe
         $eleves = $classe->eleves();
 
@@ -135,10 +147,10 @@ class ExamenController extends Controller
         $examen = Examen::find($id);
         $examens = Examen::all();
         $cours = Cours::orderBy('nom', 'asc')->get();
-            if(Auth::user()->isEnseignant()){
-                $cours = Cours::where('classe_id', Auth::user()->classe->id)
-                            ->orderBy('nom', 'asc')->get();
-            }
+        if (Auth::user()->isEnseignant()) {
+            $cours = Cours::where('classe_id', Auth::user()->classe->id)
+                ->orderBy('nom', 'asc')->get();
+        }
         $trimestres = Trimestre::currents();
         return view('travails.examens')
             ->with('trimestres', $trimestres)
@@ -214,9 +226,9 @@ class ExamenController extends Controller
 
         $cours = Cours::orderBy('nom', 'asc')->get();
 
-        if(Auth::user()->isEnseignant()){
+        if (Auth::user()->isEnseignant()) {
             $cours = Cours::where('classe_id', Auth::user()->classe->id)
-                        ->orderBy('nom', 'asc')->get();
+                ->orderBy('nom', 'asc')->get();
         }
 
         $trimestres = Trimestre::currents();

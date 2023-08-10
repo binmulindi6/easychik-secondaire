@@ -10,6 +10,7 @@ import "./sidenav-burger";
 import "./perfect-scrollbar";
 import "./toExcel";
 import "./myjs";
+import "./horaire"
 // import "./argon-dashboard-tailwind";
 
 import "./popper";

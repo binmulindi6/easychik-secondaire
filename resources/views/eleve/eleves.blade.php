@@ -293,9 +293,13 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     @if ($item->currentFrequentation() === null)
+                                        @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
                                         <a class="text-blue-500 underline"
-                                            href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
-                                        </a>
+                                        href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
+                                    </a>
+                                    @else
+                                    Pas Inscrit(e)
+                                        @endif
                                     @else
                                         {{ $item->currentFrequentation()->classe->nomCourt() }}
                                     @endif

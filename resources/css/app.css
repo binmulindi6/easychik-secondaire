@@ -27,6 +27,14 @@
       /* height: 3508px; */
       /* width: 248px; */
     }
+
+    #my-terminal #my-terminal * {
+      /* background: red; */
+        /* max-width: 150rem; */
+      visibility: visible;
+      /* height: 3508px; */
+      /* width: 248px; */
+    }
     #printable {
       /* position: absolute; */
       /* left: 0; */

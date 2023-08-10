@@ -47,7 +47,11 @@ use App\Http\Controllers\CategorieCoursController;
 use App\Http\Controllers\TypeEvaluationController;
 use App\Http\Controllers\EleveEvaluationController;
 use App\Http\Controllers\FrequentationEleveController;
+use App\Http\Controllers\HoraireController;
 use App\Http\Controllers\LogfileController;
+use App\Models\Heure;
+use App\Models\Horaire;
+use App\Models\Jour;
 
 /*
 |--------------------------------------------------------------------------
@@ -255,7 +259,17 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('logs/{id}', [LogfileController::class, 'show'])->name('logs.show');
     Route::put('logs/{id}', [LogfileController::class, 'restore'])->name('logs.restore');
 
+    //horaires
+    Route::resource('horaires', HoraireController::class);
+    Route::get('horraires/classe/{id}', [HoraireController::class, 'show'])->name('horaires.classe');
+    // Route::resource('heurs', Heure::class);
+    // Route::resource('jours', Jour::class);
 
+
+
+    //cartes
+    Route::get('eleves/{id}/carte', [EleveController::class, 'carte'])->name('eleves.carte');
+    
 
 });
 

@@ -51,6 +51,7 @@ class ResultatController extends Controller
         $max = 0;
 
         $bulletin = $eleve->bulletinPeriode($periode_id);
+        // dd($bulletin);
 
         return view('eleve.resultats-periode')
                     ->with('bulletin', $bulletin)

@@ -100,7 +100,7 @@
     @if (isset($items))
         @if ($page_name == 'Examens / Edit' || $page_name == 'Examens / Create')
             <div
-                class="display container shadow-2xl p-4 hidden relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
+                class="display container shadow-2xl p-4 hidden relative  flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
             @else
                 <div
                     class="display container shadow-2xl p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
@@ -119,9 +119,9 @@
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Cours </th>
-                            <th
+                            {{-- <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                Classe </th>
+                                Classe </th> --}}
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Note Max</th>
@@ -140,14 +140,14 @@
                             @foreach ($items as $item)
                             @if (Auth::user()->isEnseignant())
                                 {{-- {{Auth::user()->classe->id}} --}}
-                                    @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id)
+                                    {{-- @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id) --}}
                                         <tr class="rounded-2xl hover:bg-slate-100">
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   ">
                                                 {{ $item->cours->nom }}</td>
-                                            <td
+                                            {{-- <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   ">
-                                                {{ $item->cours->classe->nomCourt() }}</td>
+                                                {{ $item->cours->classe->nomCourt() }}</td> --}}
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                 {{ $item->note_max }}</td>
@@ -174,7 +174,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endif
+                                    {{-- @endif --}}
                                 @else
                                     <tr class="rounded-2xl hover:bg-slate-100">
                                         <td

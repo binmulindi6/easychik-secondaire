@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("matricule");
             $table->string("nom");
             $table->string("prenom");
+            $table->string('sexe');
             $table->string("lieu_naissance");
             $table->date("date_naissance");
             $table->string("nom_pere");

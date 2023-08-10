@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AnneeScolaire;
+use App\Models\Classe;
 use App\Models\Cours;
 use App\Models\Eleve;
 use App\Models\Logfile;
@@ -23,27 +24,25 @@ class EvaluationController extends Controller
     protected $page_name = 'Evaluations';
     public function index()
     {
-        $evaluations = Evaluation::join('periodes','periodes.id','periode_id')
-                        ->join('trimestres','trimestres.id','periodes.trimestre_id')
-                        ->where('trimestres.annee_scolaire_id',AnneeScolaire::current()->id)
-                        ->orderBy('periodes.id', 'desc')
-        //    ->limit(20)
-            ->get();
+        $evaluations = Evaluation::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
 
-        if(Auth::user()->isEnseignant()){
-            if(Auth::user()->classe()){
-                $cours = Cours::where('classe_id', Auth::user()->classe->id)
-                        ->orderBy('nom', 'asc')->get();
-                        // dd('d');
-            }else{
+        if (Auth::user()->isEnseignant()) {
+            if (Auth::user()->classe()) {
+                $evaluations = Evaluation::currents(Auth::user()->classe->id);
+                $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
+                    ->orderBy('nom', 'asc')->get();
+                // dd('d');
+            } else {
                 $cours = null;
             }
             // $cours = [];
+        }else{
+            abort(401);
         }
 
         $periodes = Periode::currents();
-        // dd($periodes);
+        // dd($cours);
         $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
         return view('travails.evaluations')
             ->with('type_evaluations', $type_evaluations)
@@ -79,8 +78,16 @@ class EvaluationController extends Controller
             'date_evaluation' => ['required', 'string', 'max:255'],
         ]);
 
+        if (Auth::user()->classe()) {
+        } else {
+            abort(401);
+        }
+
         $cours = Cours::findOrFail($request->cours);
         $periode = Periode::findOrFail($request->periode);
+
+        //la classe actuelle
+        $classe = Classe::findOrFail(Auth::user()->classe->id);
         //dd($periode->isCurrent());
         $type_evaluation = TypeEvaluation::findOrFail($request->type_evaluation);
 
@@ -90,6 +97,7 @@ class EvaluationController extends Controller
         ]);
 
         $evaluation->cours()->associate($cours);
+        $evaluation->classe()->associate($classe);
         $evaluation->periode()->associate($periode);
         $evaluation->type_evaluation()->associate($type_evaluation);
 
@@ -101,16 +109,16 @@ class EvaluationController extends Controller
         );
 
         //la classe de l'evaluation
-        $classe = $cours->classe;
+        // $classe = $cours->classe;
         //eleves de la classe
         $eleves = $classe->eleves();
         // dd($eleves[0]->id);
 
         foreach ($eleves as $eleve) {
-            if($eleve->evaluations() !== null){
+            if ($eleve->evaluations() !== null) {
                 $currentEleve = Eleve::find($eleve->id);
                 // dd($currentEleve);
-                if($currentEleve !== null){
+                if ($currentEleve !== null) {
                     $currentEleve->evaluations()->attach($evaluation);
                     $currentEleve->save();
                 }
@@ -154,9 +162,9 @@ class EvaluationController extends Controller
         $evaluations = Evaluation::all();
         $cours = Cours::orderBy('nom', 'asc')->get();
 
-        if(Auth::user()->isEnseignant()){
+        if (Auth::user()->isEnseignant()) {
             $cours = Cours::where('classe_id', Auth::user()->classe->id)
-                        ->orderBy('nom', 'asc')->get();
+                ->orderBy('nom', 'asc')->get();
         }
 
         $periodes = Periode::currents();
@@ -244,9 +252,9 @@ class EvaluationController extends Controller
 
         $cours = Cours::orderBy('nom', 'asc')->get();
 
-        if(Auth::user()->isEnseignant()){
+        if (Auth::user()->isEnseignant()) {
             $cours = Cours::where('classe_id', Auth::user()->classe->id)
-                        ->orderBy('nom', 'asc')->get();
+                ->orderBy('nom', 'asc')->get();
         }
 
         $periodes = Periode::currents();

@@ -66,7 +66,8 @@ class HomeController extends Controller
                 }
             }
 
-            $users = User::where('employer_id', '=', null)->count() > 0 ? User::where('employer_id', '=', null)->count() : 0;
+            $users = User::where('employer_id', null)->count();
+            // dd($users);
             $usersActifs = count(User::where('isActive', '1')->where('employer_id', '=', null)->get()) > 0 ? count(User::where('isActive', '1')->where('employer_id', '=', null)->get()) : 0;
             return view('dashboard', [
                 'page_name' => 'Dashboard',

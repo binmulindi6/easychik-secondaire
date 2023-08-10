@@ -117,13 +117,13 @@ class Eleve extends Model
      //bulletinPeriode() to get points from periode
      public function bulletinPeriode($periode)
      {   
-          $classe = $this->classe(); 
+          $niveau = $this->classe()->niveau; 
 
           $bulletin = Evaluation::where('evaluations.periode_id', '=', $periode)
                ->join('eleve_evaluation', 'evaluation_id', '=', "evaluations.id")
                ->where('eleve_evaluation.eleve_id', '=', $this->id)
                ->join('cours', 'cours.id', '=', 'evaluations.cours_id')
-               ->where('cours.classe_id', $classe->id)
+               ->where('cours.niveau_id', $niveau->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_evaluation.note_obtenu) as note'), DB::raw('SUM(evaluations.note_max) as max'), 'cours.max_periode as total')
                ->groupBy('cours_id')
                ->get();
@@ -138,13 +138,13 @@ class Eleve extends Model
      public function bulletinExamen($trimestre)
      {    
 
-          $classe = $this->classe(); 
+          $niveau = $this->classe()->niveau; 
 
           $bulletin = Examen::where('examens.trimestre_id', '=', $trimestre)
                ->join('eleve_examen', 'examen_id', '=', "examens.id")
                ->where('eleve_examen.eleve_id', '=', $this->id)
                ->join('cours', 'cours.id', '=', 'examens.cours_id')
-               ->where('cours.classe_id', $classe->id)
+               ->where('cours.niveau_id', $niveau->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_examen.note_obtenu) as note'), DB::raw('SUM(examens.note_max) as max'), 'cours.max_examen as total')
                ->groupBy('cours_id')
                ->get();

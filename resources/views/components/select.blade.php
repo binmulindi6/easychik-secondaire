@@ -7,22 +7,29 @@
 @endif
 
 @if (isset($val))
-    <option selected hidden value="{{ $val->id }}">
-        @if (isset($val->email))
-            @if (isset($only))
-                @if ($only === 'Parent')
-                    @if ($val->isParent())
-                        {{ $val->parrain->nom . ' ' . $val->parrain->prenom }}
-                    @endif
+    @if (isset($val->id))
+        <option selected hidden value="{{ $val->id }}">
+        @else
+        <option selected hidden value="{{ $val}}">
+    @endif
+    @if (isset($val->email))
+        @if (isset($only))
+            @if ($only === 'Parent')
+                @if ($val->isParent())
+                    {{ $val->parrain->nom . ' ' . $val->parrain->prenom }}
                 @endif
-                @if ($only === 'Enseignant')
-                    @if ($val->isEnseignant())
-                        {{ $val->employer->nom . ' ' . $val->employer->prenom }}
-                    @endif
-                @endif
-            @else
-                {{ $val->employer->nom . ' ' . $val->employer->prenom }}
             @endif
+            @if ($only === 'Enseignant')
+                @if ($val->isEnseignant())
+                    {{ $val->employer->nom . ' ' . $val->employer->prenom }}
+                @endif
+            @endif
+        @else
+            {{ $val->employer->nom . ' ' . $val->employer->prenom }}
+        @endif
+    @else
+        @if (isset($val->max_periode))
+            {{ $val->nom }}
         @else
             @if (isset($val->niveau))
                 {{ $val->niveau->nom . ' ' . $val->nom }}
@@ -30,13 +37,25 @@
                 @if (isset($val->annee_scolaire))
                     {{ $val->nom . ' ' . $val->annee_scolaire->nom }}
                 @else
-                    {{ $val->nom }}
+                    @if (isset($val->nom))
+                        {{ $val->nom }}
+                    @else
+                        {{ $val }}
+                    @endif
                 @endif
             @endif
         @endif
+    @endif
     </option>
 @else
-    <option disabled selected hidden>Selectionner une option</option>
+    @if (isset($placeholder))
+        <option disabled selected hidden>{{ $placeholder }}</option>
+    @else
+        <option disabled selected hidden>Selectionner une option</option>
+    @endif
+@endif
+@if (isset($isHoraire))
+    <option value="RECREATION">RECREATION</option>
 @endif
 @if (isset($all))
     <option value="all"> {{ $all }} </option>
@@ -75,16 +94,20 @@
                         @if (isset($item->annee_scolaire))
                             {{ $item->nom . ' ' . $item->annee_scolaire->nom }}
                         @else
-                            @if (isset($item->niveau) && isset($item->cours))
+                            @if (isset($item->niveau) && isset($item->encadrements))
                                 {{ $item->niveau->nom . ' ' . $item->nom }}
                             @else
                                 @if (isset($item->max_periode))
-                                    {{ $item->nom . ' ' . $item->classe->niveau->numerotation . ' e' . $item->classe->nom }}
+                                    {{ $item->nom }}
                                 @else
                                     @if (isset($item->type_frais))
-                                        {{ $item->nom . ' (en ' . $item->type_frais->devise .')'}}
+                                        {{ $item->nom . ' (en ' . $item->type_frais->devise . ')' }}
                                     @else
-                                        {{ $item->nom }}
+                                        @if (isset($item->nom))
+                                            {{ $item->nom }}
+                                        @else
+                                            {{ $item }}
+                                        @endif
                                     @endif
                                 @endif
                             @endif

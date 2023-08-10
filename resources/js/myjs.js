@@ -77,6 +77,8 @@ const btnAffecter = document.querySelectorAll('.btn-affecter')
 ///views
 // const display
 
+//carte
+const btnCarte = document.querySelectorAll('.btn-carte')
 
 
 myBtn !== null && myBtn.forEach((jokerBtn) => {
@@ -313,4 +315,14 @@ btnAffecter && btnAffecter.forEach(btnAff => {
         e.preventDefault();
     }
     )
+})
+
+
+//cartes
+
+btnCarte && btnCarte.forEach(btn => {
+    btn.addEventListener('click', ()=> {
+        let newW = open(btn.id, 'Carte Eleve', '_blank,menubar=no,to=-1000,left=-1000,status=no');
+        newW.focus()
+    })
 })

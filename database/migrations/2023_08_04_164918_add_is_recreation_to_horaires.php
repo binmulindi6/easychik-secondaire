@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('classes', function (Blueprint $table) {
-            $table->foreignId('niveau_id')->default(5)->after('nom')->constrained();
+        Schema::table('horaires', function (Blueprint $table) {
+            $table->boolean('isRecreation')->after('heure_id')->default(0);
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('classes', function (Blueprint $table) {
+        Schema::table('horaires', function (Blueprint $table) {
             //
         });
     }
