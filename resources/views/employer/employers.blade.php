@@ -3,7 +3,11 @@
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
 
-        <x-nav-employers :pagename="$page_name"> </x-nav-employers>
+        @if (isset($search))
+        <x-nav-employers :search="$search" :pagename="$page_name"> </x-nav-employers>
+        @else
+        <x-nav-employers  :pagename="$page_name"> </x-nav-employers>
+        @endif
 
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>

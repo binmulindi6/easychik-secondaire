@@ -186,4 +186,31 @@ class EncadrementController extends Controller
         );
         return redirect()->route('encadrements.index');
     }
+
+    public function search(Request $request)
+    {
+
+
+        $items = Encadrement::join('users', 'encadrements.user_id', 'users.id')
+            ->join('employers','employer_id','employers.id')
+            ->where('isAdmin', 0)
+            ->where('nom', 'like', '%' . $request->search . '%')
+            ->orWhere('prenom', 'like', '%' . $request->search . '%')
+            ->get();
+
+            $classes = Classe::orderBy('niveau_id', 'asc')->get();
+            $annees = AnneeScolaire::orderBy('nom')->get();
+            $users = User::where('isAdmin', '=', '0')
+                    ->where('parrain_id', null)
+                    ->get();
+
+            return view('users.encadrements')
+                    ->with('items',$items)
+                    ->with('classes',$classes)
+                    ->with('annees',$annees)
+                    ->with('users', $users)
+                    ->with('search',  $request->search)
+                    ->with('page_name',$this->page_name . ' / Search');
+    }
+
 }

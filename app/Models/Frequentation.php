@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Eleve;
 use App\Models\Classe;
+use App\Models\Presence;
 use App\Models\Resultat;
 use App\Models\AnneeScolaire;
 use App\Models\PaiementFrais;
@@ -46,6 +47,10 @@ class Frequentation extends Model
         return Frequentation::where('eleve_id', $eleve)
                                 ->where('annee_scolaire_id', $annee_scolaire)
                                 ->first();
+    }
+
+    public function presences() {
+        return $this->hasMany(Presence::class);
     }
 
 }

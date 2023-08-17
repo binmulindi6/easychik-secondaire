@@ -213,7 +213,7 @@
                                 class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none">
                                 <i class="top-0.75 text-size-xxs relative text-slate-700 ni ni-trophy"></i>
                             </div>
-                            <h5 class="mb-1 text-white">Use SAS</h5>
+                            <h5 class="mb-1 text-white">Use {{env('APP_NAME')}}</h5>
                             <p class="mb-0 dark:text-white dark:opacity-60">
                             <p class="dark:opacity-80 font-semibold">School Administation System,
                                 The Solution for your School

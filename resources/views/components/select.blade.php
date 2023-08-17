@@ -2,15 +2,20 @@
     <select readonly onchange="this.form.submit()"
         {{ $attributes->merge(['class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50']) }}>
     @else
-        <select
-            {{ $attributes->merge(['class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50']) }}>
+        @if (isset($isSelectedLink))
+            <select id="{{ $isSelectedLink }}"
+                {{ $attributes->merge(['class' => 'isSelectLink rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50']) }}>
+            @else
+                <select
+                    {{ $attributes->merge(['class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50']) }}>
+        @endif
 @endif
 
 @if (isset($val))
     @if (isset($val->id))
         <option selected hidden value="{{ $val->id }}">
         @else
-        <option selected hidden value="{{ $val}}">
+        <option selected hidden value="{{ $val }}">
     @endif
     @if (isset($val->email))
         @if (isset($only))
@@ -53,6 +58,11 @@
     @else
         <option disabled selected hidden>Selectionner une option</option>
     @endif
+@endif
+@if (isset($isSelectedLink))
+    <option value="isLink">
+        + {{ $linkName }}
+    </option>
 @endif
 @if (isset($isHoraire))
     <option value="RECREATION">RECREATION</option>
@@ -119,3 +129,14 @@
     @endif
 @endif
 </select>
+
+
+{{-- <select link="{{ route('categories.create') }}" id="isSelectLink" name="devise" id="nom"
+    class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-4/12"
+    required>
+    <option value="isLink">
+        ➕ Ajouter
+    </option>
+    <option selected value="USD">USD</option>
+    <option value="CDF">CDF</option>
+</select> --}}

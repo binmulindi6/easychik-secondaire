@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('nom');
             $table->integer('montant');
-            $table->foreignId('niveau_id')->constrained();
-            $table->foreignId('type_frais_id')->constrained();
-            $table->foreignId('mode_paiement_id')->constrained();
+            $table->foreignId('niveau_id')->nullable()->constrained();
+            $table->foreignId('type_frais_id')->nullable()->constrained();
+            $table->foreignId('mode_paiement_id')->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,6 +1,6 @@
 @extends('errors::minimal')
 
-@section('title', __('S.A.S'))
+@section('title', __(env('APP_NAME')))
 @section('code', '419')
 @section('message', __('cette Page a Expirée'))
 @section('action')

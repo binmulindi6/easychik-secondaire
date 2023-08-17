@@ -26,7 +26,7 @@ class Logfile extends Model
             'table_name' => $table_name,
             'item_id' => $item,
             'event' => "Creation",
-            'done_by' => $user
+            'done_by' => $user ? $user : Auth::user()->id
         ]);
 
         $log->save();

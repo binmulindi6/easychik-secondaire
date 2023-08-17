@@ -7,6 +7,7 @@ use App\Http\Controllers\EleveExamenController;
 use App\Http\Controllers\FrequentationController;
 use App\Http\Controllers\EleveEvaluationController;
 use App\Http\Controllers\HoraireController;
+use App\Http\Controllers\PresenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/horaires', [HoraireController::class, 'storeApi'])->name('api.horaires.store');
 Route::get('/charts', [HomeController::class, 'chart']);
+
+Route::post('/presences/store', [PresenceController::class, 'storeApi'])->name('presences.api.store');
 // Route::put('api/eleves/evaluations/{pivot}', [EleveEvaluationController::class, 'updateViaApi'])->name('eleves.evaluations.update.api');
 // Route::put('api/eleves/examens/{pivot}', [EleveExamenController::class, 'updateViaApi'])->name('eleves.examens.update.api');
 // //freqs

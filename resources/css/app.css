@@ -9,6 +9,7 @@
 @import './fa2.min.css';
 @import'./tooltips.css';
 @import './perfect-scrollbar.css';
+@import './carte.css';
 
 @media print {
     body * {

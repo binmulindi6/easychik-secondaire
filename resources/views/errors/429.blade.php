@@ -1,6 +1,6 @@
 @extends('errors::minimal')
 
-@section('title', __('Too Many Requests'))
+@section('title', __(env('APP_NAME')))
 @section('code', '429')
 @section('message', __('Too Many Requests'))
 @section('action')

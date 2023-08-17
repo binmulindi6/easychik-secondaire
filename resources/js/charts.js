@@ -1,14 +1,14 @@
 import axios from "axios";
 const queryString = window.location;
 const link = queryString.origin;
-console.log(link);
+// console.log(link);
 
 const link2 = link === "http://sas.test" ? link : link+"/sas/public"
 
 let data;
 axios.get(link2 + '/charts')
   .then(res => {
-    console.log(res.data);
+    // console.log(res.data);
     data = res.data;
 
     if(document.querySelector("#chart-line") && data){
@@ -104,7 +104,7 @@ axios.get(link2 + '/charts')
   })
 
 // // chart 1
-console.log("{{route('eleves.index')}}");
+// console.log("{{route('eleves.index')}}");
 if (document.querySelector("#chart-bars")) {
   
   var ctx = document.getElementById("chart-bars").getContext("2d");

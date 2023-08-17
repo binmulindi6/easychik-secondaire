@@ -1,6 +1,6 @@
 @extends('errors::minimal')
 
-@section('title', __('S.A.S'))
+@section('title', __(env('APP_NAME')))
 @section('code', '401')
 @section('message', __('Acces Refusé'))
 @section('action')

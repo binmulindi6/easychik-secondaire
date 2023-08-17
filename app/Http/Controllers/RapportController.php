@@ -7,6 +7,7 @@ use App\Models\Classe;
 use App\Models\TypeFrais;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
+use App\Models\Article;
 use App\Models\MoyenPaiement;
 use App\Models\PaiementFrais;
 
@@ -75,6 +76,13 @@ class RapportController extends Controller
             ->with('today', $date)
             ->with('page_name', $this->page_name . " / Perception Frais  / Periodique");
     }
+    public function stock()
+    {
+        $date = date('Y-m-d');
+        return view('rapports.stock')
+            ->with('today', $date)
+            ->with('page_name', $this->page_name . " / Etat de Stock  / Periodique");
+    }
 
     public function rapportPeriode(Request $request)
     {
@@ -128,6 +136,49 @@ class RapportController extends Controller
             ->with('data', $data)
             ->with('page_name', $this->page_name . " / Perception Frais  / Periodique");
     }
+    public function rapportStock(Request $request)
+    {
+        $request->validate([
+            'date_debut' => ['date', 'max:255', 'required'],
+            'date_fin' => ['date', 'max:255', 'required'],
+        ]);
+        // dd(10);
+        $articles = Article::orderBy('nom')->get();
+        // dd($paiements);
+
+        // $fraisScolaire = TypeFrais::all();
+        // $moyenPaiements = MoyenPaiement::all();
+
+        // dd(
+        //     $fraisScolaire,
+        //     $moyenPaiements
+        // );
+        $date = date('Y-m-d');
+        $data = array();
+        foreach ($articles as $frais) {
+            $fraisHolder = array();
+            $fraisHolder['num_serie'] = $frais->num_serie;
+            $fraisHolder['nom'] = $frais->nom;
+            $fraisHolder['unite'] = $frais->unite_article->nom;
+            $fraisHolder['categorie'] = $frais->categorie_article->nom;
+            // $fraisHolder['entrees'] = array();
+            $fraisHolder['entrees'] = $frais->entreesPeriode($request->date_debut, $request->date_fin);
+            $fraisHolder['sorties'] = $frais->sortiesPeride($request->date_debut, $request->date_fin);
+            // $fraisHolder['stock'] = $fraisHolder['entrees'] - $fraisHolder['sorties'];
+            
+            array_push($data, $fraisHolder);
+        }
+        // dd($data);
+
+
+        return view('rapports.stock')
+            ->with('today', $date)
+            ->with('debut', $request->date_debut)
+            ->with('fin', $request->date_fin)
+            ->with('data', $data)
+            ->with('page_name', $this->page_name . " / Etat de Stock  / Periodique");
+    }
+
     public function rapportAnnuel(Request $request)
     {
         $request->validate([

@@ -40,15 +40,25 @@ use App\Http\Controllers\EleveExamenController;
 use App\Http\Controllers\EncadrementController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\AnneeScolaireController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CategorieArticleController;
 use App\Http\Controllers\EleveConduiteController;
 use App\Http\Controllers\FrequentationController;
 use App\Http\Controllers\PaiementFraisController;
 use App\Http\Controllers\CategorieCoursController;
 use App\Http\Controllers\TypeEvaluationController;
 use App\Http\Controllers\EleveEvaluationController;
+use App\Http\Controllers\EntreeArticleController;
 use App\Http\Controllers\FrequentationEleveController;
 use App\Http\Controllers\HoraireController;
 use App\Http\Controllers\LogfileController;
+use App\Http\Controllers\ModePaiementController;
+use App\Http\Controllers\PresenceController;
+use App\Http\Controllers\SortieArticleController;
+use App\Http\Controllers\TypeFraisController;
+use App\Http\Controllers\UniteArticleController;
+use App\Models\CategorieArticle;
+use App\Models\EntreeArticle;
 use App\Models\Heure;
 use App\Models\Horaire;
 use App\Models\Jour;
@@ -108,6 +118,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('eleve-parent/{parent}', [EleveController::class, 'linkParent'])->name('eleve-parent.link');
     Route::resource('eleves', EleveController::class);
     Route::get('employers/link', [EmployerController::class, 'linkEmployer'])->name('employers.link');
+    Route::post('employers/search', [EmployerController::class, 'search'])->name('employers.search');
     Route::resource('employers', EmployerController::class);
     Route::resource('evaluations', EvaluationController::class);
     Route::resource('examens', ExamenController::class);
@@ -117,6 +128,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::resource('periodes', PeriodeController::class);
     Route::resource('trimestres', TrimestreController::class);
     Route::resource('type-evaluations', TypeEvaluationController::class);
+    Route::post('encadrements/search', [EncadrementController::class, 'search'])->name('encadrements.search');
     Route::get('encadrements/create/classe/{id}', [UserEncadrement::class, 'createClasse'])->name('encadrements.linkClasse');
     Route::get('encadrements/create/user/{id}', [UserEncadrement::class, 'create'])->name('encadrements.link');
     Route::resource('encadrements', EncadrementController::class);
@@ -130,6 +142,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     // Route::get('parents/eleves/{parent}', [ParrainController::class]);
     Route::get('eleve-parent/{parent}/{eleve}', [ParrainController::class, 'linkParentEleve'])->name('parent-eleve.link');
+    Route::post('parents/search', [ParrainController::class, 'search'])->name('parents.search');
     Route::resource('parents', ParrainController::class);
     Route::resource('messages', MessageController::class);
     Route::get('messages/create/{id}', [MessageController::class, 'toUser'])->name('messages.to');
@@ -219,6 +232,8 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::put('users/{id}', [UserController::class, 'changeStatut'])->name('users.statut');
     Route::delete('users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('users/search', [UserController::class, 'search'])->name('users.search');
+    Route::post('users/search/enseignant', [UserController::class, 'search'])->name('users.search.enseignant');
     Route::get('ecole', [EcoleController::class, 'index'])->name('ecole.index');
 
     //parents
@@ -270,6 +285,34 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     //cartes
     Route::get('eleves/{id}/carte', [EleveController::class, 'carte'])->name('eleves.carte');
     
+
+    //stock
+    Route::get('stock/articles/link', [ArticleController::class, 'link'])->name('articles.link');
+    Route::get('stock/articles/link/sortie', [ArticleController::class, 'linkSortie'])->name('articles.link.sortie');
+    Route::resource('stock/articles', ArticleController::class);
+    Route::get('stock/entrees/link/{id}', [EntreeArticleController::class, 'link'])->name('entrees.link.article');
+    Route::resource('stock/entrees', EntreeArticleController::class);
+    Route::resource('stock/sorties', SortieArticleController::class);
+    Route::get('stock/sorties/link/{id}', [SortieArticleController::class, 'link'])->name('sorties.link.article');
+    Route::get('stock/articles/search', [ArticleController::class, 'seach'])->name('articles.search');
+    
+    ///
+    Route::resource('categorie-articles', CategorieArticleController::class);
+    Route::resource('unite-articles', UniteArticleController::class);
+
+    //adds
+    Route::post('type-frais', [TypeFraisController::class, 'store'])->name('type.frais.store');
+    Route::post('mode-paiements', [ModePaiementController::class, 'store'])->name('mode.paiements.store');
+
+    //rapport
+    Route::get('rapports/stock/periode', [RapportController::class, 'stock'])->name('rapports.stock');
+    Route::post('rapports/stock/periode', [RapportController::class, 'rapportStock'])->name('rapports.stock.store');
+    
+    //presences
+    Route::resource('presences', PresenceController::class);
+    Route::get('presences/classe/{id}', [PresenceController::class , 'classe'])->name('presences.classe');
+    // Route::get('presences/classe/{id}/{date}', [PresenceController::class , 'classe']);
+    Route::post('presences/classe/{classe}', [PresenceController::class , 'setDate'])->name('presences.classe.setDate');
 
 });
 

@@ -41,18 +41,6 @@ class Eleve extends Model
      {
           if (!$this->frequentations->isEmpty()) {
                $frequentations = $this->frequentations;
-               // $curentYear = AnneeScolaire::current();
-               // foreach($frequetation as $freq){
-               //      if ($freq->annee_scolaire->id === $curentYear->id) {
-               //           # code...
-               //      }
-               // }
-
-               // $annee_id = $frequetation->annee_scolaire_id;
-               // $annee = AnneeScolaire::withTrashed()->find($annee_id);
-
-               // //dd($annee->nom, AnneeScolaire::current()->nom, $annee->isCurrent());
-               // //dd($annee->isCurrent());
                foreach($frequentations as $frequentation){
                     if($frequentation->annee_scolaire !== null){
                          if ($frequentation->annee_scolaire->isCurrent()) {
@@ -193,5 +181,15 @@ class Eleve extends Model
           }
 
           return $matricule;
+     }
+
+     public function presence($date = null){
+          $today =  $date ? $date : date('Y-m-d');
+          $presence = Presence::join('frequentations', 'frequentations.id', 'frequentation_id')
+                              ->where('frequentations.eleve_id', $this->id)
+                              ->where('presences.date', $today)
+                              ->select('presences.*')
+                              ->first();
+          return $presence;
      }
 }

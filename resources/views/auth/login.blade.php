@@ -1,8 +1,8 @@
 <x-guest-layout>
     {{-- <x-auth-card> --}}
         {{--<x-slot name="logo">
-            <a href="/">
-                <p class="font-bold text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md">S.A.S</p>
+            <a href="/">S.A.S
+                <p class="font-bold text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md"></p>
             </a>
         </x-slot>
 
@@ -64,7 +64,7 @@
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
                     <div class="w-full lg:hidden flex justify-center">
-                        <span class="font-bold text-center w-50 text-transparent text-6xl bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-md">S.A.S</span>
+                        <span class="font-bold text-center w-50 text-transparent text-6xl bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-md">{{env('APP_NAME')}}</span>
                     </div>
                 <div class="pl-6 pt-2 pb-0 mb-0 lg-max:text-center">
                   <h4 class="font-bold">Authentification</h4>
@@ -95,7 +95,7 @@
             </div>
             <div class="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
               <div class="relative flex flex-col justify-center items-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('../../../public/storage/students.jpg')] rounded-xl ">
-                <span class=" relative font-bold mt-30 w-50 text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md z-100">{{env("SIGLE") ? env("SIGLE") : "S.A.S"}}</span>
+                <span class=" relative font-bold mt-30 w-50 text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md z-100">{{env("SIGLE") ? env("SIGLE") : env('APP_NAME')}}</span>
                 <span class="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-black to-violet-500 opacity-40"></span>
                 <h4 class="z-20 font-bold text-white">"School Administation System"</h4>
                 <p class="z-20 text-white ">The Solution for your School</p>

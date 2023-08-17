@@ -256,7 +256,7 @@ class HoraireController extends Controller
         $cours = $classe->cours();
         // dd($horaires);
         return view('horaires.classe')
-            ->with('page_name', 'Horaire / ' . $classe->nomCourt())
+            ->with('page_name', 'Horaires / ' . $classe->nomCourt())
             ->with('classe', $classe)
             ->with('heures', $heures)
             ->with('horaires', $horaires)

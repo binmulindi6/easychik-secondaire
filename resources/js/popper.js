@@ -9,7 +9,7 @@ createPopper(profile, profile_popper, {
     placement: "bottom",
 });
 
-console.log(1211212);
+// console.log(1211212);
 
 profile.addEventListener("click", () => {
     notify_popper.classList.add("opacity-0");

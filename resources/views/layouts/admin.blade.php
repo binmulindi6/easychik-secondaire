@@ -70,7 +70,7 @@
         <div class="h-19 mt-3 flex flex-col justify-center items-center">
             <a class="flex  m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700"
                 href="{{ route('dashboard') }}">
-                <span class="font-bold text-blue-500 text-3xl  py-1 px-4 rounded-md">S.A.S</span>
+                <span class="font-bold text-blue-500 text-3xl  py-1 px-4 rounded-md">{{env('APP_NAME')}}</span>
             </a>
             @if (Auth::user()->isAdmin())
                 <span class="font-bold text-slate-700 uppercase">Admin</span>
@@ -317,6 +317,22 @@
                         </a>
                     </li>
                     <li class="mt-0.5 w-full">
+                        @if (str_contains($page_name, 'Presences'))
+                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                                href="{{ route('presences.classe', [Auth::user()->classe->id]) }}">
+                            @else
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                    href="{{ route('presences.classe', [Auth::user()->classe->id]) }}">
+                        @endif
+                        <div
+                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-chalkboard text-size-sm">
+                            </i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Presences</span>
+                        </a>
+                    </li>
+                    <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Horaire'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('horaires.show', Auth::user()->classe->id) }}">
@@ -463,24 +479,7 @@
                     </li>
                 @endif
 
-                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
-                    <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Rapports'))
-                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
-                                href="{{ route('rapports') }}">
-                            @else
-                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-                                    href="{{ route('rapports') }}">
-                        @endif
-                        <div
-                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-list text-size-sm">
-                            </i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Rapports</span>
-                        </a>
-                    </li>
-                @endif
+                
                 @if (Auth::user()->isDirecteur() || Auth::user()->isParent())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Messages'))
@@ -500,6 +499,42 @@
                             <span
                                 class="p-flex justify-center font-bold text-4 text-red-500">{{ Auth::unread() && Auth::unread() }}</span>
                         </div>
+                        </a>
+                    </li>
+                    @endif
+                    @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+                    <li class="mt-0.5 w-full">
+                        @if (str_contains($page_name, 'Articles') || str_contains($page_name, 'Entrées') || str_contains($page_name, 'Sorties'))
+                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                                href="{{ route('articles.index') }}">
+                            @else
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                    href="{{ route('articles.index') }}">
+                        @endif
+                        <div
+                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
+                            <i
+                                class="relative top-0 leading-normal text-black text-size-sm fa fa-solid fa-store"></i>
+                        </div>
+                        <div class="w-full flex flex-row items-center gap-5">
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Materiels</span>
+                        </div>
+                        </a>
+                    </li>
+                    <li class="mt-0.5 w-full">
+                        @if (str_contains($page_name, 'Rapports'))
+                            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                                href="{{ route('rapports') }}">
+                            @else
+                                <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                    href="{{ route('rapports') }}">
+                        @endif
+                        <div
+                            class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                            <i class="relative top-0 leading-normal text-black fa fa-solid fa-list text-size-sm">
+                            </i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Rapports</span>
                         </a>
                     </li>
                 @endif

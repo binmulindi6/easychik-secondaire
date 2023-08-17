@@ -12,7 +12,7 @@
     <script src="/assets/js/jsbarcode.min.js"></script>
     <script src="/assets/js/jquery.min.js" ></script>
     <script src="/assets/js/qrcode.min.js" ></script> --}}
-    @vite(['resources/css/carte.css', 'resources/js/carte/index.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>

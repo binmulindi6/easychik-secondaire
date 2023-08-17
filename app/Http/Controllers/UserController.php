@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Session\Session;
 
-class UserController extends Controller
+class 
+UserController extends Controller
 {
     protected $page_name = 'Utilisateurs';
 
@@ -230,4 +231,42 @@ class UserController extends Controller
         );
         return redirect()->route('users.index');
     }
+
+    public function search(Request $request)
+    {
+
+
+        $items = User::join('employers','employer_id','employers.id')
+            ->where('isAdmin', 0)
+            ->where('nom', 'like', '%' . $request->search . '%')
+            ->orWhere('prenom', 'like', '%' . $request->search . '%')
+            ->get();
+
+
+        // dd($users);
+        return view('users.users')
+            ->with('page_name', Auth::user()->isAdmin() ? $this->page_name . ' / Search' : 'Enseignants / Search')
+            ->with('search',  $request->search)
+            ->with('items', $items);
+    }
+    // public function searchEnseignant(Request $request)
+    // {
+
+
+    //     $items = User::join('employers','employer_is','employers.id')
+    //         ->where('isAdmin', 0)
+    //         ->where('nom', 'like', '%' . $request->search . '%')
+    //         ->orWhere('prenom', 'like', '%' . $request->search . '%')
+    //         ->get();
+
+
+    //     // dd($users);
+    //     return view('users.users')
+    //         ->with('page_name', Auth::user()->isAdmin() ? $this->page_name . ' / Search' : 'Enseignants / Search')
+    //         ->with('search',  $request->search)
+    //         ->with('items', $items);
+    // }
+
+    
+
 }

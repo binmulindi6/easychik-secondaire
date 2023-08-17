@@ -1,10 +1,10 @@
-<div class="flex flex-col gap-4 md:flex-row items-center">
+<div class="flex flex-col gap-4 md:flex-row justify-between items-center">
     <div class="flex flex-row gap-4 items-center">
         <x-back link="{{ route('rapports') }}"></x-back>
         @if (str_contains($pagename, 'Perception'))
             @if (!str_contains($pagename, 'Annuel'))
                 <div
-                    class="my-btn btn-display flex justify-center items-center gap-1 bg-slate-100 rounded-3 cursor-pointer bg-white px-4 py-2 min-h-10 min-w-30">
+                    class="my-btn btn-display flex justify-center items-center gap-1 bg-slate-100 rounded-3 cursor-pointer  px-4 py-2 min-h-10 min-w-30">
                     <a href="{{ route('rapports.annuel') }}">
                         <i class="relative top-0 leading-normal text-black fa fa-solid fa-list text-size-sm"></i>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Rapport Annuel</span>
@@ -22,7 +22,7 @@
 
     @if (!str_contains($pagename, 'Periodique'))
         <div
-            class="my-btn btn-display flex justify-center items-center gap-1 bg-slate-100 rounded-3 cursor-pointer bg-white px-4 py-2 min-h-10 min-w-30">
+            class="my-btn btn-display flex justify-center items-center gap-1 bg-slate-100 rounded-3 cursor-pointer px-4 py-2 min-h-10 min-w-30">
             <a href="{{ route('rapports.index') }}">
 
                 <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-list text-size-sm"></i>
