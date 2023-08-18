@@ -54,7 +54,7 @@
         </form>
     </x-auth-card>
 </x-guest-layout> --}}
-<main class="mt-0  transition-all duration-200 ease-in-out">
+<main class="mt-0  transition-all duration-200 ease-in-out bg-white">
     <section>
       <div class="relative flex items-center min-h-screen p-0 overflow-hidden bg-center bg-cover">
         <div class="container z-1">
@@ -66,11 +66,11 @@
                     <div class="w-full lg:hidden flex justify-center">
                         <span class="font-bold text-center w-50 text-transparent text-6xl bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-md">{{env('APP_NAME')}}</span>
                     </div>
-                <div class="pl-6 pt-2 pb-0 mb-0 lg-max:text-center">
+                <div class=" p-2 md:pl-6 pt-2 pb-0 mb-0 lg-max:text-center">
                   <h4 class="font-bold">Authentification</h4>
                   <p class="mb-0">Entrer votre Email et votre Mot de Passe </p>
                 </div>
-                <div class="flex-auto p-6">
+                <div class="flex-auto p-2 md:p-5">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="mb-4">
