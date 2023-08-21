@@ -1,13 +1,51 @@
 @extends('layouts.admin')
 
+<style>
+    body {
+        /* display: none; */
+    }
+
+    /* @page{
+                size: a4 portrait;
+                /* margin: 500px;
+                /* display: none; */
+    /* background: #000; */
+    /*} */
+
+    @media print {
+
+        /* @page{
+                    size: a4 portrait;
+                    margin: 1%;
+                } */
+        body {
+            background: #fff;
+        }
+
+        #printable {
+            /* min-width: 23cm; */
+            margin: auto;
+            transform: scale(0.90);
+            position: fixed;
+            top: 0;
+            left: 0;
+            /* transform-origin: auto 0; */
+            /* padding: 10px; */
+            /* display: none; */
+            /* background: #000; */
+        }
+
+    }
+</style>
+
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
         <x-classe-profile-header-presence :print="true" :today="$day" :data="$classe" :passation="true" />
         @if (isset($annee) && $annee !== null)
             <div id="display-reussite"
-                class="display-passation shadow-2xl container p-4 bg-white rounded-5 flex justify-center w-full">
+                class="display-passation shadow-2xl container p-4 bg-white rounded-5 flex justify-center items-center w-full">
                 <div id="printable" class="flex flex-col px-0 pt-0 lg:w-8/12 md:w-10/12 w-full">
-                    <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                    <table class="items-center w-full mb-0 align-top border-gray-700 text-slate-500">
                         <caption
                             class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base border-b-solid tracking-none whitespace-nowrap text-slate-500">
                             LISTE DE PRESENCE DU {{date('d/m/Y')}}
@@ -38,7 +76,7 @@
                                         {{ $index + 1 }}
                                     </td>
                                     <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
+                                        class="p-1 text-size-sm text-center uppercase align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
                                         <a href="{{ route('eleves.show', $eleve->id) }}">
                                             {{ $eleve->nomComplet() }}
                                         </a>

@@ -262,7 +262,7 @@ class FrequentationController extends Controller
         if ($request->_method == 'PUT') {
             return  $this->update($request, $id);
         }
-        dd("show");
+        abort(404);
     }
 
     /**
@@ -362,7 +362,7 @@ class FrequentationController extends Controller
             ->orWhere('lieu_naissance', 'like', '%' . $request->search . '%')
             ->orWhere('prenom', 'like', '%' . $request->search . '%')*/
             ->get();
-        //dd($items);
+        // dd($items);
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::orderBy('nom')->get();
 

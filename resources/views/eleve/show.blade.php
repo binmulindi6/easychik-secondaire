@@ -111,11 +111,12 @@
     
                                     @if ($item->frequentations->count() > 0)
                                         @foreach ($item->frequentations as $frequetation)
+                                            @if ($frequetation->annee_scolaire)
                                             <tr class=" rounded-2xl hover:bg-slate-100">
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
                                                     {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                        {{ $frequetation->annee_scolaire === null ? 'null' : $frequetation->annee_scolaire->nom }}
+                                                        {{$frequetation->annee_scolaire->nom }}
                                                     {{-- </a> --}}
                                                 </td>
                                                 <td
@@ -125,6 +126,7 @@
                                                     {{-- </a> --}}
                                                 </td>
                                             </tr>
+                                            @endif
                                         @endforeach
                                     @endif
                                 </tbody>

@@ -1,4 +1,8 @@
 {
+  "storage/app/public/logo.png": {
+    "file": "assets/logo.90e12f9a.png",
+    "src": "storage/app/public/logo.png"
+  },
   "resources/css/fonts/nucleo-icons.eot": {
     "file": "assets/nucleo-icons.f899f875.eot",
     "src": "resources/css/fonts/nucleo-icons.eot"
@@ -24,7 +28,7 @@
     "src": "resources/css/fonts/nucleo-icons.svg"
   },
   "resources/js/app.js": {
-    "file": "assets/app.e27d5d73.js",
+    "file": "assets/app.784f7e02.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -44,7 +48,7 @@
     "isDynamicEntry": true
   },
   "node_modules/canvg/lib/index.es.js": {
-    "file": "assets/index.es.09ae7c35.js",
+    "file": "assets/index.es.d1368a7a.js",
     "src": "node_modules/canvg/lib/index.es.js",
     "isDynamicEntry": true,
     "imports": [
@@ -52,7 +56,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app.1864099b.css",
+    "file": "assets/app.6995f842.css",
     "src": "resources/css/app.css",
     "isEntry": true
   }
