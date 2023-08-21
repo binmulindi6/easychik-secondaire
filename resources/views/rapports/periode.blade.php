@@ -33,7 +33,7 @@
                         <caption id="header" class="text-xs py-2 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             
                                 <span class="font-semibold text-4">
-                                    Rapport de perception des frais du {{$debut}} au {{$fin}}
+                                    Rapport de perception des frais du {{date_format(date_create($debut),'d/m/Y')}} au {{date_format(date_create($fin),'d/m/Y')}}
                                 </span>
                             
                         </caption>
@@ -61,7 +61,7 @@
                             @if (isset($paiements) && count($paiements) > 0)
                             @foreach ($paiements as $frais)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <td class="px-6 border-b" rowspan="4">DU: {{$debut ." AU ". $fin}}</td>
+                                    <td class="px-6 border-b" rowspan="4">DU: {{date_format(date_create($debut),'d/m/Y') ." AU ". date_format(date_create($fin),'d/m/Y')}}</td>
                                     <td class="px-6 border-b" rowspan="4">{{$frais['nom']}}</td>
                                 </tr>
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">

@@ -48,12 +48,14 @@ class Examen extends Model
                 Examen::join('trimestres', 'trimestres.id', 'trimestre_id')
                     ->where('trimestres.annee_scolaire_id', AnneeScolaire::current()->id)
                     ->orderBy('trimestres.id', 'desc')
+                    ->select('examens.*')
                     ->get() 
             : 
                 Examen::join('trimestres', 'trimestres.id', 'trimestre_id')
                     ->where('trimestres.annee_scolaire_id', AnneeScolaire::current()->id)
                     ->where('classe_id', $classe_id)
                     ->orderBy('trimestres.id', 'desc')
+                    ->select('examens.*')
                     ->get();
         }
 }

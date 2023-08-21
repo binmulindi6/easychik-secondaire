@@ -31,6 +31,7 @@ class FrequentationController extends Controller
                 $frequentations = Frequentation::where('annee_scolaire_id', $annee->id)
                 ->where('classe_id', Auth::user()->classe->id)
                 ->orderBy('frequentations.id', 'desc')
+                ->select('frequentations.*')
                ->limit(20)
                 ->get();
             }
@@ -73,6 +74,7 @@ class FrequentationController extends Controller
                 $frequentations = Frequentation::where('annee_scolaire_id', $annee->id)
                 ->where('classe_id', Auth::user()->classe->id)
                 ->orderBy('frequentations.id', 'desc')
+                ->select('frequentations.*')
                ->limit(20)
                 ->get();
             }

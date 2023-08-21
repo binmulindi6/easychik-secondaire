@@ -27,10 +27,7 @@ class ExamenController extends Controller
 
         if (Auth::user()->isEnseignant()) {
             if (Auth::user()->classe()) {
-                $examens = Examen::where('classe_id',  Auth::user()->classe->id)
-                    ->latest()
-                    //    ->limit(20)
-                    ->get();
+                $examens = Examen::currents(Auth::user()->classe->id);
                 $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
                     ->orderBy('nom', 'asc')->get();
             } else {
@@ -145,9 +142,10 @@ class ExamenController extends Controller
     public function edit($id)
     {
         $examen = Examen::find($id);
-        $examens = Examen::all();
+        $examens = Examen::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
         if (Auth::user()->isEnseignant()) {
+            $examens = Examen::currents(Auth::user()->classe->id);
             $cours = Cours::where('classe_id', Auth::user()->classe->id)
                 ->orderBy('nom', 'asc')->get();
         }
@@ -220,6 +218,7 @@ class ExamenController extends Controller
     {
         $items = Examen::join('cours', 'cours.id', '=', 'examens.cours_id')
             ->where('cours.nom', 'like', '%' . $request->search . '%')
+            ->select('examens.*')
             // ->join('trimestres', 'trimestres.id', '=', 'examens.cours_id')
             // ->where('trimestres.nom', 'like', '%' . $request->search . '%')
             ->get();
@@ -227,7 +226,7 @@ class ExamenController extends Controller
         $cours = Cours::orderBy('nom', 'asc')->get();
 
         if (Auth::user()->isEnseignant()) {
-            $cours = Cours::where('classe_id', Auth::user()->classe->id)
+            $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
                 ->orderBy('nom', 'asc')->get();
         }
 

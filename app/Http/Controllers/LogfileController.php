@@ -9,7 +9,7 @@ class LogfileController extends Controller
 {
     public function index()
     {   
-        $logs = Logfile::all();
+        $logs = Logfile::limit(100)->get();
 
         // dd(Logfile::classe()->table);
 

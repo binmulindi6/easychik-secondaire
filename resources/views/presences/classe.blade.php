@@ -47,7 +47,7 @@
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                         @if ($eleve->presence($day))
-                                            {{$eleve->presence()->type_presence->abbreviation}}
+                                            {{$eleve->presence($day)->type_presence->abbreviation}}
                                         @else
                                         <form id="frm{{ $eleve->id }}" action="{{ route('presences.api.store') }}"
                                             method="POST" class="flex justify-center items-center gap-2">
@@ -65,18 +65,18 @@
                                                     <input id="{{ $eleve->id }}" type="button"
                                                         placeholder="{{ $type->id }}"
                                                         value="{{ $type->abbreviation }}" title="{{ $type->nom }}"
-                                                        class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                                        class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                 @else
                                                     @if ($type->abbreviation === 'A')
                                                         <input id="{{ $eleve->id }}" type="button"
                                                             placeholder="{{ $type->id }}"
                                                             value="{{ $type->abbreviation }}" title="{{ $type->nom }}"
-                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                     @else
                                                         <input id="{{ $eleve->id }}" type="button"
                                                             placeholder="{{ $type->id }}"
                                                             value="{{ $type->abbreviation }}" title="{{ $type->nom }}"
-                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                     @endif
                                                 @endif
                                             @endforeach

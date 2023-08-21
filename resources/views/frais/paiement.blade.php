@@ -87,7 +87,7 @@
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="type_frais" :value="__('Date')" />
-                            <x-input id="montant" name="date" type='date' class="block mt-1 w-full"
+                            <x-input id="montant" name="date" type='date' max="{{date('Y-m-d')}}" class="block mt-1 w-full"
                                 :value="old('date')" />
                         </div>
                     </div>

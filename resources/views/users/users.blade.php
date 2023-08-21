@@ -8,7 +8,7 @@
     @else
     <x-nav-users :pagename="$page_name"> </x-nav-users>
     @endif
-        @if (str_contains($page_name,'Utilisateurs') &&  !count($errors) > 0 || str_contains($page_name,'Enseignants'))
+        @if (!str_contains($page_name,'Create') && !count($errors) > 0 || str_contains($page_name,'Enseignants'))
                 <div class="frm-create hidden container p-5 bg-white rounded-5 shadow-2xl ">
                 @else
                     <div class="frm-create flex flex-col gap-4 container p-5 bg-white rounded-5 shadow-2xl">

@@ -179,6 +179,7 @@
                                                 <div class="flex justify-center gap-4 align-middle">
                                                     <a href="{{ route('evaluations.edit', $item->id) }}" title="Modifier">
                                                         <i class="fa fa-solid fa-pen"></i>
+                                                        {{-- {{$item->id}} --}}
                                                     </a>
                                                     <form class="delete-form" class="delete-form"
                                                         action="{{ route('evaluations.destroy', $item->id) }}" method="post">
@@ -217,7 +218,7 @@
                                             class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                             <div class="flex justify-center gap-4 align-middle">
                                                 <a href="{{ route('evaluations.edit', $item->id) }}" title="Modifier">
-                                                    <i class="fa fa-solid fa-pen"></i>
+                                                    {{-- <i class="fa fa-solid fa-pen"></i> --}} {{$item->id}}
                                                 </a>
                                                 <form class="delete-form" class="delete-form"
                                                     action="{{ route('evaluations.destroy', $item->id) }}" method="post">
