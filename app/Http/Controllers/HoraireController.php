@@ -22,11 +22,15 @@ class HoraireController extends Controller
     {
         $classes = Classe::orderBy('niveau_id')->get();
 
-        // if(Auth::user()->isParent()){
-        //     $eleves = Auth::user()->parrain->eleves;
-        //     // dd($eleves);
-        // }
+        if(Auth::user()->isParent()){
+            $eleves = Auth::user()->parrain->eleves;
+            $classes = [];
+            foreach($eleves as $eleve){
+                $classes[] = $eleve->classe(true);
+            }
+        }
 
+        
         return view('horaires.index')
             ->with('page_name', 'Horaires')
             ->with('classes', $classes);

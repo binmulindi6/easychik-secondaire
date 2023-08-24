@@ -5,7 +5,7 @@
     <!-- cards -->
     <div class="w-full px-6 py-0.6 mx-auto">
         <!-- row 1 -->
-        @if (Auth::user()->isAdmin() || Auth::user()->isDirecteur())
+        @if (Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isSecretaire())
             <div class="flex flex-wrap -mx-3">
                 <!-- card3 -->
                 <a href="{{ route('classes.index') }}"

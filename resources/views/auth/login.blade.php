@@ -64,7 +64,7 @@
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
                     <div class="w-full lg:hidden flex justify-center">
-                        <span class="font-bold text-center w-50 text-transparent text-6xl bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-md">{{env('APP_NAME')}}</span>
+                        <span class="font-bold text-center text-transparent text-5xl sm:text-6xl bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-md">{{env("SIGLE") ? env("SIGLE") : env('APP_NAME')}}</span>
                     </div>
                 <div class=" p-2 md:pl-6 pt-2 pb-0 mb-0 lg-max:text-center">
                   <h4 class="font-bold">Authentification</h4>
@@ -84,7 +84,7 @@
                             <label class="ml-2 font-normal cursor-pointer select-none text-size-sm text-slate-700" for="rememberMe">Se Souvenir de moi</label>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-500 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-size-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25">Connexion</button>
+                            <button type="submit" class="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-700 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-size-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25">Connexion</button>
                         </div>
                   </form>
                 </div>
@@ -95,7 +95,7 @@
             </div>
             <div class="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
               <div class="relative flex flex-col justify-center items-center h-full bg-cover px-24 m-4 overflow-hidden bg-[url('../../../public/storage/students.jpg')] rounded-xl ">
-                <span class=" relative font-bold mt-30 w-50 text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md z-100">{{env("SIGLE") ? env("SIGLE") : env('APP_NAME')}}</span>
+                <span class=" relative font-bold mt-30 w- text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md z-100">{{env("SIGLE") ? env("SIGLE") : env('APP_NAME')}}</span>
                 {{-- <span class=" relative font-bold mt-30 w-50 text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md z-100"><span class="p-1 bg-white rounded-full h-4">e</span>Chik</span> --}}
                 <span class="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-black to-violet-500 opacity-40"></span>
                 <h4 class="z-20 font-bold text-white">"School Management System"</h4>

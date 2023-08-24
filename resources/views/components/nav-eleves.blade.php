@@ -1,4 +1,4 @@
-<div class="flex flex-row justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
+<div class="flex  flex-col md:flex-row justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
 
     @if (isset($joker))
         <div
@@ -125,7 +125,7 @@
 </div>
 
 <div
-    class="relative shadow-xl justify-end flex flex-row gap-4  items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
+    class="relative shadow-xl justify-end flex flex-row gap-4  items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full px-4">
 
     @if (
         (str_contains($pagename, 'Eleves') || str_contains($pagename, 'Import')) &&

@@ -6,10 +6,12 @@ use App\Models\User;
 use App\Models\Classe;
 use App\Models\Logfile;
 use App\Models\Presence;
+use Illuminate\Support\Arr;
 use App\Models\TypePresence;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use App\Models\Frequentation;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class PresenceController extends Controller
@@ -23,10 +25,14 @@ class PresenceController extends Controller
     {
         $classes = Classe::orderBy('niveau_id')->get();
 
-        // if(Auth::user()->isParent()){
-        //     $eleves = Auth::user()->parrain->eleves;
-        //     // dd($eleves);
-        // }
+        if(Auth::user()->isParent()){
+            $eleves = Auth::user()->parrain->eleves;
+            $classes = [];
+            foreach($eleves as $eleve){
+                $classes[] = $eleve->classe(true);
+            }
+        }
+
 
         return view('presences.index')
             ->with('page_name', 'Presences')
@@ -177,5 +183,63 @@ class PresenceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //setPeriode
+    public function setPeriode(Request $req, $id){
+        $req->validate([
+            'debut' => ['required' , 'date'],
+            'fin' => ['required' , 'date'],
+        ]);
+        // dd(10);
+        return $this->periode($id,$req->debut, $req->fin);
+    }
+
+    public function periode($id, $start = null, $end = null)
+    {
+        //objects from Db
+        $classe = Classe::findOrFail($id);
+        $types = TypePresence::all();
+        $eleves = $classe->eleves();
+
+        // if(Auth::user()->isParent()){
+        //     $eleves = Auth::user()->parrain->eleves;
+        //     $classes = [];
+        //     foreach($eleves as $eleve){
+        //         $classes[] = $eleve->classe(true);
+        //     }
+        // }
+
+        // dd($eleves[0]->parrain);
+        
+        //the first day
+        $debut = $start ? date_create($start) : date_create(date('Y-m-d'));
+        $holder = date_create(date_format($debut, 'Y-m-d'));
+        //the last day
+
+        // dd(date_format($debut, 'w'));        
+
+        $fin = $end ? date_create($end) : date_add(date_create(date_format($holder, 'Y-m-d')), date_interval_create_from_date_string('7 days'));
+        $days = array();
+
+        for($i = $holder; $i <= $fin; date_add($i, date_interval_create_from_date_string('1 day'))){
+            $days[] = date_format($i, 'Y-m-d'); 
+        }
+        // dd($days);
+
+        $annee = AnneeScolaire::current();
+
+        // dd($eleves);
+
+        return view('presences.periode')
+            ->with('page_name', 'Presences Classe de ' . $classe->nomCourt() . ' du ' . date_format($debut,'d/m/Y') . ' au ' . date_format($fin,'d/m/Y'))
+            ->with('classe', $classe)
+            ->with('annee', $annee)
+            ->with('types', $types)
+            ->with('debut', date_format($debut,'Y-m-d'))
+            ->with('fin', date_format($fin,'Y-m-d'))
+            ->with('days', $days)
+            ->with('isPeriode', true)
+            ->with('eleves', $eleves);
     }
 }

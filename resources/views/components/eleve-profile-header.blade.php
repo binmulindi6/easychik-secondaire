@@ -15,27 +15,27 @@
                     <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
                         {{ $data->matricule }}
                     </p>
-                    <a href={{route('eleves.show', $data->id)}}>
+                    <a href={{ route('eleves.show', $data->id) }}>
                         <h5 class="mb-1 hover:underline dark:text-white">{{ $data->nom . ' ' . $data->prenom }}</h5>
                     </a>
                     <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
                         {{ $data->sexe === 'M' ? 'Masculin' : 'Feminin' }}
                     </p>
-                    @if ($data->classe(false) !== null )
+                    @if ($data->classe(false) !== null)
                         <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
                             {{ $data->classe(false) }}
                         </p>
                     @else
-                    @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
-                    <a class="text-blue-500 underline"
-                        href="{{ route('frequentations.link', $data->id) }}"> Ajouter dans une classe
-                    </a>
-                    @else
-                        {{'Pas Inscrit(e)'}}
+                        @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+                            <a class="text-blue-500 underline" href="{{ route('frequentations.link', $data->id) }}">
+                                Ajouter dans une classe
+                            </a>
+                        @else
+                            {{ 'Pas Inscrit(e)' }}
+                        @endif
                     @endif
-                    @endif
-                    
-                    
+
+
                 </div>
             </div>
             @if (isset($eleves) && isset($index) && !isset($print))
@@ -43,10 +43,10 @@
                     <div class="relativeright-0">
                     </div>
                     <ul class="relative flex flex-wrap gap-2  list-none " role="tablist">
-                        @if (Auth::user()->isSecretaire() || Auth::user()->isParent() && ($data->currentFrequentation() !== null))
+                        @if ((Auth::user()->isSecretaire() || Auth::user()->isDirecteur() || Auth::user()->isParent()) && $data->currentFrequentation() !== null)
                             <li
                                 class=" cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                                <a href="{{route('eleves.paiements.show', [$data->id, $data->currentFrequentation()->id])}}"
+                                <a href="{{ route('eleves.paiements.show', [$data->id, $data->currentFrequentation()->id]) }}"
                                     class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                     role="tab" aria-selected="false">
                                     <i class="fa fa-solid fa-money-bill"></i>
@@ -55,24 +55,25 @@
                             </li>
                         @endif
 
-                        <li
-                            id="{{route('eleves.carte', $data->id)}}"
-                            class="btn-carte cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                            <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                role="tab" aria-selected="false">
-                                <i class="fa fa-solid fa-id-card"></i>
-                                <span class="ml-2">Carte D'Eleve</span>
-                            </a>
-                        </li>
-                        <li
-                            class="btn-identity cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                            <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                role="tab" aria-selected="false">
-                                <i class="fa fa-solid fa-id-card"></i>
-                                <span class="ml-2">Identité Complete</span>
-                            </a>
-                        </li>
-                        
+                        @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+                            <li id="{{ route('eleves.carte', $data->id) }}"
+                                class="btn-carte cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    role="tab" aria-selected="false">
+                                    <i class="fa fa-solid fa-id-card"></i>
+                                    <span class="ml-2">Carte D'Eleve</span>
+                                </a>
+                            </li>
+                            <li
+                                class="btn-identity cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    role="tab" aria-selected="false">
+                                    <i class="fa fa-solid fa-id-card"></i>
+                                    <span class="ml-2">Identité Complete</span>
+                                </a>
+                            </li>
+                        @endif
+
                         @if (!Auth::user()->isParent())
                             <li
                                 class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
@@ -95,66 +96,71 @@
                         <li
                             class="btn-identity cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                             @if (isset($periode))
-                                <span id="btn-show-fiche" href={{route('resultat.periode',[$periode->id, $data->id])}}  class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                role="tab" aria-selected="false">
+                                <span id="btn-show-fiche"
+                                    href={{ route('resultat.periode', [$periode->id, $data->id]) }}
+                                    class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    role="tab" aria-selected="false">
                                     <i class="fa fa-solid fa-table-list text-green-500"></i>
-                                    <span class="ml-2">Fiche de Cote {{$periode->nom}}</span>
+                                    <span class="ml-2">Fiche de Cote {{ $periode->nom }}</span>
                                 </span>
                             @else
-                                <span id="btn-show-fiche" href={{route('resultat.trimestre',[$trimestre->id, $data->id])}} class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                role="tab" aria-selected="false">
+                                <span id="btn-show-fiche"
+                                    href={{ route('resultat.trimestre', [$trimestre->id, $data->id]) }}
+                                    class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    role="tab" aria-selected="false">
                                     <i class="fa fa-solid fa-table-list text-green-500"></i>
-                                    <span class="ml-2">Fiche de Cote {{$trimestre->nom}}</span>
+                                    <span class="ml-2">Fiche de Cote {{ $trimestre->nom }}</span>
                                 </span>
-            
                             @endif
                         </li>
                         <li
                             class="btn-identity cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                             @if (isset($periode))
-                                <a href={{route('resultat.periode',[$periode->id, $data->id])}}  class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                role="tab" aria-selected="false">
+                                <a href={{ route('resultat.periode', [$periode->id, $data->id]) }}
+                                    class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    role="tab" aria-selected="false">
                                     <i class="fa fa-solid fa-table-list text-blue-700"></i>
-                                    <span class="ml-2">Bulletin {{$periode->nom}}</span>
+                                    <span class="ml-2">Bulletin {{ $periode->nom }}</span>
                                 </a>
                             @else
-                                <a href={{route('resultat.trimestre',[$trimestre->id, $data->id])}} class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                role="tab" aria-selected="false">
+                                <a href={{ route('resultat.trimestre', [$trimestre->id, $data->id]) }}
+                                    class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    role="tab" aria-selected="false">
                                     <i class="fa fa-solid fa-table-list text-blue-700"></i>
-                                    <span class="ml-2">Bulletin {{$trimestre->nom}}</span>
+                                    <span class="ml-2">Bulletin {{ $trimestre->nom }}</span>
                                 </a>
-            
                             @endif
                         </li>
-                        
+
                     </ul>
                 </div>
             @endif
-            @if (isset($print) && $print===true)
-                        <div class="px-3 mx-auto mt-4 sm:my-auto sm:mr-0  md:flex-none">
-                            <ul class="relative flex flex-wrap gap-2  list-none " role="tablist">
-                                
-                            <li
-                                class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
-                                <span id="joker-print" class="z-30 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
-                                    <i class="fa fa-solid fa-print text-blue-500"></i>
-                                    <span class="mr-2">Imprimer le  Bulletin</span>
-                                </span>
-                            </li>
+            @if (isset($print) && $print === true)
+                <div class="px-3 mx-auto mt-4 sm:my-auto sm:mr-0  md:flex-none">
+                    <ul class="relative flex flex-wrap gap-2  list-none " role="tablist">
 
-                            @if (!Auth::user()->isParent() && isset($index) && isset($eleves) && isset($annee))
+                        <li
+                            class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                            <span id="joker-print"
+                                class="z-30 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
+                                <i class="fa fa-solid fa-print text-blue-500"></i>
+                                <span class="mr-2">Imprimer le Bulletin</span>
+                            </span>
+                        </li>
+
+                        @if (!Auth::user()->isParent() && isset($index) && isset($eleves) && isset($annee))
                             <li
                                 class="btn-next cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                                 <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                    href="{{ route('resultat.bulletin', [$annee->id,$eleves->count() === $index + 1 ? $eleves[0]->id : $eleves[$index + 1]->id]) }}"
+                                    href="{{ route('resultat.bulletin', [$annee->id, $eleves->count() === $index + 1 ? $eleves[0]->id : $eleves[$index + 1]->id]) }}"
                                     role="tab" aria-selected="false" title="Eleve Suivant">
                                     <span class="mr-2">Suivant</span>
                                     <i class="fa fa-solid fa-arrow-right"></i>
                                 </a>
                             </li>
-                            @endif
-                            </ul>
-                        </div>
+                        @endif
+                    </ul>
+                </div>
             @endif
         </div>
     </div>

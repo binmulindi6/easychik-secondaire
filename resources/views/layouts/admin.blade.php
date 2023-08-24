@@ -63,15 +63,15 @@
 
 <body
     class="m-0 font-sans antialiased font-normal dark:bg-slate-900 text-size-base leading-default bg-gray-50 text-slate-500">
-    <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
+    <div class="absolute w-full bg-blue-700 dark:hidden min-h-75"></div>
     <!-- sidenav  -->
     <aside
-        class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-2xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
+        class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-2 sm:my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-2xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
         aria-expanded="false">
         <div class="h-19 mt-3 flex flex-col justify-center items-center">
             <a class="flex  m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700"
                 href="{{ route('dashboard') }}">
-                <span class="font-bold text-blue-500 text-3xl  py-1 px-4 rounded-md">{{env('APP_NAME')}}</span>
+                <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{env('APP_NAME')}}</span>
             </a>
             @if (Auth::user()->isAdmin())
                 <span class="font-bold text-slate-700 uppercase">Admin</span>
@@ -119,7 +119,7 @@
                     <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                         <i
-                            class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-television text-size-sm"></i>
+                            class="relative top-0 leading-normal text-blue-700 fa fa-solid fa-television text-size-sm"></i>
                     </div>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Dashboard</span>
                     </a>
@@ -193,7 +193,7 @@
                         @endif
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                            <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-book text-size-sm">
+                            <i class="relative top-0 leading-normal text-blue-700 fa fa-solid fa-book text-size-sm">
                             </i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enseignements</span>
@@ -278,7 +278,7 @@
                         <div
                             class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                             <i
-                                class="relative top-0 leading-normal text-blue-500 fa fa-regular fa-clipboard text-size-sm"></i>
+                                class="relative top-0 leading-normal text-blue-700 fa fa-regular fa-clipboard text-size-sm"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Traveaux</span>
                         </a>
@@ -351,6 +351,22 @@
                     </li>
                 @endif
                 @if (!Auth::user()->isEnseignant())
+                <li class="mt-0.5 w-full">
+                    @if (str_contains($page_name, 'Presences'))
+                        <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                            href="{{ route('presences.index') }}">
+                        @else
+                            <a class=" hover:bg-blue-500/13 rounded-lg dark:text-white dark:opacity-80 py-2.7 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                                href="{{ route('presences.index') }}">
+                    @endif
+                    <div
+                        class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                        <i class="relative top-0 leading-normal text-black fa fa-solid fa-chalkboard text-size-sm">
+                        </i>
+                    </div>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Presences</span>
+                    </a>
+                </li>
                 <li class="mt-0.5 w-full">
                     @if (str_contains($page_name, 'Horaire'))
                         <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -589,7 +605,7 @@
         <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start"
             navbar-main navbar-scroll="false">
             <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
-                <nav>
+                <nav class="hidden md:block">
                     <!-- breadcrumb -->
                     <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
                         <li class="leading-normal text-size-sm">
@@ -613,7 +629,7 @@
                     <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full gap-2">
                         <!-- online builder btn  -->
                         <!-- <li class="flex items-center">
-                <a class="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center text-blue-500 uppercase align-middle transition-all ease-in bg-transparent border border-blue-500 border-solid rounded-lg shadow-none cursor-pointer leading-pro text-size-xs hover:-translate-y-px active:shadow-xs hover:border-blue-500 active:bg-blue-500 active:hover:text-blue-500 hover:text-blue-500 tracking-tight-rem hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
+                <a class="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center text-blue-700 uppercase align-middle transition-all ease-in bg-transparent border border-blue-500 border-solid rounded-lg shadow-none cursor-pointer leading-pro text-size-xs hover:-translate-y-px active:shadow-xs hover:border-blue-500 active:bg-blue-500 active:hover:text-blue-700 hover:text-blue-700 tracking-tight-rem hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
               </li> -->
 
 
@@ -637,7 +653,7 @@
                                     href="{{ url('profile') }}">
                                     <div
                                         class="p-0 text-black font-semibold transition-all text-size-sm ease-nav-brand">
-                                        <i class="text-blue-500 fa fa-user sm:mr-1"></i>
+                                        <i class="text-blue-700 fa fa-user sm:mr-1"></i>
                                         <span class="hidden sm:inline">Profile</span>
                                     </div>
                                 </a>

@@ -40,7 +40,7 @@
 
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
-        <x-classe-profile-header-presence :print="true" :today="$day" :data="$classe" :passation="true" />
+        <x-classe-profile-header-presence :noHeader="true" :print="true" :today="$day" :data="$classe" :passation="true" />
         @if (isset($annee) && $annee !== null)
             <div id="display-reussite"
                 class="display-passation shadow-2xl container p-4 bg-white rounded-5 flex justify-center items-center w-full">
@@ -131,7 +131,7 @@
             </div>
         @else
             <div class=" flex justify-center shadow-2xl container p-6 bg-white rounded-5">
-                <span class="text-red-500 font-bold text-center text-5"> Passation de Classe Indisponible </span>
+                <span class="text-red-500 font-bold text-center text-5"> Listes de Presences Indisponibles </span>
             </div>
         @endif
 
