@@ -6,13 +6,13 @@
             @if (isset($parent))
                 <x-nav-eleves :search="$search" :pagename="$page_name" :parent="$parent"></x-nav-eleves>
             @else
-                <x-nav-eleves :search="$search" :pagename="$page_name" ></x-nav-eleves>
+                <x-nav-eleves :search="$search" :pagename="$page_name"></x-nav-eleves>
             @endif
         @else
-             @if (isset($parent))
+            @if (isset($parent))
                 <x-nav-eleves :pagename="$page_name" :parent="$parent"></x-nav-eleves>
             @else
-                <x-nav-eleves :pagename="$page_name" ></x-nav-eleves>
+                <x-nav-eleves :pagename="$page_name"></x-nav-eleves>
             @endif
         @endif
 
@@ -192,10 +192,10 @@
     </div>
     @endif
 
-    @if(isset($imported))
+    @if (isset($imported))
         <div
-                    class="display text-center font-semibold container p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
-                ✅ {{$imported}} Eleves Importés avec succes
+            class="display text-center font-semibold container p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
+            ✅ {{ $imported }} Eleves Importés avec succes
         </div>
     @endif
 
@@ -210,9 +210,9 @@
 
         <div class=" flex justify-between pb-0 mb-0 bg-white rounded-t-2xl">
             @if (isset($parent) && $parent != null)
-            <h6>Choisir Un Eleve</h6>
+                <h6>Choisir Un Eleve</h6>
             @else
-            <h6>Eleves</h6>
+                <h6>Eleves</h6>
             @endif
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">
@@ -225,25 +225,27 @@
                         <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Nom, Prenom </th>
-                        <th
-                            class="px-1 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Sexe </th>
-                        <th
-                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Lieu, Date de Naissance </th>
-                        <th
-                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Nom du Pere </th>
-                        <th
-                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Nom de la Mere </th>
-                        <th
-                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Adresse </th>
+                        @if (!Auth::user()->isParent())
+                            <th
+                                class="px-1 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Sexe </th>
+                            <th
+                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Lieu, Date de Naissance </th>
+                            <th
+                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Nom du Pere </th>
+                            <th
+                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Nom de la Mere </th>
+                            <th
+                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Adresse </th>
+                        @endif
                         <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Classe </th>
-                        @if ( Auth::user()->isSecretaire())
+                        @if (Auth::user()->isSecretaire())
                             <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap "
                                 colspan="2">action</th>
                         @endif
@@ -255,7 +257,8 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                     @if (isset($parent) && $parent != null)
-                                        <a class="hover:text-red-400" href="{{ route('parent-eleve.link', [$parent,$item->id]) }}">
+                                        <a class="hover:text-red-400"
+                                            href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
                                             {{ $item->matricule }}
                                         </a>
                                     @else
@@ -267,44 +270,47 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     @if (isset($parent) && $parent != null)
-                                        <a class="hover:text-red-400" href="{{ route('parent-eleve.link', [$parent,$item->id]) }}">
-                                            {{ $item->nom . ' ' . $item->prenom }}</td>
-                                        </a>
-                                    @else
-                                        <a class="hover:text-red-400" href="{{ route('eleves.show', $item->id) }}">
-                                            {{ $item->nom . ' ' . $item->prenom }}</td>
-                                        </a>
-                                    @endif
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->sexe }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->lieu_naissance . ', ' . $item->date_naissance }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->nom_pere }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->nom_mere }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->adresse }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    @if ($item->currentFrequentation() === null)
-                                        @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
-                                        <a class="text-blue-500 underline"
+                                        <a class="hover:text-red-400"
+                                            href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
+                                            {{ $item->nom . ' ' . $item->prenom }}
+                                </td>
+                                </a>
+                            @else
+                                <a class="hover:text-red-400" href="{{ route('eleves.show', $item->id) }}">
+                                    {{ $item->nom . ' ' . $item->prenom }}</td>
+                                </a>
+                        @endif
+                        @if (!Auth::user()->isParent())
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->sexe }}</td>
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->lieu_naissance . ', ' . $item->date_naissance }}</td>
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->nom_pere }}</td>
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->nom_mere }}</td>
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->adresse }}</td>
+                        @endif
+                        <td class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                            @if ($item->currentFrequentation() === null)
+                                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+                                    <a class="text-blue-500 underline"
                                         href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
                                     </a>
-                                    @else
+                                @else
                                     Pas Inscrit(e)
-                                        @endif
-                                    @else
-                                        {{ $item->currentFrequentation()->classe->nomCourt() }}
-                                    @endif
-                                </td>
-                        @if ( Auth::user()->isSecretaire())
+                                @endif
+                            @else
+                                {{ $item->currentFrequentation()->classe->nomCourt() }}
+                            @endif
+                        </td>
+                        @if (Auth::user()->isSecretaire())
                             <td
                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                 <div class="flex justify-center gap-4 align-middle">
@@ -316,9 +322,9 @@
                                         @csrf
                                         @method('DELETE')
                                         @if (Auth::user()->isDirecteur())
-                                        <button class="delete-btn" type="submit" title="Effacer">
-                                            <i class="text-red-500 fa fa-solid fa-trash"></i>
-                                        </button>
+                                            <button class="delete-btn" type="submit" title="Effacer">
+                                                <i class="text-red-500 fa fa-solid fa-trash"></i>
+                                            </button>
                                         @endif
                                     </form>
                                 </div>

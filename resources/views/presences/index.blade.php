@@ -6,7 +6,7 @@
         <div class="display shadow-2xl container p-4 bg-white rounded-5">
             <div class="flex flex-wrap w-full">
                 @foreach ($classes as $item)
-                    <x-classe-card :to="'presences.classe'" :data="$item"></x-classe-card>
+                    <x-classe-card :to="'presences.classe.periode'" :data="$item"></x-classe-card>
                 @endforeach
             </div>
         </div>

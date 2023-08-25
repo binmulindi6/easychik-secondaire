@@ -15,59 +15,55 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
-    <div id="root">
+<body id="card-body">
+    <div id="root" class="p-20">
         <div class="btn-container">
             <button id="btn-download">Telecharger La Carte </button>
         </div>
 
 
         <div id="card-back" class="card-container">
-            <div class="container header">
-                <span class="min">REPUBLIQUE DEMOCRATIQUE DU CONGO</span>
-                <span class="min">PROVINCE DU SUD KIVU</span>
-                <span class="min">MINISTERE DE L'ENSEIGNAMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE</span>
-                <span class="min">CARTE D'ELEVE</span>
+            <div class="header flex flex-col justify-center items-center p-5">
+                <span class="text-10 font-bold uppercase">REPUBLIQUE DEMOCRATIQUE DU CONGO</span>
+                <span class="text-10 font-bold uppercase">MINISTERE DE L'ENSEIGNAMENT PRIMAIRE, SECONDAIRE ET
+                    TECHNIQUE</span>
+                <span class="text-10 font-bold uppercase">PROVINCE DU SUD KIVU</span>
+                {{-- <span class="text-10 font-bold uppercase">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span> --}}
 
             </div>
-            <div class="container card-body">
-                <!-- <div class="images">
-                        <img src="/assets/img/bike.png" alt="">
-                        <img src="/assets/img/tricyle.png" alt="">
-                    </div> -->
-                <div class="text">
-                    <span id="division">S.A.S <span id="sud-kivu">SCHOOL ADMINISTRATION SYSYTEM</span></span>
-                    <span class="text-2">
+            <div class="card-body">
+                <div class="flex flex-col justify-center items-center p-10">
+                    <span
+                        class="text-20 font-semibold text-blue-700">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span>
+                    <span class="text-20 border-black border-b-8 w-10/12 font-semibold">CARTE D'ELEVE</span>
+                    {{-- <span >eChik <span>SCHOOL MANAGEMENT SYSYTEM</span></span> --}}
+                    <span class="text-10">
                         Les autoritées politico-adminitratives, policiers et militaires sont priés de porter leur
                         assistance en cas de nécessité.
                     </span>
                 </div>
             </div>
-            <div class="container footer">
-                <svg id="barcode" class="{{$eleve->matricule}} barcode" dd="{{$eleve->matricule}}"></svg>
-                {{-- <svg class="barcode" jsbarcode-format="farmacode"  jsbarcode-textmargin="0"
-                    jsbarcode-fontoptions="bold">
-                </svg> --}}
-                {{-- </svg> --}}
+            <div class="footer w-full">
+                <svg id="barcode" class="{{ $eleve->matricule }} barcode" dd="{{ $eleve->matricule }}"></svg>
             </div>
 
         </div>
 
-        <div id="card-front" class="card-container">
-            <div class="card-front-header">
+        <div id="card-front" class="card-container p-10">
+            <div class="flex flex-row gap-5 items-center justify-between w-full border-b-8 border-black ">
                 <img class="icons" src="{{ asset('storage/flag.png') }}" alt="flag">
                 <div class="card-front-titles">
-                    <span class="rep">REPUBLIQUE DEMOCRATIQUE DU CONGO</span>
-                    <span class="prov">PROVINCE DU SUD-KIVU</span>
-                    <span class="front-min">MINISTERE DE L'ENSEIGNAMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE</span>
-                    <span class="carte">CARTE D'ELEVE</span>
+                    <span class="text-9 font-bold uppercase">REPUBLIQUE DEMOCRATIQUE DU CONGO</span>
+                    <span class="text-9 font-bold uppercase text-blue-600">MINISTERE DE L'ENSEIGNAMENT PRIMAIRE,
+                        SECONDAIRE ET TECHNIQUE</span>
+                    <span class="text-9 font-bold uppercase text-blue-600">PROVINCE DU SUD KIVU</span>
+                    <span class="text-9 font-bold uppercase">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span>
                 </div>
                 <img class="icons" src="{{ asset('storage/armoirie.png') }}" alt="armoirie">
             </div>
             <div class="joker">
                 <div class="nn"><span>MATRICULE : <span id="nn">{{ $eleve->matricule }}</span></span></div>
                 <div class="card-front-body">
-
                     <div class="avatar-container">
                         <!-- <img id="qr-code" src="" alt=""> -->
                         @if ($eleve->sexe === 'M')
@@ -77,32 +73,32 @@
                         @endif
                     </div>
                     <table class="identity">
-                        <tr class="identity-data">
-                            <td class="identity-title">NOM & POST-NOM : <span id="nom"
-                                    class="identity-data-content">{{ $eleve->nom }}</span> </td>
+                        <tr class="">
+                            <td class=" uppercase text-12">NOM & PRENOM : <span id="nom"
+                                    class="font-bold">{{ $eleve->nomComplet() }}</span> </td>
                         </tr>
-                        <tr class="identity-data">
-                            <td class="identity-title">PRENOM : <span id="prenom"
-                                    class="identity-data-content"></span> {{ $eleve->prenom }}</td>
-                        </tr>
-                        <tr class="identity-data">
-                            <td class="identity-title">SEXE : <span id="prenom" class="identity-data-content"></span>
+                        {{-- <tr class="">
+                            <td class="">PRENOM : <span id="prenom"
+                                    class="></span> {{ $eleve->prenom }}</td>
+                        </tr> --}}
+                        <tr class="">
+                            <td class=" uppercase text-12">SEXE : <span id="prenom" class="font-bold"></span>
                                 {{ $eleve->sexe }}</td>
                         </tr>
-                        <tr class="identity-data">
-                            <td class="identity-title">LIEU ET DATE DE NAISSANCE : <br> <span id="naissance"
-                                    class="identity-data-content">{{ $eleve->lieu_naissance . ' le ' . $eleve->date_naissance }}</span>
+                        <tr class="">
+                            <td class=" uppercase text-12">LIEU & DATE DE NAISS : <span id="naissance"
+                                    class="font-bold">{{ $eleve->lieu_naissance . ' le ' . date_format(date_create($eleve->date_naissance), 'd/m/Y') }}</span>
                             </td>
                         </tr>
-                        {{-- <tr class="identity-data">
-                                <td class="identity-title">NATIONALITE : <span id="nationalite" class="identity-data-content"></span> </td> 
+                        {{-- <tr class="">
+                                <td class="">NATIONALITE : <span id="nationalite" class="></span> </td> 
                             </tr> --}}
-                        {{-- <tr class="identity-data">
-                                <td class="identity-title">PROFESSION : <span id="profession" class="identity-data-content"></span></td>  --}}
+                        {{-- <tr class="">
+                                <td class="">PROFESSION : <span id="profession" class="></span></td>  --}}
                         </tr>
-                        <tr class="identity-data">
-                            <td class="identity-title">ADRESSE ACTUELLE : <span id="adresse"
-                                    class="identity-data-content">{{ $eleve->adresse }}</span> </td>
+                        <tr class="">
+                            <td class=" text-12">ADRESSE : <span id="adresse"
+                                    class="font-bold">{{ $eleve->adresse }}</span> </td>
                         </tr>
                     </table>
 
@@ -111,13 +107,13 @@
                 <div class="card-front-footer">
                     <div>
                         <table>
-                            <tr class="dates-content">
-                                <td>DATE DE DELIVRANCE : </td>
-                                <td id="date-delivrance" class="identity-data-content"></td>
+                            <tr class="text-12">
+                                <td>DATE DE DELIVRANCE : Le
+                                    {{ date('d/m/Y') }}</td>
                             </tr>
-                            <tr class="dates-content">
-                                <td>DATE D'EXPIRATION : </td>
-                                <td id="date-expiration" class="identity-data-content"></td>
+                            <tr class="text-12">
+                                <td>DATE D'EXPIRATION : Le
+                                    {{ date_format(date_create('yesterday next year'), 'd/m/Y') }}</td>
                             </tr>
                         </table>
                     </div>

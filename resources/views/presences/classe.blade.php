@@ -1,13 +1,51 @@
 @extends('layouts.admin')
 
+<style>
+    body {
+        /* display: none; */
+    }
+
+    /* @page{
+                size: a4 portrait;
+                /* margin: 500px;
+                /* display: none; */
+    /* background: #000; */
+    /*} */
+
+    @media print {
+
+        /* @page{
+                    size: a4 portrait;
+                    margin: 1%;
+                } */
+        body {
+            background: #fff;
+        }
+
+        #printable {
+            /* min-width: 23cm; */
+            margin: auto;
+            transform: scale(0.90);
+            position: fixed;
+            top: 0;
+            left: 0;
+            /* transform-origin: auto 0; */
+            /* padding: 10px; */
+            /* display: none; */
+            /* background: #000; */
+        }
+
+    }
+</style>
+
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
-        <x-classe-profile-header-presence :print="true" :today="$day" :data="$classe" :passation="true" />
+        <x-classe-profile-header-presence :noHeader="true" :print="true" :today="$day" :data="$classe" :passation="true" />
         @if (isset($annee) && $annee !== null)
             <div id="display-reussite"
-                class="display-passation shadow-2xl container p-4 bg-white rounded-5 flex justify-center w-full">
+                class="display-passation shadow-2xl container p-4 bg-white rounded-5 flex justify-center items-center w-full">
                 <div id="printable" class="flex flex-col px-0 pt-0 lg:w-8/12 md:w-10/12 w-full">
-                    <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                    <table class="items-center w-full mb-0 align-top border-gray-700 text-slate-500">
                         <caption
                             class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base border-b-solid tracking-none whitespace-nowrap text-slate-500">
                             LISTE DE PRESENCE DU {{date('d/m/Y')}}
@@ -38,7 +76,7 @@
                                         {{ $index + 1 }}
                                     </td>
                                     <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
+                                        class="p-1 text-size-sm text-center uppercase align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
                                         <a href="{{ route('eleves.show', $eleve->id) }}">
                                             {{ $eleve->nomComplet() }}
                                         </a>
@@ -47,7 +85,7 @@
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                         @if ($eleve->presence($day))
-                                            {{$eleve->presence()->type_presence->abbreviation}}
+                                            {{$eleve->presence($day)->type_presence->abbreviation}}
                                         @else
                                         <form id="frm{{ $eleve->id }}" action="{{ route('presences.api.store') }}"
                                             method="POST" class="flex justify-center items-center gap-2">
@@ -65,18 +103,18 @@
                                                     <input id="{{ $eleve->id }}" type="button"
                                                         placeholder="{{ $type->id }}"
                                                         value="{{ $type->abbreviation }}" title="{{ $type->nom }}"
-                                                        class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                                        class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                 @else
                                                     @if ($type->abbreviation === 'A')
                                                         <input id="{{ $eleve->id }}" type="button"
                                                             placeholder="{{ $type->id }}"
                                                             value="{{ $type->abbreviation }}" title="{{ $type->nom }}"
-                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                     @else
                                                         <input id="{{ $eleve->id }}" type="button"
                                                             placeholder="{{ $type->id }}"
                                                             value="{{ $type->abbreviation }}" title="{{ $type->nom }}"
-                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                     @endif
                                                 @endif
                                             @endforeach
@@ -93,7 +131,7 @@
             </div>
         @else
             <div class=" flex justify-center shadow-2xl container p-6 bg-white rounded-5">
-                <span class="text-red-500 font-bold text-center text-5"> Passation de Classe Indisponible </span>
+                <span class="text-red-500 font-bold text-center text-5"> Listes de Presences Indisponibles </span>
             </div>
         @endif
 

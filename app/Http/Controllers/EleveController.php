@@ -125,6 +125,7 @@ class EleveController extends Controller
             'eleves',
             $eleve->id
         );
+        
         return redirect()->route('frequentations.link', $eleve->id);
     }
 

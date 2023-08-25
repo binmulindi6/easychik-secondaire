@@ -311,6 +311,8 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     //presences
     Route::resource('presences', PresenceController::class);
     Route::get('presences/classe/{id}', [PresenceController::class , 'classe'])->name('presences.classe');
+    Route::get('presences/classe/periode/{id}', [PresenceController::class , 'periode'])->name('presences.classe.periode');
+    Route::post('presences/classe/periode/{id}', [PresenceController::class , 'setPeriode'])->name('presences.classe.setPeriode');
     // Route::get('presences/classe/{id}/{date}', [PresenceController::class , 'classe']);
     Route::post('presences/classe/{classe}', [PresenceController::class , 'setDate'])->name('presences.classe.setDate');
 

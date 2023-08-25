@@ -22,16 +22,19 @@
 // ///Fech data
 
 // JsBarcode(".barcode").init();
-const bard = document.getElementById('barcode').classList[0]
-console.log(bard)
-JsBarcode("#barcode",bard, {
-    format: "CODE128",
-    lineColor: "#000",
-    fontSize: "50",
-    width: 9,
-    height: 100,
-    displayValue: false,
-});
+const bard = document.getElementById("barcode");
+// console.log(bard)
+if (bard) {
+    const clas = bard.classList[0];
+    JsBarcode("#barcode", clas, {
+        format: "CODE128",
+        lineColor: "#000",
+        fontSize: "50",
+        width: 9,
+        height: 100,
+        displayValue: false,
+    });
+}
 // console.log(bard)
 
 // fetch(
@@ -183,7 +186,7 @@ JsBarcode("#barcode",bard, {
 
 const btn = document.getElementById("btn-download");
 
-btn.addEventListener("click", () => {
+btn && btn.addEventListener("click", () => {
     takeshot();
     console.log(10);
 });

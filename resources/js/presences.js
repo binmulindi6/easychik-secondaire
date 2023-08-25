@@ -16,10 +16,10 @@ btnsPresence && btnsPresence.forEach(btnPres => {
         const err = document.getElementById('err' + id)
 
 
-        console.log(link)
-        console.log(typeId)
-        console.log(freq)
-        console.log(user)
+        // console.log(link)
+        // console.log(typeId)
+        // console.log(freq)
+        // console.log(user)
             axios.post(link,
                 {
                     "_token" : token,

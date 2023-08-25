@@ -40,6 +40,7 @@ class EvaluationController extends Controller
         }else{
             abort(401);
         }
+        // dd($evaluations);
 
         $periodes = Periode::currents();
         // dd($cours);
@@ -159,11 +160,12 @@ class EvaluationController extends Controller
     public function edit($id)
     {
         $evaluation = Evaluation::find($id);
-        $evaluations = Evaluation::all();
+        $evaluations = Evaluation::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
-
+        
         if (Auth::user()->isEnseignant()) {
-            $cours = Cours::where('classe_id', Auth::user()->classe->id)
+            $evaluations = Evaluation::currents(Auth::user()->classe->id);
+            $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
                 ->orderBy('nom', 'asc')->get();
         }
 
@@ -245,6 +247,7 @@ class EvaluationController extends Controller
     {
         $items = Evaluation::join('cours', 'cours.id', '=', 'evaluations.cours_id')
             ->where('cours.nom', 'like', '%' . $request->search . '%')
+            ->select('evaluations.*')
             // ->join('type_evaluations', 'type_evaluations.id', '=', 'evaluations.type_evaluation_id')
             // ->where('type_evaluations.nom', 'like', '%' . $request->search . '%')
             ->get();
@@ -253,7 +256,7 @@ class EvaluationController extends Controller
         $cours = Cours::orderBy('nom', 'asc')->get();
 
         if (Auth::user()->isEnseignant()) {
-            $cours = Cours::where('classe_id', Auth::user()->classe->id)
+            $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
                 ->orderBy('nom', 'asc')->get();
         }
 

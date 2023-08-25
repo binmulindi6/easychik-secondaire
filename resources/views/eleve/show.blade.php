@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-    <div class=" container flex flex-col justify-between gap-5">
+    <div class=" sm-max:p-2 sm:container flex flex-col justify-between gap-5 w-full">
         @if (isset($search))
             <x-nav-eleves :search="$search" :pagename="$page_name"></x-nav-eleves>
         @else
@@ -111,11 +111,12 @@
     
                                     @if ($item->frequentations->count() > 0)
                                         @foreach ($item->frequentations as $frequetation)
+                                            @if ($frequetation->annee_scolaire)
                                             <tr class=" rounded-2xl hover:bg-slate-100">
                                                 <td
                                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
                                                     {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                        {{ $frequetation->annee_scolaire === null ? 'null' : $frequetation->annee_scolaire->nom }}
+                                                        {{$frequetation->annee_scolaire->nom }}
                                                     {{-- </a> --}}
                                                 </td>
                                                 <td
@@ -125,6 +126,7 @@
                                                     {{-- </a> --}}
                                                 </td>
                                             </tr>
+                                            @endif
                                         @endforeach
                                     @endif
                                 </tbody>
