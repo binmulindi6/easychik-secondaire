@@ -117,17 +117,17 @@ class ResultatController extends Controller
         
         //consuites
         $conduite1 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                            ->where('periode_id', '=', $periodes[0]->id)
-                            ->first();
+        ->where('periode_id', '=', $periodes[0]->id)
+        ->first();
         $conduite2 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                            ->where('periode_id', '=', $periodes[1]->id)
-                            ->first();
+        ->where('periode_id', '=', $periodes[1]->id)
+        ->first();
         // dd($conduite1);
-
+        
         ///resultat
         $resultat = Frequentation::findByEleveAndAnneeScolaire($eleve->id, $trimestre->annee_scolaire->id)->resultat;
         // dd($resultat);
-
+        
         $data1 = $this->checkPeriode($resultat, $periodes[0]);
         $data2 = $this->checkPeriode($resultat, $periodes[1]);
         $dataTri = $this->checkTrimestre($resultat, $trimestre);
@@ -145,6 +145,7 @@ class ResultatController extends Controller
         $maxTri = 0;
         
         // dd($examen, $periode1 ,$periode2);
+        // dd($examen,$periode1,$periode2);
         if ($examen != null && $periode1 != null && $periode2 != null) {
             // dd($examen->count() != $periode1->count() || $examen->count() != $periode2->count() || $periode1->count() != $periode2->count());
             if($examen->count() != $periode1->count() || $examen->count() != $periode2->count() || $periode1->count() != $periode2->count()){
