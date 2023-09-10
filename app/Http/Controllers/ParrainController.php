@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
 
 class ParrainController extends Controller
-{   
+{
     protected $page_name = 'Parents';
 
     /**
@@ -21,17 +21,19 @@ class ParrainController extends Controller
      */
     public function index()
     {
-       // $curent = AnneeScolaire::current();
-        // $_SESSION['current'] = $curent;
-        // // dd($_SESSION);
-        
-        $parents = Parrain::latest()->get();
+
+        if(Eleve::checkEleves()){
+            $parents = Parrain::latest()->get();
         // dd($parents);
-        
+
         // dd(10);
         return view('parents.parents')
             ->with('page_name', $this->page_name)
             ->with('items', $parents);
+        }
+        return view('origin')
+            ->with('page_name', 'Parents')
+            ->with('order', 'Eleves');
     }
 
     /**
@@ -53,38 +55,38 @@ class ParrainController extends Controller
      */
     public function store(Request $request)
     {
-            $request->validate([
-                'nom' => ['required', 'string', 'max:255'],
-                'prenom' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'confirmed', Rules\Password::defaults()],
-                'telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            ]);
+        $request->validate([
+            'nom' => ['required', 'string', 'max:255'],
+            'prenom' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+        ]);
 
-            $parent = Parrain::create([
-                'nom' => $request->nom,
-                'prenom' => $request->prenom,
-                'telephone' => $request->telephone,
-            ]);
-            $parent->save();
-            Logfile::createLog(
-                'parrains',
-                $parent->id
-            );
-            $user = User::create([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                //'name' => $request->name,
-            ]);
+        $parent = Parrain::create([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'telephone' => $request->telephone,
+        ]);
+        $parent->save();
+        Logfile::createLog(
+            'parrains',
+            $parent->id
+        );
+        $user = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            //'name' => $request->name,
+        ]);
 
-            $user->parrain()->associate($parent);
-            $user->save();
-            Logfile::createLog(
-                'users',
-                $user->id
-            );
-            return redirect()->route('parents.index');
-            // return redirect()->route('parents.create');
+        $user->parrain()->associate($parent);
+        $user->save();
+        Logfile::createLog(
+            'users',
+            $user->id
+        );
+        return redirect()->route('parents.index');
+        // return redirect()->route('parents.create');
 
     }
 
@@ -94,7 +96,7 @@ class ParrainController extends Controller
      * @param  \App\Models\Parrain  $parrain
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
         if ($request->_method == 'PUT') {
             $request->validate([
@@ -120,7 +122,7 @@ class ParrainController extends Controller
         $parents = Parrain::latest()->get();
         $parent = Parrain::find($id);
         // dd($parents);
-        
+
         // dd(10);
         return view('parents.parents')
             ->with('page_name', $this->page_name . ' / Edit')
@@ -155,12 +157,12 @@ class ParrainController extends Controller
         );
 
         if (isset($request->password)) {
-            
+
             $request->validate([
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
 
-            $user = User::where('parrain_id',$id)->first();
+            $user = User::where('parrain_id', $id)->first();
             $user->password = Hash::make($request->password);
             $user->save();
             Logfile::updateLog(
@@ -172,7 +174,7 @@ class ParrainController extends Controller
         if (isset($request->back)) {
             return back();
         }
-        
+
         return redirect()->route('parents.index');
     }
 
@@ -187,13 +189,13 @@ class ParrainController extends Controller
         $parent = Parrain::find($id);
         $user = $parent->user;
         $user->isActive = 0;
-        
+
         $user->save();
         Logfile::updateLog(
             'users',
             $user->id
         );
-        
+
         $parent->delete();
         Logfile::deleteLog(
             'parrains',
@@ -203,7 +205,8 @@ class ParrainController extends Controller
         return back();
     }
 
-    public function changeStatut(Request $request, $id){
+    public function changeStatut(Request $request, $id)
+    {
         $parent = Parrain::find($id);
         $user = User::find($parent->user->id);
 
@@ -222,7 +225,7 @@ class ParrainController extends Controller
     }
 
     public function linkParentEleve($parent, $eleve)
-    {   
+    {
         $Parent = Parrain::find($parent);
         $Student = Eleve::find($eleve);
 
@@ -234,4 +237,19 @@ class ParrainController extends Controller
         // dd($parent . " " . $eleve);
     }
 
+    public function search(Request $request)
+    {
+
+
+        $items = Parrain::where('nom', 'like', '%' . $request->search . '%')
+            ->orWhere('prenom', 'like', '%' . $request->search . '%')
+            ->get();
+
+
+        // dd($users);
+        return view('parents.parents')
+            ->with('page_name', $this->page_name . ' / Search')
+            ->with('search',  $request->search)
+            ->with('items', $items);
+    }
 }

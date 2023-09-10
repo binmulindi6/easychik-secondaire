@@ -51,7 +51,7 @@
 
         <div class="  flex flex-col gap-2 bg-white rounded-xl shadow-xxs w-full  items-center overflow-x-scroll">
             <div class="w-full flex flex-row justify-between">
-                <div class="container w-full flex justify-center">
+                <div class="container w-full flex justify-center overflow-scroll">
                     @if (
                         $examenT1 != null &&
                             $periode1 != null &&
@@ -70,7 +70,7 @@
 
 
 
-                            <div class="w-full flex flex-col justify-center items-center h-full">
+                            <div class="w-full flex flex-col justify-center items-center h-full ">
                                 {{-- <x-button id="btn-export">export</x-button> --}}
                                 <table id="printable" class="border-2xl print:w-60 border-collapse text-xs m-5">
                                     <thead>

@@ -135,7 +135,10 @@ class FraisController extends Controller
             'type_frais' => ['required', 'integer', 'max:10'],
             'niveau' => ['required', 'integer', 'max:10'],
         ]);
-        return redirect()->route('frais.index');
+        if ($request->_method == 'PUT') {
+            return  $this->update($request, $id);
+        }
+        // return redirect()->route('frais.index');
     }
 
     /**
@@ -146,12 +149,18 @@ class FraisController extends Controller
      */
     public function edit($id)
     {
-        $self = Frais::find($id);
+        $self = Frais::findOrFail($id);
         $frais = Frais::latest()->get();
 
+        $types = TypeFrais::all();
+        $niveaux = Niveau::all();
+        $modes = ModePaiement::all();
         return view('frais.frais')
             ->with('items', $frais)
-            ->with('self', $frais)
+            ->with('self', $self)
+            ->with('types', $types)
+            ->with('niveaux', $niveaux)
+            ->with('modes', $modes)
             ->with('page_name', $this->page_name . " / Edit");
         
         return redirect()->route('frais.index');
@@ -167,12 +176,36 @@ class FraisController extends Controller
      */
     public function update(Request $request, $id)
     {   
+        // $request->validate([
+        //     'nom' => ['required', 'string', 'max:255'],
+        //     'montant' => ['required', 'integer', 'max:10'],
+        //     'mode_paiement' => ['required', 'integer', 'max:10'],
+        //     'type_frais' => ['required', 'integer', 'max:10'],
+        //     'niveau' => ['required', 'integer', 'max:10'],
+        // ]);
+
         $frais = Frais::findOrFail($id);
-        abort(400);
+        $frais->nom = $request->nom;
+        $frais->montant = $request->montant;
+
+        $type = TypeFrais::find($request->type_frais);
+        $niveau = Niveau::find($request->niveau);
+        $mode = ModePaiement::find($request->mode_paiement);
+
+        ///
+
+        $frais->type_frais()->associate($type);
+        $frais->niveau()->associate($niveau);
+        $frais->mode_paiement()->associate($mode);
+
+        $frais->save();
+
         Logfile::updateLog(
             'frais',
             $frais->id
         );
+
+        return redirect()->route('frais.index');
     }
 
     /**

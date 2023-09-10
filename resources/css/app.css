@@ -9,6 +9,7 @@
 @import './fa2.min.css';
 @import'./tooltips.css';
 @import './perfect-scrollbar.css';
+@import './carte.css';
 
 @media print {
     body * {
@@ -21,6 +22,14 @@
     } */
 
     #printable, #printable * {
+      /* background: red; */
+        /* max-width: 150rem; */
+      visibility: visible;
+      /* height: 3508px; */
+      /* width: 248px; */
+    }
+
+    #my-terminal #my-terminal * {
       /* background: red; */
         /* max-width: 150rem; */
       visibility: visible;

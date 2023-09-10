@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Logfile;
 use App\Models\Employer;
 use App\Models\Fonction;
@@ -17,7 +18,7 @@ class EmployerController extends Controller
     protected $page = 'Employers';
     public function index()
     {
-        $employers = Employer::all();
+        $employers = Employer::all()->except(['id', 1]);
         $fonctions = Fonction::select([
             'id',
             'nom'
@@ -44,7 +45,7 @@ class EmployerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
+    {
         $this->page .= '/Create';
         return $this->index();
     }
@@ -68,7 +69,7 @@ class EmployerController extends Controller
             'niveau_etude' => ['required', 'string', 'max:255'],
             'fonction' => ['required', 'integer', 'max:255'],
         ]);
-        
+
         $employer = Employer::create([
             'matricule' => $request->matricule,
             'nom' => $request->nom,
@@ -116,7 +117,28 @@ class EmployerController extends Controller
             //dd(10);
             return  $this->update($request, $id);
         }
-        abort(404);
+        
+        $employer = Employer::findOrFail($id);
+        $user = User::where('employer_id',$employer->id)->first();
+        $self = $employer;
+        
+        $employers = Employer::all()->except(['id', 1]);
+        ///joker
+        $index = 0;
+        for ($i = 0; $i < $employers->count(); $i++) {
+            if ($employers[$i]->id === $employer->id) {
+                $index = $i;
+                break;
+            }
+        }
+
+        return view('employer.show')
+            ->with('user', $user)
+            ->with('self', $self)
+            ->with('index', $index)
+            ->with('employers', $employers)
+            ->with('fonctions', Fonction::all())
+            ->with('page_name', 'Users / Show ');
     }
 
     /**
@@ -176,7 +198,7 @@ class EmployerController extends Controller
 
             //detach all 
             $employer->fonctions()->detach();
-    
+
             $employer->fonctions()->attach($fonction);
         }
 
@@ -188,7 +210,7 @@ class EmployerController extends Controller
         if (isset($request->back)) {
             return back();
         }
-        
+
         return redirect()->route('employers.index');
     }
 
@@ -210,14 +232,42 @@ class EmployerController extends Controller
     }
 
 
-public function linkEmployer()
-{
-    $employers = Employer::latest()->get();
-    // dd($employers[0]->user);
+    public function linkEmployer()
+    {
+        $employers = Employer::latest()->get();
+        // dd($employers[0]->user);
         return view('users.employers')
             ->with('page_name', 'Link Employé')
             ->with('items', $employers)
             ->with('link', true);
-}
+    }
 
+    public function search(Request $request)
+    {
+
+
+        $items = Employer::where('id', '!=', 1)
+            ->where('nom', 'like', '%' . $request->search . '%')
+            ->orWhere('prenom', 'like', '%' . $request->search . '%')
+            ->get();
+
+        $fonctions = Fonction::select([
+            'id',
+            'nom'
+        ])->get();
+
+        $lastmatricule = Employer::withTrashed()->get('*')->last()->matricule;
+        //dd($lastmatricule);
+        // $lastmatricule = Employer::all()->last()->matricule;
+        // $lastmatricule = Employer::withTrashed()->lastest()->matricule;
+        $initial = explode('/', $lastmatricule, -1)[0];
+        $middle = str_replace('P', '', $initial);
+        $matricule = 'P0' . intval($middle) + 1 . '/' . date('Y');
+        return view('employer.employers')
+            ->with('page_name', $this->page . ' / Search')
+            ->with('search',  $request->search)
+            ->with('items', $items)
+            ->with('fonctions', $fonctions)
+            ->with('last_matricule', $matricule);
+    }
 }

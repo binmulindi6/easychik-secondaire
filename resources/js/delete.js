@@ -23,7 +23,7 @@ formDelete.forEach((btn) => {
     btn.addEventListener("submit", Delete, false);
 });
 
-console.log(formDelete);
+// console.log(formDelete);
 //btnDelete.addEventListener("click", Delete, false);
 
 function Delete(event) {

@@ -21,6 +21,15 @@
             @csrf
             {{ method_field('POST') }}
             <!-- Email Address -->
+            @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li class="text-red-500">{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+            @endif
             <div class="flex flex-col flex-between">
                 <div class="mt-4 w-full">
                     <x-label for="matricule" :value="__('à')" />
@@ -72,11 +81,16 @@
         <div class=" pb-0 mb-0 bg-white rounded-t-2xl">
             <h6>Messages Reçu</h6>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 overflow-scroll">
             @foreach ($items as $item)
                 <a href="{{ route('messages.show', $item->id) }}">
-                    <x-message :state="$item->isReaden()" :from="$item->from()->email" :object="$item->objet" :message="$item->contenu"
-                        :time="$item->created_at"></x-message>
+                    @if ($item->from()->isDirecteur())
+                        <x-message :state="$item->isReaden()" :from="'La Direction'" :object="$item->objet" :message="$item->contenu"
+                            :time="$item->created_at"></x-message>
+                    @else
+                        <x-message :state="$item->isReaden()" :from="$item->from()->email" :object="$item->objet" :message="$item->contenu"
+                            :time="$item->created_at"></x-message>
+                    @endif
                 </a>
             @endforeach
 
@@ -99,7 +113,7 @@
         <div class=" pb-0 mb-0 bg-white rounded-t-2xl">
             <h6>Messages Envoyés</h6>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 overflow-scroll">
             @foreach ($sents as $sent)
                 <a href="{{ route('messages.show', $sent->id) }}">
                     <x-message :from="$sent->to()->email" :object="$sent->objet" :message="$sent->contenu" :time="$item->created_at"></x-message>

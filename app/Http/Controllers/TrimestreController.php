@@ -18,12 +18,12 @@ class TrimestreController extends Controller
     public function index()
     {
         $trimestres = Trimestre::currents();
-        $annees = AnneeScolaire::orderBy('nom')->get();
+        // $annees = AnneeScolaire::orderBy('nom')->get();
         $anneeEncours = AnneeScolaire::current();
         return view('ecole.trimestres')
             ->with('page_name', $this->page_name)
             ->with('anneeEncours', $anneeEncours)
-            ->with('annees', $annees)
+            // ->with('annees', $annees)
             ->with('items', $trimestres);
     }
 
@@ -48,6 +48,8 @@ class TrimestreController extends Controller
      */
     public function store(Request $request)
     {
+        // dd(10);
+
         $request->validate([
             'nom' => ['required', 'string', 'max:255'],
             'annee_scolaire' => ['required', 'string', 'max:255'],
@@ -57,8 +59,8 @@ class TrimestreController extends Controller
 
         //dd($request->nom);
         $annee = AnneeScolaire::find($request->annee_scolaire);
-        $trim = Trimestre::where('annee_scolaire_is',$annee->id)
-                        ->where('nom', $request->nom);
+        $trim = Trimestre::where('annee_scolaire_id',$annee->id)
+                        ->where('nom', $request->nom)->first();
         if($trim === null){
             $trimestre = Trimestre::create([
                 'nom' => $request->nom,

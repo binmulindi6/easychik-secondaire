@@ -5,7 +5,7 @@
     <!-- cards -->
     <div class="w-full px-6 py-0.6 mx-auto">
         <!-- row 1 -->
-        @if (Auth::user()->isAdmin() || Auth::user()->isDirecteur())
+        @if (Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isSecretaire())
             <div class="flex flex-wrap -mx-3">
                 <!-- card3 -->
                 <a href="{{ route('classes.index') }}"
@@ -36,41 +36,6 @@
                                     <div
                                         class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-emerald-500 to-teal-400">
                                         <i class="fa fa-solid fa-chalkboard text-size-lg relative top-3.5 text-white"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-
-                <!-- card1 -->
-                <a href="{{ route('employers.index') }}"
-                    class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-                    <div
-                        class="relative flex flex-col min-w-0 break-words bg-white hover:bg-slate-200 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-                        <div class="flex-auto p-4">
-                            <div class="flex flex-row -mx-3">
-                                <div class="flex-none w-2/3 max-w-full px-3">
-                                    <div>
-                                        <p
-                                            class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">
-                                            Employers</p>
-                                        <h5 class="mb-2 font-bold dark:text-white">{{ $employers }}</h5>
-                                        <p class="mb-0 dark:text-white dark:opacity-60">
-                                            <span class="font-bold leading-normal text-size-sm text-blue-500">Femmes:</span>
-                                            {{ $employers - $hommes }}
-                                        </p>
-                                        <p class="mb-0 dark:text-white dark:opacity-60">
-                                            <span class="font-bold leading-normal text-size-sm text-blue-500">Hommes:</span>
-                                            {{ $hommes }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="px-3 text-right basis-1/3">
-                                    <div
-                                        class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500">
-                                        <i class="fa fa-solid fa-user text-size-lg relative top-3.5 text-white"></i>
                                     </div>
                                 </div>
                             </div>
@@ -114,6 +79,39 @@
                     </div>
                 </a>
 
+                <!-- card1 -->
+                <a href="{{ route('employers.index') }}"
+                    class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+                    <div
+                        class="relative flex flex-col min-w-0 break-words bg-white hover:bg-slate-200 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+                        <div class="flex-auto p-4">
+                            <div class="flex flex-row -mx-3">
+                                <div class="flex-none w-2/3 max-w-full px-3">
+                                    <div>
+                                        <p
+                                            class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">
+                                            Employers</p>
+                                        <h5 class="mb-2 font-bold dark:text-white">{{ $employers }}</h5>
+                                        <p class="mb-0 dark:text-white dark:opacity-60">
+                                            <span class="font-bold leading-normal text-size-sm text-blue-500">Femmes:</span>
+                                            {{ $employers - $hommes }}
+                                        </p>
+                                        <p class="mb-0 dark:text-white dark:opacity-60">
+                                            <span class="font-bold leading-normal text-size-sm text-blue-500">Hommes:</span>
+                                            {{ $hommes }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="px-3 text-right basis-1/3">
+                                    <div
+                                        class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500">
+                                        <i class="fa fa-solid fa-user text-size-lg relative top-3.5 text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
 
                 <!-- card4 -->
                 <a href="{{ route('parents.index') }}"
@@ -170,15 +168,16 @@
                 <div class="flex flex-col md:flex-row gap-5">
                     <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col justify-items items-center gap-1">
                         <span class="font-base text-sm text-slate-500 uppercase">Annee Scolaire en cours:</span>
-                        <span class="font-bold text-2xl"> {{ Auth::currentYear()->nom ? Auth::currentYear()->nom : "Not Defined" }} </span>
+                        <span class="font-bold text-2xl">
+                            {{ Auth::currentYear()->nom ? Auth::currentYear()->nom : 'Not Defined' }} </span>
                     </div>
                     <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col justify-items items-center gap-1">
                         <span class="font-base text-sm text-slate-500 uppercase">Trimestre en cours:</span>
-                        <span class="font-bold text-2xl"> {{ "Not Defined" }} </span>
+                        <span class="font-bold text-2xl"> {{ 'Not Defined' }} </span>
                     </div>
                     <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col justify-items items-center gap-1">
                         <span class="font-base text-sm text-slate-500 uppercase">Periode en cours:</span>
-                        <span class="font-bold text-2xl"> {{ "Not Defined" }} </span>
+                        <span class="font-bold text-2xl"> {{ 'Not Defined' }} </span>
                     </div>
                 </div>
             @endif
@@ -214,7 +213,7 @@
                                 class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none">
                                 <i class="top-0.75 text-size-xxs relative text-slate-700 ni ni-trophy"></i>
                             </div>
-                            <h5 class="mb-1 text-white">Use SAS</h5>
+                            <h5 class="mb-1 text-white">Use {{env('APP_NAME')}}</h5>
                             <p class="mb-0 dark:text-white dark:opacity-60">
                             <p class="dark:opacity-80 font-semibold">School Administation System,
                                 The Solution for your School

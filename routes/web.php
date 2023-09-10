@@ -1,13 +1,18 @@
 <?php
 
+use App\Models\Jour;
 use App\Models\User;
 use App\Models\Eleve;
+use App\Models\Heure;
 use App\Models\Classe;
+use App\Models\Horaire;
 use App\Models\Employer;
 use App\Models\Encadrement;
 use App\Models\AnneeScolaire;
 use App\Models\EleveConduite;
+use App\Models\EntreeArticle;
 use App\Models\Frequentation;
+use App\Models\CategorieArticle;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -18,6 +23,9 @@ use App\Http\Controllers\UserEncadrement;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\NiveauController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\HoraireController;
+use App\Http\Controllers\LogfileController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParrainController;
 use App\Http\Controllers\PeriodeController;
@@ -29,25 +37,32 @@ use App\Http\Controllers\ConduiteController;
 use App\Http\Controllers\CotationController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\FonctionController;
+use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\ResultatController;
 use App\Http\Controllers\Date\DateController;
 use App\Http\Controllers\PassationController;
 use App\Http\Controllers\TrimestreController;
+use App\Http\Controllers\TypeFraisController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ParentAuthController;
 use App\Http\Controllers\Admin\EcoleController;
 use App\Http\Controllers\EleveExamenController;
 use App\Http\Controllers\EncadrementController;
 use App\Http\Controllers\ImportExcelController;
+use App\Http\Controllers\ModePaiementController;
+use App\Http\Controllers\UniteArticleController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\EleveConduiteController;
+use App\Http\Controllers\EntreeArticleController;
 use App\Http\Controllers\FrequentationController;
 use App\Http\Controllers\PaiementFraisController;
+use App\Http\Controllers\SortieArticleController;
 use App\Http\Controllers\CategorieCoursController;
 use App\Http\Controllers\TypeEvaluationController;
 use App\Http\Controllers\EleveEvaluationController;
+use App\Http\Controllers\CategorieArticleController;
+use App\Http\Controllers\EmployerPresenceController;
 use App\Http\Controllers\FrequentationEleveController;
-use App\Http\Controllers\LogfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +119,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('eleve-parent/{parent}', [EleveController::class, 'linkParent'])->name('eleve-parent.link');
     Route::resource('eleves', EleveController::class);
     Route::get('employers/link', [EmployerController::class, 'linkEmployer'])->name('employers.link');
+    Route::post('employers/search', [EmployerController::class, 'search'])->name('employers.search');
     Route::resource('employers', EmployerController::class);
     Route::resource('evaluations', EvaluationController::class);
     Route::resource('examens', ExamenController::class);
@@ -113,6 +129,8 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::resource('periodes', PeriodeController::class);
     Route::resource('trimestres', TrimestreController::class);
     Route::resource('type-evaluations', TypeEvaluationController::class);
+    Route::post('encadrements/chage-user/{id}', [EncadrementController::class, 'changeUser'])->name('encadrements.change.user');
+    Route::post('encadrements/search', [EncadrementController::class, 'search'])->name('encadrements.search');
     Route::get('encadrements/create/classe/{id}', [UserEncadrement::class, 'createClasse'])->name('encadrements.linkClasse');
     Route::get('encadrements/create/user/{id}', [UserEncadrement::class, 'create'])->name('encadrements.link');
     Route::resource('encadrements', EncadrementController::class);
@@ -126,6 +144,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     // Route::get('parents/eleves/{parent}', [ParrainController::class]);
     Route::get('eleve-parent/{parent}/{eleve}', [ParrainController::class, 'linkParentEleve'])->name('parent-eleve.link');
+    Route::post('parents/search', [ParrainController::class, 'search'])->name('parents.search');
     Route::resource('parents', ParrainController::class);
     Route::resource('messages', MessageController::class);
     Route::get('messages/create/{id}', [MessageController::class, 'toUser'])->name('messages.to');
@@ -207,6 +226,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     //Users
     Route::get('users/update/{id}', [UserController::class, 'show'])->name('users.update');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('enseignants', [UserController::class, 'enseignants'])->name('users.enseignants');
     Route::get('users/create', [UserController::class, 'create'])->name('users.create');
     Route::get('users/create/employer/{id}', [UserController::class, 'create'])->name('users.create.employer');
     Route::post('users/store', [UserController::class, 'store'])->name('users.store');
@@ -215,6 +235,8 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::put('users/{id}', [UserController::class, 'changeStatut'])->name('users.statut');
     Route::delete('users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('users/search', [UserController::class, 'search'])->name('users.search');
+    Route::post('users/search/enseignant', [UserController::class, 'search'])->name('users.search.enseignant');
     Route::get('ecole', [EcoleController::class, 'index'])->name('ecole.index');
 
     //parents
@@ -255,7 +277,53 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::get('logs/{id}', [LogfileController::class, 'show'])->name('logs.show');
     Route::put('logs/{id}', [LogfileController::class, 'restore'])->name('logs.restore');
 
+    //horaires
+    Route::resource('horaires', HoraireController::class);
+    Route::get('horraires/classe/{id}', [HoraireController::class, 'show'])->name('horaires.classe');
+    // Route::resource('heurs', Heure::class);
+    // Route::resource('jours', Jour::class);
 
+
+
+    //cartes
+    Route::get('eleves/{id}/carte', [EleveController::class, 'carte'])->name('eleves.carte');
+    
+
+    //stock
+    Route::get('stock/articles/link', [ArticleController::class, 'link'])->name('articles.link');
+    Route::get('stock/articles/link/sortie', [ArticleController::class, 'linkSortie'])->name('articles.link.sortie');
+    Route::resource('stock/articles', ArticleController::class);
+    Route::get('stock/entrees/link/{id}', [EntreeArticleController::class, 'link'])->name('entrees.link.article');
+    Route::resource('stock/entrees', EntreeArticleController::class);
+    Route::resource('stock/sorties', SortieArticleController::class);
+    Route::get('stock/sorties/link/{id}', [SortieArticleController::class, 'link'])->name('sorties.link.article');
+    Route::get('stock/articles/search', [ArticleController::class, 'seach'])->name('articles.search');
+    
+    ///
+    Route::resource('categorie-articles', CategorieArticleController::class);
+    Route::resource('unite-articles', UniteArticleController::class);
+
+    //adds
+    Route::post('type-frais', [TypeFraisController::class, 'store'])->name('type.frais.store');
+    Route::post('mode-paiements', [ModePaiementController::class, 'store'])->name('mode.paiements.store');
+
+    //rapport
+    Route::get('rapports/stock/periode', [RapportController::class, 'stock'])->name('rapports.stock');
+    Route::post('rapports/stock/periode', [RapportController::class, 'rapportStock'])->name('rapports.stock.store');
+    
+    
+    //Presence Employers
+    Route::get('presences/personnels', [EmployerPresenceController::class,'index'])->name('presences.employers.index');
+    Route::post('presences/personnels/date', [EmployerPresenceController::class , 'setDate'])->name('presences.employers.setDate');
+    Route::post('presences/personnels/periode', [EmployerPresenceController::class , 'setPeriode'])->name('presences.classe.setPeriode');
+    
+    //presences
+    Route::resource('presences', PresenceController::class);
+    Route::get('presences/classe/{id}', [PresenceController::class , 'classe'])->name('presences.classe');
+    Route::get('presences/classe/periode/{id}', [PresenceController::class , 'periode'])->name('presences.classe.periode');
+    Route::post('presences/classe/periode/{id}', [PresenceController::class , 'setPeriode'])->name('presences.classe.setPeriode');
+    // Route::get('presences/classe/{id}/{date}', [PresenceController::class , 'classe']);
+    Route::post('presences/classe/{classe}', [PresenceController::class , 'setDate'])->name('presences.classe.setDate');
 
 });
 

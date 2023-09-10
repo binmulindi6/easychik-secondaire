@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('eleves', function (Blueprint $table) {
-            $table->string('sexe');
+        Schema::create('jours', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom');
+            $table->integer('numerotation');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('eleves', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('jours');
     }
 };

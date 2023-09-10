@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Session\Session;
 
-class UserController extends Controller
+class 
+UserController extends Controller
 {
     protected $page_name = 'Utilisateurs';
 
@@ -27,14 +28,34 @@ class UserController extends Controller
         // // dd($_SESSION);
 
         $page_name = 'Utilisateurs';
-        $users = User::where('isAdmin', 0)
+        $users = User::where('email','!=', 'admin@easychik.com')
+            ->where('isAdmin', 0)
             ->where('parrain_id', null)
             ->latest()
             ->get();
 
         // dd($users);
         return view('users.users')
-            ->with('page_name', Auth::user()->isAdmin() ? $page_name : 'Enseignants')
+            ->with('page_name', $page_name)
+            ->with('items', $users);
+    }
+
+    public function enseignants()
+    {
+        // $curent = AnneeScolaire::current();
+        // $_SESSION['current'] = $curent;
+        // // dd($_SESSION);
+
+        $page_name = 'Utilisateurs';
+        $users = User::where('email','!=', 'admin@easychik.com')
+            ->where('isAdmin', 0)
+            ->where('parrain_id', null)
+            ->latest()
+            ->get();
+
+        // dd($users);
+        return view('users.users')
+            ->with('page_name', 'Enseignants')
             ->with('items', $users);
     }
 
@@ -230,4 +251,42 @@ class UserController extends Controller
         );
         return redirect()->route('users.index');
     }
+
+    public function search(Request $request)
+    {
+
+
+        $items = User::join('employers','employer_id','employers.id')
+            ->where('email','!=', 'admin@easychik.com')
+            ->where('nom', 'like', '%' . $request->search . '%')
+            ->orWhere('prenom', 'like', '%' . $request->search . '%')
+            ->get();
+
+
+        // dd($users);
+        return view('users.users')
+            ->with('page_name', Auth::user()->isAdmin() ? $this->page_name . ' / Search' : 'Enseignants / Search')
+            ->with('search',  $request->search)
+            ->with('items', $items);
+    }
+    // public function searchEnseignant(Request $request)
+    // {
+
+
+    //     $items = User::join('employers','employer_is','employers.id')
+    //         ->where('isAdmin', 0)
+    //         ->where('nom', 'like', '%' . $request->search . '%')
+    //         ->orWhere('prenom', 'like', '%' . $request->search . '%')
+    //         ->get();
+
+
+    //     // dd($users);
+    //     return view('users.users')
+    //         ->with('page_name', Auth::user()->isAdmin() ? $this->page_name . ' / Search' : 'Enseignants / Search')
+    //         ->with('search',  $request->search)
+    //         ->with('items', $items);
+    // }
+
+    
+
 }

@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('classes', function (Blueprint $table) {
-            $table->foreignId('niveau_id')->default(5)->after('nom')->constrained();
+        Schema::create('presences', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('frequentation_id')->nullable()->constrained();
+            $table->foreignId('type_presence_id')->nullable()->constrained();
+            $table->date('date');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('classes', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('presences');
     }
 };

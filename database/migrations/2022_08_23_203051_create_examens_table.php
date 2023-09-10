@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('examens', function (Blueprint $table) {
             $table->id();
             $table->integer('note_max');
-            $table->foreignId('cours_id')->constrained();
-            $table->foreignId('trimestre_id')->constrained();
+            $table->foreignId('cours_id')->nullable()->constrained();
+            $table->foreignId('classe_id')->nullable()->constrained();
+            $table->foreignId('trimestre_id')->nullable()->constrained();
             $table->date('date_examen');
             $table->timestamps();
         });

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Cours;
 use App\Models\Eleve;
+use App\Models\Classe;
 use App\Models\Periode;
 use App\Models\TypeEvaluation;
 use Illuminate\Support\Facades\DB;
@@ -33,10 +34,35 @@ class Evaluation extends Model
    {
       return $this->belongsTo(Periode::class);
    }
+   public function classe()
+   {
+      return $this->belongsTo(Classe::class);
+   }
    //link to Eleve
    public function eleves()
    {
       return $this->belongsToMany(Eleve::class);
+   }
+
+   public static function currents($classe_id = null)
+   {
+      return
+         $classe_id
+         ?
+            Evaluation::join('periodes', 'periodes.id', 'periode_id')
+               ->join('trimestres', 'trimestres.id', 'periodes.trimestre_id')
+               ->where('trimestres.annee_scolaire_id', AnneeScolaire::current()->id)
+               ->select('evaluations.*')
+               ->orderBy('date_evaluation', 'desc')
+               ->get()
+         :
+            Evaluation::join('periodes', 'periodes.id', 'periode_id')
+               ->join('trimestres', 'trimestres.id', 'periodes.trimestre_id')
+               ->where('trimestres.annee_scolaire_id', AnneeScolaire::current()->id)
+               ->where('classe_id', $classe_id)
+               ->select('evaluations.*')
+               ->orderBy('date_evaluation', 'desc')
+               ->get();
    }
 
    public static function fiche($cours_id, $periode_id): array
@@ -48,7 +74,7 @@ class Evaluation extends Model
 
       $eleveEVs = DB::table('eleve_evaluation', 'evaluations.id', 'evaluation_id')
          ->join('eleves', 'eleves.id', 'eleve_id')
-         ->select('eleves.nom as nom', 'eleves.prenom as prenom','note_obtenu as note','evaluation_id')
+         ->select('eleves.nom as nom', 'eleves.prenom as prenom', 'note_obtenu as note', 'evaluation_id')
          // ->groupBy('eleves.id')
          ->get();
 

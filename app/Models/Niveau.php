@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Cours;
 use App\Models\Frais;
 use App\Models\Classe;
 use Illuminate\Database\Eloquent\Model;
@@ -22,5 +23,11 @@ class Niveau extends Model
     }
     public function frais(){
         return $this->hasMany(Frais::class);
+    }
+
+    public function cours()
+    {   
+        //  dd(101);
+        return $this->hasMany(Cours::class);
     }
 }

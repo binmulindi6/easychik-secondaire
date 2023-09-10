@@ -35,7 +35,7 @@ class EleveController extends Controller
     protected $page = 'Eleves';
     protected $parent;
 
-    public function index(Request $request)
+    public function index()
     {
         // dd(session()->get('currentYear'));
         // dd($_SESSION['current']);
@@ -74,7 +74,9 @@ class EleveController extends Controller
                 ->with('parent', $this->parent)
                 ->with('last_matricule', $matricule);
         }
-        return view('origin')->with('page_name', "Ecole");
+        return view('origin')
+        ->with('order', "year")
+        ->with('page_name', "Ecole");
     }
 
     /**
@@ -82,10 +84,10 @@ class EleveController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $r)
+    public function create()
     {
         $this->page = "Eleves/Create";
-        return $this->index($r);
+        return $this->index();
     }
 
     /**
@@ -106,10 +108,12 @@ class EleveController extends Controller
             'nom_pere' => ['required', 'string', 'max:255'],
             'nom_mere' => ['required', 'string', 'max:255'],
             'adresse' => ['required', 'string', 'max:255'],
+            'num_permanent' => ['string', 'max:255'],
         ]);
 
 
         $eleve = Eleve::create([
+            'num_permanent' => $request->num_permanent,
             'matricule' => $request->matricule,
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -125,6 +129,7 @@ class EleveController extends Controller
             'eleves',
             $eleve->id
         );
+        
         return redirect()->route('frequentations.link', $eleve->id);
     }
 
@@ -149,6 +154,7 @@ class EleveController extends Controller
                 'nom_pere' => ['required', 'string', 'max:255'],
                 'nom_mere' => ['required', 'string', 'max:255'],
                 'adresse' => ['required', 'string', 'max:255'],
+                'num_permanent' => ['string', 'max:255'],
             ]);
             return  $this->update($request, $id);
         }
@@ -238,6 +244,7 @@ class EleveController extends Controller
     {
         $eleve = Eleve::find($id);
 
+        $eleve->num_permanent = $request->num_permanent;
         $eleve->matricule = $request->matricule;
         $eleve->nom = $request->nom;
         $eleve->prenom = $request->prenom;
@@ -462,5 +469,15 @@ class EleveController extends Controller
             ->with('frais', $frais)
             ->with('data', $data)
             ->with('item', $el);
+    }
+
+
+    ///carte
+
+    public function carte($id)
+    {
+        $eleve = Eleve::findOrFail($id);
+       return view('eleve.carte')
+       ->with('eleve',$eleve);
     }
 }

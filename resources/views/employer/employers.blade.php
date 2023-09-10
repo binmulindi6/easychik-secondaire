@@ -3,7 +3,11 @@
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
 
-        <x-nav-employers :pagename="$page_name"> </x-nav-employers>
+        @if (isset($search))
+            <x-nav-employers :search="$search" :pagename="$page_name"> </x-nav-employers>
+        @else
+            <x-nav-employers :pagename="$page_name"> </x-nav-employers>
+        @endif
 
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
@@ -22,7 +26,7 @@
                 @endif
             </div>
             @if (isset($self))
-                <span class="font-bold text-base"> Modifier L'Employer </span>
+                <span class="font-bold text-base"> Modifier L'Employé </span>
                 <form method="PUT" action="{{ route('employers.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
@@ -60,20 +64,20 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="flex flex-col md:flex-row md:gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="date_naissance" :value="__('Date de Naissance')" />
-                            <x-input id="date-naissance" max="2002-01-01" class="block mt-1 w-full" type="date" name="date_naissance"
-                                :value="$self->date_naissance" required />
+                            <x-input id="date-naissance" max="2002-01-01" class="block mt-1 w-full" type="date"
+                                name="date_naissance" :value="$self->date_naissance" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="formation" :value="__('Formation')" />
                             <x-input id="formation" class="block mt-1 w-full" type="text" name="formation"
                                 :value="$self->formation" required />
                         </div>
-                        
+
                     </div>
                     <div class="flex flex-col md:flex-row md:gap-5">
                         <div class="mt-4 w-full">
@@ -89,8 +93,8 @@
                     </div>
                     <div class="mt-4 w-full">
                         <x-label for="nom" :value="__('Fonction')" />
-                        <x-select :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction'
-                            required> </x-select>
+                        <x-select :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction' required>
+                        </x-select>
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -102,7 +106,7 @@
                     </div>
                 </form>
             @else
-                <span class="font-bold text-base"> Ajouter un Employer </span>
+                <span class="font-bold text-base"> Ajouter un Employé </span>
 
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -148,20 +152,22 @@
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="date_naissance" :value="__('Date de Naissance')" />
-                            <x-input id="date-naissance" max="2002-01-01" class="block mt-1 w-full" type="date" name="date_naissance"
-                                :value="old('')" required />
+                            <x-input id="date-naissance" max="2002-01-01" class="block mt-1 w-full" type="date"
+                                name="date_naissance" :value="old('')" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="formation" :value="__('Formation')" />
                             <x-input id="formation" class="block mt-1 w-full" type="text" name="formation"
                                 :value="old('formation')" required />
                         </div>
-                        
+
                     </div>
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="diplome" :value="__('Diplome')" />
-                            <select class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="diplome" id="diplome" required>
+                            <select
+                                class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                name="diplome" id="diplome" required>
                                 <option disabled selected>Selectionner une option</option>
                                 <option value="Aucun">Aucun</option>
                                 <option value="D'Etat">D'Etat</option>
@@ -175,7 +181,9 @@
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="niveau_etude" :value="__('Niveau d\'etude ')" />
-                            <select class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="niveau_etude" id="niveau_etude" required>
+                            <select
+                                class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                name="niveau_etude" id="niveau_etude" required>
                                 <option disabled selected>Selectionner une option</option>
                                 <option value="Aucun">Aucun</option>
                                 <option value="D6">D6</option>
@@ -214,11 +222,11 @@
         @endif
 
         <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-           @if (isset($link))
-           <h6>Choisir un Employé</h6>
-           @else
-           <h6>Employé</h6>
-           @endif
+            @if (isset($link))
+                <h6>Choisir un Employé</h6>
+            @else
+                <h6>Employés</h6>
+            @endif
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
@@ -253,55 +261,64 @@
                             Action</th>
                     </thead>
                     <tbody>
-                        
+
                         @foreach ($items as $item)
-                            <tr class="">
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->matricule }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->nom . ' ' . $item->prenom }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->date_naissance }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->sexe }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->formation }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->diplome }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    {{ $item->niveau_etude }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                    @foreach ($item->fonctions as $fonction)
-                                        {{ $fonction->nom . ' ' }}
-                                    @endforeach
-                                </td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   text-blue-500 underline">
-                                    <div class="flex justify-center gap-4 align-middle">
-                                        <a title="modifier" href="{{ route('employers.edit', $item->id) }}"><i
-                                                class="fa fa-solid fa-pen"></i></a>
-                                        @if ($item->user === null)
-                                        <a class="text-green-500" title="creer un compte" href="{{ route('users.create.employer', $item->id) }}"><i
-                                            class="fa fa-solid fa-user"></i></a>
-                                        @endif
-                                        {{-- <form class="delete-form" action="{{ route('employers.destroy', $item->id) }}"
+                            @if ($item->id != 1)
+                                <tr class="">
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        <a href="{{ route('employers.show', $item->id) }}" class="hover:text-blue-700">
+                                            {{ $item->matricule }}
+                                        </a>
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        <a href="{{ route('employers.show', $item->id) }}" class="hover:text-blue-700">
+                                            {{ $item->nom . ' ' . $item->prenom }}
+                                        </a>
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        {{ $item->date_naissance }}</td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        {{ $item->sexe }}</td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        {{ $item->formation }}</td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        {{ $item->diplome }}</td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        {{ $item->niveau_etude }}</td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        @foreach ($item->fonctions as $fonction)
+                                            {{ $fonction->nom . ' ' }}
+                                        @endforeach
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   text-blue-500 underline">
+                                        <div class="flex justify-center gap-4 align-middle">
+                                            <a title="modifier" href="{{ route('employers.edit', $item->id) }}"><i
+                                                    class="fa fa-solid fa-pen"></i></a>
+                                            @if ($item->user === null)
+                                                <a class="text-green-500" title="creer un compte"
+                                                    href="{{ route('users.create.employer', $item->id) }}"><i
+                                                        class="fa fa-solid fa-user"></i></a>
+                                            @endif
+                                            {{-- <form class="delete-form" action="{{ route('employers.destroy', $item->id) }}"
                                             method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="effacer"><i
                                                     class="text-red-500 fa fa-solid fa-trash"></i></button>
                                         </form> --}}
-                                    </div>
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
 
                     </tbody>

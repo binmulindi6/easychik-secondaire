@@ -23,5 +23,11 @@ class IsActive
             //return route('products');
             abort(403);
         }
+
+        // if(env('SUBSCRIPTION') === 'PREMIUM'){
+        //     return $next($request);
+        // }else{
+        //     abort(403);
+        // }
     }
 }

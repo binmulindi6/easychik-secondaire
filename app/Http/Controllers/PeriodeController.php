@@ -23,6 +23,7 @@ class PeriodeController extends Controller
         $periodes = Periode::currents();
         $anneeEncours = AnneeScolaire::current();
         $trimestres = $anneeEncours->trimestres;
+        
         return view('ecole.periodes')
             ->with('page_name', $this->page_name)
             ->with('anneeEncours', $anneeEncours)
@@ -106,7 +107,8 @@ class PeriodeController extends Controller
         $periodes = Periode::currents();
         $periode = Periode::findOrFail($id);
         $anneeEncours = AnneeScolaire::current();
-        $trimestres = $anneeEncours->trimestres();
+        $trimestres = $anneeEncours->trimestres;
+        
         return view('ecole.periodes')
             ->with('page_name', $this->page_name . "/Edit")
             ->with('anneeEncours', $anneeEncours)

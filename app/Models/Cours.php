@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Examen;
+use App\Models\Niveau;
 use App\Models\Evaluation;
 use App\Models\CategoryCours;
 use Illuminate\Database\Eloquent\Model;
@@ -25,10 +26,14 @@ class Cours extends Model
     }
 
     //link to classe
-    public function classe()
+    public function niveau()
     {
-        return $this->belongsTo(Classe::class);
+        return $this->belongsTo(Niveau::class);
     }
+    // public function classe()
+    // {
+    //     return $this->belongsTo(Classe::class);
+    // }
 
     //link to evaluation
     public function evaluations()
@@ -40,5 +45,11 @@ class Cours extends Model
     public function examens()
     {
         return $this->hasMany(Examen::class);
+    }
+
+    //link to examen
+    public function horaires()
+    {
+        return $this->hasMany(Cours::class);
     }
 }

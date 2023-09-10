@@ -4,7 +4,10 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Cours;
+use App\Models\Examen;
 use App\Models\Niveau;
+use App\Models\Horaire;
+use App\Models\Evaluation;
 use App\Models\Encadrement;
 use App\Models\Frequentation;
 use Illuminate\Support\Facades\DB;
@@ -20,30 +23,40 @@ class Classe extends Model
     ];
 
 
-    public function nomCourt(){
+    public function nomCourt()
+    {
         return $this->niveau->numerotation . 'e ' . $this->nom;
     }
-    public function nomComplet(){
+    public function nomComplet()
+    {
         return $this->niveau->nom . ' ' . $this->nom;
     }
 
     //link to the user
-    public function user(){
+    public function user()
+    {
+        return $this->currentEncadrement() ? $this->currentEncadrement()->user() : null;
+    }
+
+    public function currentEncadrement()
+    {
         $encadrements = $this->encadrements;
         $currentAnneeScolaire = AnneeScolaire::current();
         $currentEncadrement = null;
-        // dd($currentAnneeScolaire->id);
-                foreach($encadrements as $encadrement){
-                    if($encadrement->annee_scolaire->id === $currentAnneeScolaire->id){
-                        $currentEncadrement = $encadrement;
-                        return $currentEncadrement->user();
-                    }
+        foreach ($encadrements as $encadrement) {
+            if ($encadrement->annee_scolaire->id === $currentAnneeScolaire->id) {
+                if ($encadrement->isActive === 1) {
+                    $currentEncadrement = $encadrement;
+                    return $currentEncadrement;
                 }
+            }
+        }
 
         return $currentEncadrement;
     }
 
-    public function encadrements(){
+    public function encadrements()
+    {
         return $this->hasMany(Encadrement::class);
     }
 
@@ -54,98 +67,116 @@ class Classe extends Model
 
     public function cours()
     {
-        return $this->hasMany(Cours::class);
+        // dd(10);
+        return $this->niveau->cours;
     }
-    
-    public function evaluations()
-    {   
-        $cours = $this->cours;
-        $evs = array();
-        if(count($cours) > 0){
-            foreach($cours as $cour){
-                if (count($cour->evaluations) > 0) {
-                    foreach($cour->evaluations as $evaluation){
-                        array_push($evs, $evaluation);
-                    }
-                }
-                // dd($cour->evaluations);
-            }
-        }
-        return $evs;
-        // dd($evs[0]->periode);
 
-        // // $evaluations = 
-        // return($cours[2]->evaluations[0]->periode);
-        // // return $this->hasMany(Cours::class);
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
     }
+    public function horaires()
+    {
+        return $this->hasMany(Horaire::class);
+    }
+    // public function evaluations()
+    // {   
+    //     $cours = $this->cours;
+    //     $evs = array();
+    //     if(count($cours) > 0){
+    //         foreach($cours as $cour){
+    //             if (count($cour->evaluations) > 0) {
+    //                 foreach($cour->evaluations as $evaluation){
+    //                     array_push($evs, $evaluation);
+    //                 }
+    //             }
+    //             // dd($cour->evaluations);
+    //         }
+    //     }
+    //     return $evs;
+    //     // dd($evs[0]->periode);
+
+    //     // // $evaluations = 
+    //     // return($cours[2]->evaluations[0]->periode);
+    //     // // return $this->hasMany(Cours::class);
+    // }
 
     public function currentEvaluations()
-    {   
-        $annee = AnneeScolaire::current();
-        $cours = $this->cours;
-        $evs = array();
-        if(count($cours) > 0){
-            foreach($cours as $cour){
-                if (count($cour->evaluations) > 0) {
-                    foreach($cour->evaluations as $evaluation){
-                        if($evaluation->periode !== null && $evaluation->periode->trimestre->annee_scolaire->id === $annee->id){
-                            array_push($evs, $evaluation);
-                        }
-                    
-                    }
-                }
-            }
-        }
-
-        return $evs;
-        // dd($evs[0]->periode);
-
-        // // $evaluations = 
-        // return($cours[2]->evaluations[0]->periode);
-        // // return $this->hasMany(Cours::class);
+    {
+        return Evaluation::currents($this->id);
     }
+    // public function currentEvaluations()
+    // {   
+    //     $annee = AnneeScolaire::current();
+    //     $cours = $this->cours;
+    //     $evs = array();
+    //     if(count($cours) > 0){
+    //         foreach($cours as $cour){
+    //             if (count($cour->evaluations) > 0) {
+    //                 foreach($cour->evaluations as $evaluation){
+    //                     if($evaluation->periode !== null && $evaluation->periode->trimestre->annee_scolaire->id === $annee->id){
+    //                         array_push($evs, $evaluation);
+    //                     }
+
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return $evs;
+    // }
+
+    // public function examens()
+    // {   
+    //     $annee = AnneeScolaire::current();
+    //     $cours = $this->cours;
+    //     $evs = array();
+    //     if(count($cours) > 0){
+    //         foreach($cours as $cour){
+    //             if (count($cour->examens) > 0) {
+    //                 foreach($cour->examens as $examen){
+    //                     array_push($evs, $examen);
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return $evs;
+    // }
 
     public function examens()
-    {   
-        $annee = AnneeScolaire::current();
-        $cours = $this->cours;
-        $evs = array();
-        if(count($cours) > 0){
-            foreach($cours as $cour){
-                if (count($cour->examens) > 0) {
-                    foreach($cour->examens as $examen){
-                        array_push($evs, $examen);
-                    }
-                }
-            }
-        }
-
-        return $evs;
+    {
+        return $this->hasMany(Examen::class);
     }
-    
+
     public function currentExamens()
-    {   
-        $annee = AnneeScolaire::current();
-        $cours = $this->cours;
-        $evs = array();
-        if(count($cours) > 0){
-            foreach($cours as $cour){
-                if (count($cour->examens) > 0) {
-                    foreach($cour->examens as $examen){
-                        if($examen->trimestre !== null && $examen->trimestre->annee_scolaire->id === $annee->id){
-                            array_push($evs, $examen);
-                        }
-                    }
-                }
-            }
-        }
-
-        return $evs;
+    {
+        return Examen::currents($this->id);
     }
+    // public function currentExamens()
+    // {   
+    //     $annee = AnneeScolaire::current();
+    //     $cours = $this->cours;
+    //     $evs = array();
+    //     if(count($cours) > 0){
+    //         foreach($cours as $cour){
+    //             if (count($cour->examens) > 0) {
+    //                 foreach($cour->examens as $examen){
+    //                     if($examen->trimestre !== null && $examen->trimestre->annee_scolaire->id === $annee->id){
+    //                         array_push($evs, $examen);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return $evs;
+    // }
 
 
 
-    public function eleves(){
+    public function eleves()
+    {
         $annee = AnneeScolaire::current();
         // $eleves = DB::table('eleves')
         //                     ->leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
@@ -154,15 +185,16 @@ class Classe extends Model
         //                     ->select('eleves.*')
         //                     ->get();
         $eleves = Eleve::leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
-                            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
-                            ->where('frequentations.classe_id', '=', $this->id)
-                            ->select('eleves.*')
-                            ->orderBy('eleves.nom', 'asc')
-                            ->get();
+            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+            ->where('frequentations.classe_id', '=', $this->id)
+            ->select('eleves.*')
+            ->orderBy('eleves.nom', 'asc')
+            ->get();
         // dd($eleves[0]);
         return $eleves;
     }
-    public function elevesAnnee( $annee){
+    public function elevesAnnee($annee)
+    {
         // $eleves = DB::table('eleves')
         //                     ->leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
         //                     ->where('frequentations.annee_scolaire_id', '=', $annee->id)
@@ -170,11 +202,11 @@ class Classe extends Model
         //                     ->select('eleves.*')
         //                     ->get();
         $eleves = Eleve::leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
-                            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
-                            ->where('frequentations.classe_id', '=', $this->id)
-                            ->select('eleves.*')
-                            ->orderBy('eleves.nom', 'asc')
-                            ->get();
+            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+            ->where('frequentations.classe_id', '=', $this->id)
+            ->select('eleves.*')
+            ->orderBy('eleves.nom', 'asc')
+            ->get();
         // dd($eleves[0]);
         return $eleves;
     }
@@ -183,12 +215,12 @@ class Classe extends Model
     {
         $annee = AnneeScolaire::current();
         $eleves = Eleve::leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
-                            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
-                            ->where('frequentations.classe_id', '=', $this->id)
-                            ->select('eleves.*')
-                            ->where('sexe', 'F')
-                            ->orderBy('eleves.nom', 'asc')
-                            ->get();
+            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+            ->where('frequentations.classe_id', '=', $this->id)
+            ->select('eleves.*')
+            ->where('sexe', 'F')
+            ->orderBy('eleves.nom', 'asc')
+            ->get();
         return $eleves;
     }
 
@@ -196,26 +228,26 @@ class Classe extends Model
     {
         $annee = AnneeScolaire::current();
         $eleves = Eleve::leftJoin('frequentations', 'frequentations.eleve_id', '=', 'eleves.id')
-                            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
-                            ->where('frequentations.classe_id', '=', $this->id)
-                            ->select('eleves.*')
-                            ->where('sexe', 'M')
-                            ->orderBy('eleves.nom', 'asc')
-                            ->get();
+            ->where('frequentations.annee_scolaire_id', '=', $annee->id)
+            ->where('frequentations.classe_id', '=', $this->id)
+            ->select('eleves.*')
+            ->where('sexe', 'M')
+            ->orderBy('eleves.nom', 'asc')
+            ->get();
         return $eleves;
     }
 
     public function frequentations()
     {
-         return $this->hasMany(Frequentation::class);
+        return $this->hasMany(Frequentation::class);
     }
     public function currentrequentations()
-    {   
+    {
         $annee = AnneeScolaire::current();
         $frequentations = Frequentation::where('frequentations.annee_scolaire_id', '=', $annee->id)
-                            ->where('frequentations.classe_id', '=', $this->id)
-                            ->get();
-         return $frequentations;
+            ->where('frequentations.classe_id', '=', $this->id)
+            ->get();
+        return $frequentations;
     }
 
     public function resultats()
@@ -223,7 +255,7 @@ class Classe extends Model
         $freqs = $this->currentrequentations();
         $resultats = array();
 
-        foreach($freqs as $freq){
+        foreach ($freqs as $freq) {
             array_push($resultats, $freq->resultat);
         }
 
@@ -232,14 +264,14 @@ class Classe extends Model
 
     public function reussites()
     {
-         $resultats = $this->resultats();
+        $resultats = $this->resultats();
 
-         $reussites = [];
-         foreach($resultats as $resultat){
-            if($resultat->decision === 'passe'){
+        $reussites = [];
+        foreach ($resultats as $resultat) {
+            if ($resultat->decision === 'passe') {
                 $reussites[] = $resultat;
             }
-         }
+        }
     }
 
     public function resultatsTries()
@@ -251,17 +283,17 @@ class Classe extends Model
         $non_classes = [];
         $eleves = $this->eleves();
         // dd($eleves);
-        foreach($eleves as $eleve){
+        foreach ($eleves as $eleve) {
             if ($eleve->resultat() === null) {
                 $nc[] = $eleve;
-            }else{
+            } else {
                 // dd($eleve->resultat());
                 if ($eleve->resultat()->decision === 'passe') {
                     $reussites[] = $eleve;
-                }else{
+                } else {
                     if ($eleve->resultat()->decision === 'double') {
                         $echecs[] = $eleve;
-                    }else{
+                    } else {
                         $non_classes[] = $eleve;
                     }
                 }
@@ -274,36 +306,38 @@ class Classe extends Model
         return $data;
     }
 
-    public function classesDeNiveauSuperieur() {
+    public function classesDeNiveauSuperieur()
+    {
         $niveau = $this->niveau->numerotation;
         // dd($this);
 
         return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
-                    ->where('numerotation', '=' , $niveau+1)
-                    ->orderBy('numerotation', 'asc')
-                    ->select('classes.*')
-                    ->get();
+            ->where('numerotation', '=', $niveau + 1)
+            ->orderBy('numerotation', 'asc')
+            ->select('classes.*')
+            ->get();
     }
 
-    public function classesDeMemeNiveau() {
+    public function classesDeMemeNiveau()
+    {
         $niveau = $this->niveau->numerotation;
         // dd($this);
 
         return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
-                    ->where('numerotation', '=' , $niveau)
-                    ->orderBy('numerotation', 'asc')
-                    ->select('classes.*')
-                    ->get();
+            ->where('numerotation', '=', $niveau)
+            ->orderBy('numerotation', 'asc')
+            ->select('classes.*')
+            ->get();
     }
-    public function classesDeMemeInferieur() {
+    public function classesDeMemeInferieur()
+    {
         $niveau = $this->niveau->numerotation;
         // dd($this);
 
         return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
-                    ->where('numerotation', '<' , $niveau)
-                    ->orderBy('numerotation', 'asc')
-                    ->select('classes.*')
-                    ->get();
+            ->where('numerotation', '<', $niveau)
+            ->orderBy('numerotation', 'asc')
+            ->select('classes.*')
+            ->get();
     }
-
 }

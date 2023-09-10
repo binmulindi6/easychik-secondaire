@@ -1,0 +1,6 @@
+import './jquery.min'
+import './jsbarcode.min'
+// import './qrcode.min'
+import './screenshot.min'
+import './htmltoimage.min'
+import './security'

@@ -12,7 +12,8 @@ class TypeFrais extends Model
     use HasFactory, SoftDeletes;
     
     protected $fillable = [
-        'nom'
+        'nom',
+        'devise',
     ];
 
     public function frais()

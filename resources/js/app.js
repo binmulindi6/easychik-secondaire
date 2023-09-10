@@ -10,12 +10,16 @@ import "./sidenav-burger";
 import "./perfect-scrollbar";
 import "./toExcel";
 import "./myjs";
+import "./horaire"
+import "./components"
+import './presences'
+import './carte/index'
 // import "./argon-dashboard-tailwind";
 
 import "./popper";
 import Alpine from "alpinejs";
 import { jsPDF } from "jspdf";
-import $ from "jquery";
+import $, { contains } from "jquery";
 
 import "./printThis";
 
@@ -32,7 +36,7 @@ $("#cmd").click(function () {
         footer: null,
     });
 });
-
+// const tt = "oklm"
 // var a = new String('oklm');
 
 Alpine.start();

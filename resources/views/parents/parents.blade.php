@@ -165,7 +165,7 @@
                             <th
                                 class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Eleves</th>
-                            @if(Auth::user()->isSecretaire())
+                            @if(Auth::user()->isSecretaire() || Auth::user()->isAdmin() || Auth::user()->isDirecteur())
                                 <th
                                 class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Satut</th>
@@ -208,7 +208,7 @@
                                         @endif
 
                                     </td>
-                                    @if(Auth::user()->isSecretaire() || Auth::user()->isAdmin())
+                                    @if(Auth::user()->isSecretaire() || Auth::user()->isAdmin() || Auth::user()->isDirecteur())
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         @if ($item->is_active() == '0')

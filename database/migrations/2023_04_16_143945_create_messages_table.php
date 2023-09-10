@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('objet');
-            $table->string('contenu');
+            $table->text('contenu');
             $table->foreignId('expediteur')->references('id')->on('users');
             $table->foreignId('destinateur')->references('id')->on('users');
             $table->timestamps();

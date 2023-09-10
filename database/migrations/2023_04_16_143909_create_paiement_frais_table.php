@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('paiement_frais', function (Blueprint $table) {
             $table->id();
             $table->integer('montant_paye');
-            $table->string('refrence');
+            $table->string('reference')->nullable();
             $table->foreignId('frais_id')->nullable()->constrained();
             $table->foreignId('eleve_id')->nullable()->constrained();
             $table->foreignId('moyen_paiement_id')->nullable()->constrained();

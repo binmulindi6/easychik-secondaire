@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('table_employer_fonction', function (Blueprint $table) {
+        Schema::create('heures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employer_id')->constrained();
-            $table->foreignId('fonction_id')->constrained();
+            $table->time('debut');
+            $table->time('fin');
+            $table->integer('numerotation');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_employer_fonction');
+        Schema::dropIfExists('heures');
     }
 };

@@ -26,7 +26,7 @@ class CotationController extends Controller
     {
             $classe = Auth::user()->classe;
             $evaluations =  $classe->currentEvaluations();
-            rsort($evaluations);
+            // rsort($evaluations);
 
             return view('cotation.evaluations')
             // ->with('items', $evaluations)
@@ -38,7 +38,7 @@ class CotationController extends Controller
     {
             $classe = Auth::user()->classe;
             $examens = $classe->currentExamens();
-            rsort($examens);
+            // rsort($examens);
 
             return view('cotation.examens')
             // ->with('items', $evaluations)

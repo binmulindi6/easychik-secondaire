@@ -23,15 +23,16 @@ class ResultatController extends Controller
     public $page_name = 'Resultat';
 
     //bulletin des resultats de la Peride
-    public function periode($periode_id, $eleve_id){
+    public function periode($periode_id, $eleve_id)
+    {
         $eleve = Eleve::findOrFail($eleve_id);
         $periode = Periode::findOrFail($periode_id);
         $evs = $eleve->evaluations;
         // dd('dd');
         $conduite = EleveConduite::where('eleve_id', '=', $eleve->id)
-                            ->where('periode_id', '=', $periode->id)
-                            ->first();
-        
+            ->where('periode_id', '=', $periode->id)
+            ->first();
+
         $resultat = Frequentation::findByEleveAndAnneeScolaire($eleve->id, $periode->trimestre->annee_scolaire->id)->resultat;
 
         $data = $this->checkPeriode($resultat, $periode);
@@ -39,11 +40,11 @@ class ResultatController extends Controller
         // dd($data);  
 
         $evaluations = null;
-        foreach($evs as $item){
-            if($item->periode_id == $periode->id){
+        foreach ($evs as $item) {
+            if ($item->periode_id == $periode->id) {
                 $evaluations = $evs;
                 break;
-            }else{
+            } else {
                 $evaluations = null;
             }
         }
@@ -51,33 +52,34 @@ class ResultatController extends Controller
         $max = 0;
 
         $bulletin = $eleve->bulletinPeriode($periode_id);
+        // dd($bulletin);
 
         return view('eleve.resultats-periode')
-                    ->with('bulletin', $bulletin)
-                    ->with('max', $max)
-                    ->with('note', $note)
-                    ->with('periode', $periode)
-                    ->with('eleve', $eleve)
-                    ->with('page_name', 'Bulletin ' . $periode->nom . ' ' . $eleve->nomComplet() . ' ' . $eleve->classe(false))
-                    ->with('conduite', $conduite)
-                    ->with('resultat', $data)
-                    ->with('evaluations', $evaluations);
-
+            ->with('bulletin', $bulletin)
+            ->with('max', $max)
+            ->with('note', $note)
+            ->with('periode', $periode)
+            ->with('eleve', $eleve)
+            ->with('page_name', 'Bulletin ' . $periode->nom . ' ' . $eleve->nomComplet() . ' ' . $eleve->classe(false))
+            ->with('conduite', $conduite)
+            ->with('resultat', $data)
+            ->with('evaluations', $evaluations);
     }
 
 
     //bulletin des resultats des examens du Trimestre
-    public function examen($trimestre_id, $eleve_id){
+    public function examen($trimestre_id, $eleve_id)
+    {
         $eleve = Eleve::findOrFail($eleve_id);
         $trimestre = Trimestre::findOrFail($trimestre_id);
         $exs = $eleve->examens;
-        
+
         $examens = null;
-        foreach($exs as $item){
-            if($item->trimestre_id == $trimestre->id){
+        foreach ($exs as $item) {
+            if ($item->trimestre_id == $trimestre->id) {
                 $examens = $exs;
                 break;
-            }else{
+            } else {
                 $examens = null;
             }
         }
@@ -89,50 +91,71 @@ class ResultatController extends Controller
 
         // return view('classe.resultats-examens')
         return view('eleve.resultats-examen')
-                    ->with('bulletin', $bulletin)
-                    ->with('max', $max)
-                    ->with('note', $note)
-                    ->with('trimestre', $trimestre)
-                    ->with('eleve', $eleve)
-                    ->with('page_name', $this->page_name . ' / Trimestre')
-                    ->with('evaluations', $examens);
+            ->with('bulletin', $bulletin)
+            ->with('max', $max)
+            ->with('note', $note)
+            ->with('trimestre', $trimestre)
+            ->with('eleve', $eleve)
+            ->with('page_name', $this->page_name . ' / Trimestre')
+            ->with('evaluations', $examens);
     }
 
 
 
     //bulletin des resultats du Trimestre
-    public function trimestre($trimestre_id, $eleve_id){
+    public function trimestre($trimestre_id, $eleve_id)
+    {
         $eleve = Eleve::findOrFail($eleve_id);
         $trimestre = Trimestre::findOrFail($trimestre_id);
         $periodes = $trimestre->periodes;
         //fiche examen
         $examen = $eleve->bulletinExamen($trimestre_id);
         // dd($examen);
-        
+
         //fiche periodes
-        $periode1 = $eleve->bulletinPeriode($periodes[0]->id);
-        $periode2 = $eleve->bulletinPeriode($periodes[1]->id);
+        if (count($periodes) === 2) {
+            $periode1 = $eleve->bulletinPeriode($periodes[0]->id);
+            $periode2 = $eleve->bulletinPeriode($periodes[1]->id);
+
+            //consuites
+            $conduite1 = EleveConduite::where('eleve_id', '=', $eleve->id)
+                ->where('periode_id', '=', $periodes[0]->id)
+                ->first();
+            $conduite2 = EleveConduite::where('eleve_id', '=', $eleve->id)
+                ->where('periode_id', '=', $periodes[1]->id)
+                ->first();
+            // dd($conduite1);
+
+            ///resultat
+            $resultat = Frequentation::findByEleveAndAnneeScolaire($eleve->id, $trimestre->annee_scolaire->id)->resultat;
+            // dd($resultat);
+
+            $data1 = $this->checkPeriode($resultat, $periodes[0]);
+            $data2 = $this->checkPeriode($resultat, $periodes[1]);
+            $dataTri = $this->checkTrimestre($resultat, $trimestre);
+
+        } else {
+            $periode1 = null;
+            $periode2 = null;
+
+            $conduite1 = null;
+            $conduite2 = null;
+
+            $resultat = null;
+            // dd($resultat);
+
+            $data1 = null;
+            $data2 = null;
+            $dataTri = null;
+        }
         // dd($periode2);
-        
-        //consuites
-        $conduite1 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                            ->where('periode_id', '=', $periodes[0]->id)
-                            ->first();
-        $conduite2 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                            ->where('periode_id', '=', $periodes[1]->id)
-                            ->first();
-        // dd($conduite1);
 
-        ///resultat
-        $resultat = Frequentation::findByEleveAndAnneeScolaire($eleve->id, $trimestre->annee_scolaire->id)->resultat;
-        // dd($resultat);
 
-        $data1 = $this->checkPeriode($resultat, $periodes[0]);
-        $data2 = $this->checkPeriode($resultat, $periodes[1]);
-        $dataTri = $this->checkTrimestre($resultat, $trimestre);
+
+
         // dd($dataTri);
         // $data = $this->checkPeriode($resultat, $periode);
-        
+
         //variables 
         $noteP1 = 0;
         $maxP1 = 0;
@@ -142,43 +165,44 @@ class ResultatController extends Controller
         $maxEx = 0;
         $noteTri = 0;
         $maxTri = 0;
-        
+
         // dd($examen, $periode1 ,$periode2);
+        // dd($examen,$periode1,$periode2);
         if ($examen != null && $periode1 != null && $periode2 != null) {
             // dd($examen->count() != $periode1->count() || $examen->count() != $periode2->count() || $periode1->count() != $periode2->count());
-            if($examen->count() != $periode1->count() || $examen->count() != $periode2->count() || $periode1->count() != $periode2->count()){
+            if ($examen->count() != $periode1->count() || $examen->count() != $periode2->count() || $periode1->count() != $periode2->count()) {
                 $examen = null;
                 $periode1 = null;
                 $periode2 = null;
             }
         }
 
-        
+
 
         // return view('classe.trimestres')
         return view('eleve.resultats-trimestres')
-                    ->with('p1', $periodes[0]->id)
-                    ->with('p2', $periodes[1]->id)
-                    ->with('examen', $examen)
-                    ->with('periode1', $periode1)
-                    ->with('periode2', $periode2)
-                    ->with('maxP1', $maxP1)
-                    ->with('noteP1', $noteP1)
-                    ->with('maxP2', $maxP2)
-                    ->with('noteP2', $noteP2)
-                    ->with('maxEx', $maxEx)
-                    ->with('noteEx', $noteEx)
-                    ->with('noteTri', $noteTri)
-                    ->with('maxTri', $maxTri)
-                    ->with('trimestre', $trimestre)
-                    ->with('page_name', 'Bulletin'  . " " . $trimestre->nom . ' ' . $eleve->nomComplet() . ' ' . $eleve->classe(false))
-                    ->with('conduite1', $conduite1)
-                    ->with('conduite2', $conduite2)
-                    ->with('resultat1', $data1)
-                    ->with('resultat2', $data2)
-                    ->with('resultatExam', $dataTri[0])
-                    ->with('resultatTrim', $dataTri[1])
-                    ->with('eleve', $eleve);
+            ->with('p1', count($periodes) == 2 ? $periodes[0]->id : null )
+            ->with('p2', count($periodes) == 2 ? $periodes[1]->id : null )
+            ->with('examen', $examen)
+            ->with('periode1', $periode1)
+            ->with('periode2', $periode2)
+            ->with('maxP1', $maxP1)
+            ->with('noteP1', $noteP1)
+            ->with('maxP2', $maxP2)
+            ->with('noteP2', $noteP2)
+            ->with('maxEx', $maxEx)
+            ->with('noteEx', $noteEx)
+            ->with('noteTri', $noteTri)
+            ->with('maxTri', $maxTri)
+            ->with('trimestre', $trimestre)
+            ->with('page_name', 'Bulletin'  . " " . $trimestre->nom . ' ' . $eleve->nomComplet() . ' ' . $eleve->classe(false))
+            ->with('conduite1', $conduite1)
+            ->with('conduite2', $conduite2)
+            ->with('resultat1', $data1)
+            ->with('resultat2', $data2)
+            ->with('resultatExam', $dataTri ? $dataTri[0] : null)
+            ->with('resultatTrim', $dataTri ? $dataTri[1] : null)
+            ->with('eleve', $eleve);
     }
 
 
@@ -186,47 +210,47 @@ class ResultatController extends Controller
 
 
     //bulletin annee scolaire
-    public function bulletin($annee_scolaire_id, $eleve_id){
+    public function bulletin($annee_scolaire_id, $eleve_id)
+    {
 
         $eleve = Eleve::find($eleve_id);
         // dd($eleve);
-        if($eleve === null || $eleve->classe(true) === null){
+        if ($eleve === null || $eleve->classe(true) === null) {
             // abort(404);
         }
-        
+
         //dd($eleve->classe(true));
-        
+
         $annee = AnneeScolaire::findOrFail($annee_scolaire_id);
-        
+
         // dd($annee->trimestre3()->periode5());
 
         $trimestres = $annee->trimestres;
-        if($trimestres->count() != 3){
-                $examenT1 = null;
-                $periode1 = null;
-                $periode2 = null;
+        if ($trimestres->count() != 3) {
+            $examenT1 = null;
+            $periode1 = null;
+            $periode2 = null;
         }
-        
+
         foreach ($trimestres as $trimestre) {
-            if($trimestre->periodes->count() != 2){
+            if ($trimestre->periodes->count() != 2) {
                 $examenT1 = null;
                 $periode1 = null;
                 $periode2 = null;
             }
-            if($trimestre->examens->count() <= 0){
+            if ($trimestre->examens->count() <= 0) {
                 // echo(0);
                 // dd($trimestre->examens->count());
                 $examenT1 = null;
                 $periode1 = null;
                 $periode2 = null;
             }
-            
         }
         //trimestres
         $trimestre1 = $annee->trimestre1();
         $trimestre2 = $annee->trimestre2();
         $trimestre3 = $annee->trimestre3();
-        
+
         //periodes
         $p1 = $trimestre1->periodes[0];
         $p2 = $trimestre1->periodes[1];
@@ -234,13 +258,13 @@ class ResultatController extends Controller
         $p4 = $trimestre2->periodes[1];
         $p5 = $trimestre3->periodes[0];
         $p6 = $trimestre3->periodes[1];
-        
+
         //fiches par Trimestres
         $examenT1 = $eleve->bulletinExamen($trimestre1->id);
         $examenT2 = $eleve->bulletinExamen($trimestre2->id);
         // dd($examenT2);
         $examenT3 = $eleve->bulletinExamen($trimestre3->id);
-        
+
         //fiches par periodes
         $periode1 = $eleve->bulletinPeriode($p1->id);
         $periode2 = $eleve->bulletinPeriode($p2->id);
@@ -248,9 +272,9 @@ class ResultatController extends Controller
         $periode4 = $eleve->bulletinPeriode($p4->id);
         $periode5 = $eleve->bulletinPeriode($p5->id);
         $periode6 = $eleve->bulletinPeriode($p6->id);
-        
+
         //dd("here we go again...");
-        
+
         //variables
         ///Trimestre 1
         $noteP1 = 0;
@@ -281,38 +305,38 @@ class ResultatController extends Controller
         $maxExT3 = 0;
         $noteTri3 = 0;
         $maxTri3 = 0;
-        
+
 
         //conduites
         $cond1 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                    ->where('periode_id', '=', $p1->id)
-                    ->first();
+            ->where('periode_id', '=', $p1->id)
+            ->first();
         $cond2 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                    ->where('periode_id', '=', $p2->id)
-                    ->first();
+            ->where('periode_id', '=', $p2->id)
+            ->first();
         $cond3 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                    ->where('periode_id', '=', $p3->id)
-                    ->first();
+            ->where('periode_id', '=', $p3->id)
+            ->first();
         $cond4 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                    ->where('periode_id', '=', $p4->id)
-                    ->first();
+            ->where('periode_id', '=', $p4->id)
+            ->first();
         $cond5 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                    ->where('periode_id', '=', $p5->id)
-                    ->first();
+            ->where('periode_id', '=', $p5->id)
+            ->first();
         $cond6 = EleveConduite::where('eleve_id', '=', $eleve->id)
-                    ->where('periode_id', '=', $p6->id)
-                    ->first();
+            ->where('periode_id', '=', $p6->id)
+            ->first();
 
         ///RESULTATA
         $resultat = Frequentation::findByEleveAndAnneeScolaire($eleve->id, $annee->id)->resultat;
-        
-        
-        
+
+
+
         // dd($resultat);
 
-        if ($examenT1 != null && $periode1 != null && $periode2 != null && $examenT2 != null && $periode3 != null && $periode4 != null && $examenT3 != null && $periode5 != null && $periode6 != null ) {
+        if ($examenT1 != null && $periode1 != null && $periode2 != null && $examenT2 != null && $periode3 != null && $periode4 != null && $examenT3 != null && $periode5 != null && $periode6 != null) {
             // dd($examenT1->count(), $periode1->count() , $examenT2->count() , $periode2->count() , $periode1->count() , $periode2->count());
-            if($examenT1->count() != $periode1->count() || $examenT1->count() != $periode2->count() || $periode1->count() != $periode2->count() || $examenT2->count() != $periode3->count() || $examenT2->count() != $periode4->count() || $periode3->count() != $periode4->count() || $examenT3->count() != $periode5->count() || $examenT3->count() != $periode6->count() || $periode5->count() != $periode6->count() ){
+            if ($examenT1->count() != $periode1->count() || $examenT1->count() != $periode2->count() || $periode1->count() != $periode2->count() || $examenT2->count() != $periode3->count() || $examenT2->count() != $periode4->count() || $periode3->count() != $periode4->count() || $examenT3->count() != $periode5->count() || $examenT3->count() != $periode6->count() || $periode5->count() != $periode6->count()) {
                 // dd(101);
                 $examenT1 = null;
                 $periode1 = null;
@@ -323,7 +347,7 @@ class ResultatController extends Controller
 
         $eleves = Eleve::all();
         if (Auth::user()->isEnseignant()) {
-            if(Auth::user()->classe() !== null){
+            if (Auth::user()->classe() !== null) {
                 $eleves = Auth::user()->classe->eleves();
                 // dd($eleves);
             }
@@ -336,98 +360,98 @@ class ResultatController extends Controller
                 break;
             }
         }
-        
+
 
         // return view('classe.bulletin')
         return view('eleve.bulletin')
-                    ->with('examenT1', $examenT1)
-                    ->with('periode1', $periode1)
-                    ->with('periode2', $periode2)
-                    ->with('maxP1', $maxP1)
-                    ->with('noteP1', $noteP1)
-                    ->with('maxP2', $maxP2)
-                    ->with('noteP2', $noteP2)
-                    ->with('maxExT1', $maxExT1)
-                    ->with('noteExT1', $noteExT1)
-                    ->with('noteTri1', $noteTri1)
-                    ->with('maxTri1', $maxTri1)
+            ->with('examenT1', $examenT1)
+            ->with('periode1', $periode1)
+            ->with('periode2', $periode2)
+            ->with('maxP1', $maxP1)
+            ->with('noteP1', $noteP1)
+            ->with('maxP2', $maxP2)
+            ->with('noteP2', $noteP2)
+            ->with('maxExT1', $maxExT1)
+            ->with('noteExT1', $noteExT1)
+            ->with('noteTri1', $noteTri1)
+            ->with('maxTri1', $maxTri1)
 
-                    ->with('index', $index)
-                    ->with('eleves', $eleves)
-
-
-                    ->with('examenT2', $examenT2)
-                    ->with('periode3', $periode3)
-                    ->with('periode4', $periode4)
-                    ->with('maxP3', $maxP3)
-                    ->with('noteP3', $noteP3)
-                    ->with('maxP4', $maxP4)
-                    ->with('noteP4', $noteP4)
-                    ->with('maxExT2', $maxExT2)
-                    ->with('noteExT2', $noteExT2)
-                    ->with('noteTri2', $noteTri2)
-                    ->with('maxTri2', $maxTri2)
+            ->with('index', $index)
+            ->with('eleves', $eleves)
 
 
-                    ->with('examenT3', $examenT3)
-                    ->with('periode5', $periode5)
-                    ->with('periode6', $periode6)
-                    ->with('maxP5', $maxP5)
-                    ->with('noteP5', $noteP5)
-                    ->with('maxP6', $maxP6)
-                    ->with('noteP6', $noteP6)
-                    ->with('maxExT3', $maxExT3)
-                    ->with('noteExT3', $noteExT3)
-                    ->with('noteTri3', $noteTri3)
-                    ->with('maxTri3', $maxTri3)
+            ->with('examenT2', $examenT2)
+            ->with('periode3', $periode3)
+            ->with('periode4', $periode4)
+            ->with('maxP3', $maxP3)
+            ->with('noteP3', $noteP3)
+            ->with('maxP4', $maxP4)
+            ->with('noteP4', $noteP4)
+            ->with('maxExT2', $maxExT2)
+            ->with('noteExT2', $noteExT2)
+            ->with('noteTri2', $noteTri2)
+            ->with('maxTri2', $maxTri2)
 
 
-                    ->with('page_name', 'Bulletin Annuel' . ' ' . $eleve->nomComplet() . ' ' . $eleve->classe(false) . " " . $annee->nom)
+            ->with('examenT3', $examenT3)
+            ->with('periode5', $periode5)
+            ->with('periode6', $periode6)
+            ->with('maxP5', $maxP5)
+            ->with('noteP5', $noteP5)
+            ->with('maxP6', $maxP6)
+            ->with('noteP6', $noteP6)
+            ->with('maxExT3', $maxExT3)
+            ->with('noteExT3', $noteExT3)
+            ->with('noteTri3', $noteTri3)
+            ->with('maxTri3', $maxTri3)
 
-                    //conduites
-                    ->with('cond1', $cond1)
-                    ->with('cond2', $cond2)
-                    ->with('cond3', $cond3)
-                    ->with('cond4', $cond4)
-                    ->with('cond5', $cond5)
-                    ->with('cond6', $cond6)
-                    //periodes
-                    ->with('p1', $p1)
-                    ->with('p2', $p2)
-                    ->with('p3', $p3)
-                    ->with('p4', $p4)
-                    ->with('p5', $p5)
-                    ->with('p6', $p6)
-                    
-                    //resultats
-                    //periodes
-                    ->with('resultatP1', $resultat->periode1)
-                    ->with('resultatP2', $resultat->periode2)
-                    ->with('resultatP3', $resultat->periode3)
-                    ->with('resultatP4', $resultat->periode4)
-                    ->with('resultatP5', $resultat->periode5)
-                    ->with('resultatP6', $resultat->periode6)
-                    
-                    //exams
-                    ->with('resultatEx1', $resultat->examen1)
-                    ->with('resultatEx2', $resultat->examen2)
-                    ->with('resultatEx3', $resultat->examen3)
-                    
-                    //trimes
-                    ->with('resultatTri1', $resultat->trimestre1)
-                    ->with('resultatTri2', $resultat->trimestre2)
-                    ->with('resultatTri3', $resultat->trimestre3)
 
-                    // ->
-                    
-                    //annees
-                    ->with('resultatAnnee', $resultat->annee)
-                    //decision
-                    ->with('decision', $resultat->decision)
+            ->with('page_name', 'Bulletin Annuel' . ' ' . $eleve->nomComplet() . ' ' . $eleve->classe(false) . " " . $annee->nom)
 
-                    ->with('annee_scolaire', $annee)
-                    ->with('trimestre', $trimestre)
-                    ->with('eleve', $eleve);
+            //conduites
+            ->with('cond1', $cond1)
+            ->with('cond2', $cond2)
+            ->with('cond3', $cond3)
+            ->with('cond4', $cond4)
+            ->with('cond5', $cond5)
+            ->with('cond6', $cond6)
+            //periodes
+            ->with('p1', $p1)
+            ->with('p2', $p2)
+            ->with('p3', $p3)
+            ->with('p4', $p4)
+            ->with('p5', $p5)
+            ->with('p6', $p6)
+
+            //resultats
+            //periodes
+            ->with('resultatP1', $resultat->periode1)
+            ->with('resultatP2', $resultat->periode2)
+            ->with('resultatP3', $resultat->periode3)
+            ->with('resultatP4', $resultat->periode4)
+            ->with('resultatP5', $resultat->periode5)
+            ->with('resultatP6', $resultat->periode6)
+
+            //exams
+            ->with('resultatEx1', $resultat->examen1)
+            ->with('resultatEx2', $resultat->examen2)
+            ->with('resultatEx3', $resultat->examen3)
+
+            //trimes
+            ->with('resultatTri1', $resultat->trimestre1)
+            ->with('resultatTri2', $resultat->trimestre2)
+            ->with('resultatTri3', $resultat->trimestre3)
+
+            // ->
+
+            //annees
+            ->with('resultatAnnee', $resultat->annee)
+            //decision
+            ->with('decision', $resultat->decision)
+
+            ->with('annee_scolaire', $annee)
+            ->with('trimestre', $trimestre)
+            ->with('eleve', $eleve);
     }
 
 
@@ -491,17 +515,17 @@ class ResultatController extends Controller
         // dd($trimestre);
         // $data ;
         switch ($trimestre->nom) {
-                case 'PREMIER TRIMESTRE':
-                    $data = $resultat->examen1;
-                    $trim = $resultat->trimestre1;
+            case 'PREMIER TRIMESTRE':
+                $data = $resultat->examen1;
+                $trim = $resultat->trimestre1;
                 break;
-                case 'DEUXIEME TRIMESTRE':
-                    $data = $resultat->examen2;
-                    $trim = $resultat->trimestre2;
-                    break;
-                case 'TROISIEME TRIMESTRE':
-                    $data = $resultat->examen3;
-                    $trim = $resultat->trimestre3;
+            case 'DEUXIEME TRIMESTRE':
+                $data = $resultat->examen2;
+                $trim = $resultat->trimestre2;
+                break;
+            case 'TROISIEME TRIMESTRE':
+                $data = $resultat->examen3;
+                $trim = $resultat->trimestre3;
                 break;
         }
 
@@ -516,32 +540,32 @@ class ResultatController extends Controller
                 $resultat->trimestre1 = $trim;
                 break;
             case 'DEUXIEME TRIMESTRE':
-                    $resultat->examen2 = $exa;
-                    $resultat->trimestre2 = $trim;
-                    break;
+                $resultat->examen2 = $exa;
+                $resultat->trimestre2 = $trim;
+                break;
             case 'TROISIEME TRIMESTRE':
-                        $resultat->examen3 = $exa;
-                        $resultat->trimestre3 = $trim;
+                $resultat->examen3 = $exa;
+                $resultat->trimestre3 = $trim;
                 break;
         }
 
         $resultat->save();
     }
 
-    public function periodeStore(Request $request, $periode_id,$eleve_id)
+    public function periodeStore(Request $request, $periode_id, $eleve_id)
     {
         $request->validate([
             "resultat" => ['required', 'string', 'max:255']
         ]);
 
-        
+
         $eleve = Eleve::findOrFail($eleve_id);
         $periode = Periode::findOrFail($periode_id);
-        
+
         $frequentation = Frequentation::findByEleveAndAnneeScolaire($eleve->id, $periode->trimestre->annee_scolaire->id);
-        
+
         $resultat = $frequentation->resultat;
-        
+
         $this->fillPeriode($resultat, $periode, $request->resultat);
         Logfile::updateLog(
             'resultats',
@@ -553,7 +577,7 @@ class ResultatController extends Controller
 
 
 
-    public function trimestreStore(Request $request, $trimestre_id,$eleve_id)
+    public function trimestreStore(Request $request, $trimestre_id, $eleve_id)
     {
         $request->validate([
             "periode1" => ['required', 'string', 'max:255'],
@@ -571,7 +595,7 @@ class ResultatController extends Controller
 
         $frequentation = Frequentation::findByEleveAndAnneeScolaire($eleve->id, $trimestre->annee_scolaire->id);
         $resultat = $frequentation->resultat;
-        
+
         $this->fillPeriode($resultat, $periode1, $request->periode1);
         $this->fillPeriode($resultat, $periode2, $request->periode2);
         // dd($request->trimestre);
@@ -582,13 +606,10 @@ class ResultatController extends Controller
             $resultat->id
         );
         return back();
-
-
-
     }
 
 
-    public function bulletinStore(Request $request, $annee_id,$eleve_id)
+    public function bulletinStore(Request $request, $annee_id, $eleve_id)
     {
         $request->validate([
             "periode1" => ['required', 'string', 'max:255'],

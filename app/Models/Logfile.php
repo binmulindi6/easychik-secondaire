@@ -20,50 +20,50 @@ class Logfile extends Model
     ];
 
     //save Create Log
-    public static function createLog($table_name, $item)
+    public static function createLog($table_name, $item, $user = null)
     {
         $log = Logfile::create([
             'table_name' => $table_name,
             'item_id' => $item,
             'event' => "Creation",
-            'done_by' => Auth::user()->id
+            'done_by' => $user ? $user : Auth::user()->id
         ]);
 
         $log->save();
     }
 
     //save Update Log
-    public static function updateLog($table_name, $item)
+    public static function updateLog($table_name, $item, $user = null)
     {
         $log = Logfile::create([
             'table_name' => $table_name,
             'item_id' => $item,
             'event' => "Modification",
-            'done_by' => Auth::user()->id
+            'done_by' => $user ? $user : Auth::user()->id
         ]);
 
         $log->save();
     }
 
     //save Delete Log
-    public static function deleteLog($table_name, $item)
+    public static function deleteLog($table_name, $item, $user = null)
     {
         $log = Logfile::create([
             'table_name' => $table_name,
             'item_id' => $item,
             'event' => "Suppression",
-            'done_by' => Auth::user()->id
+            'done_by' => $user ? $user : Auth::user()->id
         ]);
 
         $log->save();
     }
-    public static function restoreLog($table_name, $item)
+    public static function restoreLog($table_name, $item, $user = null)
     {
         $log = Logfile::create([
             'table_name' => $table_name,
             'item_id' => $item,
             'event' => "Restoration",
-            'done_by' => Auth::user()->id
+            'done_by' => $user ? $user : Auth::user()->id
         ]);
 
         $log->save();

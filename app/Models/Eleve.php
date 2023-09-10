@@ -19,6 +19,7 @@ class Eleve extends Model
 {
      use HasFactory, SoftDeletes;
      protected $fillable = [
+          'num_permanent',
           'matricule',
           'nom',
           'prenom',
@@ -41,18 +42,6 @@ class Eleve extends Model
      {
           if (!$this->frequentations->isEmpty()) {
                $frequentations = $this->frequentations;
-               // $curentYear = AnneeScolaire::current();
-               // foreach($frequetation as $freq){
-               //      if ($freq->annee_scolaire->id === $curentYear->id) {
-               //           # code...
-               //      }
-               // }
-
-               // $annee_id = $frequetation->annee_scolaire_id;
-               // $annee = AnneeScolaire::withTrashed()->find($annee_id);
-
-               // //dd($annee->nom, AnneeScolaire::current()->nom, $annee->isCurrent());
-               // //dd($annee->isCurrent());
                foreach($frequentations as $frequentation){
                     if($frequentation->annee_scolaire !== null){
                          if ($frequentation->annee_scolaire->isCurrent()) {
@@ -117,13 +106,13 @@ class Eleve extends Model
      //bulletinPeriode() to get points from periode
      public function bulletinPeriode($periode)
      {   
-          $classe = $this->classe(); 
+          $niveau = $this->classe()->niveau; 
 
           $bulletin = Evaluation::where('evaluations.periode_id', '=', $periode)
                ->join('eleve_evaluation', 'evaluation_id', '=', "evaluations.id")
                ->where('eleve_evaluation.eleve_id', '=', $this->id)
                ->join('cours', 'cours.id', '=', 'evaluations.cours_id')
-               ->where('cours.classe_id', $classe->id)
+               ->where('cours.niveau_id', $niveau->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_evaluation.note_obtenu) as note'), DB::raw('SUM(evaluations.note_max) as max'), 'cours.max_periode as total')
                ->groupBy('cours_id')
                ->get();
@@ -138,13 +127,13 @@ class Eleve extends Model
      public function bulletinExamen($trimestre)
      {    
 
-          $classe = $this->classe(); 
+          $niveau = $this->classe()->niveau; 
 
           $bulletin = Examen::where('examens.trimestre_id', '=', $trimestre)
                ->join('eleve_examen', 'examen_id', '=', "examens.id")
                ->where('eleve_examen.eleve_id', '=', $this->id)
                ->join('cours', 'cours.id', '=', 'examens.cours_id')
-               ->where('cours.classe_id', $classe->id)
+               ->where('cours.niveau_id', $niveau->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_examen.note_obtenu) as note'), DB::raw('SUM(examens.note_max) as max'), 'cours.max_examen as total')
                ->groupBy('cours_id')
                ->get();
@@ -183,15 +172,32 @@ class Eleve extends Model
      public static function getLastMatricule(){
           
           // dd(count(Eleve::all()));
-          if(count(Eleve::all()) > 1){
+          if(count(Eleve::all()) > 0){
                $lastmatricule = Eleve::all()->last()->matricule;
                $initial = explode('/', $lastmatricule, -1)[0];
                $middle = str_replace('E', '', $initial);
-               $matricule = 'E' . intval($middle) + 1 . '/' . date('Y');
+               $matricule = (intval($middle) + 1) < 10 ?  'E0' . intval($middle) + 1 . '/' . date('Y') : 'E' . intval($middle) + 1 . '/' . date('Y') ;
           }else{
-               $matricule = 'E1/' . date('Y');
+               $matricule = 'E01/' . date('Y');
           }
 
           return $matricule;
+     }
+
+     public static function checkEleves() : bool {
+          if(Eleve::count() > 0){
+               return true;
+          }
+          return false;
+     }
+
+     public function presence($date = null){
+          $today =  $date ? $date : date('Y-m-d');
+          $presence = Presence::join('frequentations', 'frequentations.id', 'frequentation_id')
+                              ->where('frequentations.eleve_id', $this->id)
+                              ->where('presences.date', $today)
+                              ->select('presences.*')
+                              ->first();
+          return $presence;
      }
 }

@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
     <div class="container flex flex-col justify-between gap-5">
 
         @if (isset($search))
@@ -28,20 +27,20 @@
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="nom" :value="__('Nom')" />
-                            <select name="nom" id="nom" 
+                            <select name="nom" id="nom"
                                 class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
                                 required>
-                                <option  hidden selected value="{{$self->nom}}"> {{$self->nom}} </option>
+                                <option hidden selected value="{{ $self->nom }}"> {{ $self->nom }} </option>
                                 <option value="PREMIER TRIMESTRE">PREMIER TRIMESTRE</option>
                                 <option value="DEUXIEME TRIMESTRE">DEUXIEME TRIMESTRE</option>
                                 <option value="TROISIEMETRIMESTRE">TROISIEME TRIMESTRE</option>
-                        </select>
+                            </select>
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="annee_scolaire" :value="__('Annee Scolaire Encours')" />
                             <x-input id="date_debut" class="block mt-1 w-full" type="text" name="annee_scolaire"
                                 :value="$self->annee_scolaire->nom" readonly required />
-                                <input type="hidden" name="annee_scolaire" value="{{$$self->annee_scolaire->id}}" required>
+                            <input type="hidden" name="annee_scolaire" value="{{ $self->annee_scolaire->id }}" required>
                         </div>
                     </div>
                     <div class="flex gap-5">
@@ -87,8 +86,8 @@
                         <div class="mt-4 w-full">
                             <x-label for="annee_scolaire" :value="__('Annee Scolaire Encours')" />
                             <x-input id="date_debut" class="block mt-1 w-full" type="text" name="annee_scolaire"
-                                :value="$anneeEncours->nom" placeholder="{{$anneeEncours->nom}}" readonly required />
-                                <input type="hidden" name="annee_scolaire" value="{{$anneeEncours->id}}" required>
+                                :value="$anneeEncours->nom" placeholder="{{ $anneeEncours->nom }}" readonly required />
+                            <input type="hidden" name="annee_scolaire" value="{{ $anneeEncours->id }}" required>
                             {{-- <x-select :collection="$annees" class="block mt-1 w-full" name='annee_scolaire' required>
                             </x-select> --}}
                         </div>
@@ -117,16 +116,18 @@
             @endif
     </div>
     @endif
-    @if (isset($items))
-        @if ($page_name == 'Trimestres / Edit' || $page_name == 'Trimestres / Create')
-            <div class="display hidden container p-5 bg-white rounded-5 shadow-2xl">
-            @else
-                <div class="display container p-5 bg-white rounded-5 shadow-2xl">
-        @endif
 
-        <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-            <h6>Trimestres</h6>
-        </div>
+
+    @if ($page_name == 'Trimestres / Edit' || $page_name == 'Trimestres / Create')
+        <div class="display hidden container p-5 bg-white rounded-5 shadow-2xl">
+        @else
+            <div class="display container p-5 bg-white rounded-5 shadow-2xl">
+    @endif
+
+    <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+        <h6>Trimestres</h6>
+    </div>
+    @if (isset($items) && count($items) > 0)
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
@@ -186,7 +187,15 @@
         </div>
 
         </div>
+        </div>
+    @else
+        <div class="flex flex-col justify-center gap-2 p-5">
+            <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas des Trimestres pour
+                l'annee scolaire en cours
+                , veuillez en ajouter</span>
+            <a href="{{ route('trimetres.create') }}" class="text-center">
+                <x-button>Ajouter un Trimetres</x-button></a>
+        </div>
     @endif
     </div>
-
 @endsection

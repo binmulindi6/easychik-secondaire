@@ -1,6 +1,6 @@
 @extends('errors::minimal')
 
-@section('title', __('S.A.S'))
+@section('title', __(env('APP_NAME')))
 @section('code', '401')
 @section('message', __('Acces Refusé'))
 @section('action')
@@ -12,7 +12,7 @@
             {{-- <i fixed-plugin-button-nav class=" text-red-500 fa fa-lock"
                 title="logout"></i> --}}
             {{-- <a href="{{$_SERVER['HTTP_REFERER']}}" class=" text-5 text-blue-500 hover:underline">Acceuil</a> --}}
-            <button type="button" class=" text-5 text-blue-500 hover:underline" onclick="javascript:history.go(-1)">Retour</button>
+            <a type="button" class=" text-5 text-blue-500 hover:underline" href="/">Retour</a>
         </button title="logout">
     </form>
 @endsection
