@@ -1,7 +1,7 @@
 <div class="flex flex-row justify-between gap-4">
             
     <div class="flex gap-5">
-        @if ((str_contains('Classes',$pagename) || $pagename === "Classes / Edit") && !Auth::user()->isSecretaire())
+        @if ((str_contains('Classes',$pagename) || $pagename === "Classes / Edit" || $pagename === "Classes / Create") && !Auth::user()->isSecretaire())
             <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
             <div class="btn-create items-center hidden  justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
@@ -22,7 +22,7 @@
             </div>
 
             <div class=" classes btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
-                @if ( $pagename != "Classes" && $pagename != "Classes / Create" && $pagename != "Classes / Edit")
+                @if ( $pagename != "Classes" && $pagename != "Classes / Create")
                     <a href="{{route('classes.index')}}">
                         <div>
                             <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-chalkboard text-size-sm"></i>

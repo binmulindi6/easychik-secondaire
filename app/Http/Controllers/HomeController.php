@@ -20,7 +20,7 @@ class HomeController extends Controller
     {
         if (Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isSecretaire()) {
             $annee = AnneeScolaire::current();
-            $freqs = $annee->frequentations;
+            $freqs = $annee ? $annee->frequentations : null;
             $classes = Classe::orderBy('niveau_id', 'asc')->get();
 
             $datas = [];
@@ -55,8 +55,8 @@ class HomeController extends Controller
 
 
 
-            $employers = Employer::count() > 0 ? Employer::count() : 0;
-            $hommes = count(Employer::where('sexe', 'M')->get()) > 0 ? count(Employer::where('sexe', 'M')->get()) : 0;
+            $employers = Employer::where('id','!=',1)->count() > 0 ? Employer::where('id','!=',1)->count() : 0;
+            $hommes = count(Employer::where('sexe', 'M')->where('id','!=',1)->get()) > 0 ? count(Employer::where('sexe', 'M')->where('id','!=',1)->get()) : 0;
             $classes = Classe::count() > 0 ? Classe::count() : 0;
 
             $classesEncadrees = [];

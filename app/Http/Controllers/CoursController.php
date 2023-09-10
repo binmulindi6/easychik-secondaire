@@ -94,7 +94,7 @@ class CoursController extends Controller
             $request->validate([
                 'nom' => ['required','string','max:255'],
                 'categorie_cours' => ['required','string','max:255'],
-                'classe' => ['required','string','max:255'],
+                'niveau' => ['required','string','max:255'],
                 'max_periode' => ['required','string','max:255'],
                 'max_examen' => ['required','string','max:255'],
             ]);
@@ -122,12 +122,14 @@ class CoursController extends Controller
         $cour = Cours::find($id);
         $cours = Cours::all();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
+        $niveaux = Niveau::orderBy('numerotation', 'asc')->get();
         $categories = CategorieCours::orderBy('nom', 'asc')->get();
         return view('ecole.cours')
                 ->with('page_name', $this->page_name . "/Edit")
                 ->with('self', $cour)
                 ->with('items', $cours)
                 ->with('classes', $classes)
+                ->with('niveaux', $niveaux)
                 ->with('categories', $categories);
 
     }
@@ -144,13 +146,13 @@ class CoursController extends Controller
         $request->validate([
             'nom' => ['required','string','max:255'],
             'categorie_cours' => ['required','string','max:255'],
-            'classe' => ['required','string','max:255'],
+            'niveau' => ['required','string','max:255'],
             'max_periode' => ['required','string','max:255'],
             'max_examen' => ['required','string','max:255'],
         ]);
 
         
-        $classe = Classe::find($request->classe);
+        $niveau = Niveau::find($request->niveau);
         $categorie_cours = CategorieCours::find($request->categorie_cours);
         
         $cours = Cours::find($id);
@@ -159,7 +161,7 @@ class CoursController extends Controller
         $cours->max_periode = $request->max_periode;
         $cours->max_examen = $request->max_examen;
         
-        $cours->classe()->associate($classe);
+        $cours->niveau()->associate($niveau);
         $cours->categorie_cours()->associate($categorie_cours);
         $cours->save();
         //dd($cours);

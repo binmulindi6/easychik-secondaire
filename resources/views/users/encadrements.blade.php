@@ -18,7 +18,7 @@
                     <div class="frm-create shadow-2xl hidden container p-4 bg-white rounded-5">
             @endif
             @if (isset($self))
-                <p class="font-bold text-base"> Edit Frequentation </p>
+                <p class="font-bold text-base"> Modifier Encadrement </p>
                 <form method="PUT" action="{{ route('encadrements.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
@@ -27,26 +27,31 @@
                         @if (isset($matricule))
                             <div class="mt-4 w-full">
                                 <x-label for="matricule" :value="__('Matricule de l\'enseignant')" />
-                                <x-select :val="$self->user" :only="'Enseignant'" :collection="$users" class="block mt-1 w-full" name='user_id' required> </x-select>
+                                <x-select :val="$self->user" :only="'Enseignant'" :collection="$users" class="block mt-1 w-full"
+                                    name='user_id' required> </x-select>
                             </div>
                         @else
                             <div class="mt-4 w-full">
                                 <x-label for="matricule" :value="__('Enseignant')" />
-                                <x-select :val="$self->user" :only="'Enseignant'" :collection="$users" class="block mt-1 w-full" name='user_id' required> </x-select>
+                                <x-select :val="$self->user" :only="'Enseignant'" :collection="$users" class="block mt-1 w-full"
+                                    name='user_id' required> </x-select>
                             </div>
                         @endif
                         <div class="mt-4 w-full">
                             <x-label for="classe" :value="__('Classe')" />
-                            <x-select :val="$self->classe" :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
+                            <x-select :val="$self->classe" :collection="$classes" class="block mt-1 w-full" name='classe_id'
+                                required> </x-select>
                         </div>
                     </div>
                     <div class="mt-4">
                         <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
-                            @if (isset($matricule) && isset($current))
-                                <x-select :val="$current" :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required> </x-select>
-                            @else
-                                <x-select :val="$self->annee_scolaire" :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required></x-select>
-                            @endif
+                        @if (isset($matricule) && isset($current))
+                            <x-select :val="$current" :collection="$annees" class="block mt-1 w-full"
+                                name='annee_scolaire_id' required> </x-select>
+                        @else
+                            <x-select :val="$self->annee_scolaire" :collection="$annees" class="block mt-1 w-full"
+                                name='annee_scolaire_id' required></x-select>
+                        @endif
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -82,45 +87,52 @@
                         @if (isset($user))
                             <div class="mt-4 w-full">
                                 <x-label for="matricule" :value="__('Enseignant')" />
-                                <x-select disabled :val="$user" :only="'Enseignant'" :collection="$users" class="block mt-1 w-full" name='user_id' required> </x-select>
-                                <input type="hidden" name="user_id" value="{{$user->id}}">
+                                <x-select disabled :val="$user" :only="'Enseignant'" :collection="$users"
+                                    class="block mt-1 w-full" name='user_id' required> </x-select>
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
                             </div>
                         @else
                             <div class="mt-4 w-full">
                                 <x-label for="matricule" :value="__('Enseignant')" />
-                                <x-select :only="'Enseignant'" :collection="$users" class="block mt-1 w-full" name='user_id' required> </x-select>
+                                <x-select :only="'Enseignant'" :collection="$users" class="block mt-1 w-full" name='user_id'
+                                    required> </x-select>
                             </div>
                         @endif
                         <div class="mt-4 w-full">
                             <x-label for="classe" :value="__('Classe')" />
                             @if (isset($classe))
-                                <x-select :val="$classe" disabled :collection="$classes" class="block mt-1 w-full"> </x-select>
-                                <input type="hidden" name="classe_id" value="{{$classe->id}}">
+                                <x-select :val="$classe" disabled :collection="$classes" class="block mt-1 w-full">
+                                </x-select>
+                                <input type="hidden" name="classe_id" value="{{ $classe->id }}">
                             @else
-                                <x-select :collection="$classes" class="block mt-1 w-full" name='classe_id' required> </x-select>
+                                <x-select :collection="$classes" class="block mt-1 w-full" name='classe_id' required>
+                                </x-select>
                             @endif
-                            
+
                         </div>
                     </div>
                     <div class="mt-4">
                         <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
-                            @if (isset($user) || isset($classe) && isset($current))
-                                <x-select disabled readonly :val="$current" :collection="$annees" class="block mt-1 w-full"> </x-select>
-                                <input type="hidden" name="annee_scolaire_id" value="{{$current->id}}">
-                            @else
-                                <x-select :collection="$annees" class="block mt-1 w-full" name='annee_scolaire_id' required></x-select>
-                            @endif
+                        @if (isset($user) || (isset($classe) && isset($current)))
+                            <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
+                                :value="$current->nom" required />
+                            <input type="hidden" name="annee_scolaire_id" value="{{ $current->id }}">
+                        @else
+                            <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
+                                :value="$current->nom" required />
+                            <input type="hidden" name="annee_scolaire_id" value="{{ $current->id }}">
+                        @endif
                     </div>
 
-                        <div class="flex gap-10">
-                            <div class="mt-4">
-                                <x-button>Ajouter</x-button>
-                            </div>
-                            <div class="mt-4">
-                                <x-button-annuler class="bg-red-500">annuler</x-button-annuler>
-                            </div>
+                    <div class="flex gap-10">
+                        <div class="mt-4">
+                            <x-button>Ajouter</x-button>
                         </div>
-                        
+                        <div class="mt-4">
+                            <x-button-annuler class="bg-red-500">annuler</x-button-annuler>
+                        </div>
+                    </div>
+
 
                 </form>
             @endif
@@ -147,7 +159,7 @@
                             Enseignant </th>
                         {{-- <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
-                            Nom, Prenom </th>--}}
+                            Nom, Prenom </th> --}}
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
                             Classe</th>
@@ -165,7 +177,11 @@
                                 <tr class="">
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        {{ $item->user->employer->nom . " " . $item->user->employer->prenom }}</td>
+                                        <a href="{{ route('employers.show', $item->user->employer->id) }}"
+                                            class="hover:text-blue-700">
+                                            {{ $item->user->employer->nom . ' ' . $item->user->employer->prenom }}
+                                        </a>
+                                    </td>
                                     {{-- <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                         <a href="{{ route('eleves.show', $item->eleve->id) }}">
@@ -173,7 +189,11 @@
                                     </td> --}}
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}</td>
+                                        <a href="{{ route('classes.show', $item->classe->id) }}"
+                                            class="hover:text-blue-700">
+                                            {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}
+                                        </a>
+                                    </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                         {{ $item->annee_scolaire === null ? 'null' : $item->annee_scolaire->nom }}</td>

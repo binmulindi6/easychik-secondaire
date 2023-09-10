@@ -15,6 +15,9 @@
                     <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
                         {{ $data->matricule }}
                     </p>
+                    <p class="mb-0 font-semibold text-4 leading-normal dark:text-white dark:opacity-60">
+                        {{ $data->num_permanent }}
+                    </p>
                     <a href={{ route('eleves.show', $data->id) }}>
                         <h5 class="mb-1 hover:underline dark:text-white">{{ $data->nom . ' ' . $data->prenom }}</h5>
                     </a>

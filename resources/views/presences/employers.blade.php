@@ -40,8 +40,7 @@
 
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
-        <x-classe-profile-header-presence :noHeader="true" :print="true" :today="$day" :data="$classe"
-            :passation="true" />
+        <x-employers-presence-header :print="true" :today="$day" />
         @if (isset($annee) && $annee !== null)
             <div id="display-reussite"
                 class="display-passation shadow-2xl container p-4 bg-white rounded-5 flex justify-center items-center w-full">
@@ -49,7 +48,11 @@
                     <table class="items-center w-full mb-0 align-top border-gray-700 text-slate-500">
                         <caption
                             class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base border-b-solid tracking-none whitespace-nowrap text-slate-500">
-                            LISTE DE PRESENCE DU {{ date('d/m/Y') }}
+                            LISTE DE PRESENCE PERSONNELS DU @if ($day)
+                                {{ date_format(date_create($day), 'd/m') }}
+                            @else
+                                {{ date('d/m/Y') }}
+                            @endif
                         </caption>
                         <thead class="align-bottom">
                             <th
@@ -58,7 +61,15 @@
                             </th>
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                ELEVE
+                                Matricule
+                            </th>
+                            <th
+                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Nom
+                            </th>
+                            <th
+                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Fonction
                             </th>
                             @php
                                 $today = date_format(date_create($day), 'd/m');
@@ -70,65 +81,76 @@
                         </thead>
                         <tbody>
 
-                            @foreach ($eleve as $index => $eleve)
-                                @if (count($eleve) - 1 === $index)
-                                    <input id="last-id" type="hidden" value="{{ $eleve->id }}">
+                            @foreach ($items as $index => $employer)
+                                @if (count($items) - 1 === $index)
+                                    <input id="last-id" type="hidden" value="{{ $employer->id }}">
                                 @endif
-                                <tr id="tr{{ $eleve->id }}"
+                                <tr id="tr{{ $employer->id }}"
                                     class=" translate-x-2 duration-200 rounded-2xl hover:bg-slate-100 cursor-pointer">
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
                                         {{ $index + 1 }}
                                     </td>
                                     <td
-                                        class="p-1 text-size-sm text-center uppercase align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
-                                        <a href="{{ route('eleves.show', $eleve->id) }}">
-                                            {{ $eleve->nomComplet() }}
-                                        </a>
-                                    </td>
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
+                                        {{ $employer->matricule }}
                                     </td>
                                     <td
+                                        class="p-1 text-size-sm text-center uppercase align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
+                                        <a href="{{ route('employers.show', $employer->id) }}">
+                                            {{ $employer->nomComplet() }}
+                                        </a>
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center uppercase align-middle bg-transparent border-b  shadow-transparent hover:text-blue-500  ">
+                                        {{ $employer->fonction() }}
+
+                                    </td>
+
+                                    <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                        @if ($eleve->presence($day))
-                                            {{ $eleve->presence($day)->type_presence->abbreviation }}
+                                        @if ($employer->presence($day))
+                                            {{ $employer->presence($day)->type_presence->abbreviation }}
                                         @else
-                                            <form id="frm{{ $eleve->id }}" action="{{ route('presences.api.store') }}"
-                                                method="POST" class="flex justify-center items-center gap-2">
+                                            <form id="frm{{ $employer->id }}"
+                                                action="{{ route('presences.employers.api.store') }}" method="POST"
+                                                class="flex justify-center items-center gap-2">
                                                 @csrf
-                                                <input id="token{{ $eleve->id }}" type="hidden" name="token"
+
+                                                <input id="token{{ $employer->id }}" type="hidden" name="token"
                                                     value="{{ csrf_token() }}">
-                                                <input id="date{{ $eleve->id }}" type="hidden" name="date"
+                                                <input id="date{{ $employer->id }}" type="hidden" name="date"
                                                     value="{{ $day }}">
-                                                <input id="user{{ $eleve->id }}" type="hidden" name="eleve"
+                                                <input id="user{{ $employer->id }}" type="hidden" name="eleve"
                                                     value="{{ Auth::user()->id }}">
-                                                <input id="freq{{ $eleve->id }}" type="hidden" name="freq"
-                                                    value="{{ $eleve->currentFrequentation()->id }}">
+                                                <input id="annee{{ $employer->id }}" type="hidden" name="annee"
+                                                    value="{{ $annee->id }}">
                                                 @foreach ($types as $type)
                                                     @if ($type->abbreviation === 'P')
-                                                        <input id="{{ $eleve->id }}" type="button"
+                                                        <input id="{{ $employer->id }}" type="button"
                                                             placeholder="{{ $type->id }}"
                                                             value="{{ $type->abbreviation }}" title="{{ $type->nom }}"
-                                                            class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
+                                                            class="btn-presence-employer flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                     @else
                                                         @if ($type->abbreviation === 'A')
-                                                            <input id="{{ $eleve->id }}" type="button"
+                                                            <input id="{{ $employer->id }}" type="button"
                                                                 placeholder="{{ $type->id }}"
                                                                 value="{{ $type->abbreviation }}"
                                                                 title="{{ $type->nom }}"
-                                                                class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
+                                                                class="btn-presence-employer flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                         @else
-                                                            <input id="{{ $eleve->id }}" type="button"
+                                                            <input id="{{ $employer->id }}" type="button"
                                                                 placeholder="{{ $type->id }}"
                                                                 value="{{ $type->abbreviation }}"
                                                                 title="{{ $type->nom }}"
-                                                                class="btn-presence flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
+                                                                class="btn-presence-employer flex items-center justify-centerbtn-affecter px-2 h-8 w-8 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 cursor-pointer">
                                                         @endif
                                                     @endif
                                                 @endforeach
 
                                             </form>
                                         @endif
-                                        <span id="err{{ $eleve->id }}" class="text-red-500 text-3"></span>
+                                        <span id="err{{ $employer->id }}" class="text-red-500 text-3"></span>
                                     </td>
                                 </tr>
                             @endforeach

@@ -1,8 +1,8 @@
 @extends('errors::minimal')
 
 @section('title', __(env('APP_NAME')))
-@section('code', '403')
-@section('message', __($exception->getMessage() ?: 'Acces Refusé'))
+@section('code', '455')
+@section('message', __($exception->getMessage() ?: 'Bulletin Indisponible, Veuillez Contacter la Direction de L\'etablissement'))
 @section('action')
     <form id="profile" class="flex items-center justify-center pt-2"
     action="{{ route('logout') }}" method="post">
@@ -12,7 +12,7 @@
             {{-- <i fixed-plugin-button-nav class=" text-red-500 fa fa-lock"
                 title="logout"></i> --}}
             {{-- <a href="{{$_SERVER['HTTP_REFERER']}}" class=" text-5 text-blue-500 hover:underline">Acceuil</a> --}}
-            <a type="button" class=" text-5 text-blue-500 hover:underline" href="/">Retour</a>
+            <button type="button" class=" text-5 text-blue-500 hover:underline" onclick="javascript:history.go(-1)">Retour</button>
         </button title="logout">
     </form>
 @endsection

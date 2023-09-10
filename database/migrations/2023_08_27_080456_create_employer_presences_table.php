@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('paiement_frais', function (Blueprint $table) {
+        Schema::create('employer_presences', function (Blueprint $table) {
             $table->id();
-            $table->integer('montant_paye');
-            $table->string('reference')->nullable();
-            $table->foreignId('frais_id')->nullable()->constrained();
-            $table->foreignId('eleve_id')->nullable()->constrained();
-            $table->foreignId('moyen_paiement_id')->nullable()->constrained();
+            $table->foreignId('employer_id')->nullable()->constrained();
+            $table->foreignId('annee_scolaire_id')->nullable()->constrained();
+            $table->foreignId('type_presence_id')->nullable()->constrained();
+            $table->date('date');
+            $table->text('motif')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paiement_frais');
+        Schema::dropIfExists('employer_presences');
     }
 };

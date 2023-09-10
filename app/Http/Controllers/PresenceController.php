@@ -61,6 +61,7 @@ class PresenceController extends Controller
             'freq_id' => ['required', 'int'],
             'freq_id' => ['required', 'int'],
             'user_id' => ['required', 'int'],
+            'date' => ['required', 'string']
         ]);
 
 
@@ -93,6 +94,7 @@ class PresenceController extends Controller
             'freq_id' => ['required', 'int'],
             'type_id' => ['required', 'int'],
             'user_id' => ['required', 'int'],
+            'date' => ['required', 'string']
         ]);
 
         $fre = Frequentation::findOrFail($request->freq_id);
@@ -100,7 +102,7 @@ class PresenceController extends Controller
         $user = User::findOrFail($request->user_id);
 
         $presence = Presence::create([
-            'date' => date('Y-m-d')
+            'date' => $request->date
         ]);
 
         $presence->type_presence()->associate($type);

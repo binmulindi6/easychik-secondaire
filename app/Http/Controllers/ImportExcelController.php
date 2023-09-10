@@ -92,6 +92,7 @@ class ImportExcelController extends Controller
             // }
             // dd('not passed');
 
+            $num = '';
             $nom = '';
             $prenom = '';
             $sexe = '';
@@ -125,6 +126,10 @@ class ImportExcelController extends Controller
                                         }else{
                                             if(str_contains((strtolower($header)), 'adresse') || str_contains((strtolower($header)), 'domicile')){
                                                 $adresse = $index;
+                                            }else{
+                                                if(str_contains((strtolower($header)), 'permanent') || str_contains((strtolower($header)), 'numero') || str_contains((strtolower($header)), 'permanent numero')){
+                                                    $num = $index;
+                                                }
                                             }
 
                                         }
@@ -160,7 +165,8 @@ class ImportExcelController extends Controller
                 $date !== '' &&
                 $pere !== '' &&
                 $mere !== '' &&
-                $adresse !== ''
+                $adresse !== '' &&
+                $num !== ''
             ){
                 //datas
                 foreach($worksheet->getRowIterator(2) as $row){
@@ -183,6 +189,7 @@ class ImportExcelController extends Controller
                         $eleve['prenom'] = $data[$prenom];
                         $eleve['sexe'] = $data[$sexe];
                         $eleve['lieu'] = $data[$lieu];
+                        $eleve['num'] = $data[$num];
                         if (is_int($data[$date])) {
                             # code...
                             $dat = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data[$date]);
@@ -244,6 +251,7 @@ class ImportExcelController extends Controller
 
             $el = Eleve::create([
                 'matricule' => $matricule,
+                'num_permanent' => $eleve['num'],
                 'nom' => $eleve['nom'],
                 'prenom' => $eleve['prenom'],
                 'lieu_naissance' => $eleve['lieu'],
@@ -253,6 +261,8 @@ class ImportExcelController extends Controller
                 'adresse' => $eleve['adresse'],
                 'sexe' => $eleve['sexe'],
             ]);
+
+            $el->save();
 
             Logfile::createLog(
                 'eleves',

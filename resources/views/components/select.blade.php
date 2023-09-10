@@ -113,10 +113,14 @@
                                     @if (isset($item->type_frais))
                                         {{ $item->nom . ' (en ' . $item->type_frais->devise . ')' }}
                                     @else
-                                        @if (isset($item->nom))
-                                            {{ $item->nom }}
+                                        @if (isset($item->devise))
+                                            {{ $item->nom . ' (en ' . $item->devise . ')' }}
                                         @else
-                                            {{ $item }}
+                                            @if (isset($item->nom))
+                                                {{ $item->nom }}
+                                            @else
+                                                {{ $item }}
+                                            @endif
                                         @endif
                                     @endif
                                 @endif

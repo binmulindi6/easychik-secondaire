@@ -2,43 +2,6 @@
             
     <div class="flex gap-5">
             
-            @if ($pagename == "Categories Cours/Create" || $pagename == "Categories Cours" || $pagename == "Categories Cours/Edit")
-            <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
-            @else
-            <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
-            @endif
-                @if ($pagename != "Categories Cours/Create" && $pagename != "Categories Cours" )
-                    <a class="w-full" href="{{route('categorie-cours.create')}}">
-                        <div>
-                            <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter une Categorie des Cours</span>
-                        </div>
-                    </a>
-                @else
-                    <div>
-                        <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter une Categorie des Cours</span>
-                    </div>
-                @endif
-            </div>
-
-            <div class="categorie-cours btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
-                @if ( $pagename != "Categories Cours" && $pagename != "Categories Cours/Create" && $pagename != "Categories Cours/Edit")
-                    <a href="{{route('categorie-cours.index')}}">
-                        <div>
-                            <i class="relative top-0 leading-normal text-red-500 fa fa-solid fa-book text-size-sm"></i>
-                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Categories des Cours</span>
-                        </div>
-                    </a>
-                @else
-                <div>
-                    <i class="relative top-0 leading-normal text-red-500 fa fa-solid fa-book text-size-sm"></i>
-                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Categories des Cours</span>
-                </div>
-                @endif
-            </div>
-
-
             @if ($pagename == "Cours/Create" || $pagename == "Cours" || $pagename == "Cours/Edit")
             <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
@@ -71,6 +34,42 @@
                 <div>
                     <i class="relative top-0 leading-normal text-black fa fa-solid fa-book text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Cours</span>
+                </div>
+                @endif
+            </div>
+
+            @if ($pagename == "Categories Cours/Create" || $pagename == "Categories Cours" || $pagename == "Categories Cours/Edit")
+            <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            @else
+            <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+            @endif
+                @if ($pagename != "Categories Cours/Create" && $pagename != "Categories Cours" )
+                    <a class="w-full" href="{{route('categorie-cours.create')}}">
+                        <div>
+                            <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter une Categorie des Cours</span>
+                        </div>
+                    </a>
+                @else
+                    <div>
+                        <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter une Categorie des Cours</span>
+                    </div>
+                @endif
+            </div>
+
+            <div class="categorie-cours btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
+                @if ( $pagename != "Categories Cours" && $pagename != "Categories Cours/Create" && $pagename != "Categories Cours/Edit")
+                    <a href="{{route('categorie-cours.index')}}">
+                        <div>
+                            <i class="relative top-0 leading-normal text-red-500 fa fa-solid fa-book text-size-sm"></i>
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Categories des Cours</span>
+                        </div>
+                    </a>
+                @else
+                <div>
+                    <i class="relative top-0 leading-normal text-red-500 fa fa-solid fa-book text-size-sm"></i>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Categories des Cours</span>
                 </div>
                 @endif
             </div>

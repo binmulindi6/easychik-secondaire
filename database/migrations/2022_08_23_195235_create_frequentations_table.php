@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('frequentations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('eleve_id')->constrained();
-            $table->foreignId('classe_id')->constrained();
-            $table->foreignId('annee_scolaire_id')->constrained();
+            $table->foreignId('eleve_id')->nullable()->constrained();
+            $table->foreignId('classe_id')->nullable()->constrained();
+            $table->foreignId('annee_scolaire_id')->nullable()->constrained();
 
             $table->timestamps();
         });
