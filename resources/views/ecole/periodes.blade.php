@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
     <div class="container flex flex-col justify-between gap-5">
 
         @if (isset($search))
@@ -30,8 +29,20 @@
                     <div class="flex gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="nom" :value="__('Nom')" />
-                            <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
-                                :value="$self->nom" required />
+                            {{-- <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
+                                :value="$self->nom" required /> --}}
+                            <select name="nom" id="nom"
+                                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                                required>
+                                <option selected> {{ $self->nom }} </option>
+                                <option disabled> Choisir le nom de la Periode </option>
+                                <option value="PREMIERE PERIODE">PREMIERE PERIODE</option>
+                                <option value="DEUXIEME PERIODE">DEUXIEME PERIODE</option>
+                                <option value="TROISIEME CINQUIEMEPERIODE">TROISIEME PERIODE</option>
+                                <option value="QUATRIEME PERIODE">QUATRIEME PERIODE</option>
+                                <option value="CINQUIEME PERIODE">CINQUIEME PERIODE</option>
+                                <option value="SIXIEME PERIODE">SIXIEME PERIODE</option>
+                            </select>
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="trimestre" :value="__('Trimestre')" />
@@ -80,7 +91,7 @@
                                 <option value="TROISIEME CINQUIEMEPERIODE">TROISIEME PERIODE</option>
                                 <option value="QUATRIEME PERIODE">QUATRIEME PERIODE</option>
                                 <option value="CINQUIEME PERIODE">CINQUIEME PERIODE</option>
-                                <option value="SIXIEME PERIODE">SIXIEME  PERIODE</option>
+                                <option value="SIXIEME PERIODE">SIXIEME PERIODE</option>
                             </select>
                         </div>
                         <div class="mt-4 w-full">
@@ -112,12 +123,17 @@
             @endif
     </div>
     @endif
-    @if (isset($items))
-        @if ($page_name == 'Periodes/Create' || $page_name == 'Periodes/Edit')
-            <div class="display hidden container p-5 bg-white rounded-5 shadow-2xl">
-            @else
-                <div class="display container p-5 bg-white rounded-5 shadow-2xl">
-        @endif
+
+
+    @if ($page_name == 'Periodes/Create' || $page_name == 'Periodes/Edit')
+        <div class="display hidden container p-5 bg-white rounded-5 shadow-2xl">
+        @else
+            <div class="display container p-5 bg-white rounded-5 shadow-2xl">
+    @endif
+    <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+        <h6>Periodes</h6>
+    </div>
+    @if (isset($items) && count($items) > 0)
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
@@ -178,7 +194,15 @@
         </div>
 
         </div>
+        </div>
+    @else
+        <div class="flex flex-col justify-center gap-2 p-5">
+            <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas des Periodes pour
+                l'annee scolaire en cours
+                , veuillez en ajouter</span>
+            <a href="{{ route('periodes.create') }}" class="text-center">
+                <x-button>Ajouter une Periode</x-button></a>
+        </div>
     @endif
     </div>
-
 @endsection

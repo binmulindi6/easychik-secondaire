@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logfile;
 use App\Models\Conduite;
 use Illuminate\Http\Request;
 
@@ -87,6 +88,12 @@ class ConduiteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Conduite::findOrFail($id);
+        $item->delete();
+        Logfile::deleteLog(
+            'conduites',
+            $item->id
+        );
+        return redirect()->route('conduites.index');
     }
 }

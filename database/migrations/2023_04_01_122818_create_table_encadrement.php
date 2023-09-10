@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('classe_id')->nullable()->constrained();
             $table->foreignId('annee_scolaire_id')->nullable()->constrained();
+            $table->boolean('isActive')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

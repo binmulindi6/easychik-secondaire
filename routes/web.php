@@ -128,6 +128,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::resource('periodes', PeriodeController::class);
     Route::resource('trimestres', TrimestreController::class);
     Route::resource('type-evaluations', TypeEvaluationController::class);
+    Route::post('encadrements/chage-user/{id}', [EncadrementController::class, 'changeUser'])->name('encadrements.change.user');
     Route::post('encadrements/search', [EncadrementController::class, 'search'])->name('encadrements.search');
     Route::get('encadrements/create/classe/{id}', [UserEncadrement::class, 'createClasse'])->name('encadrements.linkClasse');
     Route::get('encadrements/create/user/{id}', [UserEncadrement::class, 'create'])->name('encadrements.link');
@@ -224,6 +225,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     //Users
     Route::get('users/update/{id}', [UserController::class, 'show'])->name('users.update');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('enseignants', [UserController::class, 'enseignants'])->name('users.enseignants');
     Route::get('users/create', [UserController::class, 'create'])->name('users.create');
     Route::get('users/create/employer/{id}', [UserController::class, 'create'])->name('users.create.employer');
     Route::post('users/store', [UserController::class, 'store'])->name('users.store');

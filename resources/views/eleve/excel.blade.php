@@ -50,6 +50,9 @@
                             <thead class="align-bottom">
                                 <th
                                     class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
+                                    Numero Permanent </th>
+                                <th
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
                                     Nom et Post-Nom </th>
                                 <th
                                     class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-xxs border-solid  tracking-none whitespace-nowrap ">
@@ -77,6 +80,9 @@
                                 @if (isset($data))
                                     @foreach ($data as $item)
                                         <tr class=" rounded-2xl hover:bg-slate-100">
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item["num"] }}</td>
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                                 {{ $item["nom"] }}</td>

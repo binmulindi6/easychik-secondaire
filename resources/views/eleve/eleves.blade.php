@@ -31,25 +31,34 @@
                     @csrf
                     {{ method_field('PUT') }}
                     <!-- Email Address -->
-                    <div class=" flex justify-between gap-4">
+                    <div class=" flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="matricule" :value="__('Matricule')" />
                             <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
                                 :value="$self->matricule" required readonly />
                         </div>
                         <div class="mt-4 w-full">
+                            <x-label for="num_permanent" :value="__('Numero Permanent')" />
+                            <x-input id="num_permanent" class="block mt-1 w-full" type="text" name="num_permanent"
+                                :value="$self->num_permanent" placeholder="ex: 6-56036800162" />
+                        </div>
+
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                        <div class="mt-4 w-full">
                             <x-label for="nom" :value="__('Nom et Post-Nom')" />
                             <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
                                 :value="$self->nom" required />
                         </div>
-
-                    </div>
-                    <div class="flex justify-between gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="prenom" :value="__('Prenom')" />
                             <x-input id="prenom" class="block mt-1 w-full" type="text" name="prenom"
                                 :value="$self->prenom" required />
                         </div>
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="sexe" :value="__('Sexe')" />
                             <div class="block mt-3">
@@ -65,35 +74,37 @@
                                 @endif
                             </div>
                         </div>
-                    </div>
-                    <div class="flex justify-between gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="lieu_naissance" :value="__('Lieu de Naissance')" />
                             <x-input id="lieu_naissance" class="block mt-1 w-full" type="text" name="lieu_naissance"
                                 :value="$self->lieu_naissance" required />
                         </div>
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="date_naissance" :value="__('Date de Naissance')" />
                             <x-input id="date-naissance" class="block mt-1 w-full" type="date" name="date_naissance"
                                 :value="$self->date_naissance" required />
                         </div>
-                    </div>
-                    <div class="flex justify-between gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_pere" :value="__('Nom du Pere')" />
                             <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="nom_pere"
                                 :value="$self->nom_pere" required />
                         </div>
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_mere" :value="__('Nom de la Mere')" />
                             <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="nom_mere"
                                 :value="$self->nom_mere" required />
                         </div>
-                    </div>
-                    <div class="mt-4">
-                        <x-label for="adresse" :value="__('Adresse')" />
-                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse" :value="$self->adresse"
-                            required />
+                        <div class="mt-4 w-full">
+                            <x-label for="adresse" :value="__('Adresse')" />
+                            <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
+                                :value="$self->adresse" required />
+                        </div>
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -121,25 +132,33 @@
                     @method('POST')
                     @csrf
                     <!-- Email Address -->
-                    <div class="flex justify-between gap-4">
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="matricule" :value="__('Matricule')" />
                             <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
                                 :value="$last_matricule" required readonly />
                         </div>
                         <div class="mt-4 w-full">
+                            <x-label for="num_permanent" :value="__('Numero Permanent')" />
+                            <x-input id="num_permanent" class="block mt-1 w-full" type="text" name="num_permanent"
+                                :value="old('num_permanent')" placeholder="ex: 6-56036800162" />
+                        </div>
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                        <div class="mt-4 w-full">
                             <x-label for="nom" :value="__('Nom et Post-Nom')" />
                             <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
                                 :value="old('nom')" required />
                         </div>
-                    </div>
-                    <div class="flex justify-between gap-4">
-
                         <div class="mt-4 w-full">
                             <x-label for="prenom" :value="__('Prenom')" />
                             <x-input id="prenom" class="block mt-1 w-full" type="text" name="prenom"
                                 :value="old('prenom')" required />
                         </div>
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="sexe" :value="__('Sexe')" />
                             <div class="block mt-3">
@@ -148,35 +167,37 @@
                                 Feminin : <input type="radio" name="sexe" id="sexe-f" value="F" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="flex justify-between gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="lieu_naissance" :value="__('Lieu de Naissance')" />
                             <x-input id="lieu_naissance" class="block mt-1 w-full" type="text" name="lieu_naissance"
                                 :value="old('lieu_naissance')" required />
                         </div>
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="date_naissance" :value="__('Date de Naissance')" />
                             <x-input id="date-naissance" class="block mt-1 w-full" type="date" name="date_naissance"
                                 :value="old('')" required />
                         </div>
-                    </div>
-                    <div class="flex justify-between gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_pere" :value="__('Nom du Pere')" />
                             <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="nom_pere"
                                 :value="old('nom_pere')" required />
                         </div>
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_mere" :value="__('Nom de la Mere')" />
                             <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="nom_mere"
                                 :value="old('nom_mere')" required />
                         </div>
-                    </div>
-                    <div class="mt-4">
-                        <x-label for="adresse" :value="__('Adresse')" />
-                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
-                            :value="old('adresse')" required />
+                        <div class="mt-4 w-full">
+                            <x-label for="adresse" :value="__('Adresse')" />
+                            <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
+                                :value="old('adresse')" required />
+                        </div>
                     </div>
 
                     <div class="flex gap-10">
@@ -202,7 +223,7 @@
     @if (isset($items))
         @if ($page_name == 'Eleves/Edit' || $page_name == 'Eleves/Create')
             <div
-                class="display container p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
+                class="display container p-4 hidden  relative  flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
             @else
                 <div
                     class="display container  p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
@@ -224,7 +245,13 @@
                             Matricule </th>
                         <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                            Num Permanent </th>
+                        <th
+                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Nom, Prenom </th>
+                        <th
+                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                            Classe </th>
                         @if (!Auth::user()->isParent())
                             <th
                                 class="px-1 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
@@ -238,13 +265,7 @@
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Nom de la Mere </th>
-                            <th
-                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                Adresse </th>
                         @endif
-                        <th
-                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Classe </th>
                         @if (Auth::user()->isSecretaire())
                             <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap "
                                 colspan="2">action</th>
@@ -257,45 +278,34 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                     @if (isset($parent) && $parent != null)
-                                        <a class="hover:text-red-400"
+                                        <a class="hover:text-blue-700"
                                             href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
                                             {{ $item->matricule }}
                                         </a>
                                     @else
-                                        <a class="hover:text-red-400" href="{{ route('eleves.show', $item->id) }}">
+                                        <a class="hover:text-blue-700" href="{{ route('eleves.show', $item->id) }}">
                                             {{ $item->matricule }}
                                         </a>
                                     @endif
                                 </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                    <a class="hover:text-blue-700" href="{{ route('eleves.show', $item->id) }}">
+                                        {{ $item->num_permanent }}
+                                    </a>
+                                </td>
+                                <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     @if (isset($parent) && $parent != null)
-                                        <a class="hover:text-red-400"
+                                        <a class="hover:text-blue-700"
                                             href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
                                             {{ $item->nom . ' ' . $item->prenom }}
                                 </td>
                                 </a>
                             @else
-                                <a class="hover:text-red-400" href="{{ route('eleves.show', $item->id) }}">
+                                <a class="hover:text-blue-700" href="{{ route('eleves.show', $item->id) }}">
                                     {{ $item->nom . ' ' . $item->prenom }}</td>
                                 </a>
-                        @endif
-                        @if (!Auth::user()->isParent())
-                            <td
-                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                {{ $item->sexe }}</td>
-                            <td
-                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                {{ $item->lieu_naissance . ', ' . $item->date_naissance }}</td>
-                            <td
-                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                {{ $item->nom_pere }}</td>
-                            <td
-                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                {{ $item->nom_mere }}</td>
-                            <td
-                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                {{ $item->adresse }}</td>
                         @endif
                         <td class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                             @if ($item->currentFrequentation() === null)
@@ -310,6 +320,21 @@
                                 {{ $item->currentFrequentation()->classe->nomCourt() }}
                             @endif
                         </td>
+                        @if (!Auth::user()->isParent())
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->sexe }}</td>
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->lieu_naissance . ', ' . $item->date_naissance }}</td>
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->nom_pere }}</td>
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->nom_mere }}</td>
+                        @endif
+
                         @if (Auth::user()->isSecretaire())
                             <td
                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">

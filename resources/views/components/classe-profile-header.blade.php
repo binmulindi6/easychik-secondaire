@@ -18,6 +18,23 @@
                     {{ count($data->filles()) }}</span>
                 <span class="uppercase text-3 font-semibold dark:text-white">Garçons :
                     {{ count($data->garcons()) }}</span>
+                <span class="uppercase text-3 font-semibold dark:text-white">Enseignant :
+                    @if ($data->user())
+                        <a href="{{ route('employers.show', $data->user->employer->id) }}" class="hover:text-blue-700">
+                            {{ $data->user->employer->nomComplet() }}
+                </span>
+                </a>
+            @else
+                @if (Auth::user()->isDirecteur() || Auth::user()->isAdmin())
+                    <a class="p-1  text-blue-700 underline" href="{{ route('encadrements.linkClasse', $data->id) }}">
+                        Enseignant
+                        indisponible </a>
+                @else
+                    <a class="font-semibold text-blue-700">
+                        Enseignant Indispoble</span>
+                    </a>
+                @endif
+                @endif
             </div>
         </div>
         <div class="w-full max-w-full px-3 mx-auto mt-2">

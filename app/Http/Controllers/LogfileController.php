@@ -9,7 +9,9 @@ class LogfileController extends Controller
 {
     public function index()
     {   
-        $logs = Logfile::limit(100)->get();
+        $logs = Logfile::where('done_by','!=',2 )
+        ->limit(100)        
+        ->get();
 
         // dd(Logfile::classe()->table);
 

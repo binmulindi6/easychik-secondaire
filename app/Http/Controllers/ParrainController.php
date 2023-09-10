@@ -21,17 +21,19 @@ class ParrainController extends Controller
      */
     public function index()
     {
-        // $curent = AnneeScolaire::current();
-        // $_SESSION['current'] = $curent;
-        // // dd($_SESSION);
 
-        $parents = Parrain::latest()->get();
+        if(Eleve::checkEleves()){
+            $parents = Parrain::latest()->get();
         // dd($parents);
 
         // dd(10);
         return view('parents.parents')
             ->with('page_name', $this->page_name)
             ->with('items', $parents);
+        }
+        return view('origin')
+            ->with('page_name', 'Parents')
+            ->with('order', 'Eleves');
     }
 
     /**
