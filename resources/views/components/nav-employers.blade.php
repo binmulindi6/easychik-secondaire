@@ -10,13 +10,13 @@
                     <a class="w-full" href="{{route('employers.create')}}">
                         <div>
                             <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Employer</span>
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Employé</span>
                         </div>
                     </a>
                 @else
                     <div>
                         <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Employer</span>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Employé</span>
                     </div>
                 @endif
             </div>
@@ -26,13 +26,13 @@
                     <a href="{{route('employers.index')}}">
                         <div>
                             <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-user text-size-sm"></i>
-                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employé</span>
+                            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employés</span>
                         </div>
                     </a>
                 @else
                 <div>
                     <i class="relative top-0 leading-normal text-orange-500 fa fa-solid fa-user text-size-sm"></i>
-                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employé</span>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Employés</span>
                 </div>
                 @endif
             </div>

@@ -21,6 +21,15 @@
             @csrf
             {{ method_field('POST') }}
             <!-- Email Address -->
+            @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li class="text-red-500">{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+            @endif
             <div class="flex flex-col flex-between">
                 <div class="mt-4 w-full">
                     <x-label for="matricule" :value="__('à')" />

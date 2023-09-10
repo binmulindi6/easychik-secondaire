@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("nom");
             $table->date('date_debut');
             $table->date('date_fin');
-            $table->foreignId('trimestre_id')->constrained();
+            $table->foreignId('trimestre_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

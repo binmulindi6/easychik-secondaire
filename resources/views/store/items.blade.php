@@ -295,7 +295,7 @@
             <div class=" pb-0 mb-0 bg-white rounded-t-2xl">
                 <p class="font-bold text-xl">Items</p>
             </div>
-            <p class="text-red-500 font-bold text-2xl text-center">no data to display</p>
+            <p class="text-red-500 font-bold text-2xl text-center">Aucun Article en Stock</p>
         </div>
     @endif
     </div>

@@ -139,26 +139,17 @@ class ClasseController extends Controller
         $classes = Classe::all();
         $classe = Classe::find($id);
         $niveaux = Niveau::all();
-        // $users = User::crossJoin('classes', 'classes.user_id', '=', 'users.id')->get();
-        // $users = User::whereNotExists(function ($query) {
-        //     $query->select(DB::raw(1))
-        //         ->from('classes')
-        //         ->whereColumn('classes.user_id', 'users.id');
-        // })->get();
 
-        // dd($users);
-        // $users = User::join('classes', 'users.id', '!=' , 'classes.user_id')
-        //             ->get();
-        // ->where('user.fonction');
-
-
-        // ('classes', 'classes.user_id', '=', 'users.id')->get();
-        //dd($users);
+        $users = User::all()->except(['email', 'admin@easychik.com']);
+        $currentEncadrement = $classe->currentEncadrement();
+        // dd($currentEncadrement);
 
         return view('classe.classes')
             ->with('page_name', $this->page . ' / Edit')
             ->with('self', $classe)
             ->with('niveaux', $niveaux)
+            ->with('users', $users)
+            ->with('encadrement', $currentEncadrement)
             ->with('items', $classes);
     }
 

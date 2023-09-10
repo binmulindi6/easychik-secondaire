@@ -18,24 +18,26 @@ class EncadrementController extends Controller
      */
     protected $page_name = 'Encadrements';
     public function index()
-    {   
+    {
         // dd(session()->all());
 
         $encadrements = Encadrement::latest()
-                       ->limit(20)
-                        ->get();
+            ->limit(20)
+            ->get();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
-        $annees = AnneeScolaire::orderBy('nom')->get();
+        $annees = AnneeScolaire::current();
+        $current = AnneeScolaire::current();
         $users = User::where('isAdmin', '=', '0')
-                ->where('parrain_id', null)
-                ->get();
+            ->where('parrain_id', null)
+            ->get();
         // dd($users);
         return view('users.encadrements')
-                ->with('items',$encadrements)
-                ->with('classes',$classes)
-                ->with('annees',$annees)
-                ->with('users', $users)
-                ->with('page_name',$this->page_name);
+            ->with('items', $encadrements)
+            ->with('classes', $classes)
+            ->with('annees', $annees)
+            ->with('current', $current)
+            ->with('users', $users)
+            ->with('page_name', $this->page_name);
     }
 
     /**
@@ -56,44 +58,62 @@ class EncadrementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {      
+    {
         $request->validate([
             'user_id' => ['required', 'integer', 'max:255'],
             'classe_id' => ['required', 'integer', 'max:255'],
             'annee_scolaire_id' => ['required', 'integer', 'max:255'],
         ]);
-        
-        $user = User::find( $request->user_id);
-        
+
+        $user = User::find($request->user_id);
+
         $classe = Classe::find($request->classe_id);
         $annee  = AnneeScolaire::find($request->annee_scolaire_id);
-        
+
         $enc = Encadrement::where('annee_scolaire_id', $annee->id)
-                            ->where('classe_id', $classe->id)
-                            ->first();
-                            
-        if($enc === null){
-            // dd($enc);
-            $encadrement = Encadrement::create();
-        
-            //links 
-            // dd($encadrement);
-            $encadrement->user()->associate($user);
-            $encadrement->classe()->associate($classe);
-            $encadrement->annee_scolaire()->associate($annee);
-            // save
-            $encadrement->save();
-            Logfile::createLog(
-                'encadrements',
-                $encadrement->id
-            );
-            return redirect()->route('encadrements.index');
+            ->where('classe_id', $classe->id)
+            ->where('isActive', 1)
+            ->first();
+        $enc2 = Encadrement::where('annee_scolaire_id', $annee->id)
+            ->where('user_id', $user->id)
+            ->where('isActive', 1)
+            ->first();
+
+        if ($enc === null) {
+            if ($enc2 === null) {
+                // dd($enc);
+                $encadrement = Encadrement::create();
+
+                //links 
+                // dd($encadrement);
+                $encadrement->user()->associate($user);
+                $encadrement->classe()->associate($classe);
+                $encadrement->annee_scolaire()->associate($annee);
+                // save
+                $encadrement->save();
+                Logfile::createLog(
+                    'encadrements',
+                    $encadrement->id
+                );
+                return redirect()->route('encadrements.index');
+            }
+            if ($enc2->classe_id === $classe->id) {
+                $enc2->isActive = 1;
+                $enc2->save();
+
+                Logfile::updateLog(
+                    'encadrements',
+                    $enc2->id
+                );
+                return redirect()->route('encadrements.index');
+            }
+            return redirect()->route('encadrements.create')->withErrors([
+                'Classe' => 'Cet Enseignant encadre dejà une autre classe',
+            ])->onlyInput('matricule');
         }
         return redirect()->route('encadrements.create')->withErrors([
-            'classe_id' => 'Cet Employer n\'existe pas dans le system',
-            'user_id' => 'Cet Employer n\'existe pas dans le system',
-            ])->onlyInput('matricule');
-
+            'Classe' => 'Cette Classe possede dejà un encadreur',
+        ])->onlyInput('matricule');
     }
 
     /**
@@ -124,20 +144,20 @@ class EncadrementController extends Controller
     public function edit($id)
     {
         $encadrements = Encadrement::latest()
-               ->limit(20)
-                ->get();
+            ->limit(20)
+            ->get();
         $encadrement = Encadrement::find($id);
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::orderBy('nom')->get();
         $users = User::where('isAdmin', '=', '0')->where('parrain_id', null)->get();
         // dd($users);
         return view('users.encadrements')
-        ->with('items',$encadrements)
-        ->with('self', $encadrement)
-        ->with('classes',$classes)
-        ->with('annees',$annees)
-        ->with('users', $users)
-        ->with('page_name',$this->page_name . " / Edit");
+            ->with('items', $encadrements)
+            ->with('self', $encadrement)
+            ->with('classes', $classes)
+            ->with('annees', $annees)
+            ->with('users', $users)
+            ->with('page_name', $this->page_name . " / Edit");
     }
 
     /**
@@ -149,23 +169,122 @@ class EncadrementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         $encadrement = Encadrement::find($id);
         $classe = Classe::find($request->classe_id);
         $annee  = AnneeScolaire::find($request->annee_scolaire_id);
-        $user = User::find( $request->user_id);
+        $user = User::find($request->user_id);
 
         //links 
         // dd($encadrement);
-        $encadrement->user()->associate($user);
-        $encadrement->classe()->associate($classe);
-        $encadrement->annee_scolaire()->associate($annee);
-        // save
-        $encadrement->save();
-        Logfile::updateLog(
-            'encadrements',
-            $encadrement->id
-        );
+        $enc = Encadrement::where('annee_scolaire_id', $annee->id)
+            ->where('classe_id', $classe->id)
+            ->where('isActive', 1)
+            ->first();
+
+        $enc2 = Encadrement::where('annee_scolaire_id', $annee->id)
+            ->where('user_id', $user->id)
+            ->where('isActive', 1)
+            ->first();
+
+        if ($enc === null) {
+            if ($enc2 === null) {
+                $encadrement->user()->associate($user);
+                $encadrement->classe()->associate($classe);
+                $encadrement->annee_scolaire()->associate($annee);
+                // save
+                $encadrement->save();
+                Logfile::updateLog(
+                    'encadrements',
+                    $encadrement->id
+                );
+                return redirect()->route('encadrements.index');
+            }
+            if ($enc2->classe_id === $classe->id) {
+                $enc2->isActive = 1;
+                $enc2->save();
+
+                Logfile::updateLog(
+                    'encadrements',
+                    $enc2->id
+                );
+                return redirect()->route('encadrements.index');
+            }
+            return redirect()->route('encadrements.create')->withErrors([
+                'Classe' => 'Cet Enseignant encadre dejà une autre classe',
+            ])->onlyInput('matricule');
+        }
+        return redirect()->route('encadrements.create')->withErrors([
+            'Classe' => 'Cette Classe possede dejà un encadreur',
+        ])->onlyInput('matricule');
+    }
+
+
+    public function changeUser(Request $request, $id)
+    {
+        $request->validate([
+            'user_id' => ['required', 'integer', 'max:255'],
+            'classe_id' => ['required', 'integer', 'max:255'],
+            'annee_scolaire_id' => ['required', 'integer', 'max:255'],
+        ]);
+
+
+        $oldEncadrement = Encadrement::findOrFail($id);
+
+        $user = User::find($request->user_id);
+
+        $classe = Classe::find($request->classe_id);
+        $annee  = AnneeScolaire::find($request->annee_scolaire_id);
+
+        // dd($oldEncadrement->user_id, $request->user_id);
+        if ($oldEncadrement->user_id === (int)$request->user_id) {
+            return redirect()->route('classes.index');
+        } else {
+
+            $enc2 = Encadrement::where('annee_scolaire_id', $annee->id)
+                ->where('user_id', $user->id)
+                ->where('isActive', 1)
+                ->first();
+
+            if ($enc2 !== null) {
+                if ($enc2->classe_id === $classe->id) {
+                    $enc2->isActive = 1;
+                    $enc2->save();
+
+                    Logfile::updateLog(
+                        'encadrements',
+                        $enc2->id
+                    );
+                } else {
+                    $enc2->isActive = 0;
+                    $enc2->save();
+
+                    Logfile::updateLog(
+                        'encadrements',
+                        $enc2->id
+                    );
+                }
+            }
+            $encadrement = Encadrement::create();
+            //links 
+            // dd($encadrement);
+            $encadrement->user()->associate($user);
+            $encadrement->classe()->associate($classe);
+            $encadrement->annee_scolaire()->associate($annee);
+            // save
+            $oldEncadrement->isActive = 0;
+            $oldEncadrement->save();
+            $encadrement->save();
+            Logfile::createLog(
+                'encadrements',
+                $encadrement->id
+            );
+            Logfile::updateLog(
+                'encadrements',
+                $oldEncadrement->id
+            );
+            return redirect()->route('classes.index');
+        }
         return redirect()->route('encadrements.index');
     }
 
@@ -192,25 +311,24 @@ class EncadrementController extends Controller
 
 
         $items = Encadrement::join('users', 'encadrements.user_id', 'users.id')
-            ->join('employers','employer_id','employers.id')
+            ->join('employers', 'employer_id', 'employers.id')
             ->where('isAdmin', 0)
             ->where('nom', 'like', '%' . $request->search . '%')
             ->orWhere('prenom', 'like', '%' . $request->search . '%')
             ->get();
 
-            $classes = Classe::orderBy('niveau_id', 'asc')->get();
-            $annees = AnneeScolaire::orderBy('nom')->get();
-            $users = User::where('isAdmin', '=', '0')
-                    ->where('parrain_id', null)
-                    ->get();
+        $classes = Classe::orderBy('niveau_id', 'asc')->get();
+        $annees = AnneeScolaire::orderBy('nom')->get();
+        $users = User::where('isAdmin', '=', '0')
+            ->where('parrain_id', null)
+            ->get();
 
-            return view('users.encadrements')
-                    ->with('items',$items)
-                    ->with('classes',$classes)
-                    ->with('annees',$annees)
-                    ->with('users', $users)
-                    ->with('search',  $request->search)
-                    ->with('page_name',$this->page_name . ' / Search');
+        return view('users.encadrements')
+            ->with('items', $items)
+            ->with('classes', $classes)
+            ->with('annees', $annees)
+            ->with('users', $users)
+            ->with('search',  $request->search)
+            ->with('page_name', $this->page_name . ' / Search');
     }
-
 }

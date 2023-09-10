@@ -51,14 +51,13 @@ class User extends Authenticatable
 
     //check if user is admin
     public function isAdmin()
-    {   
-        if($this->parrain_id === null){
+    {
+        if ($this->parrain_id === null) {
             if ($this->isAdmin === 1) {
                 return true;
             }
         }
         return false;
-
     }
     public function isParent()
     {
@@ -69,10 +68,11 @@ class User extends Authenticatable
         return false;
     }
 
-    public function isEnseignant(){
-        if($this->parrain_id === null){
-            foreach($this->employer->fonctions as $fonction){
-                if(strtolower($fonction->nom) === strtolower('Enseignant')){
+    public function isEnseignant()
+    {
+        if ($this->parrain_id === null) {
+            foreach ($this->employer->fonctions as $fonction) {
+                if (strtolower($fonction->nom) === strtolower('Enseignant')) {
                     return true;
                     // dd(10);
                 }
@@ -81,10 +81,11 @@ class User extends Authenticatable
         return false;
     }
 
-    public function isDirecteur(){
-        if($this->parrain_id === null){
-            foreach($this->employer->fonctions as $fonction){
-                if(strtolower($fonction->nom) === strtolower('Directeur')){
+    public function isDirecteur()
+    {
+        if ($this->parrain_id === null) {
+            foreach ($this->employer->fonctions as $fonction) {
+                if (strtolower($fonction->nom) === strtolower('Directeur')) {
                     return true;
                     // dd(10);
                 }
@@ -94,11 +95,12 @@ class User extends Authenticatable
     }
 
 
-    public function isSecretaire(){
+    public function isSecretaire()
+    {
 
-        if($this->parrain_id === null){
-            foreach($this->employer->fonctions as $fonction){
-                if(strtolower($fonction->nom) === strtolower('Secretaire')){
+        if ($this->parrain_id === null) {
+            foreach ($this->employer->fonctions as $fonction) {
+                if (strtolower($fonction->nom) === strtolower('Secretaire')) {
                     return true;
                     // dd(10);
                 }
@@ -125,18 +127,21 @@ class User extends Authenticatable
         return $this->hasMany(Encadrement::class);
     }
 
-    public function classe(){
+    public function classe()
+    {
         $encadrements = $this->encadrements;
         // dd($encadrements);
         $currentAnneeScolaire = AnneeScolaire::current();
         $currentEncadrement = null;
         // dd($currentAnneeScolaire->id);
-        if($this->isEnseignant()){
+        if ($this->isEnseignant()) {
             // dd(10);
-            foreach($encadrements as $encadrement){
-                if($encadrement->annee_scolaire->id === $currentAnneeScolaire->id){
-                    $currentEncadrement = $encadrement;
-                    return $currentEncadrement->classe();
+            foreach ($encadrements as $encadrement) {
+                if ($encadrement->annee_scolaire->id === $currentAnneeScolaire->id) {
+                    if ($encadrement->isActive === 1) {
+                        $currentEncadrement = $encadrement;
+                        return $currentEncadrement->classe();
+                    }
                 }
             }
         }
@@ -159,7 +164,7 @@ class User extends Authenticatable
     {
         $users = User::Employers();
         $dirs = array();
-        foreach($users as $user){
+        foreach ($users as $user) {
             if ($user->isDirecteur()) {
                 array_push($dirs, $user);
             }

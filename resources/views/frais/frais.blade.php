@@ -140,16 +140,16 @@
 
 
 
-    @if (isset($items))
-        @if ($page_name == 'Frais' || $page_name == 'Frais / Search')
-            <div class="display shadow-2xl container p-4 bg-white rounded-5">
-            @else
-                <div class="display shadow-2xl hidden container p-4 bg-white rounded-5">
-        @endif
+    @if ($page_name == 'Frais' || $page_name == 'Frais / Search')
+        <div class="display shadow-2xl container p-4 bg-white rounded-5">
+        @else
+            <div class="display shadow-2xl hidden container p-4 bg-white rounded-5">
+    @endif
 
-        <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-            <h6>Historique D'Encadrements</h6>
-        </div>
+    <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+        <h6>Liste des Frais en vigeur dans l'établissement</h6>
+    </div>
+    @if (isset($items) && count($items) > 0)
         <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
                 <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
@@ -162,7 +162,7 @@
                             Montant </th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
-                            classe</th>
+                            Niveaux de classes</th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
                             type</th>
@@ -216,7 +216,14 @@
         </div>
 
         </div>
+    @else
+    <div class="flex flex-col justify-center gap-2 p-5">
+        <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas des Frais pour l'instant, veuillez en créer</span>
+        <a href="{{ route('frais.create') }}" class="text-center">
+            <x-button>Ajouter un Frais</x-button></a>
+    </div>
     @endif
+    </div>
     </div>
 
 @endsection

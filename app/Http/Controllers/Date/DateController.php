@@ -77,7 +77,7 @@ class DateController extends Controller
             //dd(10);
             return AnneeScolaire::where('selected', 1)->first();
         }
-        //dd(11);
+        // dd(AnneeScolaire::orderBy('nom', 'desc')->first());
         return AnneeScolaire::orderBy('nom', 'desc')->first();
     }
 

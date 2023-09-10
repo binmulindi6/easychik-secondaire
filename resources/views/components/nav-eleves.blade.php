@@ -26,7 +26,7 @@
                         class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
                     @else
                         <div
-                            class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                            class="btn-create items-center hidden justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
                 @endif
                 @if ($pagename != 'Eleves/Create' && $pagename != 'Eleves')
                     <a class="w-full" href="{{ route('eleves.create') }}">
@@ -129,7 +129,7 @@
 
     @if (
         (str_contains($pagename, 'Eleves') || str_contains($pagename, 'Import')) &&
-            (!str_contains($pagename, 'Show') && Auth::user()->isSecretaire() && !str_contains($pagename, 'Paiements')))
+            (!str_contains($pagename, 'Show') && (Auth::user()->isSecretaire() || Auth::user()->isDirecteur()) && !str_contains($pagename, 'Paiements')))
         <div
             class="w-full items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
             {{-- @if ($pagename != 'Eleves' && $pagename != 'Eleves/Create' && $pagename != 'Eleves/Edit') --}}

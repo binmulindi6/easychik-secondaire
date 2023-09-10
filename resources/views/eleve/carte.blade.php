@@ -35,6 +35,7 @@
                 <div class="flex flex-col justify-center items-center p-10">
                     <span
                         class="text-20 font-semibold text-blue-700">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span>
+                        {{-- <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{ env('APP_NAME') }}</span> --}}
                     <span class="text-20 border-black border-b-8 w-10/12 font-semibold">CARTE D'ELEVE</span>
                     {{-- <span >eChik <span>SCHOOL MANAGEMENT SYSYTEM</span></span> --}}
                     <span class="text-10">
@@ -74,6 +75,10 @@
                     </div>
                     <table class="identity">
                         <tr class="">
+                            <td class=" uppercase text-12">NUM PERMANENT : <span id="nom"
+                                    class="font-bold">{{ $eleve->num_permanent }}</span> </td>
+                        </tr>
+                        <tr class="">
                             <td class=" uppercase text-12">NOM & PRENOM : <span id="nom"
                                     class="font-bold">{{ $eleve->nomComplet() }}</span> </td>
                         </tr>
@@ -83,7 +88,17 @@
                         </tr> --}}
                         <tr class="">
                             <td class=" uppercase text-12">SEXE : <span id="prenom" class="font-bold"></span>
-                                {{ $eleve->sexe }}</td>
+                                @if ($eleve->sexe === 'M')
+                                    Masculin
+                                @else
+                                    Feminin
+                                @endif
+                            </td>
+                        </tr>
+                        <tr class="">
+                            <td class=" uppercase text-12">CLASSE : <span id="prenom" class="font-bold"></span>
+                                {{$eleve->classe()->nomComplet()}}
+                            </td>
                         </tr>
                         <tr class="">
                             <td class=" uppercase text-12">LIEU & DATE DE NAISS : <span id="naissance"

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('eleves', function (Blueprint $table) {
             $table->id();
             $table->string("matricule");
+            $table->string("num_permanent");
             $table->string("nom");
             $table->string("prenom");
             $table->string('sexe');

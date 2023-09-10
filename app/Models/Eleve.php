@@ -19,6 +19,7 @@ class Eleve extends Model
 {
      use HasFactory, SoftDeletes;
      protected $fillable = [
+          'num_permanent',
           'matricule',
           'nom',
           'prenom',
@@ -171,16 +172,23 @@ class Eleve extends Model
      public static function getLastMatricule(){
           
           // dd(count(Eleve::all()));
-          if(count(Eleve::all()) > 1){
+          if(count(Eleve::all()) > 0){
                $lastmatricule = Eleve::all()->last()->matricule;
                $initial = explode('/', $lastmatricule, -1)[0];
                $middle = str_replace('E', '', $initial);
-               $matricule = 'E' . intval($middle) + 1 . '/' . date('Y');
+               $matricule = (intval($middle) + 1) < 10 ?  'E0' . intval($middle) + 1 . '/' . date('Y') : 'E' . intval($middle) + 1 . '/' . date('Y') ;
           }else{
-               $matricule = 'E1/' . date('Y');
+               $matricule = 'E01/' . date('Y');
           }
 
           return $matricule;
+     }
+
+     public static function checkEleves() : bool {
+          if(Eleve::count() > 0){
+               return true;
+          }
+          return false;
      }
 
      public function presence($date = null){

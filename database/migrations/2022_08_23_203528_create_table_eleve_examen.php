@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('eleve_examen', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('eleve_id')->constrained();
-            $table->foreignId('examen_id')->constrained();
+            $table->foreignId('eleve_id')->nullable()->constrained();
+            $table->foreignId('examen_id')->nullable()->constrained();
             $table->integer('note_obtenu')->default(0);
             $table->timestamps();
         });
