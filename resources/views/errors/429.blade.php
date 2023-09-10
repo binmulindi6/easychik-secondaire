@@ -12,7 +12,6 @@
             {{-- <i fixed-plugin-button-nav class=" text-red-500 fa fa-lock"
                 title="logout"></i> --}}
             {{-- <a href="{{$_SERVER['HTTP_REFERER']}}" class=" text-5 text-blue-500 hover:underline">Acceuil</a> --}}
-            <button type="button" class=" text-5 text-blue-500 hover:underline" onclick="javascript:history.go(-1)">Retour</button>
-        </button title="logout">
+            <a type="button" class=" text-5 text-blue-500 hover:underline" href="/">Retour</a>
     </form>
 @endsection

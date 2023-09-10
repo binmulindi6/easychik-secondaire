@@ -1,31 +1,33 @@
 <div class="flex flex-row justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
     @if (str_contains('Horaires', $pagename))
-    <div class="flex flex-row gap-4 sm-max:justify-center">
-        @if (str_contains('Horaires', $pagename))
-            <div
-                class="btn-display items-center flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
-            @else
+        <div class="flex flex-row gap-4 sm-max:justify-center">
+            @if (str_contains('Horaires', $pagename))
                 <div
-                    class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
-        @endif
-        @if ($pagename !== 'Horaires')
-            <a href="{{ route('horaires.index') }}">
+                    class="btn-display items-center flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+                @else
+                    <div
+                        class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
+            @endif
+            @if ($pagename !== 'Horaires')
+                <a href="{{ route('horaires.index') }}">
+                    <div>
+                        <i
+                            class="relative top-0 leading-normal text-blue-500 fa fa-regular fa-calendar text-size-sm"></i>
+                        <span
+                            class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Horaires</span>
+                    </div>
+                </a>
+            @else
                 <div>
                     <i class="relative top-0 leading-normal text-blue-500 fa fa-regular fa-calendar text-size-sm"></i>
                     <span
                         class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Horaires</span>
                 </div>
-            </a>
-        @else
-            <div>
-                <i class="relative top-0 leading-normal text-blue-500 fa fa-regular fa-calendar text-size-sm"></i>
-                <span class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Horaires</span>
-            </div>
-        @endif
-    </div>
+            @endif
+        </div>
 </div>
 @endif
-    @if (str_contains('Presences', $pagename))
+@if (str_contains('Presences', $pagename))
     <div class="flex flex-row gap-4 sm-max:justify-center">
         @if (str_contains('Presences', $pagename))
             <div
@@ -45,11 +47,12 @@
         @else
             <div>
                 <i class="relative top-0 leading-normal text-blue-500 fa fa-regular fa-calendar text-size-sm"></i>
-                <span class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Presences</span>
+                <span
+                    class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Presences</span>
             </div>
         @endif
     </div>
-</div>
+    </div>
 @endif
 
 @if (isset($print))

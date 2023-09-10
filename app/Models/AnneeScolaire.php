@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Trimestre;
 use App\Models\Encadrement;
 use App\Models\Frequentation;
+use App\Models\EmployerPresence;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Date\DateController;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,6 +20,11 @@ class AnneeScolaire extends Model
         'date_fin',
 
     ];
+
+    public function employer_presences()
+    {
+        return $this->hasMany(EmployerPresence::class);
+    }
 
     public static function current(){
         if(session()->get('currentYear') !== null){

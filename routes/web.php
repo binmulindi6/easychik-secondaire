@@ -1,13 +1,18 @@
 <?php
 
+use App\Models\Jour;
 use App\Models\User;
 use App\Models\Eleve;
+use App\Models\Heure;
 use App\Models\Classe;
+use App\Models\Horaire;
 use App\Models\Employer;
 use App\Models\Encadrement;
 use App\Models\AnneeScolaire;
 use App\Models\EleveConduite;
+use App\Models\EntreeArticle;
 use App\Models\Frequentation;
+use App\Models\CategorieArticle;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -18,6 +23,9 @@ use App\Http\Controllers\UserEncadrement;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\NiveauController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\HoraireController;
+use App\Http\Controllers\LogfileController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParrainController;
 use App\Http\Controllers\PeriodeController;
@@ -29,39 +37,32 @@ use App\Http\Controllers\ConduiteController;
 use App\Http\Controllers\CotationController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\FonctionController;
+use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\ResultatController;
 use App\Http\Controllers\Date\DateController;
 use App\Http\Controllers\PassationController;
 use App\Http\Controllers\TrimestreController;
+use App\Http\Controllers\TypeFraisController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ParentAuthController;
 use App\Http\Controllers\Admin\EcoleController;
 use App\Http\Controllers\EleveExamenController;
 use App\Http\Controllers\EncadrementController;
 use App\Http\Controllers\ImportExcelController;
+use App\Http\Controllers\ModePaiementController;
+use App\Http\Controllers\UniteArticleController;
 use App\Http\Controllers\AnneeScolaireController;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\CategorieArticleController;
 use App\Http\Controllers\EleveConduiteController;
+use App\Http\Controllers\EntreeArticleController;
 use App\Http\Controllers\FrequentationController;
 use App\Http\Controllers\PaiementFraisController;
+use App\Http\Controllers\SortieArticleController;
 use App\Http\Controllers\CategorieCoursController;
 use App\Http\Controllers\TypeEvaluationController;
 use App\Http\Controllers\EleveEvaluationController;
-use App\Http\Controllers\EntreeArticleController;
+use App\Http\Controllers\CategorieArticleController;
+use App\Http\Controllers\EmployerPresenceController;
 use App\Http\Controllers\FrequentationEleveController;
-use App\Http\Controllers\HoraireController;
-use App\Http\Controllers\LogfileController;
-use App\Http\Controllers\ModePaiementController;
-use App\Http\Controllers\PresenceController;
-use App\Http\Controllers\SortieArticleController;
-use App\Http\Controllers\TypeFraisController;
-use App\Http\Controllers\UniteArticleController;
-use App\Models\CategorieArticle;
-use App\Models\EntreeArticle;
-use App\Models\Heure;
-use App\Models\Horaire;
-use App\Models\Jour;
 
 /*
 |--------------------------------------------------------------------------
@@ -307,6 +308,12 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     //rapport
     Route::get('rapports/stock/periode', [RapportController::class, 'stock'])->name('rapports.stock');
     Route::post('rapports/stock/periode', [RapportController::class, 'rapportStock'])->name('rapports.stock.store');
+    
+    
+    //Presence Employers
+    Route::get('presences/personnels', [EmployerPresenceController::class,'index'])->name('presences.employers.index');
+    Route::post('presences/personnels/date', [EmployerPresenceController::class , 'setDate'])->name('presences.employers.setDate');
+    Route::post('presences/personnels/periode', [EmployerPresenceController::class , 'setPeriode'])->name('presences.classe.setPeriode');
     
     //presences
     Route::resource('presences', PresenceController::class);

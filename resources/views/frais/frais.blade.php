@@ -17,62 +17,62 @@
                 <div class="frm-create shadow-2xl hidden container p-4 bg-white rounded-5">
         @endif
         @if (isset($self))
-        <p class="font-bold text-base"> Modifier Frais</p>
+            <p class="font-bold text-base"> Modifier Frais</p>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li class="text-red-500">{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-500">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <form method="get" action="{{ route('frais.update', $self->id) }}">
-            @method('PUT')
-            @csrf
-            <!-- Email Address -->
-            <div class="w-full flex flex-row gap-4 justify-between">
-                <div class="mt-4 w-full">
-                    <x-label for="type_frais" :value="__('Type')" />
-                    <x-select :linkName="'Nouveau Type'" :val="$self->type_frais" :isSelectedLink="'type-art'" id="type-frais" :collection="$types"
-                        class="block mt-1 w-full" name='type_frais' required></x-select>
+            <form method="get" action="{{ route('frais.update', $self->id) }}">
+                @method('PUT')
+                @csrf
+                <!-- Email Address -->
+                <div class="w-full flex flex-row gap-4 justify-between">
+                    <div class="mt-4 w-full">
+                        <x-label for="type_frais" :value="__('Type')" />
+                        <x-select :linkName="'Nouveau Type'" :val="$self->type_frais" :isSelectedLink="'type-art'" id="type-frais" :collection="$types"
+                            class="block mt-1 w-full" name='type_frais' required></x-select>
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="mode_paiement" :value="__('Mode de Paiement')" />
+                        <x-select :linkName="'Nouveau Mode de Paiement'" :val="$self->mode_paiement" :isSelectedLink="'mode-art'" :collection="$modes"
+                            class="block mt-1 w-full" name='mode_paiement' required></x-select>
+                    </div>
                 </div>
-                <div class="mt-4 w-full">
-                    <x-label for="mode_paiement" :value="__('Mode de Paiement')" />
-                    <x-select :linkName="'Nouveau Mode de Paiement'" :val="$self->mode_paiement" :isSelectedLink="'mode-art'" :collection="$modes" class="block mt-1 w-full"
-                        name='mode_paiement' required></x-select>
-                </div>
-            </div>
-            <div class="w-full flex flex-row gap-4 justify-between">
-                <div class="mt-4 w-full">
-                    <x-label for="nom" :value="__('Intitulé du Frais')" />
-                    <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
-                        placeholder="ex: Prime Scolaire" required />
-                </div>
-                <div class="mt-4 w-full">
-                    <x-label for="montant" :value="__('Montant Globale')" />
-                    <x-input id="montant" class="block mt-1 w-full" type="number" name="montant" :value="$self->montant"
-                        placeholder="ex: 20" required />
-                    {{-- <span></span> --}}
-                </div>
-            </div>
-            <div class="mt-4">
-                <x-label for="niveau" :value="__('Niveau')" />
-                <x-select :collection="$niveaux" :val="$self->niveau" class="block mt-1 w-full" name='niveau'
-                    required></x-select>
-            </div>
-
-            <div class="flex gap-10">
-                <div class="mt-4">
-                    <x-button>Enregistrer</x-button>
+                <div class="w-full flex flex-row gap-4 justify-between">
+                    <div class="mt-4 w-full">
+                        <x-label for="nom" :value="__('Intitulé du Frais')" />
+                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
+                            placeholder="ex: Prime Scolaire" required />
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="montant" :value="__('Montant Globale')" />
+                        <x-input id="montant" class="block mt-1 w-full" type="number" name="montant" :value="$self->montant"
+                            placeholder="ex: 20" required />
+                        {{-- <span></span> --}}
+                    </div>
                 </div>
                 <div class="mt-4">
-                    <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                    <x-label for="niveau" :value="__('Niveau')" />
+                    <x-select :collection="$niveaux" :val="$self->niveau" class="block mt-1 w-full" name='niveau'
+                        required></x-select>
                 </div>
-            </div>
-        </form>
+
+                <div class="flex gap-10">
+                    <div class="mt-4">
+                        <x-button>Enregistrer</x-button>
+                    </div>
+                    <div class="mt-4">
+                        <x-button-annuler type='reset' class="bg-red-500"></x-button-annuler>
+                    </div>
+                </div>
+            </form>
         @else
             <p class="font-bold text-base"> Ajouter un Frais</p>
 
