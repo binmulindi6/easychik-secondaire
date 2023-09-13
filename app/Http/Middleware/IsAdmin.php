@@ -17,7 +17,7 @@ class IsAdmin
     public function handle(Request $request, Closure $next)
     {
 
-        if (auth()->user()->isAdmin === 1) {
+        if ((int)auth()->user()->isAdmin === 1) {
             return $next($request);
         } else {
             //dd('oklm');

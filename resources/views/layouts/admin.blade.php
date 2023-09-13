@@ -74,7 +74,7 @@
         <div class="h-19 mt-3 flex flex-col justify-center items-center">
             <a class="flex  m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700"
                 href="{{ route('dashboard') }}">
-                <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{env('APP_NAME')}}</span> SEC
+                <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{env('APP_NAME')}}</span> Main
             </a>
             @if (Auth::user()->isAdmin())
                 <span class="font-bold text-slate-700 uppercase">Admin</span>

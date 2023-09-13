@@ -1,4 +1,4 @@
-<div class="flex  flex-col md:flex-row justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
+<div class="flex flex-col  sm:flex-row justify-between items-center gap-4 sm-max:flex-col sm-max:gap-4 z-10">
 
     @if (isset($joker))
         <div
@@ -20,7 +20,7 @@
             @endif
             {{-- </div> --}}
         @else
-            <div class="flex flex-row gap-4 sm-max:justify-center">
+            <div class="flex flex-col sm:flex-row gap-4 sm-max:justify-center">
                 @if (str_contains('Eleves', $pagename) && !Auth::user()->isParent() && !Auth::user()->isEnseignant())
                     <div
                         class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
@@ -125,11 +125,13 @@
 </div>
 
 <div
-    class="relative shadow-xl justify-end flex flex-row gap-4  items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full px-4">
+    class="relative shadow-xl justify-end flex flex-col sm:flex-row gap-4  items-stretch transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full px-4">
 
     @if (
         (str_contains($pagename, 'Eleves') || str_contains($pagename, 'Import')) &&
-            (!str_contains($pagename, 'Show') && (Auth::user()->isSecretaire() || Auth::user()->isDirecteur()) && !str_contains($pagename, 'Paiements')))
+            (!str_contains($pagename, 'Show') &&
+                (Auth::user()->isSecretaire() || Auth::user()->isDirecteur()) &&
+                !str_contains($pagename, 'Paiements')))
         <div
             class="w-full items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
             {{-- @if ($pagename != 'Eleves' && $pagename != 'Eleves/Create' && $pagename != 'Eleves/Edit') --}}
@@ -162,7 +164,7 @@
         @endif
         @csrf
         <button type="submit"
-            class="text-sm  ease sm-max:text-size-xs leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
+            class="text-sm  ease sm-max:text-size-xs leading-5.6 absolute z-50 -ml-px flex h-15 items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
             <i class="fas fa-search" aria-hidden="true"></i>
         </button>
         @if (isset($search))

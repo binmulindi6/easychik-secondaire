@@ -53,7 +53,7 @@ class User extends Authenticatable
     public function isAdmin()
     {
         if ($this->parrain_id === null) {
-            if ($this->isAdmin === 1) {
+            if ((int)$this->isAdmin === 1) {
                 return true;
             }
         }

@@ -39,7 +39,7 @@
         </div>
         <div class="w-full max-w-full px-3 mx-auto mt-2">
             <div class="relative  right-0">
-                <ul class="relative flex flex-wrap gap-4 p-1 list-none rounded-xl" nav-pills role="tablist">
+                <ul class="relative flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 p-1 list-none rounded-xl w-full" nav-pills role="tablist">
                     @if (isset($print))
                         @if ($print !== false)
                             <li id="btn-export"
@@ -62,7 +62,7 @@
                     @else
                         @if (!isset($passation))
                             <li
-                                class=" w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                class=" cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                                 <a href="{{ route('classes.eleves', $data->id) }}"
                                     class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                     nav-link href="javascript:;" role="tab" aria-selected="false">
@@ -71,7 +71,7 @@
                                 </a>
                             </li>
                             <li
-                                class=" w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                class=" cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                                 <a href="{{ route('classes.paiements', $data->id) }}"
                                     class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                     nav-link href="javascript:;" role="tab" aria-selected="false">
@@ -80,7 +80,7 @@
                                 </a>
                             </li>
                             <li
-                                class=" btn-passation w-20 cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                class=" btn-passation cursor-pointer z-10 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
                                 <a href="{{ route('classes.cours', $data->id) }}"
                                     class="z-10 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
                                     nav-link href="javascript:;" role="tab" aria-selected="false">

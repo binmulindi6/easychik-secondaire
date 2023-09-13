@@ -1,6 +1,6 @@
-<div class="flex flex-row justify-between gap-4">
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             
-    <div class="flex gap-5">
+    <div class="flex flex-col sm:flex-row items-center  gap-5">
             
             @if ($pagename == "Cours/Create" || $pagename == "Cours" || $pagename == "Cours/Edit")
             <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >

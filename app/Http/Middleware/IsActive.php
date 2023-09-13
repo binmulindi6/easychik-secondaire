@@ -16,7 +16,7 @@ class IsActive
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->isActive === 1) {
+        if ((int)auth()->user()->isActive === 1) {
             return $next($request);
         } else {
             //dd('oklm');

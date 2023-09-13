@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container flex flex-col justify-between gap-5">
+    <div class="sm-max:p-2 sm:container flex flex-col justify-between gap-5">
 
         @if (isset($search))
             <x-nav-ecole :search="$search" :pagename="$page_name"></x-nav-ecole>
