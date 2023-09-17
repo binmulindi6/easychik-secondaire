@@ -63,21 +63,34 @@ class ClasseController extends Controller
             'nom' => ['required', 'string', 'max:255'],
         ]);
 
-        // dd($request->nom , $request->niveau);
-        $niveau = Niveau::find($request->niveau);
-        $classe = Classe::create([
-            'nom' => $request->nom,
-        ]);
+        $classes = Classe::all();
 
-        $classe->niveau()->associate($niveau);
+        if (count($classes) < env('SUBSCRIPTION_CLASSES') || env('SUBSCRIPTION') === "GOLD") {
 
-        $classe->save();
-        Logfile::createLog(
-            'classes',
-            $classe->id
-        );
+            $niveau = Niveau::find($request->niveau);
+            if(!Classe::where('niveau_id', $request->niveau)->where('nom', $request->nom)->first()){
+            // dd($request->nom , $request->niveau);
+            $classe = Classe::create([
+                'nom' => $request->nom,
+            ]);
 
-        return redirect()->route("classes.index");
+            $classe->niveau()->associate($niveau);
+
+            $classe->save();
+            Logfile::createLog(
+                'classes',
+                $classe->id
+            );
+
+            return redirect()->route("classes.index");
+            }
+            return redirect()->route('classes.create')->withErrors([
+                'Classe' => 'La Classe de '. $niveau->nom .' ' . $request->nom . ' existe déja!',
+            ])->onlyInput('matricule');
+        }
+        return redirect()->route('classes.create')->withErrors([
+            'Classe' => 'Vous ne pouvez pas ajouter plus de ' . env('SUBSCRIPTION_CLASSES'). ' Classes, veuillez changer de souscrition pour pouvoir en ajouter plus.',
+        ])->onlyInput('matricule');
     }
 
     /**
@@ -368,7 +381,7 @@ class ClasseController extends Controller
                 $paid = 0;
                 $paiements = $eleve->currentFrequentation()->paiement_frais;
                 foreach ($paiements as $paiement) {
-                if ($frai->id === $paiement->frais->id) {
+                    if ($frai->id === $paiement->frais->id) {
                         $paid += (int)$paiement->montant_paye;
                     }
                 }
@@ -403,35 +416,34 @@ class ClasseController extends Controller
 
         $datas = [];
 
-            $data = [];
-            $totalFrais = (int)$frais->montant;
-            foreach ($eleves as $eleve) {
-                $paid = 0;
-                $paiements = $eleve->currentFrequentation()->paiement_frais;
-                foreach ($paiements as $paiement) {
-                    if ($frais->id === $paiement->frais->id ) {
-                        $paid += (int)$paiement->montant_paye;
-                    }
-                }
-                $holder = [];
-                // dd($paid);
-                if ($totalFrais === $paid) {
-                    $holder['eleve'] = $eleve;
-                    $holder['montant'] = $paid;
-                    $datas[] = $holder;
+        $data = [];
+        $totalFrais = (int)$frais->montant;
+        foreach ($eleves as $eleve) {
+            $paid = 0;
+            $paiements = $eleve->currentFrequentation()->paiement_frais;
+            foreach ($paiements as $paiement) {
+                if ($frais->id === $paiement->frais->id) {
+                    $paid += (int)$paiement->montant_paye;
                 }
             }
-            // $datas[] = $holder;
+            $holder = [];
+            // dd($paid);
+            if ($totalFrais === $paid) {
+                $holder['eleve'] = $eleve;
+                $holder['montant'] = $paid;
+                $datas[] = $holder;
+            }
+        }
+        // $datas[] = $holder;
 
-            // dd($datas);
-        
-            return view('classe.solde')
+        // dd($datas);
+
+        return view('classe.solde')
             ->with('page_name', "Classes / " . $classe->nomCourt() . " / $frais->nom")
             ->with('items', $datas)
             ->with('frais', $frais)
             ->with('annee', $annee)
             ->with('classe', $classe);
-
     }
 
     public function fichePaiementsFraisNonSolde($id_classe, $id_frais)
@@ -440,7 +452,7 @@ class ClasseController extends Controller
         $frais = Frais::findOrFail($id_frais);
         $eleves = $classe->eleves();
         $annee = AnneeScolaire::current();
-        
+
         $datas = [];
 
         $data = [];
@@ -470,7 +482,6 @@ class ClasseController extends Controller
             ->with('items', $datas)
             ->with('frais', $frais)
             ->with('annee', $annee)
-            ->with('classe', $classe);    
-
+            ->with('classe', $classe);
     }
 }

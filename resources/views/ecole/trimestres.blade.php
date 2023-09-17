@@ -33,7 +33,7 @@
                                 <option hidden selected value="{{ $self->nom }}"> {{ $self->nom }} </option>
                                 <option value="PREMIER TRIMESTRE">PREMIER TRIMESTRE</option>
                                 <option value="DEUXIEME TRIMESTRE">DEUXIEME TRIMESTRE</option>
-                                <option value="TROISIEMETRIMESTRE">TROISIEME TRIMESTRE</option>
+                                <option value="TROISIEME TRIMESTRE">TROISIEME TRIMESTRE</option>
                             </select>
                         </div>
                         <div class="mt-4 w-full">
@@ -80,7 +80,7 @@
                                 <option disabled selected> Choisir le nom du Trimestre </option>
                                 <option value="PREMIER TRIMESTRE">PREMIER TRIMESTRE</option>
                                 <option value="DEUXIEME TRIMESTRE">DEUXIEME TRIMESTRE</option>
-                                <option value="TROISIEMETRIMESTRE">TROISIEME TRIMESTRE</option>
+                                <option value="TROISIEME TRIMESTRE">TROISIEME TRIMESTRE</option>
                             </select>
                         </div>
                         <div class="mt-4 w-full">
@@ -193,7 +193,7 @@
             <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas des Trimestres pour
                 l'annee scolaire en cours
                 , veuillez en ajouter</span>
-            <a href="{{ route('trimetres.create') }}" class="text-center">
+            <a href="{{ route('trimestres.create') }}" class="text-center">
                 <x-button>Ajouter un Trimetres</x-button></a>
         </div>
     @endif

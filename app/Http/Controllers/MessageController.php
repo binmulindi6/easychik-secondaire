@@ -24,7 +24,7 @@ class MessageController extends Controller
 
         $items = Message::where('destinateur', Auth::user()->id)->latest()->get();
 
-        if (Auth::user()->isDirecteur()) {
+        if (Auth::user()->isDirecteur() || Auth::user()->isManager()) {
             $users = User::where('parrain_id', '!=', null)->get();
             $items = Message::where('destinateur', Auth::user()->id)->latest()->get();
             $sent = Message::where('expediteur', Auth::user()->id)->latest()->get();

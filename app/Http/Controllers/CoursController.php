@@ -61,7 +61,7 @@ class CoursController extends Controller
             'max_examen' => ['required','string','max:255'],
         ]);
         
-        dd(9);
+        // dd(9);
 
         $niveau = Niveau::findOrFail($request->niveau);
         $categorie_cours = CategorieCours::find($request->categorie_cours);

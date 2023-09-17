@@ -19,6 +19,7 @@ class EmployerPresenceController extends Controller
      */
     public function index($date = null)
     {
+
         $employers = Employer::orderBy('matricule')->get();
         $types = TypePresence::all();
         $day =  $date ? $date :  date('Y-m-d');

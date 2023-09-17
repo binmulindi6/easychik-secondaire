@@ -74,10 +74,13 @@
         <div class="h-19 mt-3 flex flex-col justify-center items-center">
             <a class="flex  m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700"
                 href="{{ route('dashboard') }}">
-                <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{env('APP_NAME')}}</span> Main
+                <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{ env('APP_NAME') }}</span> Main
             </a>
+            @if (Auth::user()->isManager())
+                <span class="font-bold text-slate-700 uppercase">Administration</span>
+            @endif
             @if (Auth::user()->isAdmin())
-                <span class="font-bold text-slate-700 uppercase">Admin</span>
+                <span class="font-bold text-slate-700 uppercase">System Admin</span>
             @endif
             @if (Auth::user()->isDirecteur())
                 <span class="font-bold text-slate-700 uppercase">Direction</span>
@@ -130,7 +133,7 @@
                     </a>
                 </li>
 
-                @if (Auth::user()->isDirecteur())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Ecole') ||
                                 str_contains($page_name, 'Annees Scolaires') ||
@@ -151,7 +154,7 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->isDirecteur() || Auth::user()->isSecretaire())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isSecretaire() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if ((str_contains($page_name, 'Classes') || str_contains($page_name, 'Niveaux')) && !str_contains($page_name, 'Eleves'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -170,7 +173,7 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->isDirecteur())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Frais') && !str_contains($page_name, 'Rapport'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -206,8 +209,10 @@
                     </li>
 
                 @endif
-                @if (
-                    (!Auth::user()->isEnseignant() && !Auth::user()->isAdmin()) ||
+                @if (Auth::user()->isManager() ||
+                        Auth::user()->isParent() ||
+                        Auth::user()->isDirecteur() ||
+                        Auth::user()->isEnseignant() ||
                         (Auth::user()->isEnseignant() && Auth::user()->classe() !== null))
                     <li class="mt-0.5 w-full">
                         @if (
@@ -248,7 +253,7 @@
                             </a>
                         </li>
                     @endif --}}
-                @if (Auth::user()->isSecretaire())
+                @if (Auth::user()->isSecretaire() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Paiements') && !str_contains($page_name, 'Eleves'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -356,7 +361,7 @@
                         </a>
                     </li>
                 @endif
-                @if (!Auth::user()->isEnseignant())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isSecretaire() || Auth::user()->isParent() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Presences'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -393,7 +398,7 @@
                 @endif
 
 
-                @if (Auth::user()->isDirecteur() || Auth::user()->isAdmin())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isAdmin() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Employers'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -412,7 +417,7 @@
                     </li>
                 @endif
 
-                @if (Auth::user()->isDirecteur())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Enseignants'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -430,11 +435,12 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->isAdmin())
+                @if (Auth::user()->isAdmin() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Utilisateurs') ||
+                        @if ((str_contains($page_name, 'Utilisateurs') ||
                                 str_contains($page_name, 'Encadrements') ||
-                                str_contains($page_name, 'Parents'))
+                                str_contains($page_name, 'Parents')) &&
+                                !str_contains($page_name, 'Parents'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('users.index') }}">
                             @else
@@ -468,7 +474,7 @@
                     </li>
                 @endif
 
-                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Parents'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -506,7 +512,7 @@
                 @endif
 
 
-                @if (Auth::user()->isDirecteur() || Auth::user()->isParent())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isParent() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Messages'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -528,7 +534,7 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur() || Auth::user()->isManager())
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Articles') || str_contains($page_name, 'Entrées') || str_contains($page_name, 'Sorties'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"

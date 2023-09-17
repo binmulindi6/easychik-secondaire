@@ -2,8 +2,12 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\IsActive;
+use App\Http\Middleware\IsGold;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsActive;
+use App\Http\Middleware\IsSilver;
+use App\Http\Middleware\IsStarter;
+use App\Http\Middleware\IsStandard;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,5 +74,11 @@ class Kernel extends HttpKernel
 
         'isActive' => IsActive::class,
         'isAdmin' => IsAdmin::class,
+
+        //packages
+        'isStarter' => IsStarter::class,
+        'isStandard' => IsStandard::class,
+        'isSilver' => IsSilver::class,
+        'isGold' => IsGold::class
     ];
 }

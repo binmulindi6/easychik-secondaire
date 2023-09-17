@@ -266,7 +266,7 @@
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Nom de la Mere </th>
                         @endif
-                        @if (Auth::user()->isSecretaire())
+                        @if (Auth::user()->isSecretaire() || Auth::user()->isManager())
                             <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap "
                                 colspan="2">action</th>
                         @endif
@@ -309,7 +309,7 @@
                         @endif
                         <td class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                             @if ($item->currentFrequentation() === null)
-                                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur())
+                                @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur() || Auth::user()->isManager())
                                     <a class="text-blue-500 underline"
                                         href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
                                     </a>
@@ -335,7 +335,7 @@
                                 {{ $item->nom_mere }}</td>
                         @endif
 
-                        @if (Auth::user()->isSecretaire())
+                        @if (Auth::user()->isSecretaire() || Auth::user()->isManager())
                             <td
                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                 <div class="flex justify-center gap-4 align-middle">
@@ -346,7 +346,7 @@
                                         action="{{ route('eleves.destroy', $item->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
-                                        @if (Auth::user()->isDirecteur())
+                                        @if (Auth::user()->isDirecteur() || Auth::user()->isManager())
                                             <button class="delete-btn" type="submit" title="Effacer">
                                                 <i class="text-red-500 fa fa-solid fa-trash"></i>
                                             </button>

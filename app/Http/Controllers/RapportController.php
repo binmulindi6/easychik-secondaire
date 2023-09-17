@@ -53,7 +53,7 @@ class RapportController extends Controller
                     // echo $moyen->nom;
                     $montant = 0;
                     foreach ($paiements as $paiement) {
-                        if ($paiement->moyen_paiement->id === $moyen->id && $paiement->frais->type_frais_id === $frais->id) {
+                        if ((int)$paiement->moyen_paiement->id === (int)$moyen->id && (int)$paiement->frais->type_frais_id === (int)$frais->id) {
                             $montant += $paiement->montant_paye;
                         }
                     }
@@ -122,7 +122,7 @@ class RapportController extends Controller
                 // echo $moyen->nom;
                 $montant = 0;
                 foreach ($paiements as $paiement) {
-                    if ($paiement->moyen_paiement->id === $moyen->id && $paiement->frais->type_frais_id === $frais->id) {
+                    if ((int)$paiement->moyen_paiement->id === (int)$moyen->id && (int)$paiement->frais->type_frais_id === (int)$frais->id) {
                         $montant += $paiement->montant_paye;
                     }
                 }
@@ -219,7 +219,7 @@ class RapportController extends Controller
                 // echo $moyen->nom;
                 $montant = 0;
                 foreach ($paiements as $paiement) {
-                    if ($paiement->moyen_paiement->id === $moyen->id && $paiement->frais->type_frais_id === $frais->id) {
+                    if ((int)$paiement->moyen_paiement->id === (int)$moyen->id && (int)$paiement->frais->type_frais_id === (int)$frais->id) {
                         $montant += $paiement->montant_paye;
                     }
                 }
@@ -261,12 +261,12 @@ class RapportController extends Controller
                 foreach ($freqs as $freq) {
                     if ($classe->id === $freq->classe->id) {
                         // dd($freq->eleve->sexe);
-                        if (isset($freq->eleve) && $freq->eleve->sexe === 'M') {
+                        if (isset($freq->eleve) && $freq->eleve->sexe == 'M') {
                             $holder['garcons'][] = $freq;
                             $total++;
                             $filles++;
                         } else {
-                            if (isset($freq->eleve) && $freq->eleve->sexe === 'F') {
+                            if (isset($freq->eleve) && $freq->eleve->sexe == 'F') {
                                 $holder['filles'][] = $freq;
                                 $total++;
                                 $garcons++;

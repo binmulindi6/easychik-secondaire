@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Session\Session;
 
-class 
+class
 UserController extends Controller
 {
     protected $page_name = 'Utilisateurs';
@@ -28,7 +28,7 @@ UserController extends Controller
         // // dd($_SESSION);
 
         $page_name = 'Utilisateurs';
-        $users = User::where('email','!=', 'admin@easychik.com')
+        $users = User::where('email', '!=', 'admin@easychik.com')
             ->where('isAdmin', 0)
             ->where('parrain_id', null)
             ->latest()
@@ -47,7 +47,7 @@ UserController extends Controller
         // // dd($_SESSION);
 
         $page_name = 'Utilisateurs';
-        $users = User::where('email','!=', 'admin@easychik.com')
+        $users = User::where('email', '!=', 'admin@easychik.com')
             ->where('isAdmin', 0)
             ->where('parrain_id', null)
             ->latest()
@@ -89,40 +89,46 @@ UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+        $users = User::all();
 
-        $matricule = $request->matricule;
-        $employer = Employer::where('matricule', $matricule)->first();
-        //dd('here');
+        if (count($users) < env('SUBSCRIPTION_USERS') || env('SUBSCRIPTION') === "GOLD") {
+            $matricule = $request->matricule;
+            $employer = Employer::where('matricule', $matricule)->first();
+            //dd('here');
 
-        $userExist = User::where('employer_id', $employer->id)
-            ->first();
+            $userExist = User::where('employer_id', $employer->id)
+                ->first();
 
-        if ($userExist !== null) {
-            return back()->withErrors([
-                'matricule' => 'Cet Employer possede déjà un compte utilisateur',
-            ])->onlyInput('matricule');
+            if ($userExist !== null) {
+                return back()->withErrors([
+                    'matricule' => 'Cet Employer possede déjà un compte utilisateur',
+                ])->onlyInput('matricule');
+            }
+
+            if (!is_null($employer)) {
+                $user = User::create([
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    //'name' => $request->name,
+                ]);
+                $user->employer()->associate($employer);
+                $user->save();
+
+                Logfile::createLog(
+                    'users',
+                    $user->id
+                );
+                redirect()->route('users.index');
+            } else {
+                return back()->withErrors([
+                    'email' => 'Cet Employer n\'existe pas dans le system',
+                ])->onlyInput('matricule');
+            }
+            return redirect()->route('users.index');
         }
-
-        if (!is_null($employer)) {
-            $user = User::create([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                //'name' => $request->name,
-            ]);
-            $user->employer()->associate($employer);
-            $user->save();
-
-            Logfile::createLog(
-                'users',
-                $user->id
-            );
-            redirect()->route('users.index');
-        } else {
-            return back()->withErrors([
-                'email' => 'Cet Employer n\'existe pas dans le system',
-            ])->onlyInput('matricule');
-        }
-        return redirect()->route('users.index');
+        return redirect()->route('users.create')->withErrors([
+            'Classe' => 'Vous ne pouvez pas ajouter plus de ' . env('SUBSCRIPTION_CLASSES') . ' Utilisateurs, veuillez changer de souscrition pour pouvoir en ajouter plus.',
+        ])->onlyInput('matricule');
     }
 
     public function changeStatut(Request $request, $id)
@@ -256,8 +262,8 @@ UserController extends Controller
     {
 
 
-        $items = User::join('employers','employer_id','employers.id')
-            ->where('email','!=', 'admin@easychik.com')
+        $items = User::join('employers', 'employer_id', 'employers.id')
+            ->where('email', '!=', 'admin@easychik.com')
             ->where('nom', 'like', '%' . $request->search . '%')
             ->orWhere('prenom', 'like', '%' . $request->search . '%')
             ->get();
@@ -287,6 +293,6 @@ UserController extends Controller
     //         ->with('items', $items);
     // }
 
-    
+
 
 }

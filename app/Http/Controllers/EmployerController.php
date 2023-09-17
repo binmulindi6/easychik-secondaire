@@ -270,4 +270,13 @@ class EmployerController extends Controller
             ->with('fonctions', $fonctions)
             ->with('last_matricule', $matricule);
     }
+
+        ///carte
+
+        public function carte($id)
+        {
+            $eleve = Employer::findOrFail($id);
+           return view('employer.carte')
+           ->with('eleve',$eleve);
+        }
 }

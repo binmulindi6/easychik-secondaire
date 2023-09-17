@@ -42,7 +42,7 @@
         <x-nav-rapports :isStock="true" :pagename="$page_name"></x-nav-rapports>
 
         <div
-            class="frm-identity flex flex-col sm:flex-row justify-center items-center  gap-5 shadow-2xl relative bg-white rounded-5 p-5 w-full  z-20">
+            class="frm-identity flex flex-col justify-center items-center  gap-5 shadow-2xl relative bg-white rounded-5 p-5 w-full  z-20">
 
             <div class="flex flex-col sm:flex-row justify-center w-full">
                 <form action="{{ route('rapports.stock.store') }}" method="POST" class="flex flex-col sm:flex-row items-center gap-2">
