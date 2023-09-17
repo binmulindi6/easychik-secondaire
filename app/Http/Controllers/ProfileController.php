@@ -17,6 +17,7 @@ class ProfileController extends Controller
         }else{
             $self = $user->employer;
         }
+        // dd(auth()->user());
         // dd($user->isEnseignant());
 
         return view('users.profile')

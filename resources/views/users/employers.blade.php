@@ -11,7 +11,7 @@
                 <div class="display container p-5 bg-white rounded-5 shadow-2xl">
         @endif
 
-        <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+        <div class="p-2 pb-0 mb-0 bg-white rounded-t-2xl">
            @if (isset($link))
            <h6>Choisir un Employé</h6>
            @else

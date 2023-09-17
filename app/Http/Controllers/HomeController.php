@@ -18,88 +18,89 @@ class HomeController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->isManager() || Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isSecretaire() ) {
-            $annee = AnneeScolaire::current();
-            $freqs = $annee ? $annee->frequentations : null;
-            $classes = Classe::orderBy('niveau_id', 'asc')->get();
+        if (DateController::checkYears()) {
+            if (Auth::user()->isManager() || Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isSecretaire()) {
+                $annee = AnneeScolaire::current();
+                $freqs = $annee ? $annee->frequentations : null;
+                $classes = Classe::orderBy('niveau_id', 'asc')->get();
 
-            $datas = [];
-            $total = 0;
-            $filles = 0;
-            $garcons = 0;
-            // dd($freqs);
-            foreach ($classes as $classe) {
-                $holder = [];
-                $holder['classe'] = $classe;
-                $holder['filles'] = [];
-                $holder['garcons'] = [];
-                foreach ($freqs as $freq) {
-                    if ($classe->id === $freq->classe->id) {
-                        // dd($freq->eleve->sexe);
-                        if (isset($freq->eleve) && $freq->eleve->sexe === 'M') {
-                            $holder['garcons'][] = $freq;
-                            $total++;
-                            $filles++;
-                        } else {
-                            if (isset($freq->eleve) && $freq->eleve->sexe === 'F') {
-                                $holder['filles'][] = $freq;
+                $datas = [];
+                $total = 0;
+                $filles = 0;
+                $garcons = 0;
+                // dd($freqs);
+                foreach ($classes as $classe) {
+                    $holder = [];
+                    $holder['classe'] = $classe;
+                    $holder['filles'] = [];
+                    $holder['garcons'] = [];
+                    foreach ($freqs as $freq) {
+                        if ($classe->id === $freq->classe->id) {
+                            // dd($freq->eleve->sexe);
+                            if (isset($freq->eleve) && $freq->eleve->sexe === 'M') {
+                                $holder['garcons'][] = $freq;
                                 $total++;
-                                $garcons++;
+                                $filles++;
+                            } else {
+                                if (isset($freq->eleve) && $freq->eleve->sexe === 'F') {
+                                    $holder['filles'][] = $freq;
+                                    $total++;
+                                    $garcons++;
+                                }
                             }
                         }
                     }
+                    $datas[] = $holder;
                 }
-                $datas[] = $holder;
+
+
+
+
+                $employers = Employer::where('id', '!=', 1)->count() > 0 ? Employer::where('id', '!=', 1)->count() : 0;
+                $hommes = count(Employer::where('sexe', 'M')->where('id', '!=', 1)->get()) > 0 ? count(Employer::where('sexe', 'M')->where('id', '!=', 1)->get()) : 0;
+                $classes = Classe::count() > 0 ? Classe::count() : 0;
+
+                $classesEncadrees = [];
+                foreach (Classe::all() as $classe) {
+                    if ($classe->user() !== null) {
+                        $classesEncadrees[] = $classe;
+                    }
+                }
+
+                $users = User::where('employer_id', null)->count();
+                // dd($users);
+                $usersActifs = count(User::where('isActive', '1')->where('employer_id', '=', null)->get()) > 0 ? count(User::where('isActive', '1')->where('employer_id', '=', null)->get()) : 0;
+                return view('dashboard', [
+                    'page_name' => 'Dashboard',
+                    'eleves' => $total,
+                    'employers' => $employers,
+                    'hommes' => $hommes,
+                    'classes' => $classes,
+                    'filles' => $filles,
+                    'garcons' => $garcons,
+                    'classesEncadrees' => count($classesEncadrees),
+                    'users' => $users,
+                    'usersActifs' => $usersActifs,
+                ]);
             }
 
 
+            // if(Auth::user()->isEnseignant()){
+
+            //     $eleves = Eleve::count() > 0 ? Eleve::count() : 0;
+            //     $employers = Employer::count() > 0 ? Employer::count() : 0;
+            //     $classes = Classe::count() > 0 ? Classe::count() : 0;
+            //     $users = User::count() > 0 ? User::count() : 0;
+            //     return view('dashboard', [
+            //         'page_name' => 'Dashboard',
+            //         'eleves' => $eleves,
+            //         'employers' => $employers,
+            //         'classes' => $classes,
+            //         'users' => $users,
+            //     ]);
+            // }
 
 
-            $employers = Employer::where('id','!=',1)->count() > 0 ? Employer::where('id','!=',1)->count() : 0;
-            $hommes = count(Employer::where('sexe', 'M')->where('id','!=',1)->get()) > 0 ? count(Employer::where('sexe', 'M')->where('id','!=',1)->get()) : 0;
-            $classes = Classe::count() > 0 ? Classe::count() : 0;
-
-            $classesEncadrees = [];
-            foreach (Classe::all() as $classe) {
-                if ($classe->user() !== null) {
-                    $classesEncadrees[] = $classe;
-                }
-            }
-
-            $users = User::where('employer_id', null)->count();
-            // dd($users);
-            $usersActifs = count(User::where('isActive', '1')->where('employer_id', '=', null)->get()) > 0 ? count(User::where('isActive', '1')->where('employer_id', '=', null)->get()) : 0;
-            return view('dashboard', [
-                'page_name' => 'Dashboard',
-                'eleves' => $total,
-                'employers' => $employers,
-                'hommes' => $hommes,
-                'classes' => $classes,
-                'filles' => $filles,
-                'garcons' => $garcons,
-                'classesEncadrees' => count($classesEncadrees),
-                'users' => $users,
-                'usersActifs' => $usersActifs,
-            ]);
-        }
-
-
-        // if(Auth::user()->isEnseignant()){
-
-        //     $eleves = Eleve::count() > 0 ? Eleve::count() : 0;
-        //     $employers = Employer::count() > 0 ? Employer::count() : 0;
-        //     $classes = Classe::count() > 0 ? Classe::count() : 0;
-        //     $users = User::count() > 0 ? User::count() : 0;
-        //     return view('dashboard', [
-        //         'page_name' => 'Dashboard',
-        //         'eleves' => $eleves,
-        //         'employers' => $employers,
-        //         'classes' => $classes,
-        //         'users' => $users,
-        //     ]);
-        // }
-
-        if (DateController::checkYears()) {
             if (DateController::checkTrimestres()) {
                 if (DateController::checkPeriodes()) {
                     $annee = AnneeScolaire::current();
@@ -112,17 +113,17 @@ class HomeController extends Controller
                         ->with('page_name', "Dashboard");
                 }
 
-                if (Auth::user()->isDirecteur()) {
+                if (Auth::user()->isDirecteur() || Auth::user()->isAdmin()) {
                     return view('origin')->with('order', "periode");
                 }
                 // return abort(403);
             }
-            if (Auth::user()->isDirecteur()) {
+            if (Auth::user()->isDirecteur() || Auth::user()->isAdmin()) {
                 return view('origin')->with('order', "trimestre");
             }
             // return abort(403);
         }
-        if (Auth::user()->isDirecteur()) {
+        if (Auth::user()->isDirecteur() || Auth::user()->isAdmin()) {
             return view('origin')->with('order', "year");
         }
 

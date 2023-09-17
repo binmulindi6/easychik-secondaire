@@ -73,7 +73,7 @@
                 <div class="display bg-white shadow-2xl rounded-5 container p-5">
         @endif
 
-        <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+        <div class="p-2 pb-0 mb-0 bg-white rounded-t-2xl">
             <h6>Niveaux </h6>
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">
