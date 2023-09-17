@@ -45,7 +45,7 @@ class Classe extends Model
         $currentEncadrement = null;
         foreach ($encadrements as $encadrement) {
             if ($encadrement->annee_scolaire->id === $currentAnneeScolaire->id) {
-                if ($encadrement->isActive === 1) {
+                if ((int)$encadrement->isActive === 1) {
                     $currentEncadrement = $encadrement;
                     return $currentEncadrement;
                 }

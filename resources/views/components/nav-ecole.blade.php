@@ -1,7 +1,7 @@
-<div class="flex flex-col-reverse justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
-    <div class="flex flex-row gap-4 sm-max:justify-center">
+<div class="flex flex-col md:flex-ro justify-center items-center gap-2 sm:gap-4 z-10">
+    <div class="flex flex-row sm:flex-row gap-2 sm:gap-4 sm-max:justify-center">
 
-        <div class="flex gap-5">
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-5">
 
             @if (str_contains($pagename, 'Annees Scolaires'))
                 <div
@@ -19,7 +19,7 @@
                     </div>
                 </a>
             @else
-                <div>
+                <div> 
                     <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
                     <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Nouvelle Annee Scolaire</span>
                 </div>
@@ -171,7 +171,7 @@
 @if (!str_contains($pagename, 'Ecole'))
 
     <div
-        class="relative shadow-xl justify-end flex flex-wrap self-end items-stretch max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
+        class="relative shadow-xl items-center justify-center flex flex-wrap self-end max-h-12 transition-all rounded-lg  ease sm-max:text-size-xs sm-max:w-full">
         @if (str_contains($pagename, 'Annees'))
             <form class="w-full" action="{{ route('annees.search') }}" method="post">
         @endif

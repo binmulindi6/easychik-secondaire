@@ -22,13 +22,13 @@
                 <div class="flex flex-col gap-1 pb-2 border-b">
                     <form action="{{route('settings.store')}}" method="post" class="flex items-center justify-between gap-2 w-full">
                         @csrf
-                        <span class="font-semibold text-4 text-slate-700">Annee Scolaire en Cours</span>
+                        <span class="font-semibold text-4 text-slate-700">Annee Scolaire en Cours : </span>
                         <div class="w-30 md:w-40  h-10 flex flex-row justify-end items-center gap-2">
                             <x-select :submitOnChage="true" :val="$current" :collection="$annees" class="block mt-1 w-full" name='annee' required></x-select>
                             {{-- <x-button>choisir</x-button> --}}
                         </div>
                     </form>
-                    <span class="text-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia tenetur iure facere adipisci quasi dicta illo necessitatibus, molestias, a laudantium sint reprehenderit dolores animi consequuntur nihil aut at ipsum numquam?</span>
+                    <span class="text-3">Ici vous avez la possibilité de vous connecter à une <span class="font-semibold">Annee Scolaire </span> anterieur pour pouvoir consulter les données de celle-ci. </span>
                 </div>
                 <div class="flex flex-col gap-1 pb-2 border-b">
                     <form action="{{ route('logout') }}" method="post" class="flex items-center justify-between gap-2 w-full">

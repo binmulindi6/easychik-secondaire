@@ -17,18 +17,21 @@
         </style>
     </head>
     <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 drk:bg-gray-900 sm:items-center sm:pt-0">
+        <div class="relative flex items-top items-center justify-center min-h-screen bg--100 drk:bg-gray-900 sm:items-center sm:pt-0">
             <div class=" mx-auto sm:px-6 lg:px-8">
                 <div class="w-full lg:hidden flex justify-center">
-                    <span class="font-bold text-center w-50 text-transparent text-6xl bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-md">{{env('APP_NAME')}}</span>
+                    <span class="font-bold text-center text-transparent text-6xl bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-md">{{env('APP_NAME')}}</span>
                 </div>
-                <div class="flex items-center pt-2 sm:justify-start sm:pt-0">
+                <div class="flex items-center justify-center pt-2 sm:pt-0">
                     <div class="px-4 text-lg text-gray-500 border-r border-gray-400 tracking-wider">
                         @yield('code')
                     </div>
                     <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
                         @yield('message')
                     </div>
+                </div>
+                <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
+                    @yield('message2')
                 </div>
                 @yield('action')
             </div>

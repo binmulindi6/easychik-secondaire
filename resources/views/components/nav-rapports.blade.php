@@ -1,5 +1,5 @@
-<div class="flex flex-col gap-4 md:flex-row justify-between items-center">
-    <div class="flex flex-row gap-4 items-center">
+<div class="flex flex-col gap-2 sm:gap-4 sm:flex-row justify-between items-center">
+    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 items-center">
         <x-back link="{{ route('rapports') }}"></x-back>
         @if (str_contains($pagename, 'Perception'))
             @if (!str_contains($pagename, 'Annuel'))
@@ -42,7 +42,7 @@
 @endif
 </div>
 {{-- @if ($pagename === 'Paiements / Facture') --}}
-<div class="flex flex-row gap-5 justify-end ">
+<div class="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-items-center sm:justify-end ">
     <span class="min-w-30 cursor-pointer z-10 text-center px-3 py-1  bg-gray-300 hover:bg-white rounded-xl">
         <span id="btn-export"
             class="z-10 flex items-center gap-2 justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700">

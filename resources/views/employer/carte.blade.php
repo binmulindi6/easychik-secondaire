@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('storage/favicon.png') }}" />
-    <title>easyChik | Carte d'Eleve</title>
+    <title>easyChik | Carte de Service</title>
     {{-- <link rel="stylesheet" href="assets/css/security.css">
     <script src="/assets/js/htmltoimage.min.js"></script>
     <script src="/assets/js/screenshot.min.js"></script>
@@ -37,7 +37,7 @@
                     <span
                         class="text-20 font-semibold text-blue-700">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span>
                         {{-- <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{ env('APP_NAME') }}</span> --}}
-                    <span class="text-20 border-black border-b-8 w-10/12 font-semibold">CARTE D'ELEVE</span>
+                    <span class="text-20 border-black border-b-8 w-10/12 font-semibold">CARTE DE SERVICE</span>
                     {{-- <span >eChik <span>SCHOOL MANAGEMENT SYSYTEM</span></span> --}}
                     <span class="text-10">
                         Les autoritées politico-adminitratives, policiers et militaires sont priés de porter leur
@@ -76,8 +76,8 @@
                     </div>
                     <table class="identity">
                         <tr class="">
-                            <td class=" uppercase text-12">NUM PERMANENT : <span id="nom"
-                                    class="font-bold">{{ $eleve->num_permanent }}</span> </td>
+                            <td class=" uppercase text-12">MATRICULE : <span id="nom"
+                                    class="font-bold">{{ $eleve->matricule }}</span> </td>
                         </tr>
                         <tr class="">
                             <td class=" uppercase text-12">NOM & PRENOM : <span id="nom"
@@ -97,8 +97,10 @@
                             </td>
                         </tr>
                         <tr class="">
-                            <td class=" uppercase text-12">CLASSE : <span id="prenom" class="font-bold"></span>
-                                {{$eleve->classe()->nomComplet()}}
+                            <td class=" uppercase text-12">Fonction : <span id="prenom" class="font-bold"></span>
+                                @foreach ($eleve->fonctions as $item)
+                                {{$item->nom}} ,
+                                @endforeach
                             </td>
                         </tr>
                         <tr class="">
@@ -112,10 +114,10 @@
                         {{-- <tr class="">
                                 <td class="">PROFESSION : <span id="profession" class="></span></td>  --}}
                         </tr>
-                        <tr class="">
+                        {{-- <tr class="">
                             <td class=" text-12">ADRESSE : <span id="adresse"
                                     class="font-bold">{{ $eleve->adresse }}</span> </td>
-                        </tr>
+                        </tr> --}}
                     </table>
 
                 </div>

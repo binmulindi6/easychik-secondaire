@@ -18,7 +18,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isSecretaire()) {
+        if (Auth::user()->isManager() || Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isSecretaire() ) {
             $annee = AnneeScolaire::current();
             $freqs = $annee ? $annee->frequentations : null;
             $classes = Classe::orderBy('niveau_id', 'asc')->get();

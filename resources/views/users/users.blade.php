@@ -250,7 +250,7 @@
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         @if ($item->isEnseignant())
-                                            @if ($item->classe() === null)
+                                            @if ($item->classe() == null)
                                                 <a class="text-blue-500 underline "
                                                     href="{{ route('encadrements.link', $item->id) }}">
                                                     assigner à une classe

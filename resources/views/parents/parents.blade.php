@@ -165,8 +165,8 @@
                             <th
                                 class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Eleves</th>
-                            @if(Auth::user()->isSecretaire() || Auth::user()->isAdmin() || Auth::user()->isDirecteur())
-                                <th
+                            @if(Auth::user()->isSecretaire() || Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isManager())
+                                <th 
                                 class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Satut</th>
                             @endif
@@ -208,7 +208,7 @@
                                         @endif
 
                                     </td>
-                                    @if(Auth::user()->isSecretaire() || Auth::user()->isAdmin() || Auth::user()->isDirecteur())
+                                    @if(Auth::user()->isSecretaire() || Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isManager())
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         @if ($item->is_active() == '0')
@@ -237,7 +237,7 @@
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   text-blue-500 underline">
                                         <div class="flex justify-center gap-4 align-middle">
-                                            @if(Auth::user()->isSecretaire())
+                                            @if(Auth::user()->isSecretaire() || Auth::user()->isManager())
                                                 <a title="assigner ce parent à un eleve" href="{{ route('eleve-parent.link',$item->id) }}"><i
                                                     class="text-green-500 font-semibold fa fa-solid fa-plus"></i></a>
                                                 <a title="modifier" href="{{ route('parents.edit', $item->id) }}"><i

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsActive
+class IsStarter
 {
     /**
      * Handle an incoming request.
@@ -16,18 +16,11 @@ class IsActive
      */
     public function handle(Request $request, Closure $next)
     {
-        if ((int)auth()->user()->isActive === 1) {
+        // dd(10);
+        if (env('SUBSCRIPTION') === 'STARTER' || env('SUBSCRIPTION') === 'STANDARD' || env('SUBSCRIPTION') === 'SILVER'|| env('SUBSCRIPTION') === 'GOLD') {
             return $next($request);
         } else {
-            //dd('oklm');
-            //return route('products');
-            abort(403);
+            abort(450);
         }
-
-        // if(env('SUBSCRIPTION') === 'PREMIUM'){
-        //     return $next($request);
-        // }else{
-        //     abort(403);
-        // }
     }
 }

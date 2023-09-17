@@ -44,22 +44,30 @@
         <div
             class="frm-identity flex flex-col justify-center items-center  gap-5 shadow-2xl relative bg-white rounded-5 p-5 w-full  z-20">
 
-            <div class="flex flex-row justify-center w-full">
-                <form action="{{ route('rapports.stock.store') }}" method="POST" class="flex flex-row items-center gap-2">
+            <div class="flex flex-col sm:flex-row justify-center w-full">
+                <form action="{{ route('rapports.stock.store') }}" method="POST" class="flex flex-col sm:flex-row items-center gap-2">
                     @csrf
                     @if (isset($debut))
-                        <x-label>Du:</x-label>
-                        <x-input type="date" name="date_debut" id="" max="{{ $today }}"
-                            value="{{ $debut }}"></x-input>
-                        <x-label>Au:</x-label>
-                        <x-input type="date" name="date_fin" max="{{ $today }}" id=""
-                            value="{{ $fin }}"></x-input>
-                    @else
-                        <x-label>Du:</x-label>
-                        <x-input type="date" name="date_debut" max="{{ $today }}" id=""></x-input>
-                        <x-label>Au:</x-label>
-                        <x-input type="date" name="date_fin" max="{{ $today }}" value="{{ $today }}"
-                            id=""></x-input>
+                        <div class="flex flex-row gap-2 justify-center items-center">
+                            <x-label>Du:</x-label>
+                            <x-input type="date" name="date_debut" id="" max="{{ $today }}"
+                                value="{{ $debut }}"></x-input>
+                        </div>
+                        <div class="flex flex-row gap-2 justify-center items-center">
+                            <x-label>Au:</x-label>
+                            <x-input type="date" name="date_fin" max="{{ $today }}" id=""
+                                value="{{ $fin }}"></x-input>
+                        </div>
+                    @else 
+                        <div class="flex flex-row gap-2 justify-center items-center">
+                            <x-label>Du:</x-label>
+                            <x-input type="date" name="date_debut" max="{{ $today }}" id=""></x-input>
+                        </div>
+                        <div class="flex flex-row gap-2 justify-center items-center">
+                            <x-label>Au:</x-label>
+                            <x-input :submitOnChange="true" type="date" name="date_fin" max="{{ $today }}" value="{{ $today }}"
+                                id=""></x-input>
+                        </div>
                     @endif
                     <x-button>choisir</x-button>
                 </form>

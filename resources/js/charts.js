@@ -3,7 +3,7 @@ const queryString = window.location;
 const link = queryString.origin;
 // console.log(link);
 
-const link2 = link === "http://sas.test" ? link : link+"/sas/public"
+const link2 = link === 'localhost:8888' ? link + "/sas/public" : link
 
 let data;
 axios.get(link2 + '/charts')

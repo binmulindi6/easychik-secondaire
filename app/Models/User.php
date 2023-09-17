@@ -53,7 +53,7 @@ class User extends Authenticatable
     public function isAdmin()
     {
         if ($this->parrain_id === null) {
-            if ($this->isAdmin === 1) {
+            if ((int)$this->isAdmin === 1) {
                 return true;
             }
         }
@@ -92,6 +92,7 @@ class User extends Authenticatable
             }
         }
         return false;
+        // return $this->isManager() ? true : false;
     }
 
 
@@ -100,7 +101,20 @@ class User extends Authenticatable
 
         if ($this->parrain_id === null) {
             foreach ($this->employer->fonctions as $fonction) {
-                if (strtolower($fonction->nom) === strtolower('Secretaire')) {
+                if (strtolower($fonction->nom) === strtolower('Secretaire') || strtolower($fonction->nom) === strtolower('Comptable')) {
+                    return true;
+                    // dd(10);
+                }
+            }
+        }
+        return false;
+    }
+    public function isManager()
+    {
+
+        if ($this->parrain_id === null) {
+            foreach ($this->employer->fonctions as $fonction) {
+                if (strtolower($fonction->nom) === strtolower('Gestionnaire') || strtolower($fonction->nom) === strtolower('Manager')) {
                     return true;
                     // dd(10);
                 }
@@ -138,7 +152,7 @@ class User extends Authenticatable
             // dd(10);
             foreach ($encadrements as $encadrement) {
                 if ($encadrement->annee_scolaire->id === $currentAnneeScolaire->id) {
-                    if ($encadrement->isActive === 1) {
+                    if ((int)$encadrement->isActive === 1) {
                         $currentEncadrement = $encadrement;
                         return $currentEncadrement->classe();
                     }

@@ -13,7 +13,7 @@
                     <div class="flex flex-col justify-center gap-2 p-5">
                         <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Veuillez Ajouter
                             des
-                            classes Pour pouvoir gerer les horraires de cours</span>
+                            classes Pour pouvoir gerer les presences des eleves</span>
                         <a href="{{ route('classes.create') }}" class="text-center">
                             <x-button>Ajouter une Classe</x-button></a>
                     </div>

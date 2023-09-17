@@ -200,7 +200,7 @@
                                                         @endphp
                                                         <td
                                                             class="p-1 uppercase text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                            @if ($horaire->isRecreation === 1)
+                                                            @if ((int)$horaire->isRecreation === 1)
                                                                 RECREATION
                                                             @else
                                                                 {{ $horaire->cours->nom }}
@@ -211,7 +211,7 @@
                                                 @if (isset($i) && $i === 0)
                                                     <td
                                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-
+                                                        ---
                                                     </td>
                                                 @endif
                                                 {{-- @endforeach --}}

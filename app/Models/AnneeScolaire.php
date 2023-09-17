@@ -74,7 +74,7 @@ class AnneeScolaire extends Model
     {
         if (DateController::checkTrimestres()) {
             return Trimestre::where('annee_scolaire_id', $this->id)
-                ->where('nom', '=', 'premier trimestre')
+                ->where('nom', '=', 'PREMIER TRIMESTRE')
                 ->first();
         } else {
             // dd('Trimestres Indisponible, Veuillez contacter la direction');
@@ -85,7 +85,7 @@ class AnneeScolaire extends Model
     {
         if (DateController::checkTrimestres()) {
             return Trimestre::where('annee_scolaire_id', $this->id)
-                ->where('nom', '=', 'deuxieme trimestre')
+                ->where('nom', '=', 'DEUXIEME TRIMESTRE')
                 ->first();
         } else {
             // dd('Trimestres Indisponible, Veuillez contacter la direction');
@@ -96,7 +96,7 @@ class AnneeScolaire extends Model
     {
         if (DateController::checkTrimestres()) {
             return Trimestre::where('annee_scolaire_id', $this->id)
-                ->where('nom', '=', 'troisieme trimestre')
+                ->where('nom', '=', 'TROISIEME TRIMESTRE')
                 ->first();
         // } else {
             // dd('Trimestres Indisponible, Veuillez contacter la direction');

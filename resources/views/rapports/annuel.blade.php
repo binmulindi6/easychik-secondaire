@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
+        <x-print-style/>
 
         <x-nav-rapports :pagename="$page_name"></x-nav-rapports>
 
