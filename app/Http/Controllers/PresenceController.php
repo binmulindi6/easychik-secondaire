@@ -34,7 +34,7 @@ class PresenceController extends Controller
         }
 
 
-        return view('presences.index')
+        return view('presences.eleves')
             ->with('page_name', 'Presences')
             ->with('classes', $classes);
     }

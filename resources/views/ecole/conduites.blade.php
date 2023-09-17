@@ -90,7 +90,7 @@
             @endforeach
         @endif
 
-        <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+        <div class="p-2 pb-0 mb-0 bg-white rounded-t-2xl">
             <h6>Conduites</h6>
         </div>
         <div class="flex-auto px-0 pt-0 pb-2">

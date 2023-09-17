@@ -124,7 +124,7 @@
             <div class="display container p-5 bg-white rounded-5 shadow-2xl">
     @endif
 
-    <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+    <div class="p-2 pb-0 mb-0 bg-white rounded-t-2xl">
         <h6>Trimestres</h6>
     </div>
     @if (isset($items) && count($items) > 0)

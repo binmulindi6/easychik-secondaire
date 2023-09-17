@@ -121,7 +121,7 @@
             <div class="display bg-white shadow-2xl rounded-5 container p-5">
     @endif
 
-    <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+    <div class="p-2 pb-0 mb-0 bg-white rounded-t-2xl">
         <h6>Cours</h6>
     </div>
     @if (isset($items) && count($items) > 0)

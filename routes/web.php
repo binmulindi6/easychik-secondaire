@@ -207,12 +207,12 @@ Route::middleware(['auth', 'isActive'])->group(function () {
 
     Route::middleware(['isStandard'])->group(function () {
         //presences
-        Route::resource('presences', PresenceController::class);
-        Route::get('presences/classe/{id}', [PresenceController::class, 'classe'])->name('presences.classe');
-        Route::get('presences/classe/periode/{id}', [PresenceController::class, 'periode'])->name('presences.classe.periode');
-        Route::post('presences/classe/periode/{id}', [PresenceController::class, 'setPeriode'])->name('presences.classe.setPeriode');
+        Route::resource('presences-eleves', PresenceController::class);
+        Route::get('presences-eleves/classe/{id}', [PresenceController::class, 'classe'])->name('presences.classe');
+        Route::get('presences-eleves/classe/periode/{id}', [PresenceController::class, 'periode'])->name('presences.classe.periode');
+        Route::post('presences-eleves/classe/periode/{id}', [PresenceController::class, 'setPeriode'])->name('presences.classe.setPeriode');
         // Route::get('presences/classe/{id}/{date}', [PresenceController::class , 'classe']);
-        Route::post('presences/classe/{classe}', [PresenceController::class, 'setDate'])->name('presences.classe.setDate');
+        Route::post('presences-eleves/classe/{classe}', [PresenceController::class, 'setDate'])->name('presences.classe.setDate');
 
         //horaires
         Route::resource('horaires', HoraireController::class);
@@ -311,9 +311,10 @@ Route::middleware(['auth', 'isActive'])->group(function () {
 
 
         //Presence Employers
+        Route::get('presences', [EmployerPresenceController::class, 'home'])->name('presences');
         Route::get('presences-personnels', [EmployerPresenceController::class, 'index'])->name('presences.employers.index');
-        Route::post('presences/personnels/date', [EmployerPresenceController::class, 'setDate'])->name('presences.employers.setDate');
-        Route::post('presences/personnels/periode', [EmployerPresenceController::class, 'setPeriode'])->name('presences.classe.setPeriode');
+        Route::post('presences-personnels/date', [EmployerPresenceController::class, 'setDate'])->name('presences.employers.setDate');
+        Route::post('presences-personnels/periode', [EmployerPresenceController::class, 'setPeriode'])->name('presences.classe.setPeriode');
     });
 });
 

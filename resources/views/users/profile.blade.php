@@ -15,13 +15,6 @@
             <form method="PUT" action="{{ route('users.update',$user->id) }}">
                 @csrf
                 {{ method_field('PUT') }}
-                <!-- Name -->
-                {{-- <div>
-                    <x-label for="matricule" :value="__('Matricule de L\'Employé')" />
-    
-                    <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule" :value="$user->employer->matricule" readonly required autofocus />
-                </div>   --}}
-    
                 <!-- Email Address -->
                 <div class="mt-4">
                     <x-label for="email" :value="__('Email ou Nom Utilisateur')" />
@@ -145,11 +138,15 @@
                   {{-- <div class="mt-4 w-full"> --}}
                       {{-- <x-label for="nom" :value="__('Fonction')" /> --}}
                       {{-- @if() --}}
+                        @if (count($self->fonctions) > 0)
                         <input type="hidden" value={{$self->fonctions[0]->id}} name="fonction">
+                        @else
+                        <input type="hidden" value={{1}} name="fonction">
+                        @endif
                         <input type='hidden' name='back' value='true'/>
                       {{-- <x-select :hidden="true" :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select> --}}
                   {{-- </div> --}}
-                  <div class="btn-save1 hidden flex gap-10">
+                  <div class="btn-save1 hidden gap-10">
                     <div class="mt-4">
                         <x-button>Enregistrer</x-button>
                     </div>

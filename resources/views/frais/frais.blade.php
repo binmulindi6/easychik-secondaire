@@ -146,7 +146,7 @@
             <div class="display shadow-2xl hidden container p-4 bg-white rounded-5">
     @endif
 
-    <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+    <div class="p-2 pb-0 mb-0 bg-white rounded-t-2xl">
         <h6>Liste des Frais en vigeur dans l'établissement</h6>
     </div>
     @if (isset($items) && count($items) > 0)

@@ -163,9 +163,9 @@ UserController extends Controller
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
 
-            //dd(10);
             return  $this->update($request, $id);
         }
+
         $user = User::findOrFail($id);
         if ($user->isParent()) {
             $self = $user->parrain;

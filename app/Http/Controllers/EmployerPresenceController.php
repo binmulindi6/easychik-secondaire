@@ -12,6 +12,14 @@ use App\Models\EmployerPresence;
 
 class EmployerPresenceController extends Controller
 {
+
+    public function home()
+    {
+
+        return view('presences.index')
+            ->with('page_name', 'Presences');
+    }
+
        /**
      * Display a listing of the resource.
      *
@@ -20,7 +28,8 @@ class EmployerPresenceController extends Controller
     public function index($date = null)
     {
 
-        $employers = Employer::orderBy('matricule')->get();
+        $employers = Employer::where('id','!=',1)
+        ->orderBy('matricule')->get();
         $types = TypePresence::all();
         $day =  $date ? $date :  date('Y-m-d');
         // $eleves[]->presence();
