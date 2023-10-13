@@ -70,8 +70,8 @@
                         </thead>
                         <tbody>
 
-                            @foreach ($eleve as $index => $eleve)
-                                @if (count($eleve) - 1 === $index)
+                            @foreach ($eleves as $index => $eleve)
+                                @if (count($eleves) - 1 === $index)
                                     <input id="last-id" type="hidden" value="{{ $eleve->id }}">
                                 @endif
                                 <tr id="tr{{ $eleve->id }}"
