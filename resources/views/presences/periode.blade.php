@@ -58,6 +58,10 @@
                     <table class="items-center w-full mb-0 align-top border-gray-700 text-slate-500 border-collapse">
                         <caption
                             class="font-bold p-2 text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-base border-solid tracking-none whitespace-nowrap text-slate-500">
+                            CLASSE DE  {{ $classe->nomComplet() }}
+                        </caption>
+                        <caption
+                            class="font-bold p-2 text-center uppercase align-middle bg-transparent border border-gray-200 shadow-none text-base border-solid tracking-none whitespace-nowrap text-slate-500">
                             LISTE DE PRESENCE DU {{ date_format(date_create($debut), 'd/m/Y') }} AU
                             {{ date_format(date_create($fin), 'd/m/Y') }}
                         </caption>

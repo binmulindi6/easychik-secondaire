@@ -145,17 +145,21 @@ class AnneeScolaireController extends Controller
     {
         //dd(10);
         $annee = AnneeScolaire::find($id);
+        if ($annee->isActive()) {
+            $annee->nom = $request->nom;
+            $annee->date_debut = $request->date_debut;
+            $annee->date_fin = $request->date_fin;
 
-        $annee->nom = $request->nom;
-        $annee->date_debut = $request->date_debut;
-        $annee->date_fin = $request->date_fin;
-
-        $annee->save();
-        Logfile::updateLog(
-            'annee_scolaires',
-            $annee->id
-        );
-        return redirect()->route('annee-scolaires.index');
+            $annee->save();
+            Logfile::updateLog(
+                'annee_scolaires',
+                $annee->id
+            );
+            return redirect()->route('annee-scolaires.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -167,14 +171,38 @@ class AnneeScolaireController extends Controller
     public function destroy($id)
     {
         $annee = AnneeScolaire::find($id);
-        $annee->delete();
-        Logfile::deleteLog(
-            'annee_scolaires',
-            $annee->id
-        );
-        return redirect()->route('annee-scolaires.index');
+        if ($annee->isActive()) {
+            $annee->delete();
+            Logfile::deleteLog(
+                'annee_scolaires',
+                $annee->id
+            );
+            return redirect()->route('annee-scolaires.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
+
+    public function changeStatut(Request $request, $id)
+    {
+        $user = AnneeScolaire::findOrFail($id);
+
+        if ($request->statut == '0') {
+            $user->isActive = 1;
+        } else {
+            $user->isActive = 0;
+        }
+        $user->save();
+
+        Logfile::updateLog(
+            'annee_scolaires',
+            $user->id
+        );
+
+        return redirect()->route('annee-scolaires.index');
+    }
 
     //Search Engine
 

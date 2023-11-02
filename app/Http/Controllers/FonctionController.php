@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Logfile;
 use App\Models\Fonction;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 
 class FonctionController extends Controller
 {
@@ -98,14 +99,19 @@ class FonctionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fonction = Fonction::find($id);
-        $fonction->nom = $request->nom;
-        $fonction->save();
-        Logfile::updateLog(
-            'fonctions',
-            $fonction->id
-        );
-        return redirect()->route('fonctions.index');
+        if (AnneeScolaire::current()->isActive()) {
+            $fonction = Fonction::find($id);
+            $fonction->nom = $request->nom;
+            $fonction->save();
+            Logfile::updateLog(
+                'fonctions',
+                $fonction->id
+            );
+            return redirect()->route('fonctions.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -116,12 +122,17 @@ class FonctionController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $fonction = Fonction::find($id);
-        $fonction->delete();
-        Logfile::deleteLog(
-            'fonctions',
-            $fonction->id
-        );
-        return redirect()->route('fonctions.index');
+        if (AnneeScolaire::current()->isActive()) {
+            $fonction = Fonction::find($id);
+            $fonction->delete();
+            Logfile::deleteLog(
+                'fonctions',
+                $fonction->id
+            );
+            return redirect()->route('fonctions.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 }

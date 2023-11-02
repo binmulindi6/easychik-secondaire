@@ -28,7 +28,7 @@
     "src": "resources/css/fonts/nucleo-icons.svg"
   },
   "resources/js/app.js": {
-    "file": "assets/app.295a861d.js",
+    "file": "assets/app.e79ac1c4.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -48,7 +48,7 @@
     "isDynamicEntry": true
   },
   "node_modules/canvg/lib/index.es.js": {
-    "file": "assets/index.es.7c43208c.js",
+    "file": "assets/index.es.eb4ba676.js",
     "src": "node_modules/canvg/lib/index.es.js",
     "isDynamicEntry": true,
     "imports": [
@@ -56,7 +56,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app.32b62552.css",
+    "file": "assets/app.c7e94aab.css",
     "src": "resources/css/app.css",
     "isEntry": true
   }

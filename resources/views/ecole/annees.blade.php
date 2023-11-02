@@ -27,12 +27,12 @@
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
                         <select name="nom" id="nom"
-                                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
-                                required>
-                                <option  selected value="{{$self->nom}}"> {{$self->nom}} </option>
-                                @foreach ($annees as $item)
-                                    <option value="{{$item}}">{{$item}}</option>
-                                @endforeach
+                            class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                            required>
+                            <option selected value="{{ $self->nom }}"> {{ $self->nom }} </option>
+                            @foreach ($annees as $item)
+                                <option value="{{ $item }}">{{ $item }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="flex gap-5">
@@ -66,12 +66,12 @@
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
                         <select name="nom" id="nom"
-                                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
-                                required>
-                                <option disabled selected> Choisir le nom de L'Annee Scolaire </option>
-                                @foreach ($annees as $item)
-                                <option value="{{$item}}">{{$item}}</option>
-                                @endforeach
+                            class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                            required>
+                            <option disabled selected> Choisir le nom de L'Annee Scolaire </option>
+                            @foreach ($annees as $item)
+                                <option value="{{ $item }}">{{ $item }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="flex gap-5">
@@ -129,6 +129,9 @@
                             Date Fin</th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                            Statut</th>
+                        <th
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             action</th>
 
                     </thead>
@@ -146,12 +149,36 @@
                                     class="p-1text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                     {{ $item->date_fin }}</td>
                                 <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                    @if ($item->isActive == '0')
+                                        <form action="{{ route('annee-scolaires.statut', $item->id) }}" method="post">
+                                            @csrf
+                                            @method('POST')
+                                            <input type="hidden" name="statut" value="{{ $item->isActive }}">
+                                            <button type="submit"
+                                                title="Active"class="bg-gradient-to-tl cursor-pointer from-red-500 to-pink-400 px-3.6 text-xss rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                                Desactive
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('annee-scolaires.statut', $item->id) }}" method="post">
+                                            @csrf
+                                            @method('POST')
+                                            <input type="hidden" name="statut" value="{{ $item->isActive }}">
+                                            <button type="submit"
+                                                title="Desactive"class="bg-gradient-to-tl cursor-pointer from-emerald-500 to-teal-400 px-3.6 text-xss rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                                Active
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
+                                <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   text-blue-500 underline">
                                     <div class="flex justify-center gap-4 align-middle">
                                         <a href="{{ route('annee-scolaires.edit', $item->id) }}"><i
                                                 class="fa fa-solid fa-pen"></i></a>
-                                        <form class="delete-form" action="{{ route('annee-scolaires.destroy', $item->id) }}"
-                                            method="post">
+                                        <form class="delete-form"
+                                            action="{{ route('annee-scolaires.destroy', $item->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"><i

@@ -14,6 +14,7 @@ import "./horaire"
 import "./components"
 import './presences'
 import './carte/index'
+import './popup'
 // import "./argon-dashboard-tailwind";
 
 import "./popper";

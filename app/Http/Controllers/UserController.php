@@ -91,7 +91,7 @@ UserController extends Controller
         ]);
         $users = User::all();
 
-        if (count($users) < env('SUBSCRIPTION_USERS') || env('SUBSCRIPTION') === "GOLD") {
+        if (count($users) < env('SUBSCRIPTION_USERS') || env('SUBSCRIPTION') === "GOLD" || env('SUBSCRIPTION') === "GOLD PREMIUM") {
             $matricule = $request->matricule;
             $employer = Employer::where('matricule', $matricule)->first();
             //dd('here');

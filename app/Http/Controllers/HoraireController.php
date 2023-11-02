@@ -22,15 +22,15 @@ class HoraireController extends Controller
     {
         $classes = Classe::orderBy('niveau_id')->get();
 
-        if(Auth::user()->isParent()){
+        if (Auth::user()->isParent()) {
             $eleves = Auth::user()->parrain->eleves;
             $classes = [];
-            foreach($eleves as $eleve){
+            foreach ($eleves as $eleve) {
                 $classes[] = $eleve->classe(true);
             }
         }
 
-        
+
         return view('horaires.index')
             ->with('page_name', 'Horaires')
             ->with('classes', $classes);
@@ -54,195 +54,203 @@ class HoraireController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'cours' => ['required', 'string', 'max:255'],
-            'jour' => ['required', 'string', 'max:255'],
-            'heure' => ['required', 'string', 'max:255'],
-            'classe' => ['required', 'string', 'max:255']
-        ]);
+        if (AnneeScolaire::current()->isActive()) {
+            $request->validate([
+                'cours' => ['required', 'string', 'max:255'],
+                'jour' => ['required', 'string', 'max:255'],
+                'heure' => ['required', 'string', 'max:255'],
+                'classe' => ['required', 'string', 'max:255']
+            ]);
 
-        if ($request->cours === 'RECREATION') {
-            $jour = Jour::findOrFail($request->jour);
-            $heure = Heure::findOrFail($request->heure);
-            $classe = Classe::findOrfail($request->classe);
+            if ($request->cours === 'RECREATION') {
+                $jour = Jour::findOrFail($request->jour);
+                $heure = Heure::findOrFail($request->heure);
+                $classe = Classe::findOrfail($request->classe);
 
-            $horaire = Horaire::where('classe_id', $classe->id)
-                ->where('jour_id', $jour->id)
-                ->where('heure_id', $heure->id)
-                ->first();
+                $horaire = Horaire::where('classe_id', $classe->id)
+                    ->where('jour_id', $jour->id)
+                    ->where('heure_id', $heure->id)
+                    ->first();
 
-            if ($horaire) {
-                $horaire->classe()->associate($classe);
-                $horaire->isRecreation = 1;
-                $horaire->heure()->associate($heure);
-                $horaire->jour()->associate($jour);
+                if ($horaire) {
+                    $horaire->classe()->associate($classe);
+                    $horaire->isRecreation = 1;
+                    $horaire->heure()->associate($heure);
+                    $horaire->jour()->associate($jour);
 
 
-                $horaire->save();
+                    $horaire->save();
 
-                Logfile::updateLog(
-                    'horaires',
-                    $horaire->id
-                );
+                    Logfile::updateLog(
+                        'horaires',
+                        $horaire->id
+                    );
+                } else {
+                    $horaire = Horaire::create();
+
+                    $horaire->classe()->associate($classe);
+                    $horaire->isRecreation = 1;
+                    $horaire->heure()->associate($heure);
+                    $horaire->jour()->associate($jour);
+
+
+                    $horaire->save();
+
+                    Logfile::createLog(
+                        'horaires',
+                        $horaire->id
+                    );
+                }
             } else {
-                $horaire = Horaire::create();
+                $cours = Cours::findOrFail($request->cours);
 
-                $horaire->classe()->associate($classe);
-                $horaire->isRecreation = 1;
-                $horaire->heure()->associate($heure);
-                $horaire->jour()->associate($jour);
+                $jour = Jour::findOrFail($request->jour);
+                $heure = Heure::findOrFail($request->heure);
+                $classe = Classe::findOrfail($request->classe);
+
+                $horaire = Horaire::where('classe_id', $classe->id)
+                    ->where('jour_id', $jour->id)
+                    ->where('heure_id', $heure->id)
+                    ->first();
+
+                if ($horaire) {
+                    $horaire->classe()->associate($classe);
+                    $horaire->cours()->associate($cours);
+                    $horaire->heure()->associate($heure);
+                    $horaire->jour()->associate($jour);
 
 
-                $horaire->save();
+                    $horaire->save();
 
-                Logfile::createLog(
-                    'horaires',
-                    $horaire->id
-                );
+                    Logfile::updateLog(
+                        'horaires',
+                        $horaire->id
+                    );
+                } else {
+                    $horaire = Horaire::create();
+
+                    $horaire->classe()->associate($classe);
+                    $horaire->cours()->associate($cours);
+                    $horaire->heure()->associate($heure);
+                    $horaire->jour()->associate($jour);
+
+
+                    $horaire->save();
+
+                    Logfile::createLog(
+                        'horaires',
+                        $horaire->id
+                    );
+                }
             }
-        } else {
-            $cours = Cours::findOrFail($request->cours);
 
-            $jour = Jour::findOrFail($request->jour);
-            $heure = Heure::findOrFail($request->heure);
-            $classe = Classe::findOrfail($request->classe);
-
-            $horaire = Horaire::where('classe_id', $classe->id)
-                ->where('jour_id', $jour->id)
-                ->where('heure_id', $heure->id)
-                ->first();
-
-            if ($horaire) {
-                $horaire->classe()->associate($classe);
-                $horaire->cours()->associate($cours);
-                $horaire->heure()->associate($heure);
-                $horaire->jour()->associate($jour);
-
-
-                $horaire->save();
-
-                Logfile::updateLog(
-                    'horaires',
-                    $horaire->id
-                );
-            } else {
-                $horaire = Horaire::create();
-
-                $horaire->classe()->associate($classe);
-                $horaire->cours()->associate($cours);
-                $horaire->heure()->associate($heure);
-                $horaire->jour()->associate($jour);
-
-
-                $horaire->save();
-
-                Logfile::createLog(
-                    'horaires',
-                    $horaire->id
-                );
-            }
+            return back();
         }
-
-        return back();
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
     public function storeApi(Request $request)
     {
-        $request->validate([
-            'cours' => ['required', 'string', 'max:255'],
-            'jour' => ['required', 'string', 'max:255'],
-            'heure' => ['required', 'string', 'max:255'],
-            'classe' => ['required', 'string', 'max:255'],
-            'user' => ['required', 'string', 'max:255']
-        ]);
+        if (AnneeScolaire::current()->isActive()) {
+            $request->validate([
+                'cours' => ['required', 'string', 'max:255'],
+                'jour' => ['required', 'string', 'max:255'],
+                'heure' => ['required', 'string', 'max:255'],
+                'classe' => ['required', 'string', 'max:255'],
+                'user' => ['required', 'string', 'max:255']
+            ]);
 
-        if ($request->cours === 'RECREATION') {
-            $jour = Jour::findOrFail($request->jour);
-            $heure = Heure::findOrFail($request->heure);
-            $classe = Classe::findOrfail($request->classe);
+            if ($request->cours === 'RECREATION') {
+                $jour = Jour::findOrFail($request->jour);
+                $heure = Heure::findOrFail($request->heure);
+                $classe = Classe::findOrfail($request->classe);
 
-            $horaire = Horaire::where('classe_id', $classe->id)
-                ->where('jour_id', $jour->id)
-                ->where('heure_id', $heure->id)
-                ->first();
+                $horaire = Horaire::where('classe_id', $classe->id)
+                    ->where('jour_id', $jour->id)
+                    ->where('heure_id', $heure->id)
+                    ->first();
 
-            if ($horaire) {
-                $horaire->classe()->associate($classe);
-                $horaire->isRecreation = 1;
-                // $horaire->cours = null;
-                $horaire->heure()->associate($heure);
-                $horaire->jour()->associate($jour);
+                if ($horaire) {
+                    $horaire->classe()->associate($classe);
+                    $horaire->isRecreation = 1;
+                    // $horaire->cours = null;
+                    $horaire->heure()->associate($heure);
+                    $horaire->jour()->associate($jour);
 
 
-                $horaire->save();
+                    $horaire->save();
 
-                Logfile::updateLog(
-                    'horaires',
-                    $horaire->id,
-                    $request->user
-                );
+                    Logfile::updateLog(
+                        'horaires',
+                        $horaire->id,
+                        $request->user
+                    );
+                } else {
+                    $horaire = Horaire::create();
+
+                    $horaire->classe()->associate($classe);
+                    $horaire->isRecreation = 1;
+                    $horaire->heure()->associate($heure);
+                    $horaire->jour()->associate($jour);
+
+
+                    $horaire->save();
+
+                    Logfile::createLog(
+                        'horaires',
+                        $horaire->id,
+                        $request->user
+                    );
+                }
             } else {
-                $horaire = Horaire::create();
+                $cours = Cours::findOrFail($request->cours);
 
-                $horaire->classe()->associate($classe);
-                $horaire->isRecreation = 1;
-                $horaire->heure()->associate($heure);
-                $horaire->jour()->associate($jour);
+                $jour = Jour::findOrFail($request->jour);
+                $heure = Heure::findOrFail($request->heure);
+                $classe = Classe::findOrfail($request->classe);
+
+                $horaire = Horaire::where('classe_id', $classe->id)
+                    ->where('jour_id', $jour->id)
+                    ->where('heure_id', $heure->id)
+                    ->first();
+
+                if ($horaire) {
+                    $horaire->classe()->associate($classe);
+                    $horaire->cours()->associate($cours);
+                    $horaire->heure()->associate($heure);
+                    $horaire->jour()->associate($jour);
 
 
-                $horaire->save();
+                    $horaire->save();
 
-                Logfile::createLog(
-                    'horaires',
-                    $horaire->id,
-                    $request->user
-                );
+                    Logfile::updateLog(
+                        'horaires',
+                        $horaire->id,
+                        $request->user
+                    );
+                } else {
+                    $horaire = Horaire::create();
+
+                    $horaire->classe()->associate($classe);
+                    $horaire->cours()->associate($cours);
+                    $horaire->heure()->associate($heure);
+                    $horaire->jour()->associate($jour);
+
+
+                    $horaire->save();
+
+                    Logfile::createLog(
+                        'horaires',
+                        $horaire->id,
+                        $request->user
+                    );
+                }
             }
-        } else {
-            $cours = Cours::findOrFail($request->cours);
 
-            $jour = Jour::findOrFail($request->jour);
-            $heure = Heure::findOrFail($request->heure);
-            $classe = Classe::findOrfail($request->classe);
-
-            $horaire = Horaire::where('classe_id', $classe->id)
-                ->where('jour_id', $jour->id)
-                ->where('heure_id', $heure->id)
-                ->first();
-
-            if ($horaire) {
-                $horaire->classe()->associate($classe);
-                $horaire->cours()->associate($cours);
-                $horaire->heure()->associate($heure);
-                $horaire->jour()->associate($jour);
-
-
-                $horaire->save();
-
-                Logfile::updateLog(
-                    'horaires',
-                    $horaire->id,
-                    $request->user
-                );
-            } else {
-                $horaire = Horaire::create();
-
-                $horaire->classe()->associate($classe);
-                $horaire->cours()->associate($cours);
-                $horaire->heure()->associate($heure);
-                $horaire->jour()->associate($jour);
-
-
-                $horaire->save();
-
-                Logfile::createLog(
-                    'horaires',
-                    $horaire->id,
-                    $request->user
-                );
-            }
+            return 'succes';
         }
-
-        return 'succes';
+        return abort(500);
     }
 
     /**

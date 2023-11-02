@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Logfile;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 use App\Models\EntreeArticle;
 
 class EntreeArticleController extends Controller
@@ -66,7 +67,8 @@ class EntreeArticleController extends Controller
             'devise' => ['required', 'string', 'max:255'],
             'date' => ['required', 'string', 'max:255'],
         ]);
-
+        if (AnneeScolaire::current()->isActive()) {
+        
         $article = Article::findOrFail($request->article);
         // dd($article);
         // first entry if quantity
@@ -85,6 +87,10 @@ class EntreeArticleController extends Controller
             );
 
         return redirect()->route('entrees.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**

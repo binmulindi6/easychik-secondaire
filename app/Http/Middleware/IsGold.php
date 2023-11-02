@@ -17,7 +17,7 @@ class IsGold
     public function handle(Request $request, Closure $next)
     {
 
-        if (env('SUBSCRIPTION') === 'GOLD') {
+        if (env('SUBSCRIPTION') === 'GOLD' || env('SUBSCRIPTION') === 'GOLD PREMIUM') {
             return $next($request);
         } else {
             abort(450);

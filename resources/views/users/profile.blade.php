@@ -48,7 +48,7 @@
                           <x-button>Enregistrer</x-button>
                       </div>
                       <div class="mt-4">
-                          <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
+                          <x-button-annuler type='reset' class=" btn-edit bg-red-500"></x-button-annuler>
                       </div>
                   </div>
                 </div>
@@ -151,7 +151,7 @@
                         <x-button>Enregistrer</x-button>
                     </div>
                     <div class="mt-4">
-                        <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
+                        <x-button-annuler type='reset' class=" btn-edit1 bg-red-500"></x-button-annuler>
                     </div>
                 </div>
               </form>
@@ -184,7 +184,7 @@
                         <x-button>Enregistrer</x-button>
                     </div>
                     <div class="mt-4">
-                        <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
+                        <x-button-annuler type='reset' class="btn-edit1 bg-red-500"></x-button-annuler>
                     </div>
                 </div>
               </form>

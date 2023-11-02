@@ -72,24 +72,31 @@
                               :value="$self->date_naissance" required />
                       </div>
                       <div class="mt-4 w-full">
-                          <x-label for="formation" :value="__('Formation')" />
-                          <x-input id="formation" class="block mt-1 w-full" type="text" name="formation"
-                              :value="$self->formation" required />
+                          <x-label for="nationalite" :value="__('Nationalite')" />
+                          <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
+                              :value="$self->nationalite" required />
                       </div>
                       
                   </div>
                   <div class="flex flex-col md:flex-row md:gap-5">
+                    <div class="mt-4 w-full">
+                      <x-label for="formation" :value="__('Formation')" />
+                      <x-input id="formation" class="block mt-1 w-full" type="text" name="formation"
+                          :value="$self->formation" required />
+                  </div>
                       <div class="mt-4 w-full">
                           <x-label for="diplome" :value="__('Diplome')" />
                           <x-input id="diplome" class="block mt-1 w-full" type="text" name="diplome"
                               :value="$self->diplome" required />
                       </div>
-                      <div class="mt-4 w-full">
-                          <x-label for="niveau_etude" :value="__('Niveau d\'etude ')" />
-                          <x-input id="niveau_etude" class="block mt-1 w-full" type="text" name="niveau_etude"
-                              :value="$self->niveau_etude" required />
-                      </div>
+                      
                   </div>
+                  <div class="flex flex-col md:flex-row md:gap-5">
+                  <div class="mt-4 w-full">
+                    <x-label for="niveau_etude" :value="__('Niveau d\'etude ')" />
+                    <x-input id="niveau_etude" class="block mt-1 w-full" type="text" name="niveau_etude"
+                        :value="$self->niveau_etude" required />
+                </div>
                   <div class="mt-4 w-full">
                       <x-label for="nom" :value="__('Fonction')" />
                       {{-- @if() --}}
@@ -97,12 +104,13 @@
                         <input type='hidden' name='back' value='true'/>
                       <x-select :hidden="true" :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select>
                   </div>
+                  </div>
                   <div class="btn-save1 hidden flex gap-10">
                     <div class="mt-4">
                         <x-button>Enregistrer</x-button>
                     </div>
                     <div class="mt-4">
-                        <x-button-annuler :back="true" type='reset' class="bg-red-500"></x-button-annuler>
+                        <x-button-annuler type='reset' class="btn-edit1 bg-red-500"></x-button-annuler>
                     </div>
                 </div>
               </form>

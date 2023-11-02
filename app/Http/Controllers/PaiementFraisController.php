@@ -112,60 +112,65 @@ class PaiementFraisController extends Controller
             // 'reference' => ['string']
         ]);
 
-        $frais = Frais::find($request->frais);
-        $eleve = Eleve::find($request->eleve);
-        $moyen = MoyenPaiement::find($request->moyen_paiement);
+        if (AnneeScolaire::current()->isActive()) {
+            $frais = Frais::find($request->frais);
+            $eleve = Eleve::find($request->eleve);
+            $moyen = MoyenPaiement::find($request->moyen_paiement);
 
-        //le montant payer est inferieur ou egale au montant attendu(A PAYER pour le frais)
-        if ((int)$frais->montant >= (int)$request->montant) {
-            $paiements = $eleve->currentFrequentation()->paiement_frais;
-            $total = 0; //total payE
-            foreach ($paiements as $paye) {
-                if ($paye->frais->id === $frais->id) {
-                    $total +=  (int)$paye->montant_paye;
-                }
-            }
-            if ((int)$frais->montant !== $total) {
-                //le montant restant a payE est superieur ou egal au montant payer
-                if (((int)$frais->montant - $total) >= (int)$request->montant) {
-
-                    if ($request->reference !== null) {
-                        $paiement = PaiementFrais::create([
-                            'montant_paye' => $request->montant,
-                            'reference' => $request->reference,
-                            'date' => $request->date,
-                        ]);
-                    } else {
-                        $paiement = PaiementFrais::create([
-                            'montant_paye' => $request->montant,
-                            // 'reference' => $request->reference,
-                            'date' => $request->date,
-                        ]);
+            //le montant payer est inferieur ou egale au montant attendu(A PAYER pour le frais)
+            if ((int)$frais->montant >= (int)$request->montant) {
+                $paiements = $eleve->currentFrequentation()->paiement_frais;
+                $total = 0; //total payE
+                foreach ($paiements as $paye) {
+                    if ($paye->frais->id === $frais->id) {
+                        $total +=  (int)$paye->montant_paye;
                     }
+                }
+                if ((int)$frais->montant !== $total) {
+                    //le montant restant a payE est superieur ou egal au montant payer
+                    if (((int)$frais->montant - $total) >= (int)$request->montant) {
 
-                    $paiement->frais()->associate($frais);
-                    $paiement->frequentation()->associate($eleve->currentFrequentation());
-                    $paiement->moyen_paiement()->associate($moyen);
-                    $paiement->save();
-                    Logfile::createLog(
-                        'paiement_frais',
-                        $paiement->id
-                    );
-                    return redirect()->route('paiements.show', $paiement->id);
+                        if ($request->reference !== null) {
+                            $paiement = PaiementFrais::create([
+                                'montant_paye' => $request->montant,
+                                'reference' => $request->reference,
+                                'date' => $request->date,
+                            ]);
+                        } else {
+                            $paiement = PaiementFrais::create([
+                                'montant_paye' => $request->montant,
+                                // 'reference' => $request->reference,
+                                'date' => $request->date,
+                            ]);
+                        }
+
+                        $paiement->frais()->associate($frais);
+                        $paiement->frequentation()->associate($eleve->currentFrequentation());
+                        $paiement->moyen_paiement()->associate($moyen);
+                        $paiement->save();
+                        Logfile::createLog(
+                            'paiement_frais',
+                            $paiement->id
+                        );
+                        return redirect()->route('paiements.show', $paiement->id);
+                    }
+                    return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
+                        'montant' => 'Le Montant saisi de ' . $request->montant . $frais->type_frais->devise . ' est supperieur au montant restant à payer par l\'élève ' . $eleve->nom . ', le montant restant est de : ' . (int)$frais->montant - $total . $frais->type_frais->devise . ' pour \'' . $frais->nom . '',
+                    ])->onlyInput('montant');
                 }
                 return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-                    'montant' => 'Le Montant saisi de ' . $request->montant . $frais->type_frais->devise . ' est supperieur au montant restant à payer par l\'élève ' . $eleve->nom . ', le montant restant est de : ' . (int)$frais->montant - $total . $frais->type_frais->devise . ' pour \'' . $frais->nom . '',
+                    'montant' => 'L\'élève ' . $eleve->nom . ', a déjà payé la totalité attendu pour le(la) ' . $frais->nom . '',
                 ])->onlyInput('montant');
             }
             return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-                'montant' => 'L\'élève ' . $eleve->nom . ', a déjà payé la totalité attendu pour le(la) ' . $frais->nom . '',
+                'montant' => 'Le Montant saisi de ' . $request->montant . $frais->type_frais->devise . ' est supperieur au montant total à payer pour \'' . $frais->nom . '\' qui est de ' . $frais->montant . $frais->type_frais->devise . ' ',
             ])->onlyInput('montant');
+            // dd(10);
+            // redirect()->route('paiements.show', $paiement->id);
         }
-        return redirect()->route('paiements.linkEleve', $eleve->id)->withErrors([
-            'montant' => 'Le Montant saisi de ' . $request->montant . $frais->type_frais->devise . ' est supperieur au montant total à payer pour \'' . $frais->nom . '\' qui est de ' . $frais->montant . $frais->type_frais->devise . ' ',
-        ])->onlyInput('montant');
-        // dd(10);
-        // redirect()->route('paiements.show', $paiement->id);
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -217,14 +222,19 @@ class PaiementFraisController extends Controller
      */
     public function destroy($id)
     {
-        $self = PaiementFrais::find($id);
-        $self->delete();
+        if (AnneeScolaire::current()->isActive()) {
+            $self = PaiementFrais::find($id);
+            $self->delete();
 
-        Logfile::deleteLog(
-            'paiement_frais',
-            $self->id
-        );
-        return redirect()->route('paiements.index');
+            Logfile::deleteLog(
+                'paiement_frais',
+                $self->id
+            );
+            return redirect()->route('paiements.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
 

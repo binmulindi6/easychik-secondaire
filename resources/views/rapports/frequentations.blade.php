@@ -113,7 +113,7 @@
                         @else
                             <tr>
                                 <th colspan="4" class="px-6 py-3 text-center text-red-500">
-                                    Aucun Paiement Enregisté
+                                    Aucune Frequetation Enregisté
                                 </th>
                             </tr>
                         @endif

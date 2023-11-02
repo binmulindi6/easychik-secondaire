@@ -88,23 +88,29 @@
                                 :value="$self->date_naissance" required />
                         </div>
                         <div class="mt-4 w-full">
+                            <x-label for="nationalite" :value="__('Nationalite')" />
+                            <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
+                                :value="$self->nationalite" required />
+                        </div>
+                        
+
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                        <div class="mt-4 w-full">
                             <x-label for="nom_pere" :value="__('Nom du Pere')" />
                             <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="nom_pere"
                                 :value="$self->nom_pere" required />
                         </div>
-
-                    </div>
-                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_mere" :value="__('Nom de la Mere')" />
                             <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="nom_mere"
                                 :value="$self->nom_mere" required />
                         </div>
-                        <div class="mt-4 w-full">
-                            <x-label for="adresse" :value="__('Adresse')" />
-                            <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
-                                :value="$self->adresse" required />
-                        </div>
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="adresse" :value="__('Adresse')" />
+                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
+                            :value="$self->adresse" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -181,23 +187,27 @@
                                 :value="old('')" required />
                         </div>
                         <div class="mt-4 w-full">
+                            <x-label for="nationalite" :value="__('Nationalite')" />
+                            <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
+                                :value="old('nationalite')" required />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                        <div class="mt-4 w-full">
                             <x-label for="nom_pere" :value="__('Nom du Pere')" />
                             <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="nom_pere"
                                 :value="old('nom_pere')" required />
                         </div>
-
-                    </div>
-                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_mere" :value="__('Nom de la Mere')" />
                             <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="nom_mere"
                                 :value="old('nom_mere')" required />
                         </div>
-                        <div class="mt-4 w-full">
-                            <x-label for="adresse" :value="__('Adresse')" />
-                            <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
-                                :value="old('adresse')" required />
-                        </div>
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="adresse" :value="__('Adresse')" />
+                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
+                            :value="old('adresse')" required />
                     </div>
 
                     <div class="flex gap-10">
@@ -256,6 +266,9 @@
                             <th
                                 class="px-1 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Sexe </th>
+                            <th
+                                class="px-1 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Nationlaité </th>
                             <th
                                 class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Lieu, Date de Naissance </th>
@@ -324,6 +337,9 @@
                             <td
                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                 {{ $item->sexe }}</td>
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                {{ $item->nationalite }}</td>
                             <td
                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                 {{ $item->lieu_naissance . ', ' . $item->date_naissance }}</td>

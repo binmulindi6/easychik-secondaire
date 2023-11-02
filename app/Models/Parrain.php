@@ -34,7 +34,7 @@ class Parrain extends Model
 
     //eleves
     public function eleves(){
-        return $this->hasMany(Eleve::class);
+        return $this->belongsToMany(Eleve::class);
     }
 
     public function user(){

@@ -65,7 +65,7 @@ class ClasseController extends Controller
 
         $classes = Classe::all();
 
-        if (count($classes) < env('SUBSCRIPTION_CLASSES') || env('SUBSCRIPTION') === "GOLD") {
+        if (count($classes) < env('SUBSCRIPTION_CLASSES') || env('SUBSCRIPTION') === "GOLD" || env('SUBSCRIPTION') === "GOLD PREMIUM") {
 
             $niveau = Niveau::find($request->niveau);
             if(!Classe::where('niveau_id', $request->niveau)->where('nom', $request->nom)->first()){

@@ -103,11 +103,13 @@ Route::middleware(['auth', 'isActive'])->group(function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
         Route::resource('annee-scolaires', AnneeScolaireController::class);
+        Route::post('annee-scolaires/{id}', [AnneeScolaireController::class, 'changeStatut'])->name('annee-scolaires.statut');
         Route::resource('categorie-cours', CategorieCoursController::class);
         Route::resource('classes', ClasseController::class);
         Route::resource('cours', CoursController::class);
         Route::resource('eleves', EleveController::class);
 
+        Route::put('employers/statut/{id}', [EmployerController::class, 'changeStatut'])->name('employers.statut');
         Route::get('employers/link', [EmployerController::class, 'linkEmployer'])->name('employers.link');
         Route::post('employers/search', [EmployerController::class, 'search'])->name('employers.search');
         Route::resource('employers', EmployerController::class);
@@ -268,10 +270,6 @@ Route::middleware(['auth', 'isActive'])->group(function () {
 
     Route::middleware(['isGold'])->group(function () {
 
-
-
-        // Route::get('date', [DateController::class, 'test']);
-
         //rapports
         // Route::get('rapports', [RapportController::class, 'index'])->name('rapports.index');
         Route::get('rapports', [RapportController::class, 'index'])->name('rapports');
@@ -315,6 +313,11 @@ Route::middleware(['auth', 'isActive'])->group(function () {
         Route::get('presences-personnels', [EmployerPresenceController::class, 'index'])->name('presences.employers.index');
         Route::post('presences-personnels/date', [EmployerPresenceController::class, 'setDate'])->name('presences.employers.setDate');
         Route::post('presences-personnels/periode', [EmployerPresenceController::class, 'setPeriode'])->name('presences.classe.setPeriode');
+    });
+
+    Route::middleware(['isGoldPremium'])->group(function () {
+        Route::post('eleves/upload-profile', [EleveController::class, 'uploadProfile'])->name('eleves.upload.profile');
+        Route::post('employers/upload-profile', [EmployerController::class, 'uploadProfile'])->name('employers.upload.profile');
     });
 });
 

@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('parrains', function (Blueprint $table) {
             $table->id();
+            $table->string('avatar')->unique()->nullable();
             $table->string('nom');
             $table->string('prenom');
             $table->string('sexe')->default('M');
-            // $table->string('password');
             $table->string('telephone');
-            // $table->boolean('isActive')->default(0);
+            $table->string('email')->nullable();
+            $table->string('profession')->nullable();
+            $table->string("nationalite")->nullable();
+            $table->string('isBiologique')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

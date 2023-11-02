@@ -249,7 +249,7 @@
                                                     <button type="submit" title="effacer"><i
                                                             class="text-red-500 fa fa-solid fa-trash"></i></button>
                                             @endif
-                                            @if(Auth::user()->isDirecteur())
+                                            @if(Auth::user()->isDirecteur() || Auth::user()->isManager())
                                                 <a title="Ecrire au parent" href="{{ route('messages.to',$item->user->id) }}"><i
                                                     class="text-green-500 font-semibold fa fa-solid fa-message"></i></a>
                                             @endif

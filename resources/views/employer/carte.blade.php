@@ -68,10 +68,14 @@
                 <div class="card-front-body">
                     <div class="avatar-container">
                         <!-- <img id="qr-code" src="" alt=""> -->
-                        @if ($eleve->sexe === 'M')
-                            <img id="avatar" src="{{ asset('storage/avatar-boy.png') }}" alt="avatar" />
+                        @if ($eleve->avatar !== null)
+                        <img id="avatar" src="{{ asset('storage/profiles/employers/'.$eleve->avatar) }}" alt="avatar" />
                         @else
-                            <img id="avatar" src="{{ asset('storage/avatar-girl.png') }}" alt="avatar" />
+                            @if ($eleve->sexe === 'M')
+                                <img id="avatar" src="{{ asset('storage/avatar-boy.png') }}" alt="avatar" />
+                            @else
+                                <img id="avatar" src="{{ asset('storage/avatar-girl.png') }}" alt="avatar" />
+                            @endif
                         @endif
                     </div>
                     <table class="identity">

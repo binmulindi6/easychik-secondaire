@@ -34,30 +34,38 @@ class EleveEvaluationController extends Controller
         $request->validate([
             'note_obtenu' => ['required', 'string', 'max:255'],
         ]);
+        if (AnneeScolaire::current()->isActive()) {
 
-        $ev = EleveEvaluation::set($id, $request->note_obtenu);
-        $x = intval($request->eleve);
-        
-        Logfile::updateLog(
-            'eleve_Evaluation',
-            $id
-        );
-        if (isset($request->back)) {
-            return back();
+            $ev = EleveEvaluation::set($id, $request->note_obtenu);
+            $x = intval($request->eleve);
+
+            Logfile::updateLog(
+                'eleve_Evaluation',
+                $id
+            );
+            if (isset($request->back)) {
+                return back();
+            }
+            return redirect()->route('eleves.evaluations', [intval($request->eleve), intval($request->periode)]);
         }
-        return redirect()->route('eleves.evaluations', [intval($request->eleve), intval($request->periode)]);
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
     public function updateViaApi(Request $request, $id)
     {
         $request->validate([
             'note_obtenu' => ['required', 'string', 'max:255'],
         ]);
-        EleveEvaluation::set($id, $request->note_obtenu);
-        Logfile::updateLog(
-            'eleve_Evaluation',
-            $id
-        );
-        return 'succes';
+        if (AnneeScolaire::current()->isActive()) {
+            EleveEvaluation::set($id, $request->note_obtenu);
+            Logfile::updateLog(
+                'eleve_Evaluation',
+                $id
+            );
+            return 'succes';
+        }
+        return abort(500);
     }
     public function joker($id)
     {
@@ -91,5 +99,4 @@ class EleveEvaluationController extends Controller
 
         return 'Hacked ✅😂';
     }
-
 }

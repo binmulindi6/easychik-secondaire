@@ -9,6 +9,7 @@ use App\Models\Examen;
 use App\Models\Logfile;
 use App\Models\trimestre;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 use App\Models\TypeEvaluation;
 use Illuminate\Support\Facades\Auth;
 
@@ -73,6 +74,8 @@ class ExamenController extends Controller
             'date_examen' => ['required', 'string', 'max:255'],
         ]);
 
+        if (AnneeScolaire::current()->isActive()) {
+
         if (Auth::user()->classe()) {
         } else {
             abort(401);
@@ -112,6 +115,10 @@ class ExamenController extends Controller
 
 
         return redirect()->route('examens.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -173,6 +180,7 @@ class ExamenController extends Controller
             'trimestre' => ['required', 'string', 'max:255'],
             'date_examen' => ['required', 'string', 'max:255'],
         ]);
+        if (AnneeScolaire::current()->isActive()) {
 
         $cours = Cours::findOrFail($request->cours);
         $trimestre = Trimestre::findOrFail($request->trimestre);
@@ -193,6 +201,10 @@ class ExamenController extends Controller
         );
 
         return redirect()->route('examens.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -203,6 +215,7 @@ class ExamenController extends Controller
      */
     public function destroy($id)
     {
+        if (AnneeScolaire::current()->isActive()) {
         $examen = Examen::find($id);
         $examen->delete();
 
@@ -212,6 +225,10 @@ class ExamenController extends Controller
         );
 
         return redirect()->route('examens.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     public function search(Request $request)

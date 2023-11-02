@@ -59,10 +59,12 @@ class MessageController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if (Auth::user()->isDirecteur()) {
+        if (Auth::user()->isDirecteur() || Auth::user()->isManager()) {
             $users = User::where('parrain_id', '!=', null)->get();
             $items = Message::where('destinateur', Auth::user()->id)->latest()->get();
             $sent = Message::where('expediteur', Auth::user()->id)->latest()->get();
+        }else{
+            abort(404);
         }
         // dd($user);
         return view('users.messages')
@@ -149,7 +151,7 @@ class MessageController extends Controller
     {
         $message = Message::find($id);
         $message->read();
-        if (Auth::user()->isDirecteur()) {
+        if (Auth::user()->isDirecteur() || Auth::user()->isManager()) {
             $users = User::where('parrain_id', '!=', null)->get();
             $items = Message::where('destinateur', Auth::user()->id)->latest()->get();
             $sent = Message::where('expediteur', Auth::user()->id)->latest()->get();

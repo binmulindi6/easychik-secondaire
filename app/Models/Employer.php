@@ -34,6 +34,15 @@ class Employer extends Model
         return $this->belongsToMany(Fonction::class);
     }
 
+    public  function isActive()
+    {
+        if ($this->isActive === 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function fonction()
     {   
         $text = '';
