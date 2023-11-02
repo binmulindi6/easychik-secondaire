@@ -47,10 +47,10 @@ const btnIdentity = document.querySelectorAll(".btn-identity");
 const frmIdentity = document.querySelectorAll(".frm-identity");
 // console.log(btnIdentity);
 
-const btnEdit = document.querySelector('.btn-edit');
+const btnEdit = document.querySelectorAll('.btn-edit');
 const btnSave = document.querySelector('.btn-save');
 
-const btnEdit1 = document.querySelector('.btn-edit1');
+const btnEdit1 = document.querySelectorAll('.btn-edit1');
 const btnSave1 = document.querySelector('.btn-save1');
 
 // console.log(myBtn)
@@ -182,11 +182,17 @@ btnJokerPrint !== null && btnJokerPrint.addEventListener('click', ()=>{
 
 
 //BTN EDIT && SAVE
-btnEdit !== null && btnEdit.addEventListener('click', ()=>{
-    btnSave !== null && btnSave.classList.toggle('hidden');
+btnEdit && btnEdit !== null && btnEdit.forEach(btn => {
+    btn.addEventListener('click', ()=>{
+        btnSave !== null && btnSave.classList.toggle('hidden');
+    })
 })
-btnEdit1 !== null && btnEdit1.addEventListener('click', ()=>{
-    btnSave1 !== null && btnSave1.classList.toggle('hidden');
+
+
+btnEdit && btnEdit1 !== null && btnEdit1.forEach(btn1 => {
+    btn1.addEventListener('click', ()=>{
+        btnSave1 !== null && btnSave1.classList.toggle('hidden');
+    })
 })
 
 //handle Changes
@@ -195,7 +201,7 @@ const ref = document.querySelector("#reference");
 // console.log(ref);
 moyen !== null && moyen.addEventListener('change', () => {
     let value = moyen.value
-    if (value === '2') {
+    if (value === "2") {
         ref.classList.add('block')
         ref.classList.remove('hidden')
     }else{

@@ -25,6 +25,8 @@ class PresenceController extends Controller
     {
         $classes = Classe::orderBy('niveau_id')->get();
 
+        // dd($classes);
+
         if(Auth::user()->isParent()){
             $eleves = Auth::user()->parrain->eleves;
             $classes = [];
@@ -57,6 +59,7 @@ class PresenceController extends Controller
      */
     public function store(Request $request)
     {
+        if (AnneeScolaire::current()->isActive()) {
         $request->validate([
             'freq_id' => ['required', 'int'],
             'freq_id' => ['required', 'int'],
@@ -78,6 +81,8 @@ class PresenceController extends Controller
         Logfile::createLog('presences', $presence->id, $request->user_id);
 
         return 'succes';
+        }
+        return abort(500);
     }
 
     public function setDate(Request $req, $classe){
@@ -90,6 +95,7 @@ class PresenceController extends Controller
 
     public function storeApi(Request $request)
     {
+        if (AnneeScolaire::current()->isActive()) {
         $request->validate([
             'freq_id' => ['required', 'int'],
             'type_id' => ['required', 'int'],
@@ -113,6 +119,8 @@ class PresenceController extends Controller
         Logfile::createLog('presences', $presence->id, $user->id);
 
         return 'succes';
+        }
+        return abort(500);
     }
 
     /**

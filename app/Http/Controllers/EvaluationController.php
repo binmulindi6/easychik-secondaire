@@ -37,7 +37,7 @@ class EvaluationController extends Controller
                 $cours = null;
             }
             // $cours = [];
-        }else{
+        } else {
             abort(401);
         }
         // dd($evaluations);
@@ -84,50 +84,56 @@ class EvaluationController extends Controller
             abort(401);
         }
 
-        $cours = Cours::findOrFail($request->cours);
-        $periode = Periode::findOrFail($request->periode);
+        if (AnneeScolaire::current()->isActive()) {
 
-        //la classe actuelle
-        $classe = Classe::findOrFail(Auth::user()->classe->id);
-        //dd($periode->isCurrent());
-        $type_evaluation = TypeEvaluation::findOrFail($request->type_evaluation);
+            $cours = Cours::findOrFail($request->cours);
+            $periode = Periode::findOrFail($request->periode);
 
-        $evaluation = Evaluation::create([
-            'note_max' => $request->note_max,
-            'date_evaluation' => $request->date_evaluation,
-        ]);
+            //la classe actuelle
+            $classe = Classe::findOrFail(Auth::user()->classe->id);
+            //dd($periode->isCurrent());
+            $type_evaluation = TypeEvaluation::findOrFail($request->type_evaluation);
 
-        $evaluation->cours()->associate($cours);
-        $evaluation->classe()->associate($classe);
-        $evaluation->periode()->associate($periode);
-        $evaluation->type_evaluation()->associate($type_evaluation);
+            $evaluation = Evaluation::create([
+                'note_max' => $request->note_max,
+                'date_evaluation' => $request->date_evaluation,
+            ]);
 
-        $evaluation->save();
+            $evaluation->cours()->associate($cours);
+            $evaluation->classe()->associate($classe);
+            $evaluation->periode()->associate($periode);
+            $evaluation->type_evaluation()->associate($type_evaluation);
 
-        Logfile::createLog(
-            'evaluations',
-            $evaluation->id
-        );
+            $evaluation->save();
 
-        //la classe de l'evaluation
-        // $classe = $cours->classe;
-        //eleves de la classe
-        $eleves = $classe->eleves();
-        // dd($eleves[0]->id);
+            Logfile::createLog(
+                'evaluations',
+                $evaluation->id
+            );
 
-        foreach ($eleves as $eleve) {
-            if ($eleve->evaluations() !== null) {
-                $currentEleve = Eleve::find($eleve->id);
-                // dd($currentEleve);
-                if ($currentEleve !== null) {
-                    $currentEleve->evaluations()->attach($evaluation);
-                    $currentEleve->save();
+            //la classe de l'evaluation
+            // $classe = $cours->classe;
+            //eleves de la classe
+            $eleves = $classe->eleves();
+            // dd($eleves[0]->id);
+
+            foreach ($eleves as $eleve) {
+                if ($eleve->evaluations() !== null) {
+                    $currentEleve = Eleve::find($eleve->id);
+                    // dd($currentEleve);
+                    if ($currentEleve !== null) {
+                        $currentEleve->evaluations()->attach($evaluation);
+                        $currentEleve->save();
+                    }
                 }
             }
+
+
+            return redirect()->route('evaluations.index');
         }
-
-
-        return redirect()->route('evaluations.index');
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -162,7 +168,7 @@ class EvaluationController extends Controller
         $evaluation = Evaluation::find($id);
         $evaluations = Evaluation::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
-        
+
         if (Auth::user()->isEnseignant()) {
             $evaluations = Evaluation::currents(Auth::user()->classe->id);
             $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
@@ -198,27 +204,33 @@ class EvaluationController extends Controller
             'date_evaluation' => ['required', 'string', 'max:255'],
         ]);
 
-        $cours = Cours::find($request->cours);
-        $periode = Cours::find($request->periode);
-        $type_evaluation = Cours::find($request->type_evaluation);
+        if (AnneeScolaire::current()->isActive()) {
 
-        $evaluation = Evaluation::find($id);
-        $evaluation->note_max = $request->note_max;
-        $evaluation->date_evaluation = $request->date_evaluation;
+            $cours = Cours::find($request->cours);
+            $periode = Cours::find($request->periode);
+            $type_evaluation = Cours::find($request->type_evaluation);
 
-        $evaluation->cours()->associate($cours);
-        $evaluation->periode()->associate($periode);
-        $evaluation->type_evaluation()->associate($type_evaluation);
+            $evaluation = Evaluation::find($id);
+            $evaluation->note_max = $request->note_max;
+            $evaluation->date_evaluation = $request->date_evaluation;
 
-        $evaluation->save();
+            $evaluation->cours()->associate($cours);
+            $evaluation->periode()->associate($periode);
+            $evaluation->type_evaluation()->associate($type_evaluation);
 
-        Logfile::updateLog(
-            'evaluations',
-            $evaluation->id
-        );
+            $evaluation->save();
+
+            Logfile::updateLog(
+                'evaluations',
+                $evaluation->id
+            );
 
 
-        return redirect()->route('evaluations.index');
+            return redirect()->route('evaluations.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -232,12 +244,17 @@ class EvaluationController extends Controller
         $evaluation = Evaluation::find($id);
         $evaluation->delete();
 
-        Logfile::deleteLog(
-            'evaluations',
-            $evaluation->id
-        );
+        if (AnneeScolaire::current()->isActive()) {
+            Logfile::deleteLog(
+                'evaluations',
+                $evaluation->id
+            );
 
-        return redirect()->route('evaluations.index');
+            return redirect()->route('evaluations.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
 

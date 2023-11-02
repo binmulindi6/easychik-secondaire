@@ -25,7 +25,7 @@
                 </span>
                 </a>
             @else
-                @if (Auth::user()->isDirecteur() || Auth::user()->isAdmin())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isAdmin() || Auth::user()->isManager())
                     <a class="p-1  text-blue-700 underline" href="{{ route('encadrements.linkClasse', $data->id) }}">
                         Enseignant
                         indisponible </a>

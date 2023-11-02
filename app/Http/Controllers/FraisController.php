@@ -8,9 +8,10 @@ use App\Models\Logfile;
 use App\Models\TypeFrais;
 use App\Models\ModePaiement;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 
 class FraisController extends Controller
-{   
+{
     protected $page_name = "Frais";
     /**
      * Display a listing of the resource.
@@ -22,7 +23,7 @@ class FraisController extends Controller
         // dd(10);
         $niveaux = count(Niveau::all());
         $frais = Frais::latest()->get();
-        
+
         // $data = array();
         // foreach($frais as $ff){
         //     // if()
@@ -58,7 +59,7 @@ class FraisController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $request->validate([
             'nom' => ['required', 'string', 'max:255'],
             'montant' => ['required', 'string', 'max:10'],
@@ -68,23 +69,23 @@ class FraisController extends Controller
         ]);
         // dd(10);
 
-        if($request->niveau === 'all'){
+        if ($request->niveau === 'all') {
 
             $niveaux = Niveau::all();
 
-            foreach($niveaux as $niveau){
+            foreach ($niveaux as $niveau) {
                 $frais = Frais::create([
                     'nom' => $request->nom,
                     'montant' => $request->montant,
                 ]);
-    
+
                 $type = TypeFrais::find($request->type_frais);
                 $mode = ModePaiement::find($request->mode_paiement);
 
                 $frais->type_frais()->associate($type);
                 $frais->niveau()->associate($niveau);
                 $frais->mode_paiement()->associate($mode);
-    
+
                 $frais->save();
 
                 Logfile::createLog(
@@ -92,8 +93,7 @@ class FraisController extends Controller
                     $frais->id
                 );
             }
-
-        }else{
+        } else {
             $frais = Frais::create([
                 'nom' => $request->nom,
                 'montant' => $request->montant,
@@ -162,9 +162,8 @@ class FraisController extends Controller
             ->with('niveaux', $niveaux)
             ->with('modes', $modes)
             ->with('page_name', $this->page_name . " / Edit");
-        
-        return redirect()->route('frais.index');
 
+        return redirect()->route('frais.index');
     }
 
     /**
@@ -175,7 +174,7 @@ class FraisController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         // $request->validate([
         //     'nom' => ['required', 'string', 'max:255'],
         //     'montant' => ['required', 'integer', 'max:10'],
@@ -184,28 +183,33 @@ class FraisController extends Controller
         //     'niveau' => ['required', 'integer', 'max:10'],
         // ]);
 
-        $frais = Frais::findOrFail($id);
-        $frais->nom = $request->nom;
-        $frais->montant = $request->montant;
+        if (AnneeScolaire::current()->isActive()) {
+            $frais = Frais::findOrFail($id);
+            $frais->nom = $request->nom;
+            $frais->montant = $request->montant;
 
-        $type = TypeFrais::find($request->type_frais);
-        $niveau = Niveau::find($request->niveau);
-        $mode = ModePaiement::find($request->mode_paiement);
+            $type = TypeFrais::find($request->type_frais);
+            $niveau = Niveau::find($request->niveau);
+            $mode = ModePaiement::find($request->mode_paiement);
 
-        ///
+            ///
 
-        $frais->type_frais()->associate($type);
-        $frais->niveau()->associate($niveau);
-        $frais->mode_paiement()->associate($mode);
+            $frais->type_frais()->associate($type);
+            $frais->niveau()->associate($niveau);
+            $frais->mode_paiement()->associate($mode);
 
-        $frais->save();
+            $frais->save();
 
-        Logfile::updateLog(
-            'frais',
-            $frais->id
-        );
+            Logfile::updateLog(
+                'frais',
+                $frais->id
+            );
 
-        return redirect()->route('frais.index');
+            return redirect()->route('frais.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -216,14 +220,19 @@ class FraisController extends Controller
      */
     public function destroy($id)
     {
-        $self = Frais::find($id);
-        $self->delete();
+        if (AnneeScolaire::current()->isActive()) {
+            $self = Frais::find($id);
+            $self->delete();
 
-        Logfile::deleteLog(
-            'frais',
-            $self->id
-        );
+            Logfile::deleteLog(
+                'frais',
+                $self->id
+            );
 
-        return redirect()->route('frais.index');
+            return redirect()->route('frais.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 }

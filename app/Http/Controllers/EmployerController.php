@@ -6,7 +6,10 @@ use App\Models\User;
 use App\Models\Logfile;
 use App\Models\Employer;
 use App\Models\Fonction;
+use App\Models\FileUpload;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
+use Illuminate\Support\Facades\Storage;
 
 class EmployerController extends Controller
 {
@@ -93,6 +96,40 @@ class EmployerController extends Controller
         return redirect()->route('employers.index');
     }
 
+    public function uploadProfile(Request $request)
+    {
+        
+        $request->validate([
+            'image' => ['required','image','max:2048'],
+            'employer_id' => ['required','string','max:255']
+        ]);
+
+
+        $employer = Employer::findOrFail($request->employer_id);
+        $file = $request->file('image');
+
+        $upload = new FileUpload('/profiles/employers/',['jpg','jpeg','png']);
+        $oldAvatar = $employer->avatar;
+
+        $employer->avatar = $upload->uploadFile($file);
+        $employer->save();
+
+        Logfile::updateLog(
+            'employers',
+            $employer->id
+        );
+
+        Storage::disk('public')->delete('/profiles/employers/'.$oldAvatar);
+    
+        if(isset($request->back)){
+            return back();
+        }else{
+            return redirect()->route('employers.show', $employer->id);
+        }
+
+        //laravel 9 file upload system?
+    }
+
     /**
      * Display the specified resource.
      *
@@ -107,6 +144,7 @@ class EmployerController extends Controller
                 'nom' => ['required', 'string', 'max:255'],
                 'prenom' => ['required', 'string', 'max:255'],
                 'date_naissance' => ['required', 'string', 'max:255'],
+                'nationalite' => ['required', 'string', 'max:255'],
                 'sexe' => ['required', 'string', 'max:255'],
                 'formation' => ['required', 'string', 'max:255'],
                 'diplome' => ['required', 'string', 'max:255'],
@@ -117,11 +155,11 @@ class EmployerController extends Controller
             //dd(10);
             return  $this->update($request, $id);
         }
-        
+
         $employer = Employer::findOrFail($id);
-        $user = User::where('employer_id',$employer->id)->first();
+        $user = User::where('employer_id', $employer->id)->first();
         $self = $employer;
-        
+
         $employers = Employer::all()->except(['id', 1]);
         ///joker
         $index = 0;
@@ -176,6 +214,7 @@ class EmployerController extends Controller
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
             'date_naissance' => ['required', 'string', 'max:255'],
+            'nationalite' => ['required', 'string', 'max:255'],
             'sexe' => ['required', 'string', 'max:255'],
             'formation' => ['required', 'string', 'max:255'],
             'diplome' => ['required', 'string', 'max:255'],
@@ -184,34 +223,41 @@ class EmployerController extends Controller
         ]);
 
         $employer = Employer::find($id);
-        $employer->matricule = $request->matricule;
-        $employer->nom = $request->nom;
-        $employer->prenom = $request->prenom;
-        $employer->date_naissance = $request->date_naissance;
-        $employer->sexe = $request->sexe;
-        $employer->formation = $request->formation;
-        $employer->diplome = $request->diplome;
-        $employer->niveau_etude = $request->niveau_etude;
+        if ($employer->isActive()) {
 
-        if ($request->fonction !== null) {
-            $fonction = Fonction::find($request->fonction);
+            $employer->matricule = $request->matricule;
+            $employer->nom = $request->nom;
+            $employer->prenom = $request->prenom;
+            $employer->nationalite = $request->nationalite;
+            $employer->date_naissance = $request->date_naissance;
+            $employer->sexe = $request->sexe;
+            $employer->formation = $request->formation;
+            $employer->diplome = $request->diplome;
+            $employer->niveau_etude = $request->niveau_etude;
 
-            //detach all 
-            $employer->fonctions()->detach();
+            if ($request->fonction !== null) {
+                $fonction = Fonction::find($request->fonction);
 
-            $employer->fonctions()->attach($fonction);
+                //detach all 
+                $employer->fonctions()->detach();
+
+                $employer->fonctions()->attach($fonction);
+            }
+
+            $employer->save();
+            Logfile::updateLog(
+                'employers',
+                $employer->id
+            );
+            if (isset($request->back)) {
+                return redirect()->back();
+            }
+
+            return redirect()->route('employers.index');
         }
-
-        $employer->save();
-        Logfile::updateLog(
-            'employers',
-            $employer->id
-        );
-        if (isset($request->back)) {
-            return back();
-        }
-
-        return redirect()->route('employers.index');
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -223,12 +269,17 @@ class EmployerController extends Controller
     public function destroy($id)
     {
         $employer = Employer::find($id);
-        $employer->delete();
-        Logfile::deleteLog(
-            'employers',
-            $employer->id
-        );
-        return redirect()->route('employers.index');
+        if ($employer->isActive()) {
+            $employer->delete();
+            Logfile::deleteLog(
+                'employers',
+                $employer->id
+            );
+            return redirect()->route('employers.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
 
@@ -271,12 +322,31 @@ class EmployerController extends Controller
             ->with('last_matricule', $matricule);
     }
 
-        ///carte
+    ///carte
 
-        public function carte($id)
-        {
-            $eleve = Employer::findOrFail($id);
-           return view('employer.carte')
-           ->with('eleve',$eleve);
+    public function carte($id)
+    {
+        $eleve = Employer::findOrFail($id);
+        return view('employer.carte')
+            ->with('eleve', $eleve);
+    }
+
+    public function changeStatut(Request $request, $id)
+    {
+        $user = Employer::findOrFail($id);
+
+        if ($request->statut == '0') {
+            $user->isActive = 1;
+        } else {
+            $user->isActive = 0;
         }
+        $user->save();
+
+        Logfile::updateLog(
+            'employers',
+            $user->id
+        );
+
+        return redirect()->route('employers.index');
+    }
 }

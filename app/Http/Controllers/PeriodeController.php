@@ -23,7 +23,7 @@ class PeriodeController extends Controller
         $periodes = Periode::currents();
         $anneeEncours = AnneeScolaire::current();
         $trimestres = $anneeEncours->trimestres;
-        
+
         return view('ecole.periodes')
             ->with('page_name', $this->page_name)
             ->with('anneeEncours', $anneeEncours)
@@ -50,31 +50,36 @@ class PeriodeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nom' => ['required', 'string', 'max:255'],
-            'trimestre' => ['required', 'string', 'max:255'],
-            'date_debut' => ['required', 'string', 'max:255'],
-            'date_fin' => ['required', 'string', 'max:255'],
-        ]);
+        if (AnneeScolaire::current()->isActive()) {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255'],
+                'trimestre' => ['required', 'string', 'max:255'],
+                'date_debut' => ['required', 'string', 'max:255'],
+                'date_fin' => ['required', 'string', 'max:255'],
+            ]);
 
-        //dd($request->nom);
-        $trimestre = Trimestre::find($request->trimestre);
-        $periode = Periode::create([
-            'nom' => $request->nom,
-            'date_debut' => $request->date_debut,
-            'date_fin' => $request->date_fin,
-        ])->trimestre()->associate($trimestre);;
+            //dd($request->nom);
+            $trimestre = Trimestre::find($request->trimestre);
+            $periode = Periode::create([
+                'nom' => $request->nom,
+                'date_debut' => $request->date_debut,
+                'date_fin' => $request->date_fin,
+            ])->trimestre()->associate($trimestre);;
 
-        //$periode->trimestre()->associate($trimestre);
-        $periode->save();
-        Logfile::createLog(
-            'periodes',
-            $periode->id
-        );
+            //$periode->trimestre()->associate($trimestre);
+            $periode->save();
+            Logfile::createLog(
+                'periodes',
+                $periode->id
+            );
 
-        //$annee->trimestres()->associate($trimestre);
+            //$annee->trimestres()->associate($trimestre);
 
-        return redirect()->route('periodes.index');
+            return redirect()->route('periodes.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -108,7 +113,7 @@ class PeriodeController extends Controller
         $periode = Periode::findOrFail($id);
         $anneeEncours = AnneeScolaire::current();
         $trimestres = $anneeEncours->trimestres;
-        
+
         return view('ecole.periodes')
             ->with('page_name', $this->page_name . "/Edit")
             ->with('anneeEncours', $anneeEncours)
@@ -126,22 +131,27 @@ class PeriodeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (AnneeScolaire::current()->isActive()) {
 
-        $periode = Periode::find($id);
+            $periode = Periode::find($id);
 
-        $periode->nom = $request->nom;
-        $periode->date_debut = $request->date_debut;
-        $periode->date_fin = $request->date_fin;
+            $periode->nom = $request->nom;
+            $periode->date_debut = $request->date_debut;
+            $periode->date_fin = $request->date_fin;
 
-        $trimestre = Trimestre::find($request->trimestre);
-        $periode->trimestre()->associate($trimestre);
-        $periode->save();
+            $trimestre = Trimestre::find($request->trimestre);
+            $periode->trimestre()->associate($trimestre);
+            $periode->save();
 
-        Logfile::updateLog(
-            'periodes',
-            $periode->id
-        );
-        return redirect()->route('periodes.index');
+            Logfile::updateLog(
+                'periodes',
+                $periode->id
+            );
+            return redirect()->route('periodes.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -152,13 +162,18 @@ class PeriodeController extends Controller
      */
     public function destroy($id)
     {
-        $periode = Periode::find($id);
-        $periode->delete();
-        Logfile::deleteLog(
-            'periodes',
-            $periode->id
-        );
-        return redirect()->route('periodes.index');
+        if (AnneeScolaire::current()->isActive()) {
+            $periode = Periode::find($id);
+            $periode->delete();
+            Logfile::deleteLog(
+                'periodes',
+                $periode->id
+            );
+            return redirect()->route('periodes.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     //Search Engine

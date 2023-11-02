@@ -21,22 +21,24 @@ class FrequentationController extends Controller
     protected $page = 'Frequentations';
 
     public function index()
-    {   
+    {
         $frequentations = Frequentation::current();
 
         $annee = AnneeScolaire::current();
         // dd(Auth::user()->classe);
         if (Auth::user()->isEnseignant()) {
-            if(Auth::user()->classe() !== null){
+            if (Auth::user()->classe() !== null) {
                 $frequentations = Frequentation::where('annee_scolaire_id', $annee->id)
-                ->where('classe_id', Auth::user()->classe->id)
-                ->orderBy('frequentations.id', 'desc')
-                ->select('frequentations.*')
-               ->limit(20)
-                ->get();
+                    ->where('classe_id', Auth::user()->classe->id)
+                    ->orderBy('frequentations.id', 'desc')
+                    ->select('frequentations.*')
+                    ->limit(20)
+                    ->get();
+            }else{
+                $frequentations = [];
             }
         }
-        
+
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::orderBy('nom')->get();
         // dd(10);
@@ -65,21 +67,21 @@ class FrequentationController extends Controller
         $this->page = 'Frequentations/Create';
         $frequentations = Frequentation::current();
 
-        $eleve =Eleve::findOrfail($id);
+        $eleve = Eleve::findOrfail($id);
 
         $annee = AnneeScolaire::current();
         // dd(Auth::user()->classe);
         if (Auth::user()->isEnseignant()) {
-            if(Auth::user()->classe() !== null){
+            if (Auth::user()->classe() !== null) {
                 $frequentations = Frequentation::where('annee_scolaire_id', $annee->id)
-                ->where('classe_id', Auth::user()->classe->id)
-                ->orderBy('frequentations.id', 'desc')
-                ->select('frequentations.*')
-               ->limit(20)
-                ->get();
+                    ->where('classe_id', Auth::user()->classe->id)
+                    ->orderBy('frequentations.id', 'desc')
+                    ->select('frequentations.*')
+                    ->limit(20)
+                    ->get();
             }
         }
-        
+
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $annees = AnneeScolaire::orderBy('nom')->get();
         // dd(10);
@@ -110,147 +112,150 @@ class FrequentationController extends Controller
             'annee_scolaire_id' => ['required', 'string', 'max:255'],
         ]);
 
-        $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
+        if (AnneeScolaire::current()->isActive()) {
+            $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
 
-        if(!is_null($eleve)){
-            if($eleve->classe()){
-                return redirect()->route('frequentations.create')->withErrors([
-                    'eleve_matricule' => 'L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire en cours.",
+            if (!is_null($eleve)) {
+                if ($eleve->classe()) {
+                    return redirect()->route('frequentations.create')->withErrors([
+                        'eleve_matricule' => 'L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->classe()->nomCourt() . " Pour l'Annee Scolaire en cours.",
                     ])->onlyInput('classe_id');
-                    
-            }
-
-
-            $classe = Classe::find($request->classe_id);
-
-            $evaluations = $classe->currentEvaluations();
-            $examens = $classe->currentExamens();
-
-            
-            
-            if(count($evaluations) > 0){
-                foreach($evaluations as $ev){
-                    $eleve->evaluations()->attach($ev);
-                    $eleve->save();
                 }
-            }
-            
-            if(count($examens) > 0){
-                foreach($examens as $ex){
-                    $eleve->examens()->attach($ex);
-                    $eleve->save();
+
+
+                $classe = Classe::find($request->classe_id);
+
+                $evaluations = $classe->currentEvaluations();
+                $examens = $classe->currentExamens();
+
+
+
+                if (count($evaluations) > 0) {
+                    foreach ($evaluations as $ev) {
+                        $eleve->evaluations()->attach($ev);
+                        $eleve->save();
+                    }
                 }
-            }
-            // dd(12);
 
-            $annee  = AnneeScolaire::find($request->annee_scolaire_id);
+                if (count($examens) > 0) {
+                    foreach ($examens as $ex) {
+                        $eleve->examens()->attach($ex);
+                        $eleve->save();
+                    }
+                }
+                // dd(12);
 
-            $frequentation = Frequentation::create();
+                $annee  = AnneeScolaire::find($request->annee_scolaire_id);
 
-
-            //links 
-            $frequentation->eleve()->associate($eleve);
-            $frequentation->classe()->associate($classe);
-            $frequentation->annee_scolaire()->associate($annee);
-            // save
-            $frequentation->save();
-
-            Logfile::createLog(
-                'frequentations',
-                $frequentation->id
-            );
-
-            //create resultat
-            $resultat = Resultat::create();
-            $resultat->frequentation()->associate($frequentation);
-            $resultat->save();
-
-            Logfile::createLog(
-                'resultats',
-                $resultat->id
-            );
+                $frequentation = Frequentation::create();
 
 
-            return redirect()->route('eleves.index');
-        }else{
-            return redirect()->route('frequentations.create')->withErrors([
-                'eleve_matricule' => 'l\'Eleve avec le matricule '. $request->eleve_matricule.' n\'existe pas dans le system',
+                //links 
+                $frequentation->eleve()->associate($eleve);
+                $frequentation->classe()->associate($classe);
+                $frequentation->annee_scolaire()->associate($annee);
+                // save
+                $frequentation->save();
+
+                Logfile::createLog(
+                    'frequentations',
+                    $frequentation->id
+                );
+
+                //create resultat
+                $resultat = Resultat::create();
+                $resultat->frequentation()->associate($frequentation);
+                $resultat->save();
+
+                Logfile::createLog(
+                    'resultats',
+                    $resultat->id
+                );
+
+
+                return redirect()->route('eleves.index');
+            } else {
+                return redirect()->route('frequentations.create')->withErrors([
+                    'eleve_matricule' => 'l\'Eleve avec le matricule ' . $request->eleve_matricule . ' n\'existe pas dans le system',
                 ])->onlyInput('eleve_matricule');
-                
+            }
         }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
     public function storeApi(Request $request)
-    {       
-        
+    {
+
         $request->validate([
             'eleve_id' => ['required', 'string', 'max:255'],
             'classe_id' => ['required', 'string', 'max:255'],
             'annee_scolaire_id' => ['required', 'string', 'max:255'],
         ]);
 
-        
-        $eleve = Eleve::find($request->eleve_id);
-        $annee  = AnneeScolaire::find($request->annee_scolaire_id);
-        
-        if(!is_null($eleve)){
-            if(($eleve->classe() && ($eleve->nextFrequentation() && $eleve->nextFrequentation()->annee_scolaire->id === $annee->id))){
-                return ('L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->nextFrequentation()->classe->nomCourt() . " Pour l'Annee Scolaire " . $annee->nom);
-                
-            }
 
-            // return 'passed';
-            
-            $classe = Classe::find($request->classe_id);
-            
-            $evaluations = $classe->currentEvaluations();
-            $examens = $classe->currentExamens();
-            
-            
-            $frequentation = Frequentation::create();
-            
-            
-            //links 
-            $frequentation->eleve()->associate($eleve);
-            $frequentation->classe()->associate($classe);
-            $frequentation->annee_scolaire()->associate($annee);
-            // save
-            $frequentation->save();
+        if (AnneeScolaire::current()->isActive()) {
+            $eleve = Eleve::find($request->eleve_id);
+            $annee  = AnneeScolaire::find($request->annee_scolaire_id);
 
-            if(count($evaluations) > 0){
-                foreach($evaluations as $ev){
-                    $eleve->evaluations()->attach($ev);
-                    $eleve->save();
+            if (!is_null($eleve)) {
+                if (($eleve->classe() && ($eleve->nextFrequentation() && $eleve->nextFrequentation()->annee_scolaire->id === $annee->id))) {
+                    return ('L\'Eleve ' . $eleve->nom . ' est deja inscrit en ' . $eleve->nextFrequentation()->classe->nomCourt() . " Pour l'Annee Scolaire " . $annee->nom);
                 }
-            }
-            
-            if(count($examens) > 0){
-                foreach($examens as $ex){
-                    $eleve->examens()->attach($ex);
-                    $eleve->save();
+
+                // return 'passed';
+
+                $classe = Classe::find($request->classe_id);
+
+                $evaluations = $classe->currentEvaluations();
+                $examens = $classe->currentExamens();
+
+
+                $frequentation = Frequentation::create();
+
+
+                //links 
+                $frequentation->eleve()->associate($eleve);
+                $frequentation->classe()->associate($classe);
+                $frequentation->annee_scolaire()->associate($annee);
+                // save
+                $frequentation->save();
+
+                if (count($evaluations) > 0) {
+                    foreach ($evaluations as $ev) {
+                        $eleve->evaluations()->attach($ev);
+                        $eleve->save();
+                    }
                 }
+
+                if (count($examens) > 0) {
+                    foreach ($examens as $ex) {
+                        $eleve->examens()->attach($ex);
+                        $eleve->save();
+                    }
+                }
+
+                Logfile::createLog(
+                    'frequentations',
+                    $frequentation->id
+                );
+                //create resultat
+                $resultat = Resultat::create();
+                $resultat->frequentation()->associate($frequentation);
+                $resultat->save();
+
+                Logfile::createLog(
+                    'resultats',
+                    $resultat->id
+                );
+
+                return 'succes';
+            } else {
+                return 'erreur cet eleve n\'existe pas';
             }
-
-            Logfile::createLog(
-                'frequentations',
-                $frequentation->id
-            );
-            //create resultat
-            $resultat = Resultat::create();
-            $resultat->frequentation()->associate($frequentation);
-            $resultat->save();
-
-            Logfile::createLog(
-                'resultats',
-                $resultat->id
-            );
-
-            return 'succes';
-        }else{
-            return 'erreur cet eleve n\'existe pas';
-            
         }
+        return " there are archives";
     }
-    
     /**
      * Display the specified resource.
      *
@@ -296,29 +301,34 @@ class FrequentationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'eleve_matricule' => ['required', 'string', 'max:255'],
-            'classe_id' => ['required', 'string', 'max:255'],
-            'annee_scolaire_id' => ['required', 'string', 'max:255'],
-        ]);
+        if (AnneeScolaire::current()->isActive()) {
+            $request->validate([
+                'eleve_matricule' => ['required', 'string', 'max:255'],
+                'classe_id' => ['required', 'string', 'max:255'],
+                'annee_scolaire_id' => ['required', 'string', 'max:255'],
+            ]);
 
-        $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
-        $classe = Classe::find($request->classe_id);
-        $annee  = AnneeScolaire::find($request->annee_scolaire_id);
+            $eleve = Eleve::where('matricule', $request->eleve_matricule)->first();
+            $classe = Classe::find($request->classe_id);
+            $annee  = AnneeScolaire::find($request->annee_scolaire_id);
 
-        $frequentation = Frequentation::find($id);
+            $frequentation = Frequentation::find($id);
 
-        //links 
-        $frequentation->eleve()->associate($eleve);
-        $frequentation->classe()->associate($classe);
-        $frequentation->annee_scolaire()->associate($annee);
-        // save
-        $frequentation->save();
-        Logfile::updateLog(
-            'frequentations',
-            $frequentation->id
-        );
-        return redirect()->route('frequentations.index');
+            //links 
+            $frequentation->eleve()->associate($eleve);
+            $frequentation->classe()->associate($classe);
+            $frequentation->annee_scolaire()->associate($annee);
+            // save
+            $frequentation->save();
+            Logfile::updateLog(
+                'frequentations',
+                $frequentation->id
+            );
+            return redirect()->route('frequentations.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -329,15 +339,20 @@ class FrequentationController extends Controller
      */
     public function destroy($id)
     {
-        $frequentation = Frequentation::find($id);
-        $frequentation->delete();
+        if (AnneeScolaire::current()->isActive()) {
+            $frequentation = Frequentation::find($id);
+            $frequentation->delete();
 
-        Logfile::deleteLog(
-            'frequentations',
-            $frequentation->id
-        );
+            Logfile::deleteLog(
+                'frequentations',
+                $frequentation->id
+            );
 
-        return redirect()->route('frequentations.index');
+            return redirect()->route('frequentations.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
 

@@ -29,6 +29,7 @@ class Eleve extends Model
           'nom_mere',
           'adresse',
           'sexe',
+          'nationalite',
 
      ];
 
@@ -143,6 +144,14 @@ class Eleve extends Model
           return $bulletin;
      }
 
+     public  function isActive()
+     {
+         if ($this->isActive === 1) {
+             return true;
+         } else {
+             return false;
+         }
+     }
 
      public function frequentations()
      {
@@ -165,8 +174,8 @@ class Eleve extends Model
           return $this->hasMany(EleveConduite::class);
      }
 
-     public function parrain(){
-          return $this->belongsTo(Parrain::class);
+     public function parrains(){
+          return $this->belongsToMany(Parrain::class);
      }
 
      public static function getLastMatricule(){

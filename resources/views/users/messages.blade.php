@@ -84,7 +84,7 @@
         <div class="flex flex-col gap-2 overflow-scroll">
             @foreach ($items as $item)
                 <a href="{{ route('messages.show', $item->id) }}">
-                    @if ($item->from()->isDirecteur())
+                    @if ($item->from()->isDirecteur() || $item->from()->isManager())
                         <x-message :state="$item->isReaden()" :from="'La Direction'" :object="$item->objet" :message="$item->contenu"
                             :time="$item->created_at"></x-message>
                     @else
@@ -116,7 +116,7 @@
         <div class="flex flex-col gap-2 overflow-scroll">
             @foreach ($sents as $sent)
                 <a href="{{ route('messages.show', $sent->id) }}">
-                    <x-message :from="$sent->to()->email" :object="$sent->objet" :message="$sent->contenu" :time="$item->created_at"></x-message>
+                    <x-message :from="$sent->to()->email" :object="$sent->objet" :message="$sent->contenu" :time="$sent->created_at"></x-message>
                 </a>
             @endforeach
 
@@ -149,7 +149,7 @@
 
                 @if ($message->to()->id === Auth::user()->id)
                     <span>
-                        @if ($message->from()->isDirecteur())
+                        @if ($message->from()->isDirecteur() || $message->from()->isManager())
                             <span class="font-semibold">
                                 De :
                             </span>
@@ -163,7 +163,7 @@
                     </span>
                 @else
                     <span>
-                        @if ($message->to()->isDirecteur())
+                        @if ($message->to()->isDirecteur() || $message->to()->isManager())
                             <span class="font-semibold">
                                 A :
                             </span>
@@ -190,7 +190,7 @@
                 </span>
 
                 @if ($message->to()->id === Auth::user()->id)
-                    @if ($message->to()->isDirecteur())
+                    @if ($message->to()->isDirecteur() || $message->to()->isManager())
                         <a href="{{ route('messages.to', $message->from()->id) }}"
                             class=" mt-4 flex flex-row gap-2 items-center px-3 py-2 rounded-full border w-28 hover:bg-slate-100">
                             Repondre

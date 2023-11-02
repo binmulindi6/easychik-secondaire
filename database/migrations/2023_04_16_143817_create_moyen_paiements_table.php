@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('moyen_paiements', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
-            $table->string('references');
             $table->timestamps();
             $table->softDeletes();
         });

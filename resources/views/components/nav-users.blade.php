@@ -1,7 +1,7 @@
 <div class="flex flex-col items-center sm:flex-row justify-between gap-4">
     <div class="flex flex-col sm:flex-row gap-4">
 
-        @if ((Auth::user()->isAdmin() || Auth::user()->isDirecteur()) && !str_contains($pagename, 'Parents'))
+        @if ((Auth::user()->isAdmin() || Auth::user()->isDirecteur()|| Auth::user()->isManager()) && !str_contains($pagename, 'Parents'))F
 
             @if (str_contains($pagename, 'Utilisateurs'))
                 <div

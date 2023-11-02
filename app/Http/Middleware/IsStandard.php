@@ -17,7 +17,7 @@ class IsStandard
     public function handle(Request $request, Closure $next)
     {
 
-        if (env('SUBSCRIPTION') === 'STANDARD' || env('SUBSCRIPTION') === 'SILVER'|| env('SUBSCRIPTION') === 'GOLD') {
+        if (env('SUBSCRIPTION') === 'STANDARD' || env('SUBSCRIPTION') === 'SILVER'|| env('SUBSCRIPTION') === 'GOLD' || env('SUBSCRIPTION') === 'GOLD PREMIUM') {
             return $next($request);
         } else {
             abort(450);

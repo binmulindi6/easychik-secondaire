@@ -122,6 +122,19 @@ class User extends Authenticatable
         }
         return false;
     }
+    public function isLog()
+    {
+
+        if ($this->parrain_id === null) {
+            foreach ($this->employer->fonctions as $fonction) {
+                if (strtolower($fonction->nom) === strtolower('Logisticien') || strtolower($fonction->nom) === strtolower('Manager')) {
+                    return true;
+                    // dd(10);
+                }
+            }
+        }
+        return false;
+    }
 
     //link to the employer
     public function employer()
@@ -179,7 +192,7 @@ class User extends Authenticatable
         $users = User::Employers();
         $dirs = array();
         foreach ($users as $user) {
-            if ($user->isDirecteur()) {
+            if ($user->isDirecteur() || $user->isManager()) {
                 array_push($dirs, $user);
             }
         }

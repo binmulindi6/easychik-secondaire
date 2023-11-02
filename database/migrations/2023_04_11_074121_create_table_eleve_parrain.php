@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('eleves', function (Blueprint $table) {
-            $table->foreignId('parrain_id')->nullable()->after('adresse')->constrained();
+        Schema::create('eleve_parrain', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('eleve_id')->nullable()->constrained();
+            $table->foreignId('parrain_id')->nullable()->constrained();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

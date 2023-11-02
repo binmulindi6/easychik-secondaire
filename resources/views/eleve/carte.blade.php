@@ -36,7 +36,7 @@
                 <div class="flex flex-col justify-center items-center p-10">
                     <span
                         class="text-20 font-semibold text-blue-700">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span>
-                        {{-- <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{ env('APP_NAME') }}</span> --}}
+                    {{-- <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{ env('APP_NAME') }}</span> --}}
                     <span class="text-20 border-black border-b-8 w-10/12 font-semibold">CARTE D'ELEVE</span>
                     {{-- <span >eChik <span>SCHOOL MANAGEMENT SYSYTEM</span></span> --}}
                     <span class="text-10">
@@ -68,19 +68,23 @@
                 <div class="card-front-body">
                     <div class="avatar-container">
                         <!-- <img id="qr-code" src="" alt=""> -->
-                        @if ($eleve->sexe === 'M')
-                            <img id="avatar" src="{{ asset('storage/avatar-boy.png') }}" alt="avatar" />
+                        @if ($eleve->avatar !== null)
+                        <img id="avatar" src="{{ asset('storage/profiles/eleves/'.$eleve->avatar) }}" alt="avatar" />
                         @else
-                            <img id="avatar" src="{{ asset('storage/avatar-girl.png') }}" alt="avatar" />
+                            @if ($eleve->sexe === 'M')
+                                <img id="avatar" src="{{ asset('storage/avatar-boy.png') }}" alt="avatar" />
+                            @else
+                                <img id="avatar" src="{{ asset('storage/avatar-girl.png') }}" alt="avatar" />
+                            @endif
                         @endif
                     </div>
                     <table class="identity">
                         <tr class="">
-                            <td class=" uppercase text-12">NUM PERMANENT : <span id="nom"
+                            <td class=" uppercase text-10">NUM PERMANENT : <span id="nom"
                                     class="font-bold">{{ $eleve->num_permanent }}</span> </td>
                         </tr>
                         <tr class="">
-                            <td class=" uppercase text-12">NOM & PRENOM : <span id="nom"
+                            <td class=" uppercase text-10">NOM & PRENOM : <span id="nom"
                                     class="font-bold">{{ $eleve->nomComplet() }}</span> </td>
                         </tr>
                         {{-- <tr class="">
@@ -88,7 +92,7 @@
                                     class="></span> {{ $eleve->prenom }}</td>
                         </tr> --}}
                         <tr class="">
-                            <td class=" uppercase text-12">SEXE : <span id="prenom" class="font-bold"></span>
+                            <td class=" uppercase text-10">SEXE : <span id="prenom" class="font-bold"></span>
                                 @if ($eleve->sexe === 'M')
                                     Masculin
                                 @else
@@ -97,12 +101,12 @@
                             </td>
                         </tr>
                         <tr class="">
-                            <td class=" uppercase text-12">CLASSE : <span id="prenom" class="font-bold"></span>
-                                {{$eleve->classe()->nomComplet()}}
+                            <td class=" uppercase text-10">CLASSE : <span id="prenom" class="font-bold"></span>
+                                {{ $eleve->classe() && $eleve->classe()->nomComplet() }}
                             </td>
                         </tr>
                         <tr class="">
-                            <td class=" uppercase text-12">LIEU & DATE DE NAISS : <span id="naissance"
+                            <td class=" text-10">LIEU & DATE DE NAISSANCE : <span id="naissance"
                                     class="font-bold">{{ $eleve->lieu_naissance . ' le ' . date_format(date_create($eleve->date_naissance), 'd/m/Y') }}</span>
                             </td>
                         </tr>
@@ -113,7 +117,7 @@
                                 <td class="">PROFESSION : <span id="profession" class="></span></td>  --}}
                         </tr>
                         <tr class="">
-                            <td class=" text-12">ADRESSE : <span id="adresse"
+                            <td class=" text-10">ADRESSE : <span id="adresse"
                                     class="font-bold">{{ $eleve->adresse }}</span> </td>
                         </tr>
                     </table>
@@ -123,11 +127,11 @@
                 <div class="card-front-footer">
                     <div>
                         <table>
-                            <tr class="text-12">
+                            <tr class="text-10">
                                 <td>DATE DE DELIVRANCE : Le
                                     {{ date('d/m/Y') }}</td>
                             </tr>
-                            <tr class="text-12">
+                            <tr class="text-10">
                                 <td>DATE D'EXPIRATION : Le
                                     {{ date_format(date_create('yesterday next year'), 'd/m/Y') }}</td>
                             </tr>

@@ -34,6 +34,14 @@ class AnneeScolaire extends Model
             return DateController::currentAnnee();
         }
     }
+    public  function isActive()
+    {
+        if ($this->isActive === 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static function next()
     {

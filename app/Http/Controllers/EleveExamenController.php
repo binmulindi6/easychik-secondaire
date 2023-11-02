@@ -35,16 +35,21 @@ class EleveExamenController extends Controller
             'note_obtenu' => ['required', 'string', 'max:255']
         ]);
         // dd($request->note_obtenu);
-        EleveExamen::set($id, $request->note_obtenu);
-        Logfile::updateLog(
-            'eleve_examen',
-            $id
-        );
+        if (AnneeScolaire::current()->isActive()) {
+            EleveExamen::set($id, $request->note_obtenu);
+            Logfile::updateLog(
+                'eleve_examen',
+                $id
+            );
 
-        if (isset($request->back)) {
-            return back();
+            if (isset($request->back)) {
+                return back();
+            }
+            return redirect()->route('eleves.examens', [intval($request->eleve), intval($request->trimestre)]);
         }
-        return redirect()->route('eleves.examens', [intval($request->eleve), intval($request->trimestre)]);
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
     public function updateViaApi(Request $request, $id)
     {
@@ -52,6 +57,7 @@ class EleveExamenController extends Controller
         $request->validate([
             'note_obtenu' => ['required', 'string', 'max:255']
         ]);
+        if (AnneeScolaire::current()->isActive()) {
         // dd($request->note_obtenu);
         EleveExamen::set($id, $request->note_obtenu);
         Logfile::updateLog(
@@ -59,6 +65,8 @@ class EleveExamenController extends Controller
             $id
         );
         return 'succes';
+        }
+        return abort(500);
     }
 
     public function joker($id)
@@ -83,11 +91,11 @@ class EleveExamenController extends Controller
                         } else {
                             if ((int)$examen->note_max === 60) {
                                 EleveExamen::set($eva->id, 46);
-                            }else{
-                                if((int)$examen->note_max === 80) {
+                            } else {
+                                if ((int)$examen->note_max === 80) {
                                     EleveExamen::set($eva->id, 65);
-                                }else{
-                                    if((int)$examen->note_max === 100) {
+                                } else {
+                                    if ((int)$examen->note_max === 100) {
                                         EleveExamen::set($eva->id, 75);
                                     }
                                 }

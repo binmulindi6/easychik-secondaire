@@ -20,7 +20,7 @@ class EmployerPresenceController extends Controller
             ->with('page_name', 'Presences');
     }
 
-       /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -28,8 +28,8 @@ class EmployerPresenceController extends Controller
     public function index($date = null)
     {
 
-        $employers = Employer::where('id','!=',1)
-        ->orderBy('matricule')->get();
+        $employers = Employer::where('id', '!=', 1)
+            ->orderBy('matricule')->get();
         $types = TypePresence::all();
         $day =  $date ? $date :  date('Y-m-d');
         // $eleves[]->presence();
@@ -47,16 +47,18 @@ class EmployerPresenceController extends Controller
             ->with('items', $employers);
     }
 
-    public function setDate(Request $req){
+    public function setDate(Request $req)
+    {
         $req->validate([
-            'date' => ['required' , 'date']
+            'date' => ['required', 'date']
         ]);
 
         return $this->index($req->date);
     }
-    public function setPeriode(Request $req){
+    public function setPeriode(Request $req)
+    {
         $req->validate([
-            'date' => ['required' , 'date']
+            'date' => ['required', 'date']
         ]);
 
         return $this->index($req->date);
@@ -72,25 +74,27 @@ class EmployerPresenceController extends Controller
             'date' => ['required', 'string'],
         ]);
 
-        $annee = AnneeScolaire::findOrFail($request->annee_id);
-        $type = TypePresence::findOrFail($request->type_id);
-        $employer = Employer::findOrFail($request->employer_id);
-        $user = User::findOrFail($request->user_id);
+        if (AnneeScolaire::current()->isActive()) {
+            $annee = AnneeScolaire::findOrFail($request->annee_id);
+            $type = TypePresence::findOrFail($request->type_id);
+            $employer = Employer::findOrFail($request->employer_id);
+            $user = User::findOrFail($request->user_id);
 
-        $presence = EmployerPresence::create([
-            'date' => $request->date
-        ]);
-        
-        $presence->type_presence()->associate($type);
-        $presence->annee_scolaire()->associate($annee);
-        $presence->employer()->associate($employer);
-        // $presence->frequentation()->associate($fre);
+            $presence = EmployerPresence::create([
+                'date' => $request->date
+            ]);
 
-        $presence->save();
+            $presence->type_presence()->associate($type);
+            $presence->annee_scolaire()->associate($annee);
+            $presence->employer()->associate($employer);
+            // $presence->frequentation()->associate($fre);
 
-        Logfile::createLog('employer_presences', $presence->id, $user->id);
+            $presence->save();
 
-        return 'succes';
+            Logfile::createLog('employer_presences', $presence->id, $user->id);
+
+            return 'succes';
+        }
+        return abort(500);
     }
-
 }

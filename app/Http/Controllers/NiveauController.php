@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Niveau;
+use App\Models\Logfile;
 use Illuminate\Http\Request;
 
 class NiveauController extends Controller
@@ -41,7 +42,22 @@ class NiveauController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => ['required', 'string', 'max:255'],
+            'numerotation' => ['required', 'string', 'max:255']
+        ]);
+
+        // dd(10);
+
+        Logfile::createLog(
+            'niveaux',
+            Niveau::create([
+                'nom' => $request->nom,
+                'numerotation' => $request->numerotation
+            ])->id
+        );
+
+        return redirect()->route('niveaux.index');
     }
 
     /**

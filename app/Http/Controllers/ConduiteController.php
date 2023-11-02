@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnneeScolaire;
 use App\Models\Logfile;
 use App\Models\Conduite;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class ConduiteController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     protected $page = 'Conduites';
+    protected $page = 'Conduites';
 
     public function index()
     {
@@ -88,12 +89,17 @@ class ConduiteController extends Controller
      */
     public function destroy($id)
     {
-        $item = Conduite::findOrFail($id);
-        $item->delete();
-        Logfile::deleteLog(
-            'conduites',
-            $item->id
-        );
-        return redirect()->route('conduites.index');
+        if (AnneeScolaire::current()->isActive()) {
+            $item = Conduite::findOrFail($id);
+            $item->delete();
+            Logfile::deleteLog(
+                'conduites',
+                $item->id
+            );
+            return redirect()->route('conduites.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 }

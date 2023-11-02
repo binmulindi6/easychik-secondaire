@@ -17,7 +17,7 @@ class IsStarter
     public function handle(Request $request, Closure $next)
     {
         // dd(10);
-        if (env('SUBSCRIPTION') === 'STARTER' || env('SUBSCRIPTION') === 'STANDARD' || env('SUBSCRIPTION') === 'SILVER'|| env('SUBSCRIPTION') === 'GOLD') {
+        if (env('SUBSCRIPTION') === 'STARTER' || env('SUBSCRIPTION') === 'STANDARD' || env('SUBSCRIPTION') === 'SILVER'|| env('SUBSCRIPTION') === 'GOLD' || env('SUBSCRIPTION') === 'GOLD PREMIUM') {
             return $next($request);
         } else {
             abort(450);

@@ -8,7 +8,7 @@
         @else
             <x-nav-users :pagename="$page_name"> </x-nav-users>
         @endif
-        @if ((!str_contains($page_name, 'Create') && !count($errors) > 0) || str_contains($page_name, 'Enseignants'))
+            @if ((str_contains($page_name, 'Create') && count($errors) > 0) || str_contains($page_name, 'Enseignants') || ($page_name === 'Utilisateurs'))
             <div class="frm-create hidden container p-5 bg-white rounded-5 shadow-2xl ">
             @else
                 <div class="frm-create flex flex-col gap-4 container p-5 bg-white rounded-5 shadow-2xl">
@@ -18,7 +18,7 @@
 
         @if (isset($self))
             <span class="font-semibold text-5">
-                Modifier Utilisateur
+            Modifier Utilisateur
             </span>
             <form method="PUT" action="{{ route('users.update', $self->id) }}">
                 @csrf
@@ -133,35 +133,34 @@
             <h6>Utilisateurs</h6>
         @endif
     </div>
-    @if (isset($items) && count($items) > 0)
-        <div class="flex-auto px-0 pt-0 pb-2">
-            <div class="p-0 overflow-x-auto">
+    <div class="flex-auto px-0 pt-0 pb-2">
+        <div class="p-0 overflow-x-auto">
 
-                <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                    <thead class="align-bottom">
+            <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                <thead class="align-bottom">
+                    <th
+                        class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                        Nom </th>
+                    <th
+                        class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                        Email </th>
+                    <th
+                        class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                        Fonction</th>
+                    <th
+                        class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                        Classe</th>
+                    <th
+                        class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                        Satut</th>
+                    @if (!$page_name === 'Enseignants')
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Nom </th>
-                        <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Email </th>
-                        <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Fonction</th>
-                        <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Classe</th>
-                        <th
-                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Satut</th>
-                        @if (!$page_name === 'Enseignants')
-                            <th
-                                class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                Action</th>
-                        @endif
-                    </thead>
-                    <tbody>
-
+                            Action</th>
+                    @endif
+                </thead>
+                <tbody>
+                    @if (isset($items) && count($items) > 0)
                         @foreach ($items as $item)
                             @if ($page_name === 'Enseignants')
                                 @if ($item->isEnseignant())
@@ -308,22 +307,22 @@
                             @endif
                         @endforeach
 
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
+    </div>
 
+    </div>
+    </div>
+@else
+    @if ($page_name === 'Enseignants')
+        <div class="flex flex-col justify-center gap-2 p-5">
+            <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas d'Enseignants pour
+                l'instant, veuillez en ajouter</span>
+            <a href="{{ route('employers.create') }}" class="text-center">
+                <x-button>Ajouter un Enseignant</x-button></a>
         </div>
-        </div>
-    @else
-        @if ($page_name === 'Enseignants')
-            <div class="flex flex-col justify-center gap-2 p-5">
-                <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas d'Enseignants pour
-                    l'instant, veuillez en ajouter</span>
-                <a href="{{ route('employers.create') }}" class="text-center">
-                    <x-button>Ajouter un Enseignant</x-button></a>
-            </div>
-        @endif
+    @endif
     @endif
     </div>
     </div>

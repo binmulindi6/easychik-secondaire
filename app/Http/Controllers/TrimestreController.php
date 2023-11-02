@@ -50,40 +50,45 @@ class TrimestreController extends Controller
     {
         // dd(10);
 
-        $request->validate([
-            'nom' => ['required', 'string', 'max:255'],
-            'annee_scolaire' => ['required', 'string', 'max:255'],
-            'date_debut' => ['required', 'string', 'max:255'],
-            'date_fin' => ['required', 'string', 'max:255'],
-        ]);
-
-        //dd($request->nom);
-        $annee = AnneeScolaire::find($request->annee_scolaire);
-        $trim = Trimestre::where('annee_scolaire_id',$annee->id)
-                        ->where('nom', $request->nom)->first();
-        if($trim === null){
-            $trimestre = Trimestre::create([
-                'nom' => $request->nom,
-                'date_debut' => $request->date_debut,
-                'date_fin' => $request->date_fin,
+        if (AnneeScolaire::current()->isActive()) {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255'],
+                'annee_scolaire' => ['required', 'string', 'max:255'],
+                'date_debut' => ['required', 'string', 'max:255'],
+                'date_fin' => ['required', 'string', 'max:255'],
             ]);
 
-            $trimestre->annee_scolaire()->associate($annee);
-            $trimestre->save();
-            Logfile::createLog(
-                'trimestres',
-                $trimestre->id
-            );
-            //$annee->trimestres()->associate($trimestre);
+            //dd($request->nom);
+            $annee = AnneeScolaire::find($request->annee_scolaire);
+            $trim = Trimestre::where('annee_scolaire_id', $annee->id)
+                ->where('nom', $request->nom)->first();
+            if ($trim === null) {
+                $trimestre = Trimestre::create([
+                    'nom' => $request->nom,
+                    'date_debut' => $request->date_debut,
+                    'date_fin' => $request->date_fin,
+                ]);
 
-            return redirect()->route('trimestres.index');
-        }else{
-            return redirect('trimestres/create')
-                        ->withErrors([
-                            'nom' => 'Il existe deja un '. $request->nom . ' pour l\'annee scolaire '. $annee->nom
-                        ]);
-                        // ->withInput();
+                $trimestre->annee_scolaire()->associate($annee);
+                $trimestre->save();
+                Logfile::createLog(
+                    'trimestres',
+                    $trimestre->id
+                );
+                //$annee->trimestres()->associate($trimestre);
+
+                return redirect()->route('trimestres.index');
+            } else {
+                return redirect('trimestres/create')
+                    ->withErrors([
+                        'nom' => 'Il existe deja un ' . $request->nom . ' pour l\'annee scolaire ' . $annee->nom
+                    ]);
+                // ->withInput();
+            }
         }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -134,22 +139,27 @@ class TrimestreController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (AnneeScolaire::current()->isActive()) {
 
-        $trimestre = Trimestre::find($id);
+            $trimestre = Trimestre::find($id);
 
-        $trimestre->nom = $request->nom;
-        $trimestre->date_debut = $request->date_debut;
-        $trimestre->date_fin = $request->date_fin;
+            $trimestre->nom = $request->nom;
+            $trimestre->date_debut = $request->date_debut;
+            $trimestre->date_fin = $request->date_fin;
 
-        $annee = AnneeScolaire::find($request->annee_scolaire);
-        $trimestre->annee_scolaire()->associate($annee);
-        $trimestre->save();
+            $annee = AnneeScolaire::find($request->annee_scolaire);
+            $trimestre->annee_scolaire()->associate($annee);
+            $trimestre->save();
 
-        Logfile::updateLog(
-            'trimestres',
-            $trimestre->id
-        );
-        return redirect()->route('trimestres.index');
+            Logfile::updateLog(
+                'trimestres',
+                $trimestre->id
+            );
+            return redirect()->route('trimestres.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -160,14 +170,19 @@ class TrimestreController extends Controller
      */
     public function destroy($id)
     {
-        $trimestre = Trimestre::find($id);
-        $trimestre->delete();
+        if (AnneeScolaire::current()->isActive()) {
+            $trimestre = Trimestre::find($id);
+            $trimestre->delete();
 
-        Logfile::deleteLog(
-            'trimestres',
-            $trimestre->id
-        );
-        return redirect()->route('trimestres.index');
+            Logfile::deleteLog(
+                'trimestres',
+                $trimestre->id
+            );
+            return redirect()->route('trimestres.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     //Search Engine

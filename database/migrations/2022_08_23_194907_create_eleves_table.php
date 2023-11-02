@@ -16,15 +16,28 @@ return new class extends Migration
         Schema::create('eleves', function (Blueprint $table) {
             $table->id();
             $table->string("matricule");
+            $table->string('avatar')->unique()->nullable();
             $table->string("num_permanent");
             $table->string("nom");
             $table->string("prenom");
             $table->string('sexe');
             $table->string("lieu_naissance");
             $table->date("date_naissance");
+            $table->string("nationalite")->default('Congolaise');
             $table->string("nom_pere");
             $table->string("nom_mere");
-            $table->string("adresse");
+            $table->string("prefession_pere")->nullable();
+            $table->string("prefession_mere")->nullable();
+            $table->string("email")->nullable();
+            $table->string("telephone")->nullable();
+            $table->string("medecin_traitant")->nullable();
+            $table->string("allergie_alimentaire")->nullable();
+            $table->string("probleme_sante")->nullable();
+            $table->string("langue_maternelle")->nullable();
+            $table->string("familiers_inscrits_ici")->nullable();
+            $table->string("personne_autorise")->nullable();
+            $table->string("adresse")->nullable();
+            $table->boolean('isActive')->default(1);
             $table->timestamps();
         });
     }

@@ -13,9 +13,16 @@
                 @else
                     <div class="hidden frm-create bg-white rounded-5 shadow-2xl container p-5">
             @endif
+            <div class="container">
+                @if ($errors->any())
+                    @foreach ($errors as $error)
+                        <p class="font-bold text-red-500 text-xl">{{ $error }}</p>
+                    @endforeach
+                @endif
+            </div>
             @if (isset($self))
                 <p class="font-bold text-base"> Modifier le Niveau </p>
-                <form method="PUT" action="{{ route('categorie-cours.update', $self->id) }}">
+                <form method="PUT" action="{{ route('niveaux.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
                     <!-- Email Address -->
@@ -26,8 +33,8 @@
                     </div>
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->numerotation"
-                            required />
+                        <x-input id="nom" class="block mt-1 w-full" type="number" name="numerotation" placeholder="ex: 5"
+                            :value="$self->numerotation" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -40,7 +47,7 @@
                 </form>
             @else
                 <p class="font-bold text-base"> Ajouter in Niveau</p>
-                <form method="POST" action="{{ route('categorie-cours.store') }}">
+                <form method="POST" action="{{ route('niveaux.store') }}">
                     @method('POST')
                     @csrf
                     <!-- Email Address -->
@@ -51,8 +58,8 @@
                     </div>
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Numerotation')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('numerotation')"
-                            required />
+                        <x-input id="nom" class="block mt-1 w-full" type="number" name="numerotation" placeholder="ex: 5"
+                            :value="old('numerotation')" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">

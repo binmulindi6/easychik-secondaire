@@ -4,25 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Eleve;
 // use App\Models\Classe;
-use App\Models\Logfile;
+use App\Models\Examen;
 // use App\Models\Fonction;
+use App\Models\Logfile;
 use App\Models\Periode;
-use App\Models\Trimestre;
 // use Illuminate\Support\Arr;
+use App\Models\Trimestre;
 use App\Models\Evaluation;
-use App\Models\EleveExamen;
-use Illuminate\Http\Request;
+use App\Models\FileUpload;
 // use Illuminate\Http\JsonResponse;
-use App\Models\AnneeScolaire;
+use App\Models\EleveExamen;
 // use App\Http\Middleware\TrimStrings;
-use App\Models\Frequentation;
+use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Date;
 // use Illuminate\Contracts\Support\Jsonable;
+use App\Models\AnneeScolaire;
+use App\Models\Frequentation;
 use App\Models\TypeEvaluation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Date\DateController;
-use App\Models\Examen;
 
 class EleveController extends Controller
 {
@@ -39,22 +41,23 @@ class EleveController extends Controller
     {
         // dd(session()->get('currentYear'));
         // dd($_SESSION['current']);
-        $eleves = Eleve::latest()
-            ->limit(20)
-            ->get();
+        $eleves = Eleve::latest()->limit(20)->get();
         if (DateController::checkYears()) {
             if (Auth::user()->isParent()) {
                 $eleves = Auth::user()->parrain->eleves;
+            }else{
+                $eleves = [];
             }
 
             if (Auth::user()->isEnseignant()) {
                 if (Auth::user()->classe() !== null) {
                     $eleves = Auth::user()->classe->eleves();
-                    // dd($eleves);
+                }else{
+                    $eleves = [];
                 }
             }
 
-            if (Auth::user()->isAdmin()) {
+            if (Auth::user()->isDirecteur() || Auth::user()->isAdmin() || Auth::user()->isSecretaire() || Auth::user()->isManager()) {
                 $eleves = Eleve::latest()
                     ->limit(20)
                     ->get();
@@ -75,8 +78,8 @@ class EleveController extends Controller
                 ->with('last_matricule', $matricule);
         }
         return view('origin')
-        ->with('order', "year")
-        ->with('page_name', "Ecole");
+            ->with('order', "year")
+            ->with('page_name', "Ecole");
     }
 
     /**
@@ -104,6 +107,7 @@ class EleveController extends Controller
             'prenom' => ['required', 'string', 'max:255'],
             'sexe' => ['required', 'string', 'max:255'],
             'lieu_naissance' => ['required', 'string', 'max:255'],
+            'nationalite' => ['required', 'string', 'max:255'],
             'date_naissance' => ['required', 'string', 'max:255'],
             'nom_pere' => ['required', 'string', 'max:255'],
             'nom_mere' => ['required', 'string', 'max:255'],
@@ -118,6 +122,7 @@ class EleveController extends Controller
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'sexe' => $request->sexe,
+            'nationalite' => $request->nationalite,
             'lieu_naissance' => $request->lieu_naissance,
             'date_naissance' => $request->date_naissance,
             'nom_pere' => $request->nom_pere,
@@ -129,7 +134,7 @@ class EleveController extends Controller
             'eleves',
             $eleve->id
         );
-        
+
         return redirect()->route('frequentations.link', $eleve->id);
     }
 
@@ -151,6 +156,7 @@ class EleveController extends Controller
                 'sexe' => ['required', 'string', 'max:255'],
                 'lieu_naissance' => ['required', 'string', 'max:255'],
                 'date_naissance' => ['required', 'string', 'max:255'],
+                'nationalite' => ['string', 'max:255'],
                 'nom_pere' => ['required', 'string', 'max:255'],
                 'nom_mere' => ['required', 'string', 'max:255'],
                 'adresse' => ['required', 'string', 'max:255'],
@@ -223,6 +229,34 @@ class EleveController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function uploadProfile(Request $request)
+    {
+        
+        $request->validate([
+            'image' => ['required','image','max:2048'],
+            'eleve_id' => ['required','string','max:255']
+        ]);
+        
+        $eleve = Eleve::findOrFail($request->eleve_id);
+        $file = $request->file('image');
+
+        $upload = new FileUpload('/profiles/eleves/', ['jpg','jpeg','png']);
+        $oldAvatar = $eleve->avatar;
+        $eleve->avatar = $upload->uploadFile($file);
+        $eleve->save();
+
+        Logfile::updateLog(
+            'eleves',
+            $eleve->id
+        );
+
+        Storage::disk('public')->delete('/profiles/eleves/'.$oldAvatar);
+        return redirect()->route('eleves.show', $eleve->id);
+
+        //laravel 9 file upload system?
+    }
+
+
     public function edit($id)
     {
         $eleves = Eleve::all();
@@ -244,23 +278,34 @@ class EleveController extends Controller
     {
         $eleve = Eleve::find($id);
 
-        $eleve->num_permanent = $request->num_permanent;
-        $eleve->matricule = $request->matricule;
-        $eleve->nom = $request->nom;
-        $eleve->prenom = $request->prenom;
-        $eleve->sexe = $request->sexe;
-        $eleve->lieu_naissance = $request->lieu_naissance;
-        $eleve->date_naissance = $request->date_naissance;
-        $eleve->nom_pere = $request->nom_pere;
-        $eleve->nom_mere = $request->nom_mere;
-        $eleve->adresse = $request->adresse;
+        if ($eleve->isActive()) {
+            $eleve->num_permanent = $request->num_permanent;
+            $eleve->matricule = $request->matricule;
+            $eleve->nom = $request->nom;
+            $eleve->prenom = $request->prenom;
+            $eleve->sexe = $request->sexe;
+            $eleve->lieu_naissance = $request->lieu_naissance;
+            $eleve->date_naissance = $request->date_naissance;
+            $eleve->nationalite = $request->nationalite;
+            $eleve->nom_pere = $request->nom_pere;
+            $eleve->nom_mere = $request->nom_mere;
+            $eleve->adresse = $request->adresse;
 
-        $eleve->save();
-        Logfile::updateLog(
-            'eleves',
-            $eleve->id
-        );
-        return redirect()->route('eleves.index');
+            $eleve->save();
+            Logfile::updateLog(
+                'eleves',
+                $eleve->id
+            );
+
+           if (isset($request->back)) {
+            return redirect()->back();
+           }else{
+            return redirect()->route('eleves.index');
+           }
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -272,12 +317,17 @@ class EleveController extends Controller
     public function destroy($id)
     {
         $eleve = Eleve::find($id);
-        $eleve->delete();
-        Logfile::deleteLog(
-            'eleves',
-            $eleve->id
-        );
-        return redirect()->route('eleves.index');
+        if ($eleve->isActive()) {
+            $eleve->delete();
+            Logfile::deleteLog(
+                'eleves',
+                $eleve->id
+            );
+            return redirect()->route('eleves.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     public function ficheExamen($eleve, $trimestre)
@@ -393,11 +443,30 @@ class EleveController extends Controller
     {
 
 
-        $items = Eleve::where('nom', 'like', '%' . $request->search . '%')
-            ->orWhere('matricule', 'like', '%' . $request->search . '%')
-            ->orWhere('lieu_naissance', 'like', '%' . $request->search . '%')
-            ->orWhere('prenom', 'like', '%' . $request->search . '%')
-            ->get();
+
+            if (Auth::user()->isParent()) {
+                $eleves = Auth::user()->parrain->eleves;
+            }else{
+                $eleves = [];
+            }
+
+            if (Auth::user()->isEnseignant()) {
+                if (Auth::user()->classe() !== null) {
+                    $eleves = Auth::user()->classe->eleves();
+                    dd($eleves);
+                }else{
+                    $eleves = [];
+                }
+            }
+
+            if (Auth::user()->isAdmin() || Auth::user()->isSecretaire() || Auth::user()->isManager()) {
+                $items = Eleve::where('nom', 'like', '%' . $request->search . '%')
+                ->orWhere('matricule', 'like', '%' . $request->search . '%')
+                ->orWhere('lieu_naissance', 'like', '%' . $request->search . '%')
+                ->orWhere('prenom', 'like', '%' . $request->search . '%')
+                ->get();
+            }
+
         $lastmatricule = Eleve::all()->last()->matricule;
         $initial = explode('/', $lastmatricule, -1)[0];
         $middle = str_replace('E', '', $initial);
@@ -477,7 +546,7 @@ class EleveController extends Controller
     public function carte($id)
     {
         $eleve = Eleve::findOrFail($id);
-       return view('eleve.carte')
-       ->with('eleve',$eleve);
+        return view('eleve.carte')
+            ->with('eleve', $eleve);
     }
 }

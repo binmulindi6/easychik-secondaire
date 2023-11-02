@@ -1,7 +1,7 @@
 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
         
     <div class="flex flex-col sm:flex-row gap-5">
-            @if (($pagename == "Employers/Create" || $pagename == "Employers" || $pagename == "Employers/Edit") && Auth::user()->isDirecteur())
+            @if (($pagename == "Employers/Create" || $pagename == "Employers" || $pagename == "Employers/Edit") && (Auth::user()->isDirecteur() || Auth::user()->isManager() || Auth::user()->isAdmin()) )
             <div class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >
             @else
             <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30" >

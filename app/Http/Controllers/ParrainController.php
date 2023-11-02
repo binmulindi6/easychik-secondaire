@@ -7,6 +7,7 @@ use App\Models\Eleve;
 use App\Models\Logfile;
 use App\Models\Parrain;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,14 +23,14 @@ class ParrainController extends Controller
     public function index()
     {
 
-        if(Eleve::checkEleves()){
+        if (Eleve::checkEleves()) {
             $parents = Parrain::latest()->get();
-        // dd($parents);
+            // dd($parents);
 
-        // dd(10);
-        return view('parents.parents')
-            ->with('page_name', $this->page_name)
-            ->with('items', $parents);
+            // dd(10);
+            return view('parents.parents')
+                ->with('page_name', $this->page_name)
+                ->with('items', $parents);
         }
         return view('origin')
             ->with('page_name', 'Parents')
@@ -139,43 +140,48 @@ class ParrainController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nom' => ['required', 'string', 'max:255'],
-            'prenom' => ['required', 'string', 'max:255'],
-            'telephone' => ['required', 'string', 'max:255'],
-        ]);
-
-        $parent = Parrain::findOrFail($id);
-        $parent->nom = $request->nom;
-        $parent->prenom = $request->prenom;
-        $parent->telephone = $request->telephone;
-
-        $parent->save();
-        Logfile::updateLog(
-            'parrains',
-            $parent->id
-        );
-
-        if (isset($request->password)) {
-
+        if (AnneeScolaire::current()->isActive()) {
             $request->validate([
-                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'nom' => ['required', 'string', 'max:255'],
+                'prenom' => ['required', 'string', 'max:255'],
+                'telephone' => ['required', 'string', 'max:255'],
             ]);
 
-            $user = User::where('parrain_id', $id)->first();
-            $user->password = Hash::make($request->password);
-            $user->save();
+            $parent = Parrain::findOrFail($id);
+            $parent->nom = $request->nom;
+            $parent->prenom = $request->prenom;
+            $parent->telephone = $request->telephone;
+
+            $parent->save();
             Logfile::updateLog(
-                'users',
-                $user->id
+                'parrains',
+                $parent->id
             );
-        }
 
-        if (isset($request->back)) {
-            return back();
-        }
+            if (isset($request->password)) {
 
-        return redirect()->route('parents.index');
+                $request->validate([
+                    'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                ]);
+
+                $user = User::where('parrain_id', $id)->first();
+                $user->password = Hash::make($request->password);
+                $user->save();
+                Logfile::updateLog(
+                    'users',
+                    $user->id
+                );
+            }
+
+            if (isset($request->back)) {
+                return back();
+            }
+
+            return redirect()->route('parents.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     /**
@@ -186,27 +192,35 @@ class ParrainController extends Controller
      */
     public function destroy($id)
     {
-        $parent = Parrain::find($id);
-        $user = $parent->user;
-        $user->isActive = 0;
+        if (AnneeScolaire::current()->isActive()) {
+            
+            $parent = Parrain::find($id);
+            $user = $parent->user;
+            $user->isActive = 0;
 
-        $user->save();
-        Logfile::updateLog(
-            'users',
-            $user->id
-        );
+            $user->save();
+            Logfile::updateLog(
+                'users',
+                $user->id
+            );
 
-        $parent->delete();
-        Logfile::deleteLog(
-            'parrains',
-            $user->id
-        );
+            $parent->delete();
+            Logfile::deleteLog(
+                'parrains',
+                $user->id
+            );
 
-        return back();
+            return back();
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
+        
     }
 
     public function changeStatut(Request $request, $id)
     {
+        if (AnneeScolaire::current()->isActive()) {
         $parent = Parrain::find($id);
         $user = User::find($parent->user->id);
 
@@ -222,15 +236,19 @@ class ParrainController extends Controller
         );
 
         return redirect()->route('parents.index');
+        }
+        return redirect()->back()->withErrors([
+            "Vous ne pouvez pas effectuer des operations sur les Archives",
+        ])->onlyInput('nom');
     }
 
     public function linkParentEleve($parent, $eleve)
     {
-        $Parent = Parrain::find($parent);
-        $Student = Eleve::find($eleve);
+        $parent = Parrain::find($parent);
+        $eleve = Eleve::find($eleve);
 
-        $Student->parrain()->associate($Parent);
-        $Student->save();
+        $parent->eleves()->attach($eleve);
+        $parent->save();
 
         return redirect()->route('parents.index');
 

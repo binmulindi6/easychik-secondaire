@@ -73,28 +73,36 @@
                                 name="date_naissance" :value="$self->date_naissance" required />
                         </div>
                         <div class="mt-4 w-full">
-                            <x-label for="formation" :value="__('Formation')" />
-                            <x-input id="formation" class="block mt-1 w-full" type="text" name="formation"
-                                :value="$self->formation" required />
+                            <x-label for="nationalite" :value="__('Nationalite')" />
+                            <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
+                                :value="$self->nationalite" required />
                         </div>
 
                     </div>
                     <div class="flex flex-col md:flex-row md:gap-5">
                         <div class="mt-4 w-full">
+                            <x-label for="formation" :value="__('Formation')" />
+                            <x-input id="formation" class="block mt-1 w-full" type="text" name="formation"
+                                :value="$self->formation" required />
+                        </div>
+                        <div class="mt-4 w-full">
                             <x-label for="diplome" :value="__('Diplome')" />
                             <x-input id="diplome" class="block mt-1 w-full" type="text" name="diplome"
                                 :value="$self->diplome" required />
                         </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row md:gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="niveau_etude" :value="__('Niveau d\'etude ')" />
                             <x-input id="niveau_etude" class="block mt-1 w-full" type="text" name="niveau_etude"
                                 :value="$self->niveau_etude" required />
                         </div>
-                    </div>
-                    <div class="mt-4 w-full">
-                        <x-label for="nom" :value="__('Fonction')" />
-                        <x-select :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction' required>
-                        </x-select>
+                        <div class="mt-4 w-full">
+                            <x-label for="nom" :value="__('Fonction')" />
+                            <x-select :val="$self->fonctions[0]" :collection="$fonctions" class="block mt-1 w-full" name='fonction'
+                                required>
+                            </x-select>
+                        </div>
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -156,13 +164,18 @@
                                 name="date_naissance" :value="old('')" required />
                         </div>
                         <div class="mt-4 w-full">
-                            <x-label for="formation" :value="__('Formation')" />
-                            <x-input id="formation" class="block mt-1 w-full" type="text" name="formation"
-                                :value="old('formation')" required />
+                            <x-label for="nationalite" :value="__('Nationalite')" />
+                            <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
+                                :value="old('nationalite')" required />
                         </div>
 
                     </div>
                     <div class="flex gap-5">
+                        <div class="mt-4 w-full">
+                            <x-label for="formation" :value="__('Formation')" />
+                            <x-input id="formation" class="block mt-1 w-full" type="text" name="formation"
+                                :value="old('formation')" required />
+                        </div>
                         <div class="mt-4 w-full">
                             <x-label for="diplome" :value="__('Diplome')" />
                             <select
@@ -179,6 +192,8 @@
                             {{-- <x-input id="diplome" class="block mt-1 w-full" type="text" name="diplome"
                                 :value="old('diplome')" required /> --}}
                         </div>
+                    </div>
+                    <div class="flex gap-5">
                         <div class="mt-4 w-full">
                             <x-label for="niveau_etude" :value="__('Niveau d\'etude ')" />
                             <select
@@ -195,12 +210,13 @@
                                 {{-- <option value="Doctorat">Doctorat</option> --}}
                             </select>
                             {{-- <x-input id="niveau_etude" class="block mt-1 w-full" type="text" name="niveau_etude"
-                                :value="old('niveau_etude')" required /> --}}
+                        :value="old('niveau_etude')" required /> --}}
                         </div>
-                    </div>
-                    <div class="mt-4 w-full">
-                        <x-label for="nom" :value="__('Fonction')" />
-                        <x-select :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select>
+
+                        <div class="mt-4 w-full">
+                            <x-label for="nom" :value="__('Fonction')" />
+                            <x-select :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select>
+                        </div>
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -246,16 +262,22 @@
                             Sexe</th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                            Nationalité</th>
+                        <th
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Formation</th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Diplome</th>
-                        <th
+                        {{-- <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Niveau d'etude</th>
+                            Niveau d'etude</th> --}}
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Fonction</th>
+                        <th
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                            Etat</th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Action</th>
@@ -285,19 +307,46 @@
                                         {{ $item->sexe }}</td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        {{ $item->nationalite }}</td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         {{ $item->formation }}</td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         {{ $item->diplome }}</td>
-                                    <td
+                                    {{-- <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                        {{ $item->niveau_etude }}</td>
+                                        {{ $item->niveau_etude }}</td> --}}
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         @foreach ($item->fonctions as $fonction)
                                             {{ $fonction->nom . ' ' }}
                                         @endforeach
                                     </td>
+                                    <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                            @if ($item->isActive == '0')
+                                                <form action="{{ route('employers.statut', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="statut" value="{{ $item->isActive }}">
+                                                    <button type="submit"
+                                                        title="Active"class="bg-gradient-to-tl cursor-pointer from-red-500 to-pink-400 px-3.6 text-xss rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                                        Inactif
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('employers.statut', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="statut" value="{{ $item->isActive }}">
+                                                    <button type="submit"
+                                                        title="Desactive"class="bg-gradient-to-tl cursor-pointer from-emerald-500 to-teal-400 px-3.6 text-xss rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                                        Actif
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   text-blue-500 underline">
                                         <div class="flex justify-center gap-4 align-middle">

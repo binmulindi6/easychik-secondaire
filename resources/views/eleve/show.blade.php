@@ -74,23 +74,29 @@
                             :value="$item->date_naissance" required />
                     </div>
                     <div class="mt-4 w-full">
-                        <x-label for="nom_pere" :value="__('Nom du Pere')" />
-                        <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="nom_pere"
-                            :value="$item->nom_pere" required />
+                        <x-label for="nationalite" :value="__('Nationalite')" />
+                        <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
+                            :value="$item->nationalite" required />
+                            <input type="hidden" name="back" value="true">
                     </div>
                     
                 </div>
                 <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                     <div class="mt-4 w-full">
+                        <x-label for="nom_pere" :value="__('Nom du Pere')" />
+                        <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="nom_pere"
+                            :value="$item->nom_pere" required />
+                    </div>
+                    <div class="mt-4 w-full">
                         <x-label for="nom_mere" :value="__('Nom de la Mere')" />
                         <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="nom_mere"
                             :value="$item->nom_mere" required />
                     </div>
-                    <div class="mt-4 w-full">
-                        <x-label for="adresse" :value="__('Adresse')" />
-                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse" :value="$item->adresse"
-                            required />
-                    </div>
+                </div>
+                <div class="mt-4 w-full">
+                    <x-label for="adresse" :value="__('Adresse')" />
+                    <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse" :value="$item->adresse"
+                        required />
                 </div>
                 <div class="flex gap-10">
                     <div class="mt-4">

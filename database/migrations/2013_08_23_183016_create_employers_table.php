@@ -15,13 +15,18 @@ return new class extends Migration
     {
         Schema::create('employers', function (Blueprint $table) {
             $table->id();
+            $table->string('matricule');
+            $table->string('avatar')->unique()->nullable();
             $table->string("nom");
             $table->string("prenom");
             $table->string("sexe");
             $table->date("date_naissance");
+            $table->string("etat_civil")->nullable();
+            $table->string("nationalite")->default('CONGOLAISE');
             $table->string("formation");
             $table->string("diplome");
-            $table->string("niveau_etude");
+            $table->string("niveau_etude")->nullable();
+            $table->boolval("isActive")->default(1);
             $table->timestamps();
         });
     }
