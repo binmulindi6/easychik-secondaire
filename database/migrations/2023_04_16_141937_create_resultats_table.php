@@ -19,14 +19,14 @@ return new class extends Migration
             $table->float('periode2')->default(0);
             $table->float('periode3')->default(0);
             $table->float('periode4')->default(0);
-            $table->float('periode5')->default(0);
-            $table->float('periode6')->default(0);
+            // $table->float('periode5')->default(0);
+            // $table->float('periode6')->default(0);
             $table->float('examen1')->default(0);
             $table->float('examen2')->default(0);
-            $table->float('examen3')->default(0);
+            // $table->float('examen3')->default(0);
             $table->float('trimestre1')->default(0);
             $table->float('trimestre2')->default(0);
-            $table->float('trimestre3')->default(0);
+            // $table->float('trimestre3')->default(0);
             $table->float('annee')->default(0);
             $table->foreignId('frequentation_id')->nullable()->constrained();
             $table->timestamps();

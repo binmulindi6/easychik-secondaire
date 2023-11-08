@@ -168,19 +168,6 @@ btnShowFiche !== null && btnShowFiche.addEventListener('click', ()=>{
 })
 
 
-//joker print
-
-const printable = document.getElementById('printable')
-const btnJokerPrint = document.getElementById('joker-print')
-
-btnJokerPrint !== null && btnJokerPrint.addEventListener('click', ()=>{
-			window.print();
-})
-
-
-
-
-
 //BTN EDIT && SAVE
 btnEdit && btnEdit !== null && btnEdit.forEach(btn => {
     btn.addEventListener('click', ()=>{

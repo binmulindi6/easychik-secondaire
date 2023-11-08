@@ -11,38 +11,6 @@
 @import './perfect-scrollbar.css';
 @import './carte.css';
 
-@media print {
-    body * {
-      visibility: hidden;
-    }
-
-    /* @page{
-      size: a4 portrait;
-      margin: none; 
-    } */
-
-    #printable, #printable * {
-      /* background: red; */
-        /* max-width: 150rem; */
-      visibility: visible;
-      /* height: 3508px; */
-      /* width: 248px; */
-    }
-
-    #my-terminal #my-terminal * {
-      /* background: red; */
-        /* max-width: 150rem; */
-      visibility: visible;
-      /* height: 3508px; */
-      /* width: 248px; */
-    }
-    #printable {
-      /* position: absolute; */
-      /* left: 0; */
-      /* top: 0; */
-    }
-  }
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

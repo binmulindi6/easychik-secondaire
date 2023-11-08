@@ -72,16 +72,16 @@ class Trimestre extends Model
                     ->where('nom', '=' , 'quatrieme periode') 
                     ->first();
      }
-    public function periode5() {
-        return Periode::where('trimestre_id', $this->id)
-                    ->where('nom', '=' , 'cinquieme periode') 
-                    ->first();
-     }
-    public function periode6() {
-        return Periode::where('trimestre_id', $this->id)
-                    ->where('nom', '=' , 'sixieme periode') 
-                    ->first();
-     }
+    // public function periode5() {
+    //     return Periode::where('trimestre_id', $this->id)
+    //                 ->where('nom', '=' , 'cinquieme periode') 
+    //                 ->first();
+    //  }
+    // public function periode6() {
+    //     return Periode::where('trimestre_id', $this->id)
+    //                 ->where('nom', '=' , 'sixieme periode') 
+    //                 ->first();
+    //  }
 
     //link to Examen
     public function examens()

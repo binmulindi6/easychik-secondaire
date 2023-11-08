@@ -31,7 +31,7 @@ class DateController extends Controller
     {
         $year = AnneeScolaire::current();
         // dd($year);
-        if ($year->trimestres()->count() === 3) {
+        if ($year->trimestres()->count() === 2) {
             return true;
         }
         return false;

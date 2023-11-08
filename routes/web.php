@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enseignement;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ParrainController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportController;
+use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TravailController;
 use App\Http\Controllers\ConduiteController;
@@ -36,6 +38,7 @@ use App\Http\Controllers\Admin\EcoleController;
 use App\Http\Controllers\EleveExamenController;
 use App\Http\Controllers\EncadrementController;
 use App\Http\Controllers\ImportExcelController;
+use App\Http\Controllers\EnseignementController;
 use App\Http\Controllers\ModePaiementController;
 use App\Http\Controllers\UniteArticleController;
 use App\Http\Controllers\AnneeScolaireController;
@@ -101,7 +104,8 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     //Globalss Roussoures
     Route::middleware(['isStarter'])->group(function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-
+        Route::get('/data/print', [HomeController::class, 'print'])->name('print');
+        
         Route::resource('annee-scolaires', AnneeScolaireController::class);
         Route::post('annee-scolaires/{id}', [AnneeScolaireController::class, 'changeStatut'])->name('annee-scolaires.statut');
         Route::resource('categorie-cours', CategorieCoursController::class);
@@ -113,6 +117,8 @@ Route::middleware(['auth', 'isActive'])->group(function () {
         Route::get('employers/link', [EmployerController::class, 'linkEmployer'])->name('employers.link');
         Route::post('employers/search', [EmployerController::class, 'search'])->name('employers.search');
         Route::resource('employers', EmployerController::class);
+        Route::get('evaluations/classe/{id}', [EvaluationController::class, 'classe'])->name('evaluations.classe');
+        Route::get('examens/classe/{id}', [ExamenController::class, 'classe'])->name('examens.classe');
         Route::resource('evaluations', EvaluationController::class);
         Route::resource('examens', ExamenController::class);
         Route::resource('fonctions', FonctionController::class);
@@ -122,11 +128,16 @@ Route::middleware(['auth', 'isActive'])->group(function () {
         Route::resource('trimestres', TrimestreController::class);
         Route::resource('type-evaluations', TypeEvaluationController::class);
         Route::post('encadrements/chage-user/{id}', [EncadrementController::class, 'changeUser'])->name('encadrements.change.user');
+        Route::post('enseignements/chage-user/{id}', [EnseignementController::class, 'changeUser'])->name('enseignements.change.user');
         Route::post('encadrements/search', [EncadrementController::class, 'search'])->name('encadrements.search');
         Route::get('encadrements/create/classe/{id}', [UserEncadrement::class, 'createClasse'])->name('encadrements.linkClasse');
+        Route::get('enseignements/create/classe/{id}', [EnseignementController::class, 'createCours'])->name('enseignements.linkCours');
         Route::get('encadrements/create/user/{id}', [UserEncadrement::class, 'create'])->name('encadrements.link');
         Route::resource('encadrements', EncadrementController::class);
+        Route::resource('enseignements', EnseignementController::class);
         Route::resource('niveaux', NiveauController::class);
+        Route::resource('sections', SectionController::class);
+        // Route::resource('sections', SectionController::class);
         Route::get('eleveconduites/create/eleve/{eleve_id}/periode/{periode_id}', [EleveConduiteController::class, 'create'])->name('conduites.link');
         Route::get('eleveconduites/edit/eleve/{eleve_id}/periode/{periode_id}', [EleveConduiteController::class, 'edit'])->name('eleveconduites.edit');
         Route::put('eleveconduites/update/eleve', [EleveConduiteController::class, 'update'])->name('eleveconduites.update');
@@ -152,7 +163,10 @@ Route::middleware(['auth', 'isActive'])->group(function () {
         //Travails
         Route::get('travails', [TravailController::class, 'index'])->name('travails.index');
         //Cotation
+        Route::get('cotations/classes', [CotationController::class, 'index'])->name('cotations.index');
         Route::get('cotations/evaluations', [CotationController::class, 'index'])->name('cotations.index');
+        Route::get('cotations/evaluations/classe/{id}', [CotationController::class, 'classeEvaluation'])->name('cotations.evaluations.classe');
+        Route::get('cotations/examens/classe/{id}', [CotationController::class, 'classeExamen'])->name('cotations.examens.classe');
         Route::get('cotations/examens', [CotationController::class, 'examens'])->name('cotations.examens');
         Route::get('cotations/evaluation/{id}', [CotationController::class, 'showEvaluation'])->name('cotations.evaluations.show');
         Route::get('cotations/examens/{id}', [CotationController::class, 'showExamen'])->name('cotations.examens.show');
@@ -172,6 +186,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
         Route::get('eleves/{eleve}/evaluations/{periode}', [EleveController::class, 'ficheEvaluations'])->name('eleves.evaluations');
         Route::get('eleves/{eleve}/evaluations/edit/{examen}', [EleveEvaluationController::class, 'edit'])->name('eleves.evaluations.edit');
         Route::put('eleves/evaluations/{pivot}', [EleveEvaluationController::class, 'update'])->name('eleves.evaluations.update');
+        Route::post('cours/search', [CoursController::class, 'search'])->name('cours.search');
         Route::post('eleves/search', [EleveController::class, 'search'])->name('eleves.search');
         Route::post('examens/search', [ExamenController::class, 'search'])->name('examens.search');
         Route::post('evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');

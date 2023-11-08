@@ -46,42 +46,42 @@
             @endif
         </div>
 
-        @if ($pagename == 'Trimestres / Create' || $pagename == 'Trimestres' || $pagename == 'Trimestres / Edit')
+        @if ($pagename == 'Semestres / Create' || $pagename == 'Semestres' || $pagename == 'Semestres / Edit')
             <div class="btn-create items-center  flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
                 create-frequentations>
             @else
                 <div class="btn-create items-center hidden flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
                     create-frequentations>
         @endif
-        @if ($pagename != 'Trimestres' && $pagename != 'Trimestres / Create')
+        @if ($pagename != 'Semestres' && $pagename != 'Semestres / Create')
             <a href="{{ route('trimestres.create') }}">
                 <div>
                     <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Trimestre</span>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Semestre</span>
                 </div>
             </a>
         @else
             <div>
                 <i class="relative top-0 leading-normal text-green-500 fa fa-solid fa-plus text-size-sm"></i>
-                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Trimestre</span>
+                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajouter un Semestre</span>
             </div>
         @endif
     </div>
 
     <div class="btn-display items-center flex flex-row overflow-hidden justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30"
         show-frequentations>
-        @if ($pagename != 'Trimestres / Create' && $pagename != 'Trimestres')
+        @if ($pagename != 'Semestres / Create' && $pagename != 'Semestres')
             <a href="{{ route('trimestres.index') }}">
                 <div>
                     <i
                         class="relative top-0 leading-normal text-blue-500  fa fa-solid fa-calendar-days text-size-sm"></i>
-                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Trimestres</span>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Semestres</span>
                 </div>
             </a>
         @else
             <div>
                 <i class="relative top-0 leading-normal text-blue-500 fa fa-solid fa-calendar-days text-size-sm"></i>
-                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Trimestres</span>
+                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Semestres</span>
             </div>
         @endif
     </div>
@@ -175,7 +175,7 @@
         @if (str_contains($pagename, 'Annees'))
             <form class="w-full" action="{{ route('annees.search') }}" method="post">
         @endif
-        @if (str_contains($pagename, 'Trimestres'))
+        @if (str_contains($pagename, 'Semestres'))
             <form class="w-full" action="{{ route('trimestres.search') }}" method="post">
         @endif
         @if (str_contains($pagename, 'Periodes'))

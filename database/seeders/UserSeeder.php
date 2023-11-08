@@ -17,12 +17,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $employer = Employer::find(1);
+        // $employer = Employer::find(1);
 
         User::create([
             'email' => 'admin@easychik.com',
             'password' => Hash::make('admin@easyChik'),
-            'employer_id' => $employer->id,
+            'employer_id' => 1,
             'isActive' => 1,
             'isAdmin' => 1,
         ]);

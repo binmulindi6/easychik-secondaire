@@ -4,9 +4,17 @@
 
     <div class="container flex flex-col justify-between gap-5">
         @if (isset($search))
-            <x-nav-cotation-travails :search="$search" :pagename="$page_name"></x-nav-cotation-travails>
+            @if (isset($classe))
+                <x-nav-cotation-travails :classe="$classe" :search="$search" :pagename="$page_name"></x-nav-cotation-travails>
+            @else
+                <x-nav-cotation-travails :search="$search" :pagename="$page_name"></x-nav-cotation-travails>
+            @endif
         @else
-            <x-nav-cotation-travails :pagename="$page_name"></x-nav-cotation-travails>
+            @if (isset($classe))
+                <x-nav-cotation-travails :classe="$classe" :pagename="$page_name"></x-nav-cotation-travails>
+            @else
+                <x-nav-cotation-travails :pagename="$page_name"></x-nav-cotation-travails>
+            @endif
         @endif
 
         @if (isset($items))
@@ -22,7 +30,7 @@
                 <h6>Choisir un Examen à coter</h6>
             </div>
             @if (count($items) <= 0)
-                <div class="text-red-500 font-semibold text-xl w-full m-auto text-center"> AUCUN EXAMEN A COTERy </div>
+                <div class="text-red-500 font-semibold text-xl w-full m-auto text-center"> AUCUN EXAMEN A COTER </div>
             @else
                 <div class="flex-auto px-0 pt-0 pb-2">
                     <div class="p-0 overflow-x-auto">
@@ -51,37 +59,38 @@
 
                                 @foreach ($items as $item)
                                     @if (Auth::user()->isEnseignant())
-                                        {{-- {{Auth::user()->classe->id}} --}}
-                                        {{-- @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id) --}}
-                                        <tr class="rounded-2xl hover:bg-slate-100">
-                                            <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   ">
-                                                <a href="{{ route('cotations.examens.show', $item->id) }}"
-                                                    class="hover:cursor-pointer hover:text-blue-600">
-                                                    {{ $item->cours->nom }}
-                                            </td>
-                                            </a>
-                                            {{-- <td
+                                        @if (Auth::user()->isProf($item->cours))
+                                            {{-- {{Auth::user()->classe->id}} --}}
+                                            {{-- @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id) --}}
+                                            <tr class="rounded-2xl hover:bg-slate-100">
+                                                <td
+                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   ">
+                                                    <a href="{{ route('cotations.examens.show', $item->id) }}"
+                                                        class="hover:cursor-pointer hover:text-blue-600">
+                                                        {{ $item->cours->nom }}
+                                                </td>
+                                                </a>
+                                                {{-- <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   ">
                                                 {{ $item->cours->classe->nomCourt() }}</td> --}}
-                                            <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                <a href="{{ route('cotations.examens.show', $item->id) }}"
-                                                    class="hover:cursor-pointer hover:text-blue-600">
-                                                    {{ $item->trimestre->nom }}
-                                            </td>
-                                            </a>
-                                            <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                <a href="{{ route('cotations.examens.show', $item->id) }}"
-                                                    class="hover:cursor-pointer hover:text-blue-600">
-                                                    {{ $item->note_max }}
-                                            </td>
-                                            </a>
-                                            <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                {{ $item->date_examen }}</td>
-                                            {{-- <td
+                                                <td
+                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                    <a href="{{ route('cotations.examens.show', $item->id) }}"
+                                                        class="hover:cursor-pointer hover:text-blue-600">
+                                                        {{ $item->trimestre->nom }}
+                                                </td>
+                                                </a>
+                                                <td
+                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                    <a href="{{ route('cotations.examens.show', $item->id) }}"
+                                                        class="hover:cursor-pointer hover:text-blue-600">
+                                                        {{ $item->note_max }}
+                                                </td>
+                                                </a>
+                                                <td
+                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                    {{ $item->date_examen }}</td>
+                                                {{-- <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                                 <div class="flex justify-center gap-4 align-middle">
                                                     <a href="{{ route('examens.edit', $item->id) }}" title="Modifier">
@@ -97,8 +106,9 @@
                                                     </form>
                                                 </div>
                                             </td> --}}
-                                        </tr>
-                                        {{-- @endif --}}
+                                            </tr>
+                                            {{-- @endif --}}
+                                        @endif
                                     @endif
                                 @endforeach
 

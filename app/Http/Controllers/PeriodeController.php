@@ -58,24 +58,44 @@ class PeriodeController extends Controller
                 'date_fin' => ['required', 'string', 'max:255'],
             ]);
 
+            $check1 = null;
+            $trims = AnneeScolaire::current()->trimestres;
+            // dd($trims);
+            foreach ($trims as $trim) {
+                if (
+                    Periode::where('nom', $request->nom)
+                    ->where('trimestre_id', $trim->id)
+                    ->first() !== null
+                ) {
+                    $check1 = 1;
+                }
+            }
+
             //dd($request->nom);
-            $trimestre = Trimestre::find($request->trimestre);
-            $periode = Periode::create([
-                'nom' => $request->nom,
-                'date_debut' => $request->date_debut,
-                'date_fin' => $request->date_fin,
-            ])->trimestre()->associate($trimestre);;
+            if (!$check1) {
+                $trimestre = Trimestre::find($request->trimestre);
+                $periode = Periode::create([
+                    'nom' => $request->nom,
+                    'date_debut' => $request->date_debut,
+                    'date_fin' => $request->date_fin,
+                ])->trimestre()->associate($trimestre);;
 
-            //$periode->trimestre()->associate($trimestre);
-            $periode->save();
-            Logfile::createLog(
-                'periodes',
-                $periode->id
-            );
+                //$periode->trimestre()->associate($trimestre);
+                $periode->save();
+                Logfile::createLog(
+                    'periodes',
+                    $periode->id
+                );
 
-            //$annee->trimestres()->associate($trimestre);
+                //$annee->trimestres()->associate($trimestre);
 
-            return redirect()->route('periodes.index');
+                return redirect()->route('periodes.index');
+            }
+            return redirect('periodes.create')
+                ->withErrors([
+                    'nom' => 'Il existe deja une ' . $request->nom . ' pour l\'annee scolaire ' . AnneeScolaire::current()->nom
+                ]);
+            // ->withInput();
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",

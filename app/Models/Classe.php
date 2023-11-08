@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Cours;
+use App\Models\Frais;
 use App\Models\Examen;
 use App\Models\Niveau;
 use App\Models\Horaire;
+use App\Models\Section;
 use App\Models\Evaluation;
 use App\Models\Encadrement;
 use App\Models\Frequentation;
@@ -25,11 +27,11 @@ class Classe extends Model
 
     public function nomCourt()
     {
-        return $this->niveau->numerotation . 'e ' . $this->nom;
+        return $this->niveau->numerotation . 'e ' . $this->section->abbreviation . " " . $this->nom;
     }
     public function nomComplet()
     {
-        return $this->niveau->nom . ' ' . $this->nom;
+        return $this->niveau->nom . ' ' . $this->section->nom . " " . $this->nom;
     }
 
     //link to the user
@@ -64,11 +66,24 @@ class Classe extends Model
     {
         return $this->belongsTo(Niveau::class);
     }
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
 
     public function cours()
     {
         // dd(10);
-        return $this->niveau->cours;
+        return Cours::where('niveau_id', $this->niveau->id)
+            ->where('section_id', $this->section->id)
+            ->get();
+    }
+    public function frais()
+    {
+        // dd(10);
+        return Frais::where('niveau_id', $this->niveau->id)
+            ->where('section_id', $this->section->id)
+            ->get();
     }
 
     public function evaluations()
@@ -173,8 +188,7 @@ class Classe extends Model
     //     return $evs;
     // }
 
-
-
+    
     public function eleves()
     {
         $annee = AnneeScolaire::current();

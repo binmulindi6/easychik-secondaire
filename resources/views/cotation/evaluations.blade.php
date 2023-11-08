@@ -3,9 +3,17 @@
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
         @if (isset($search))
-            <x-nav-cotation-travails :search="$search" :pagename="$page_name"></x-nav-cotation-travails>
+            @if (isset($classe))
+                <x-nav-cotation-travails :classe="$classe" :search="$search" :pagename="$page_name"></x-nav-cotation-travails>
+            @else
+                <x-nav-cotation-travails :search="$search" :pagename="$page_name"></x-nav-cotation-travails>
+            @endif
         @else
-            <x-nav-cotation-travails :pagename="$page_name"></x-nav-cotation-travails>
+            @if (isset($classe))
+                <x-nav-cotation-travails :classe="$classe" :pagename="$page_name"></x-nav-cotation-travails>
+            @else
+                <x-nav-cotation-travails :pagename="$page_name"></x-nav-cotation-travails>
+            @endif
         @endif
 
 
@@ -51,35 +59,36 @@
                             <tbody>
 
                                 @foreach ($items as $item)
-                                    @if (Auth::user()->isEnseignant() && Auth::user()->classe())
-                                        {{-- @die(Auth::user()->classe->id) --}}
-                                        {{-- @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id) --}}
-                                        <tr class="rounded-2xl hover:bg-slate-100">
-                                            <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                <a href="{{ route('cotations.evaluations.show', $item->id) }}"
-                                                    class="hover:cursor-pointer hover:text-blue-600">
-                                                    {{ $item->type_evaluation->nom . ' ' . $item->cours->nom }}</a>
-                                            </td>
-                                            <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                                <a href="{{ route('cotations.evaluations.show', $item->id) }}"
-                                                    class="hover:cursor-pointer hover:text-blue-600">
-                                                    {{ $item->periode->nom }}</a>
-                                            </td>
-                                            <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                                <a href="{{ route('cotations.evaluations.show', $item->id) }}"
-                                                    class="hover:cursor-pointer hover:text-blue-600">
-                                                    {{ $item->note_max }}</a>
-                                            </td>
-                                            {{-- <td
+                                    @if (Auth::user()->isEnseignant())
+                                        @if (Auth::user()->isProf($item->cours))
+                                            {{-- @die(Auth::user()->classe->id) --}}
+                                            {{-- @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id) --}}
+                                            <tr class="rounded-2xl hover:bg-slate-100">
+                                                <td
+                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                    <a href="{{ route('cotations.evaluations.show', $item->id) }}"
+                                                        class="hover:cursor-pointer hover:text-blue-600">
+                                                        {{ $item->type_evaluation->nom . ' ' . $item->cours->nom }}</a>
+                                                </td>
+                                                <td
+                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                    <a href="{{ route('cotations.evaluations.show', $item->id) }}"
+                                                        class="hover:cursor-pointer hover:text-blue-600">
+                                                        {{ $item->periode->nom }}</a>
+                                                </td>
+                                                <td
+                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                    <a href="{{ route('cotations.evaluations.show', $item->id) }}"
+                                                        class="hover:cursor-pointer hover:text-blue-600">
+                                                        {{ $item->note_max }}</a>
+                                                </td>
+                                                {{-- <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                                 {{ $item->cours->classe->nomCourt() }}</td> --}}
-                                            <td
-                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                                {{ $item->date_evaluation }}</td>
-                                            {{-- <td
+                                                <td
+                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                    {{ $item->date_evaluation }}</td>
+                                                {{-- <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                                 <div class="flex justify-center gap-4 align-middle">
                                                     <a href="{{ route('evaluations.edit', $item->id) }}" title="Modifier">
@@ -95,8 +104,9 @@
                                                     </form>
                                                 </div>
                                             </td> --}}
-                                        </tr>
-                                        {{-- @endif --}}
+                                            </tr>
+                                            {{-- @endif --}}
+                                        @endif
                                     @endif
                                 @endforeach
 

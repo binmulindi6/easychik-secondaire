@@ -1,5 +1,5 @@
-<div class="flex flex-row justify-between gap-4 sm-max:flex-col sm-max:gap-4 z-10">
-    <div class="flex flex-row gap-4 sm-max:justify-center">
+<div class="flex flex-row justify-between items-center gap-4 sm-max:flex-col sm-max:gap-4 z-10">
+    <div class="flex flex-col sm:flex-row gap-4 sm-max:justify-center">
         @if (str_contains('Evaluations', $pagename))
             <div
                 class=" btn-create items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
@@ -32,12 +32,15 @@
                 class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
     @endif
     @if ($pagename != 'Evaluations / Create' && $pagename != 'Evaluations')
-        <a href="{{ route('evaluations.index') }}">
-            <div>
-                <i class="relative top-0 leading-normal text-blue-500 fa fa-regular fa-clipboard text-size-sm"></i>
-                <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Evaluations</span>
-            </div>
+        @if (isset($classe))
+            <a href="{{ route('evaluations.classe', $classe->id) }}">
+            @else
+                <a href="{{ route('evaluations.index') }}">
+        @endif
+        <div>
+            <i class="relative top-0 leading-normal text-blue-500 fa fa-regular fa-clipboard text-size-sm"></i>
+            <span class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Evaluations</span>
+        </div>
         </a>
     @else
         <div>
@@ -79,11 +82,15 @@
             class="btn-display items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
 @endif
 @if ($pagename != 'Examens' && $pagename != 'Examens / Create')
-    <a href="{{ route('examens.index') }}">
-        <div>
-            <i class="relative top-0 leading-normal text-black fa fa-solid fa-clipboard text-size-sm"></i>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Examens</span>
-        </div>
+    @if (isset($classe))
+        <a href="{{ route('examens.classe', $classe->id) }}">
+        @else
+            <a href="{{ route('examens.index') }}">
+    @endif
+    <div>
+        <i class="relative top-0 leading-normal text-black fa fa-solid fa-clipboard text-size-sm"></i>
+        <span class="ml-1 duration-300 opacity-100 pointer-events-none  ease sm-max:text-size-xs">Examens</span>
+    </div>
     </a>
 @else
     <div>
@@ -114,10 +121,16 @@
         <input type="text" name="search" value="{{ $search }}"
             class="pl-9 text-sm focus:shadow-primary-outline  ease sm-max:text-size-xs  w-full leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow"
             placeholder="Search..." />
+            @if (isset($classe))
+                <input type="hidden" name="classe" value="{{$classe->id}}">
+            @endif
     @else
         <input type="text" name="search"
             class="pl-9 text-sm w-full focus:shadow-primary-outline  ease sm-max:text-size-xs  leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow"
             placeholder="Search..." />
+            @if (isset($classe))
+                <input type="hidden" name="classe" value="{{$classe->id}}">
+            @endif
     @endif
     </form>
 </div>

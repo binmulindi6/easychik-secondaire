@@ -24,6 +24,7 @@ class EvaluationController extends Controller
     protected $page_name = 'Evaluations';
     public function index()
     {
+        abort(404);
         $evaluations = Evaluation::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
 
@@ -31,10 +32,12 @@ class EvaluationController extends Controller
             if (Auth::user()->classe()) {
                 $evaluations = Evaluation::currents(Auth::user()->classe->id);
                 $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
+                    ->where('section_id', Auth::user()->classe->section->id)
                     ->orderBy('nom', 'asc')->get();
                 // dd('d');
             } else {
-                $cours = null;
+                $cours = Auth::user()->cours();
+                // dd($cours);
             }
             // $cours = [];
         } else {
@@ -43,13 +46,47 @@ class EvaluationController extends Controller
         // dd($evaluations);
 
         $periodes = Periode::currents();
-        // dd($cours);
         $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
         return view('travails.evaluations')
             ->with('type_evaluations', $type_evaluations)
             ->with('periodes', $periodes)
             ->with('cours', $cours)
             ->with('items', $evaluations)
+            ->with('page_name', $this->page_name);
+    }
+    public function classe($id)
+    {
+
+        $classe = Classe::findOrFail($id);
+        // dd($id);
+        if (Auth::user()->isEnseignant()) {
+            if (Auth::user()->classe() && (Auth::user()->classe->id === $classe->id)) {
+                $evaluations = Evaluation::currents($id);
+                // $cours = Cours::where('niveau_id', $classe->niveau->id)
+                //     ->where('section_id', $classe->section->id)
+                //     ->orderBy('nom', 'asc')->get();
+                $cours = Auth::user()->cours($classe);
+                // dd($cours);
+            } else {
+                $cours = Auth::user()->cours($classe);
+                $evaluations = Evaluation::currents($id);
+                // dd($evaluations);
+            }
+            // $cours = [];
+        } else {
+            abort(401);
+        }
+        // dd($evaluations);
+
+        $periodes = Periode::currents();
+        $type_evaluations = TypeEvaluation::orderBy('nom', 'asc')->get();
+        return view('travails.evaluations')
+            ->with('type_evaluations', $type_evaluations)
+            ->with('periodes', $periodes)
+            ->with('cours', $cours)
+            ->with('classe', $classe)
+            ->with('items', $evaluations)
+            // ->with('page_name', $this->page_name . ' / ' . $classe->nomCourt());
             ->with('page_name', $this->page_name);
     }
 
@@ -79,7 +116,7 @@ class EvaluationController extends Controller
             'date_evaluation' => ['required', 'string', 'max:255'],
         ]);
 
-        if (Auth::user()->classe()) {
+        if (Auth::user()->isEnseignant()) {
         } else {
             abort(401);
         }
@@ -89,8 +126,13 @@ class EvaluationController extends Controller
             $cours = Cours::findOrFail($request->cours);
             $periode = Periode::findOrFail($request->periode);
 
-            //la classe actuelle
-            $classe = Classe::findOrFail(Auth::user()->classe->id);
+
+            if (isset($request->classe_id)) {
+                $classe = Classe::findOrFail($request->classe_id);
+            } else {
+                $classe = Classe::findOrFail(Auth::user()->classe->id);
+            }
+
             //dd($periode->isCurrent());
             $type_evaluation = TypeEvaluation::findOrFail($request->type_evaluation);
 
@@ -129,7 +171,11 @@ class EvaluationController extends Controller
             }
 
 
-            return redirect()->route('evaluations.index');
+            if (isset($request->classe_id)) {
+                return redirect()->route('evaluations.classe', $request->classe_id);
+            } else {
+                return redirect()->route('evaluations');
+            }
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
@@ -165,13 +211,15 @@ class EvaluationController extends Controller
      */
     public function edit($id)
     {
-        $evaluation = Evaluation::find($id);
+        $evaluation = Evaluation::findOrFail($id);
+        $classe = $evaluation->classe;
         $evaluations = Evaluation::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
 
         if (Auth::user()->isEnseignant()) {
-            $evaluations = Evaluation::currents(Auth::user()->classe->id);
-            $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
+            $evaluations = Evaluation::currents($classe->id);
+            $cours = Cours::where('niveau_id', $classe->niveau->id)
+                ->where('section_id', $classe->section->id)
                 ->orderBy('nom', 'asc')->get();
         }
 
@@ -181,6 +229,7 @@ class EvaluationController extends Controller
             ->with('type_evaluations', $type_evaluations)
             ->with('periodes', $periodes)
             ->with('cours', $cours)
+            ->with('classe', $classe)
             ->with('self', $evaluation)
             ->with('page_name', $this->page_name . ' / Edit')
             ->with('items', $evaluations);
@@ -226,7 +275,11 @@ class EvaluationController extends Controller
             );
 
 
-            return redirect()->route('evaluations.index');
+            if (isset($request->classe_id)) {
+                return redirect()->route('evaluations.classe', $request->classe_id);
+            } else {
+                return redirect()->route('evaluations');
+            }
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
@@ -243,6 +296,7 @@ class EvaluationController extends Controller
     {
         $evaluation = Evaluation::find($id);
         $evaluation->delete();
+        Classe::findOrFail($evaluation->classe->id);
 
         if (AnneeScolaire::current()->isActive()) {
             Logfile::deleteLog(
@@ -250,7 +304,7 @@ class EvaluationController extends Controller
                 $evaluation->id
             );
 
-            return redirect()->route('evaluations.index');
+            return redirect()->route('evaluations.classe', $evaluation->classe->id);
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
@@ -264,17 +318,19 @@ class EvaluationController extends Controller
     {
         $items = Evaluation::join('cours', 'cours.id', '=', 'evaluations.cours_id')
             ->where('cours.nom', 'like', '%' . $request->search . '%')
+            ->join('periodes', 'evaluations.periode_id', '=', 'periodes.id')
+            ->join('trimestres', 'trimestres.id', '=', 'periodes.trimestre_id')
+            ->where('trimestres.annee_scolaire_id', AnneeScolaire::current()->id)
             ->select('evaluations.*')
-            // ->join('type_evaluations', 'type_evaluations.id', '=', 'evaluations.type_evaluation_id')
-            // ->where('type_evaluations.nom', 'like', '%' . $request->search . '%')
             ->get();
 
 
         $cours = Cours::orderBy('nom', 'asc')->get();
-
+        $classe = Classe::findOrFail($request->classe);
         if (Auth::user()->isEnseignant()) {
-            $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
-                ->orderBy('nom', 'asc')->get();
+            $cours = Auth::user()->cours($classe);
+        } else {
+            abort(401);
         }
 
         $periodes = Periode::currents();
@@ -284,6 +340,7 @@ class EvaluationController extends Controller
             ->with('search',  $request->search)
             ->with('type_evaluations', $type_evaluations)
             ->with('periodes', $periodes)
+            ->with('classe', $classe)
             ->with('cours', $cours)
             ->with('items', $items);
     }

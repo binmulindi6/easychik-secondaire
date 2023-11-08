@@ -3,9 +3,17 @@
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
         @if (isset($search))
-            <x-nav-travails :search="$search" :pagename="$page_name"></x-nav-travails>
+            @if (isset($classe))
+                <x-nav-travails :search="$search" :pagename="$page_name" :classe="$classe"></x-nav-travails>
+            @else
+                <x-nav-travails :search="$search" :pagename="$page_name"></x-nav-travails>
+            @endif
         @else
-            <x-nav-travails :pagename="$page_name"></x-nav-travails>
+            @if (isset($classe))
+                <x-nav-travails :pagename="$page_name" :classe="$classe"></x-nav-travails>
+            @else
+                <x-nav-travails :pagename="$page_name"></x-nav-travails>
+            @endif
         @endif
 
         @if (isset($item))
@@ -40,6 +48,9 @@
                     <div class="mt-4">
                         <x-label for="periode" :value="__('Periode')" />
                         <x-select :val="$self->periode" :collection="$periodes" class="block mt-1 w-full" name='periode' required>
+                            @if (isset($classe))
+                                <input type='hidden' value="{{ $classe->id }}" name="classe_id" />
+                            @endif
                         </x-select>
                     </div>
                     <div class="mt-4">
@@ -77,9 +88,9 @@
                     <div class="mt-4">
                         <x-label for="cours" :value="__('Cours')" />
                         @if ($cours !== null)
-                        <x-select :collection="$cours" class="block mt-1 w-full" name='cours' required> </x-select>
+                            <x-select :collection="$cours" class="block mt-1 w-full" name='cours' required> </x-select>
                         @else
-                        <x-select :collection="$cours" class="block mt-1 w-full" name='cours' required> </x-select>
+                            <x-select :collection="$cours" class="block mt-1 w-full" name='cours' required> </x-select>
                         @endif
                     </div>
                     <div class="mt-4">
@@ -90,6 +101,9 @@
                     <div class="mt-4">
                         <x-label for="periode" :value="__('Periode')" />
                         <x-select :collection="$periodes" class="block mt-1 w-full" name='periode' required> </x-select>
+                        @if (isset($classe))
+                            <input type='hidden' value="{{ $classe->id }}" name="classe_id" />
+                        @endif
                     </div>
                     <div class="mt-4">
                         <x-label for="date" :value="__('Date de L\'Evaluation')" />
@@ -115,8 +129,12 @@
                     class="display container shadow-2xl p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid rounded-2xl bg-clip-border">
         @endif
 
-        <div class=" flex justify-between p-4 pb-0 mb-0 bg-white rounded-t-2xl">
-            <h6>Evaluations</h6>
+        <div class=" flex justify-between p-4 pb-0 mb-0 bg-white uppercase rounded-t-2xl">
+            @if (isset($classe))
+                <h6> Evaluations : {{ $classe->nomComplet() }}</h6>
+            @else
+                <h6> Evaluations</h6>
+            @endif
         </div>
         @if ($items->count() <= 0)
             <div class="text-red-500 font-semibold text-xl w-full m-auto text-center"> No Data to Display </div>
@@ -151,9 +169,11 @@
 
                             @foreach ($items as $item)
                                 @if (Auth::user()->isEnseignant() && Auth::user()->classe())
-                                {{-- {{Auth::user()->classe->id}} --}}
-                                {{-- {{$item->cours->classe->id}} --}}
-                                    @if (Auth::user()->classe() && $item->cours->niveau->id === Auth::user()->classe->niveau->id)
+                                    {{-- {{Auth::user()->classe->id}} --}}
+                                    {{-- {{$item->cours->classe->id}} --}}
+                                    @if (Auth::user()->classe() &&
+                                            ($item->cours->niveau->id === Auth::user()->classe->niveau->id &&
+                                                $item->cours->section->id === Auth::user()->classe->section->id))
                                         <tr class="rounded-2xl hover:bg-slate-100">
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
@@ -176,13 +196,58 @@
                                                 {{ $item->date_evaluation }}</td>
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
+                                                @if (Auth::user()->isProf($item->cours))
+                                                    <div class="flex justify-center gap-4 align-middle">
+                                                        <a href="{{ route('evaluations.edit', $item->id) }}"
+                                                            title="Modifier">
+                                                            <i class="fa fa-solid fa-pen"></i>
+                                                        </a>
+                                                        <form class="delete-form" class="delete-form"
+                                                            action="{{ route('evaluations.destroy', $item->id) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="delete-btn" type="submit" title="Effacer">
+                                                                <i class="text-red-500 fa fa-solid fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @else
+                                    @if (Auth::user()->isProf($item->cours))
+                                        <tr class="rounded-2xl hover:bg-slate-100">
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                {{ $item->type_evaluation->nom }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->cours->nom }}</td>
+                                            {{-- <td
+                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                            {{ $item->cours->classe->nomCourt() }}
+                                        </td> --}}
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->note_max }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->periode->nom }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                                {{ $item->date_evaluation }}</td>
+                                            <td
+                                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                                 <div class="flex justify-center gap-4 align-middle">
-                                                    <a href="{{ route('evaluations.edit', $item->id) }}" title="Modifier">
+                                                    <a href="{{ route('evaluations.edit', $item->id) }}"
+                                                        title="Modifier">
                                                         <i class="fa fa-solid fa-pen"></i>
-                                                        {{-- {{$item->id}} --}}
                                                     </a>
                                                     <form class="delete-form" class="delete-form"
-                                                        action="{{ route('evaluations.destroy', $item->id) }}" method="post">
+                                                        action="{{ route('evaluations.destroy', $item->id) }}"
+                                                        method="post">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="delete-btn" type="submit" title="Effacer">
@@ -193,45 +258,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                @else
-                                    <tr class="rounded-2xl hover:bg-slate-100">
-                                        <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                            {{ $item->type_evaluation->nom }}</td>
-                                        <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                            {{ $item->cours->nom }}</td>
-                                        <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                            {{-- {{ $item->cours->classe->nomCourt() }} --}}
-                                        </td>
-                                        <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                            {{ $item->note_max }}</td>
-                                        <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                            {{ $item->periode->nom }}</td>
-                                        <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                            {{ $item->date_evaluation }}</td>
-                                        <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
-                                            <div class="flex justify-center gap-4 align-middle">
-                                                <a href="{{ route('evaluations.edit', $item->id) }}" title="Modifier">
-                                                    {{-- <i class="fa fa-solid fa-pen"></i> --}} {{$item->id}}
-                                                </a>
-                                                <form class="delete-form" class="delete-form"
-                                                    action="{{ route('evaluations.destroy', $item->id) }}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="delete-btn" type="submit" title="Effacer">
-                                                        <i class="text-red-500 fa fa-solid fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endif
+                                @endif
                             @endforeach
 
                         </tbody>

@@ -12,6 +12,7 @@ use App\Models\Trimestre;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use App\Models\CategorieCours;
+use App\Models\Section;
 use Illuminate\Support\Facades\DB;
 
 class ClasseController extends Controller
@@ -30,12 +31,14 @@ class ClasseController extends Controller
 
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $niveaux = Niveau::all();
+        $sections = Section::all();
         //$user = User::where('id',)
         // dd($classes[2]);
         // dd($classes[2]->encadrements);
         return view('classe.classes')
             ->with('page_name', $this->page)
             ->with('niveaux', $niveaux)
+            ->with('sections', $sections)
             ->with('items', $classes);
     }
 
@@ -60,6 +63,7 @@ class ClasseController extends Controller
     {
         $request->validate([
             'niveau' => ['required', 'string', 'max:255'],
+            'section' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
         ]);
 
@@ -67,14 +71,16 @@ class ClasseController extends Controller
 
         if (count($classes) < env('SUBSCRIPTION_CLASSES') || env('SUBSCRIPTION') === "GOLD" || env('SUBSCRIPTION') === "GOLD PREMIUM") {
 
-            $niveau = Niveau::find($request->niveau);
-            if(!Classe::where('niveau_id', $request->niveau)->where('nom', $request->nom)->first()){
+            $niveau = Niveau::findOrFail($request->niveau);
+            $section = Section::findOrFail($request->section);
+            if(!Classe::where('niveau_id', $request->niveau)->where('section_id', $request->section)->where('nom', $request->nom)->first()){
             // dd($request->nom , $request->niveau);
             $classe = Classe::create([
                 'nom' => $request->nom,
             ]);
 
             $classe->niveau()->associate($niveau);
+            $classe->section()->associate($section);
 
             $classe->save();
             Logfile::createLog(
@@ -150,8 +156,9 @@ class ClasseController extends Controller
     {
         // $classes = Classe::orderBy('niveau_id', 'asc')->get();
         $classes = Classe::all();
-        $classe = Classe::find($id);
+        $classe = Classe::findOrFail($id);
         $niveaux = Niveau::all();
+        $sections = Section::all();
 
         $users = User::all()->except(['email', 'admin@easychik.com']);
         $currentEncadrement = $classe->currentEncadrement();
@@ -161,6 +168,7 @@ class ClasseController extends Controller
             ->with('page_name', $this->page . ' / Edit')
             ->with('self', $classe)
             ->with('niveaux', $niveaux)
+            ->with('sections', $sections)
             ->with('users', $users)
             ->with('encadrement', $currentEncadrement)
             ->with('items', $classes);
@@ -179,15 +187,17 @@ class ClasseController extends Controller
         $request->validate([
             'niveau' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
-            'user' => ['required', 'string', 'max:255'],
+            'section' => ['required', 'string', 'max:255'],
         ]);
 
         $classe = Classe::find($id);
-        $classe->niveau = $request->niveau;
         $classe->nom = $request->nom;
-
-        $user = User::find($request->user);
-        $classe->user()->associate($user);
+        
+        $section = Section::findOrFail($request->section);
+        $niveau = Niveau::findOrFail($request->niveau);
+        
+        $classe->niveau()->associate($niveau);
+        $classe->section()->associate($section);
 
         $classe->save();
         Logfile::updateLog(
@@ -368,7 +378,7 @@ class ClasseController extends Controller
     {
         $classe = Classe::findOrFail($id);
         $eleves = $classe->eleves();
-        $frais = $classe->niveau->frais;
+        $frais = $classe->frais();
 
         $datas = [];
 

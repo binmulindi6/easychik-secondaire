@@ -42,15 +42,12 @@
                                 Classe : </span>
                             <span
                                 class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">
-                                {{ $data->nomComplet()  }}</span>
-                            {{--<span
-                                class="mb-0 font-sans font-semibold leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">
-                                Non Classés : {{ count($data['non_classe']) }}</span> --}}
+                                {{ $data->nomCourt()  }}</span>
                         </div>
                     </div>
                     <div class="px-3 flex justify-center items-center basis-1/3">
                         <div
-                            class="w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-teal-400 flex justify-center items-center">
+                            class="w-16 h-16 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-teal-400 flex justify-center items-center">
                             <span class="font-bold text-white">{{ $data->nomCourt() }}</span>
                         </div>
                     </div>

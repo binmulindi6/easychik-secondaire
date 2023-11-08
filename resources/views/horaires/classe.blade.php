@@ -157,7 +157,7 @@
             </div>
         </div>
                   <div id="display-echec" class="display-passation shadow-2xl  container p-4 bg-white rounded-5 flex flex-col gap-2 justify-end">
-                    @if (Auth::user()->isEnseignant() || Auth::user()->isDirecteur())
+                    @if (Auth::user()->isEnseignant() || Auth::user()->isDirecteur() || Auth::user()->isManager())
                     <div class="flex justify-end">
                         <x-button id="btn-reussite" class='btn-passation'> Modifier </x-button>
                     </div>
@@ -203,7 +203,11 @@
                                                             @if ((int)$horaire->isRecreation === 1)
                                                                 RECREATION
                                                             @else
-                                                                {{ $horaire->cours->nom }}
+                                                               @if ($horaire->cours !== null)
+                                                               {{ $horaire->cours->nom }}
+                                                               @else
+                                                                   ---
+                                                               @endif
                                                             @endif
                                                         </td>
                                                     @endif

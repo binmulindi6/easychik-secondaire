@@ -43,19 +43,17 @@
                             <x-label for="niveau" :value="__('Niveau de la Classe')" />
                             <x-select :val="$self->niveau" :collection="$niveaux" class="block mt-1 w-full" name='niveau'
                                 required></x-select>
-                            {{-- <x-input id="niveau" class="block mt-1 w-full" type="text" name="niveau" :value="$self->niveau->nom"
-                            placeholder="ex: 1,2,3" required /> --}}
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="section" :value="__('Section')" />
+                            <x-select :val="$self->section" :collection="$sections" class="block mt-1 w-full" name='section'
+                                required></x-select>
                         </div>
                         <div class="mt-4">
                             <x-label for="nom" :value="__('Nom de la Classe')" />
                             <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
                                 :value="$self->nom" placeholder="ex: A,B,C" required />
                         </div>
-                        {{-- <div class="mt-4">
-                        <x-label for="user" :value="__('Enseignant')" />
-                        <x-select :val="$self->user" :collection="$users" class="block mt-1 w-full" name='user' required>
-                        </x-select>
-                    </div> --}}
                         <div class="flex gap-10">
                             <div class="mt-4">
                                 <x-button>Enregistrer</x-button>
@@ -67,41 +65,42 @@
                     </form>
                 </div>
                 @if (isset($encadrement) && $encadrement !== null)
-                <div class="frm-identity hidden">
-                    <span class="font-bold text-base"> Changer l'Encadreur </span>
-                    <form method="POST" action="{{ route('encadrements.change.user', $encadrement->id) }}">
-                        @csrf
-                        {{ method_field('POST') }}
-                        <!-- Email Address -->
-                        <div class="flex flex-between gap-5">
-                            <div class="mt-4 w-full">
-                                <x-label for="matricule" :value="__('Enseignant')" />
-                                <x-select :val="$self->user" :only="'Enseignant'" :collection="$users" class="block mt-1 w-full"
-                                    name='user_id' required> </x-select>
+                    <div class="frm-identity hidden">
+                        <span class="font-bold text-base"> Changer l'Encadreur </span>
+                        <form method="POST" action="{{ route('encadrements.change.user', $encadrement->id) }}">
+                            @csrf
+                            {{ method_field('POST') }}
+                            <!-- Email Address -->
+                            <div class="flex flex-between gap-5">
+                                <div class="mt-4 w-full">
+                                    <x-label for="matricule" :value="__('Enseignant')" />
+                                    <x-select :val="$self->user" :only="'Enseignant'" :collection="$users"
+                                        class="block mt-1 w-full" name='user_id' required> </x-select>
+                                </div>
+                                <div class="mt-4 w-full">
+                                    <x-label for="classe" :value="__('Classe')" />
+                                    <x-input id="nom" class="block mt-1 w-full" type="text" :value="$encadrement->classe->nomComplet()"
+                                        placeholder="ex: A,B,C" required readonly />
+                                    <input type="hidden" name="classe_id" value="{{ $encadrement->classe->id }}">
+                                </div>
                             </div>
-                            <div class="mt-4 w-full">
-                                <x-label for="classe" :value="__('Classe')" />
-                                <x-input id="nom" class="block mt-1 w-full" type="text" :value="$encadrement->classe->nomComplet()"
+                            <div class="mt-4">
+                                <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
+                                <x-input id="nom" class="block mt-1 w-full" type="text" :value="$encadrement->annee_scolaire->nom"
                                     placeholder="ex: A,B,C" required readonly />
-                                <input type="hidden" name="classe_id" value="{{ $encadrement->classe->id }}">
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
-                            <x-input id="nom" class="block mt-1 w-full" type="text" :value="$encadrement->annee_scolaire->nom"
-                                placeholder="ex: A,B,C" required readonly />
-                            <input type="hidden" name="annee_scolaire_id" value="{{ $encadrement->annee_scolaire->id }}">
+                                <input type="hidden" name="annee_scolaire_id"
+                                    value="{{ $encadrement->annee_scolaire->id }}">
 
-                            <div class="flex gap-10">
-                                <div class="mt-4">
-                                    <x-button>Enregistrer</x-button>
+                                <div class="flex gap-10">
+                                    <div class="mt-4">
+                                        <x-button>Enregistrer</x-button>
+                                    </div>
+                                    <div class="mt-4">
+                                        <x-button-annuler class="btn-identity bg-red-500"></x-button-annuler>
+                                    </div>
                                 </div>
-                                <div class="mt-4">
-                                    <x-button-annuler class="btn-identity bg-red-500"></x-button-annuler>
-                                </div>
-                            </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
                 @endif
             @else
                 <p class="font-bold text-base"> Ajouter une Classe</p>
@@ -114,6 +113,10 @@
                     <div class="mt-4">
                         <x-label for="niveau" :value="__('Niveau de la Classe')" />
                         <x-select :collection="$niveaux" class="block mt-1 w-full" name='niveau' required></x-select>
+                    </div>
+                    <div class="mt-4">
+                        <x-label for="section" :value="__('Section')" />
+                        <x-select :collection="$sections" class="block mt-1 w-full" name='section' required></x-select>
                     </div>
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom de la Classe')" />
@@ -152,10 +155,13 @@
                             Niveau </th>
                         <th
                             class="p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                            Section </th>
+                        <th
+                            class="p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Nom</th>
                         <th
                             class="p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Enseignant</th>
+                            Enseignant Titulaire</th>
                         @if (!Auth::user()->isSecretaire())
                             <th
                                 class="p-1px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
@@ -174,6 +180,9 @@
                                 </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                    {{ $item->section->nom }}</td>
+                                <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                     {{ $item->nom }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
@@ -187,10 +196,10 @@
                                     @else
                                         @if (!Auth::user()->isSecretaire())
                                             <a class="p-1  text-blue-500 underline"
-                                                href="{{ route('encadrements.linkClasse', $item->id) }}"> Enseignant
+                                                href="{{ route('encadrements.linkClasse', $item->id) }}"> Enseignant Titulaire
                                                 indisponible </a>
                                         @else
-                                            <span class="p-1  text-blue-500 underline"> Enseignant indisponible </span>
+                                            <span class="p-1  text-blue-500 underline"> Enseignant Titulaire indisponible </span>
                                         @endif
                                     @endif
 
@@ -201,13 +210,13 @@
                                         <div class="flex justify-center gap-4 align-middle">
                                             <a title="Modifier" href="{{ route('classes.edit', $item->id) }}"><i
                                                     class="fa fa-solid fa-pen"></i></a>
-                                            <form class="delete-form" action="{{ route('classes.destroy', $item->id) }}"
+                                            {{-- <form class="delete-form" action="{{ route('classes.destroy', $item->id) }}"
                                                 method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button title="Effacer" type="submit"><i
                                                         class="text-red-500 fa fa-solid fa-trash"></i></button>
-                                            </form>
+                                            </form> --}}
                                         </div>
                                     </td>
                                 @endif

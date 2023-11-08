@@ -21,6 +21,8 @@ class FrequentationEleveController extends Controller
         $annees = AnneeScolaire::orderBy('nom')->get();
         $current = AnneeScolaire::current();
 
+        // dd($classes);
+
         if(Auth::user()->isEnseignant()){
             $classe = Auth::user()->classe;
 

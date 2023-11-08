@@ -23,6 +23,8 @@ class ExamenController extends Controller
     protected $page_name = 'Examens';
     public function index()
     {
+
+        abort(404);
         $examens = Examen::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
 
@@ -45,6 +47,39 @@ class ExamenController extends Controller
         return view('travails.examens')
             ->with('trimestres', $trimestres)
             ->with('cours', $cours)
+            ->with('page_name', $this->page_name)
+            ->with('items', $examens);
+    }
+    public function classe($id)
+    {
+        // $examens = Examen::currents();
+        $cours = Cours::orderBy('nom', 'asc')->get();
+        $classe = Classe::findOrFail($id);
+
+        if (Auth::user()->isEnseignant()) {
+            if (Auth::user()->classe() && (Auth::user()->classe->id === $classe->id)) {
+                $examens = Examen::currents($classe->id);
+                // $cours = Cours::where('niveau_id', $classe->niveau->id)
+                //     ->where('section_id', $classe->section->id)
+                //     ->orderBy('nom', 'asc')->get();
+                $cours = Auth::user()->cours($classe);
+            } else {
+                $cours = Auth::user()->cours($classe);
+                $examens = Examen::currents($classe->id);
+            }
+            // $cours = [];
+        } else {
+            abort(401);
+        }
+
+
+        $trimestres = Trimestre::currents();
+
+        return view('travails.examens')
+            ->with('trimestres', $trimestres)
+            ->with('cours', $cours)
+            ->with('classe', $classe)
+            // ->with('page_name',$this->page_name . ' / ' . $classe->nomCourt())
             ->with('page_name', $this->page_name)
             ->with('items', $examens);
     }
@@ -76,45 +111,52 @@ class ExamenController extends Controller
 
         if (AnneeScolaire::current()->isActive()) {
 
-        if (Auth::user()->classe()) {
-        } else {
-            abort(401);
-        }
+            if (Auth::user()->isEnseignant()) {
+            } else {
+                abort(401);
+            }
 
-        $cours = Cours::findOrFail($request->cours);
-        $trimestre = Trimestre::findOrFail($request->trimestre);
-         //la classe actuelle
-         $classe = Classe::findOrFail(Auth::user()->classe->id);
+            $cours = Cours::findOrFail($request->cours);
+            $trimestre = Trimestre::findOrFail($request->trimestre);
+            //la classe actuelle
+            if (isset($request->classe_id)) {
+                $classe = Classe::findOrFail($request->classe_id);
+            } else {
+                $classe = Classe::findOrFail(Auth::user()->classe->id);
+            }
 
-        $examen = Examen::create([
-            'note_max' => $request->note_max,
-            'date_examen' => $request->date_examen,
-        ]);
+            $examen = Examen::create([
+                'note_max' => $request->note_max,
+                'date_examen' => $request->date_examen,
+            ]);
 
-        $examen->classe()->associate($classe);
-        $examen->cours()->associate($cours);
-        $examen->trimestre()->associate($trimestre);
+            $examen->classe()->associate($classe);
+            $examen->cours()->associate($cours);
+            $examen->trimestre()->associate($trimestre);
 
-        $examen->save();
+            $examen->save();
 
-        Logfile::createLog(
-            'examens',
-            $examen->id
-        );
-
-
-        
-        //eleves de la classe
-        $eleves = $classe->eleves();
-
-        foreach ($eleves as $eleve) {
-            $currentEleve = Eleve::find($eleve->id);
-            $currentEleve->examens()->attach($examen);
-            $currentEleve->save();
-        }
+            Logfile::createLog(
+                'examens',
+                $examen->id
+            );
 
 
-        return redirect()->route('examens.index');
+
+            //eleves de la classe
+            $eleves = $classe->eleves();
+
+            foreach ($eleves as $eleve) {
+                $currentEleve = Eleve::find($eleve->id);
+                $currentEleve->examens()->attach($examen);
+                $currentEleve->save();
+            }
+
+            if (isset($request->classe_id)) {
+                return redirect()->route('examens.classe', $classe->id);
+            } else {
+                return redirect()->route('examens');
+            }
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
@@ -148,18 +190,21 @@ class ExamenController extends Controller
      */
     public function edit($id)
     {
-        $examen = Examen::find($id);
+        $examen = Examen::findOrFail($id);
+        $classe = $examen->classe;
         $examens = Examen::currents();
         $cours = Cours::orderBy('nom', 'asc')->get();
         if (Auth::user()->isEnseignant()) {
-            $examens = Examen::currents(Auth::user()->classe->id);
-            $cours = Cours::where('classe_id', Auth::user()->classe->id)
+            $examens = Examen::currents($classe->id);
+            $cours = Cours::where('niveau_id', $classe->niveau->id)
+                ->where('section_id', $classe->section->id)
                 ->orderBy('nom', 'asc')->get();
         }
         $trimestres = Trimestre::currents();
         return view('travails.examens')
             ->with('trimestres', $trimestres)
             ->with('cours', $cours)
+            ->with('classe', $classe)
             ->with('self', $examen)
             ->with('page_name', $this->page_name . ' / Edit')
             ->with('items', $examens);
@@ -182,25 +227,29 @@ class ExamenController extends Controller
         ]);
         if (AnneeScolaire::current()->isActive()) {
 
-        $cours = Cours::findOrFail($request->cours);
-        $trimestre = Trimestre::findOrFail($request->trimestre);
-        //dd($periode->isCurrent());
+            $cours = Cours::findOrFail($request->cours);
+            $trimestre = Trimestre::findOrFail($request->trimestre);
+            //dd($periode->isCurrent());
 
-        $examen = Examen::find($id);
-        $examen->note_max = $request->note_max;
-        $examen->date_examen = $request->date_examen;
+            $examen = Examen::find($id);
+            $examen->note_max = $request->note_max;
+            $examen->date_examen = $request->date_examen;
 
-        $examen->cours()->associate($cours);
-        $examen->trimestre()->associate($trimestre);
+            $examen->cours()->associate($cours);
+            $examen->trimestre()->associate($trimestre);
 
-        $examen->save();
+            $examen->save();
 
-        Logfile::updateLog(
-            'examens',
-            $examen->id
-        );
+            Logfile::updateLog(
+                'examens',
+                $examen->id
+            );
 
-        return redirect()->route('examens.index');
+            if (isset($request->classe_id)) {
+                return redirect()->route('examens.classe', $request->classe_id);
+            } else {
+                return redirect()->route('examens');
+            }
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
@@ -216,15 +265,15 @@ class ExamenController extends Controller
     public function destroy($id)
     {
         if (AnneeScolaire::current()->isActive()) {
-        $examen = Examen::find($id);
-        $examen->delete();
+            $examen = Examen::find($id);
+            $examen->delete();
 
-        Logfile::deleteLog(
-            'examens',
-            $examen->id
-        );
+            Logfile::deleteLog(
+                'examens',
+                $examen->id
+            );
 
-        return redirect()->route('examens.index');
+            return redirect()->route('examens.classe',$examen->classe->id);
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
@@ -235,16 +284,17 @@ class ExamenController extends Controller
     {
         $items = Examen::join('cours', 'cours.id', '=', 'examens.cours_id')
             ->where('cours.nom', 'like', '%' . $request->search . '%')
+            ->join('trimestres', 'trimestres.id', '=', 'trimestre_id')
+            ->where('trimestres.annee_scolaire_id', AnneeScolaire::current()->id)
             ->select('examens.*')
-            // ->join('trimestres', 'trimestres.id', '=', 'examens.cours_id')
-            // ->where('trimestres.nom', 'like', '%' . $request->search . '%')
             ->get();
 
         $cours = Cours::orderBy('nom', 'asc')->get();
-
+        $classe = Classe::findOrFail($request->classe);
         if (Auth::user()->isEnseignant()) {
-            $cours = Cours::where('niveau_id', Auth::user()->classe->niveau->id)
-                ->orderBy('nom', 'asc')->get();
+            $cours = Auth::user()->cours($classe);
+        }else{
+            abort(401);
         }
 
         $trimestres = Trimestre::currents();
@@ -253,6 +303,7 @@ class ExamenController extends Controller
             ->with('search',  $request->search)
             ->with('trimestres', $trimestres)
             ->with('cours', $cours)
+            ->with('classe', $classe)
             ->with('page_name', $this->page_name)
             ->with('items', $items);
     }

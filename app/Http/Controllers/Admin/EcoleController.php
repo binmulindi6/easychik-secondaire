@@ -30,7 +30,7 @@ class EcoleController extends Controller
                 }
                 return view('origin')->with('order', "periode");
             }
-            return view('origin')->with('order', "trimestre");
+            return view('origin')->with('order', "semestre");
         }
         return view('origin')->with('order', "year");
     }

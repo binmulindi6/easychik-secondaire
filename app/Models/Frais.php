@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Section;
 use App\Models\TypeFrais;
 use App\Models\ModePaiement;
 use App\Models\PaiementFrais;
@@ -35,6 +36,11 @@ class Frais extends Model
     public function niveau()
     {
         return $this->belongsTo(Niveau::class);
+    }
+    
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
     }
     
 }

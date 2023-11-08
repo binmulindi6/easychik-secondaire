@@ -259,7 +259,7 @@ class RapportController extends Controller
                 $holder['filles'] = [];
                 $holder['garcons'] = [];
                 foreach ($freqs as $freq) {
-                    if ($classe->id === $freq->classe->id) {
+                    if (($classe !== null && $freq->classe !== null) &&($classe->id === $freq->classe->id)) {
                         // dd($freq->eleve->sexe);
                         if (isset($freq->eleve) && $freq->eleve->sexe == 'M') {
                             $holder['garcons'][] = $freq;

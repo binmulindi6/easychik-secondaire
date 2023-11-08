@@ -10,6 +10,7 @@ import "./sidenav-burger";
 import "./perfect-scrollbar";
 import "./toExcel";
 import "./myjs";
+import "./print"
 import "./horaire"
 import "./components"
 import './presences'
@@ -22,13 +23,13 @@ import Alpine from "alpinejs";
 import { jsPDF } from "jspdf";
 import $, { contains } from "jquery";
 
-import "./printThis";
+// // import "./printThis";
 
 try {
     window.$ = window.jQuery = require("jquery");
 } catch (e) {}
 
-// window.Alpine = Alpine;
+window.Alpine = Alpine;
 
 const doc = new jsPDF();
 $("#cmd").click(function () {
@@ -38,6 +39,6 @@ $("#cmd").click(function () {
     });
 });
 // const tt = "oklm"
-// var a = new String('oklm');
+var a = new String('oklm');
 
 Alpine.start();

@@ -14,7 +14,7 @@ class TrimestreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    protected $page_name = "Trimestres";
+    protected $page_name = "Semestres";
     public function index()
     {
         $trimestres = Trimestre::currents();
@@ -60,31 +60,36 @@ class TrimestreController extends Controller
 
             //dd($request->nom);
             $annee = AnneeScolaire::find($request->annee_scolaire);
-            $trim = Trimestre::where('annee_scolaire_id', $annee->id)
-                ->where('nom', $request->nom)->first();
-            if ($trim === null) {
-                $trimestre = Trimestre::create([
-                    'nom' => $request->nom,
-                    'date_debut' => $request->date_debut,
-                    'date_fin' => $request->date_fin,
-                ]);
-
-                $trimestre->annee_scolaire()->associate($annee);
-                $trimestre->save();
-                Logfile::createLog(
-                    'trimestres',
-                    $trimestre->id
-                );
-                //$annee->trimestres()->associate($trimestre);
-
-                return redirect()->route('trimestres.index');
-            } else {
-                return redirect('trimestres/create')
-                    ->withErrors([
-                        'nom' => 'Il existe deja un ' . $request->nom . ' pour l\'annee scolaire ' . $annee->nom
+            if (count($annee->trimestres) >= 2) {
+                $trim = Trimestre::where('annee_scolaire_id', $annee->id)
+                    ->where('nom', $request->nom)->first();
+                if ($trim === null) {
+                    $trimestre = Trimestre::create([
+                        'nom' => $request->nom,
+                        'date_debut' => $request->date_debut,
+                        'date_fin' => $request->date_fin,
                     ]);
-                // ->withInput();
+
+                    $trimestre->annee_scolaire()->associate($annee);
+                    $trimestre->save();
+                    Logfile::createLog(
+                        'trimestres',
+                        $trimestre->id
+                    );
+                    //$annee->trimestres()->associate($trimestre);
+
+                    return redirect()->route('trimestres.index');
+                } else {
+                    return redirect('trimestres/create')
+                        ->withErrors([
+                            'nom' => 'Il existe deja un ' . $request->nom . ' pour l\'annee scolaire ' . $annee->nom
+                        ]);
+                    // ->withInput();
+                }
             }
+            return redirect()->back()->withErrors([
+                "Cette Annee Compte déjà 2 Semestres",
+            ])->onlyInput('nom');
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",

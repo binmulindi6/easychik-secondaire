@@ -53,16 +53,6 @@ class UserEncadrement extends Controller
         $userz = User::where('isAdmin', '=', '0')
                     // ->where('isActive', 1)
                     ->where('parrain_id', null)->get();
-        // dd($userz);
-        // $users = array();
-        // foreach($userz as $u){
-        //     if($u->isEnseignant()){
-        //         array_push($users, $u);
-        //     }
-        // }
-        // // dd(10);
-
-        // dd($users);
 
         $classe = Classe::find($id);
         $current = AnneeScolaire::current();

@@ -8,7 +8,10 @@
         @else
             <x-nav-users :pagename="$page_name"> </x-nav-users>
         @endif
-            @if ((str_contains($page_name, 'Create') && count($errors) > 0) || str_contains($page_name, 'Enseignants') || ($page_name === 'Utilisateurs'))
+        @if (
+            (str_contains($page_name, 'Create') && count($errors) > 0) ||
+                str_contains($page_name, 'Enseignants') ||
+                $page_name === 'Utilisateurs')
             <div class="frm-create hidden container p-5 bg-white rounded-5 shadow-2xl ">
             @else
                 <div class="frm-create flex flex-col gap-4 container p-5 bg-white rounded-5 shadow-2xl">
@@ -18,7 +21,7 @@
 
         @if (isset($self))
             <span class="font-semibold text-5">
-            Modifier Utilisateur
+                Modifier Utilisateur
             </span>
             <form method="PUT" action="{{ route('users.update', $self->id) }}">
                 @csrf
@@ -180,7 +183,7 @@
                                             {{ $item->employer->fonctions[0]->nom }}</td>
                                         <td
                                             class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                            @if ($item->classe() === null)
+                                            @if ($item->classe() === null || $item->classe === null)
                                                 <a class="text-blue-500 underline "
                                                     href="{{ route('encadrements.link', $item->id) }}">
                                                     assigner à une classe
@@ -249,16 +252,23 @@
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         @if ($item->isEnseignant())
-                                            @if ($item->classe() == null)
+                                            @if ($item->classe() == null || $item->classe !== null)
                                                 <a class="text-blue-500 underline "
                                                     href="{{ route('encadrements.link', $item->id) }}">
                                                     assigner à une classe
                                                 </a>
                                             @else
-                                                <a class="text-blue-500 underline "
-                                                    href="{{ route('classes.show', $item->classe->id) }}">
-                                                    {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}
-                                                </a>
+                                                @if ($item->classe !== null)
+                                                    <a class="text-blue-500 underline "
+                                                        href="{{ route('classes.show', $item->classe->id) }}">
+                                                        {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}
+                                                    </a>
+                                                @else
+                                                    <a class="text-blue-500 underline "
+                                                        href="{{ route('encadrements.link', $item->id) }}">
+                                                        assigner à une classe
+                                                    </a>
+                                                @endif
                                             @endif
                                         @else
                                             ---

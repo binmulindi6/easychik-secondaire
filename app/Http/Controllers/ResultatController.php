@@ -87,7 +87,7 @@ class ResultatController extends Controller
         $note = 0;
         $max = 0;
         $bulletin = $eleve->bulletinExamen($trimestre_id);
-        //dd($bulletin);
+        // dd($bulletin);
 
         // return view('classe.resultats-examens')
         return view('eleve.resultats-examen')
@@ -177,6 +177,8 @@ class ResultatController extends Controller
             }
         }
 
+        // dd(($resultat1 > 1 || $resultat2 > 1 || $resultatTrim > 1 || $resultatExam > 1));
+        // dd($data1,$data2);
 
 
         // return view('classe.trimestres')
@@ -249,29 +251,29 @@ class ResultatController extends Controller
         //trimestres
         $trimestre1 = $annee->trimestre1();
         $trimestre2 = $annee->trimestre2();
-        $trimestre3 = $annee->trimestre3();
+        // $trimestre3 = $annee->trimestre3();
 
         //periodes
         $p1 = $trimestre1->periodes[0];
         $p2 = $trimestre1->periodes[1];
         $p3 = $trimestre2->periodes[0];
         $p4 = $trimestre2->periodes[1];
-        $p5 = $trimestre3->periodes[0];
-        $p6 = $trimestre3->periodes[1];
+        // $p5 = $trimestre3->periodes[0];
+        // $p6 = $trimestre3->periodes[1];
 
         //fiches par Trimestres
         $examenT1 = $eleve->bulletinExamen($trimestre1->id);
         $examenT2 = $eleve->bulletinExamen($trimestre2->id);
         // dd($examenT2);
-        $examenT3 = $eleve->bulletinExamen($trimestre3->id);
+        // $examenT3 = $eleve->bulletinExamen($trimestre3->id);
 
         //fiches par periodes
         $periode1 = $eleve->bulletinPeriode($p1->id);
         $periode2 = $eleve->bulletinPeriode($p2->id);
         $periode3 = $eleve->bulletinPeriode($p3->id);
         $periode4 = $eleve->bulletinPeriode($p4->id);
-        $periode5 = $eleve->bulletinPeriode($p5->id);
-        $periode6 = $eleve->bulletinPeriode($p6->id);
+        // $periode5 = $eleve->bulletinPeriode($p5->id);
+        // $periode6 = $eleve->bulletinPeriode($p6->id);
 
         //dd("here we go again...");
 
@@ -296,15 +298,15 @@ class ResultatController extends Controller
         $noteTri2 = 0;
         $maxTri2 = 0;
 
-        ///Trimestre 1
-        $noteP5 = 0;
-        $maxP5 = 0;
-        $noteP6 = 0;
-        $maxP6 = 0;
-        $noteExT3 = 0;
-        $maxExT3 = 0;
-        $noteTri3 = 0;
-        $maxTri3 = 0;
+        // ///Trimestre 1
+        // $noteP5 = 0;
+        // $maxP5 = 0;
+        // $noteP6 = 0;
+        // $maxP6 = 0;
+        // $noteExT3 = 0;
+        // $maxExT3 = 0;
+        // $noteTri3 = 0;
+        // $maxTri3 = 0;
 
 
         //conduites
@@ -320,12 +322,12 @@ class ResultatController extends Controller
         $cond4 = EleveConduite::where('eleve_id', '=', $eleve->id)
             ->where('periode_id', '=', $p4->id)
             ->first();
-        $cond5 = EleveConduite::where('eleve_id', '=', $eleve->id)
-            ->where('periode_id', '=', $p5->id)
-            ->first();
-        $cond6 = EleveConduite::where('eleve_id', '=', $eleve->id)
-            ->where('periode_id', '=', $p6->id)
-            ->first();
+        // $cond5 = EleveConduite::where('eleve_id', '=', $eleve->id)
+        //     ->where('periode_id', '=', $p5->id)
+        //     ->first();
+        // $cond6 = EleveConduite::where('eleve_id', '=', $eleve->id)
+        //     ->where('periode_id', '=', $p6->id)
+        //     ->first();
 
         ///RESULTATA
         $resultat = Frequentation::findByEleveAndAnneeScolaire($eleve->id, $annee->id)->resultat;
@@ -334,9 +336,9 @@ class ResultatController extends Controller
 
         // dd($resultat);
 
-        if ($examenT1 != null && $periode1 != null && $periode2 != null && $examenT2 != null && $periode3 != null && $periode4 != null && $examenT3 != null && $periode5 != null && $periode6 != null) {
+        if ($examenT1 != null && $periode1 != null && $periode2 != null && $examenT2 != null && $periode3 != null && $periode4 != null ) {
             // dd($examenT1->count(), $periode1->count() , $examenT2->count() , $periode2->count() , $periode1->count() , $periode2->count());
-            if ($examenT1->count() != $periode1->count() || $examenT1->count() != $periode2->count() || $periode1->count() != $periode2->count() || $examenT2->count() != $periode3->count() || $examenT2->count() != $periode4->count() || $periode3->count() != $periode4->count() || $examenT3->count() != $periode5->count() || $examenT3->count() != $periode6->count() || $periode5->count() != $periode6->count()) {
+            if ($examenT1->count() != $periode1->count() || $examenT1->count() != $periode2->count() || $periode1->count() != $periode2->count() || $examenT2->count() != $periode3->count() || $examenT2->count() != $periode4->count() || $periode3->count() != $periode4->count()) {
                 // dd(101);
                 $examenT1 = null;
                 $periode1 = null;
@@ -393,17 +395,17 @@ class ResultatController extends Controller
             ->with('maxTri2', $maxTri2)
 
 
-            ->with('examenT3', $examenT3)
-            ->with('periode5', $periode5)
-            ->with('periode6', $periode6)
-            ->with('maxP5', $maxP5)
-            ->with('noteP5', $noteP5)
-            ->with('maxP6', $maxP6)
-            ->with('noteP6', $noteP6)
-            ->with('maxExT3', $maxExT3)
-            ->with('noteExT3', $noteExT3)
-            ->with('noteTri3', $noteTri3)
-            ->with('maxTri3', $maxTri3)
+            // ->with('examenT3', $examenT3)
+            // ->with('periode5', $periode5)
+            // ->with('periode6', $periode6)
+            // ->with('maxP5', $maxP5)
+            // ->with('noteP5', $noteP5)
+            // ->with('maxP6', $maxP6)
+            // ->with('noteP6', $noteP6)
+            // ->with('maxExT3', $maxExT3)
+            // ->with('noteExT3', $noteExT3)
+            // ->with('noteTri3', $noteTri3)
+            // ->with('maxTri3', $maxTri3)
 
 
             ->with('page_name', 'Bulletin Annuel' . ' ' . $eleve->nomComplet() . ' ' . $eleve->classe(false) . " " . $annee->nom)
@@ -413,15 +415,15 @@ class ResultatController extends Controller
             ->with('cond2', $cond2)
             ->with('cond3', $cond3)
             ->with('cond4', $cond4)
-            ->with('cond5', $cond5)
-            ->with('cond6', $cond6)
+            // ->with('cond5', $cond5)
+            // ->with('cond6', $cond6)
             //periodes
             ->with('p1', $p1)
             ->with('p2', $p2)
             ->with('p3', $p3)
             ->with('p4', $p4)
-            ->with('p5', $p5)
-            ->with('p6', $p6)
+            // ->with('p5', $p5)
+            // ->with('p6', $p6)
 
             //resultats
             //periodes
@@ -429,18 +431,18 @@ class ResultatController extends Controller
             ->with('resultatP2', $resultat->periode2)
             ->with('resultatP3', $resultat->periode3)
             ->with('resultatP4', $resultat->periode4)
-            ->with('resultatP5', $resultat->periode5)
-            ->with('resultatP6', $resultat->periode6)
+            // ->with('resultatP5', $resultat->periode5)
+            // ->with('resultatP6', $resultat->periode6)
 
             //exams
             ->with('resultatEx1', $resultat->examen1)
             ->with('resultatEx2', $resultat->examen2)
-            ->with('resultatEx3', $resultat->examen3)
+            // ->with('resultatEx3', $resultat->examen3)
 
             //trimes
             ->with('resultatTri1', $resultat->trimestre1)
             ->with('resultatTri2', $resultat->trimestre2)
-            ->with('resultatTri3', $resultat->trimestre3)
+            // ->with('resultatTri3', $resultat->trimestre3)
 
             // ->
 
@@ -472,12 +474,12 @@ class ResultatController extends Controller
             case 'QUATRIEME PERIODE':
                 $resultat->periode4 = $data;
                 break;
-            case 'CINQUIME PERIODE':
-                $resultat->periode5 = $data;
-                break;
-            case 'SIXIEME PERIODE':
-                $resultat->periode6 = $data;
-                break;
+            // case 'CINQUIME PERIODE':
+            //     $resultat->periode5 = $data;
+            //     break;
+            // case 'SIXIEME PERIODE':
+                // $resultat->periode6 = $data;
+                // break;
         }
         // dd(10);
         $resultat->save();
@@ -499,12 +501,12 @@ class ResultatController extends Controller
             case 'QUATRIEME PERIODE':
                 $data = $resultat->periode4;
                 break;
-            case 'CINQUIEME PERIODE':
-                $data = $resultat->periode5;
-                break;
-            case 'SIXIEME PERIODE':
-                $data = $resultat->periode6;
-                break;
+            // case 'CINQUIEME PERIODE':
+            //     $data = $resultat->periode5;
+            //     break;
+            // case 'SIXIEME PERIODE':
+            //     $data = $resultat->periode6;
+            //     break;
         }
 
         return $data;
@@ -515,18 +517,18 @@ class ResultatController extends Controller
         // dd($trimestre);
         // $data ;
         switch ($trimestre->nom) {
-            case 'PREMIER TRIMESTRE':
+            case 'PREMIER SEMESTRE':
                 $data = $resultat->examen1;
                 $trim = $resultat->trimestre1;
                 break;
-            case 'DEUXIEME TRIMESTRE':
+            case 'DEUXIEME SEMESTRE':
                 $data = $resultat->examen2;
                 $trim = $resultat->trimestre2;
                 break;
-            case 'TROISIEME TRIMESTRE':
-                $data = $resultat->examen3;
-                $trim = $resultat->trimestre3;
-                break;
+            // case 'TROISIEME TRIMESTRE':
+            //     $data = $resultat->examen3;
+            //     $trim = $resultat->trimestre3;
+            //     break;
         }
 
         return [$data, $trim];
@@ -535,18 +537,18 @@ class ResultatController extends Controller
     public function fillTrimestre($resultat, $trimestre, $exa, $trim)
     {
         switch ($trimestre->nom) {
-            case 'PREMIER TRIMESTRE':
+            case 'PREMIER SEMESTRE':
                 $resultat->examen1 = $exa;
                 $resultat->trimestre1 = $trim;
                 break;
-            case 'DEUXIEME TRIMESTRE':
+            case 'DEUXIEME SEMESTRE':
                 $resultat->examen2 = $exa;
                 $resultat->trimestre2 = $trim;
                 break;
-            case 'TROISIEME TRIMESTRE':
-                $resultat->examen3 = $exa;
-                $resultat->trimestre3 = $trim;
-                break;
+            // case 'TROISIEME TRIMESTRE':
+            //     $resultat->examen3 = $exa;
+            //     $resultat->trimestre3 = $trim;
+            //     break;
         }
 
         $resultat->save();
@@ -616,14 +618,14 @@ class ResultatController extends Controller
             "periode2" => ['required', 'string', 'max:255'],
             "periode3" => ['required', 'string', 'max:255'],
             "periode4" => ['required', 'string', 'max:255'],
-            "periode5" => ['required', 'string', 'max:255'],
-            "periode6" => ['required', 'string', 'max:255'],
+            // "periode5" => ['required', 'string', 'max:255'],
+            // "periode6" => ['required', 'string', 'max:255'],
             "examen1" => ['required', 'string', 'max:255'],
             "examen2" => ['required', 'string', 'max:255'],
-            "examen3" => ['required', 'string', 'max:255'],
+            // "examen3" => ['required', 'string', 'max:255'],
             "trimestre1" => ['required', 'string', 'max:255'],
             "trimestre2" => ['required', 'string', 'max:255'],
-            "trimestre3" => ['required', 'string', 'max:255'],
+            // "trimestre3" => ['required', 'string', 'max:255'],
             "annee" => ['required', 'string', 'max:255'],
             "decision" => ['required', 'string', 'max:255'],
         ]);
@@ -641,15 +643,15 @@ class ResultatController extends Controller
         $resultat->periode2 = $request->periode2;
         $resultat->periode3 = $request->periode3;
         $resultat->periode4 = $request->periode4;
-        $resultat->periode5 = $request->periode5;
-        $resultat->periode6 = $request->periode6;
+        // $resultat->periode5 = $request->periode5;
+        // $resultat->periode6 = $request->periode6;
         // $resultat->periode7 = $request->periode7;
         $resultat->examen1 = $request->examen1;
         $resultat->examen2 = $request->examen2;
-        $resultat->examen3 = $request->examen3;
+        // $resultat->examen3 = $request->examen3;
         $resultat->trimestre1 = $request->trimestre1;
         $resultat->trimestre2 = $request->trimestre2;
-        $resultat->trimestre3 = $request->trimestre3;
+        // $resultat->trimestre3 = $request->trimestre3;
         $resultat->annee = $request->annee;
         $resultat->decision = $request->decision;
         // dd($resultat);

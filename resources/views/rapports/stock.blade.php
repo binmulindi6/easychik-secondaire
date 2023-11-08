@@ -103,6 +103,9 @@
                             <th class="px-6 py-3 text-center">
                                 Sorties
                             </th>
+                            <th class="px-6 py-3 text-center">
+                                Stock
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -120,6 +123,8 @@
 
                                     <td class="px-6 border-b text-center font-semibold text-slate-900">
                                         {{ $frais['sorties'] . " " . $frais['unite'] }}</td>
+                                    <td class="px-6 border-b text-center font-semibold text-slate-900">
+                                        {{ ($frais['entrees'] - $frais['sorties']) . " " . $frais['unite']}}</td>
                                 </tr>
                                 {{-- <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 </tr> --}}

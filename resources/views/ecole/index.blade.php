@@ -11,7 +11,7 @@
                 <span class="font-bold text-2xl"> {{$annee ? $annee->nom  : "Not Defined" }} </span>
             </div>
             <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col gap-1">
-                <span class="font-base text-sm text-slate-500 uppercase">Trimestre en cours:</span>
+                <span class="font-base text-sm text-slate-500 uppercase">Semestre en cours:</span>
                 <span class="font-bold text-2xl"> {{$trimestre ? $trimestre->nom : "Not Defined" }} </span>
             </div>
             <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col gap-1">

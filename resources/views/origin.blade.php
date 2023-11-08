@@ -6,12 +6,12 @@
         alert("VEUILLEZ CREER UNE ANNEE SCOLAIRE POUR CONTINUER UTILISER L'APPLICATION");
         window.location.replace("{{route('annee-scolaires.create')}}");
     }
-    if (order === 'trimestre') {
-        alert("VEUILLEZ CREER 3 TRIMESTRES POUR L'ANNEE SCOLAIRE EN COURS POUR CONTINUER UTILISER L'APPLICATION");
+    if (order === 'semestre') {
+        alert("VEUILLEZ CREER 2 SEMESTRES POUR L'ANNEE SCOLAIRE EN COURS POUR CONTINUER UTILISER L'APPLICATION");
         window.location.replace("{{route('trimestres.create')}}");
     }
     if (order === 'periode') {
-        alert("VEUILLEZ CREER 6 PERIODES POUR L'ANNEE SCOLAIRE EN COURS POUR CONTINUER UTILISER L'APPLICATION");
+        alert("VEUILLEZ CREER 2 PERIODES POUR L'ANNEE SCOLAIRE EN COURS POUR CONTINUER UTILISER L'APPLICATION");
         window.location.replace("{{route('periodes.create')}}");
     }
     if (order === 'Eleves') {

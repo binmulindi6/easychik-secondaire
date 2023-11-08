@@ -102,7 +102,7 @@
                         </tr>
                         <tr class="">
                             <td class=" uppercase text-10">CLASSE : <span id="prenom" class="font-bold"></span>
-                                {{ $eleve->classe() && $eleve->classe()->nomComplet() }}
+                                {{ $eleve->classe() ? $eleve->classe()->nomComplet() : "Pas Inscrit"}}
                             </td>
                         </tr>
                         <tr class="">

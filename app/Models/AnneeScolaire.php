@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Trimestre;
 use App\Models\Encadrement;
+use App\Models\Enseignement;
 use App\Models\Frequentation;
 use App\Models\EmployerPresence;
 use Illuminate\Database\Eloquent\Model;
@@ -82,7 +83,7 @@ class AnneeScolaire extends Model
     {
         if (DateController::checkTrimestres()) {
             return Trimestre::where('annee_scolaire_id', $this->id)
-                ->where('nom', '=', 'PREMIER TRIMESTRE')
+                ->where('nom', '=', 'PREMIER SEMESTRE')
                 ->first();
         } else {
             // dd('Trimestres Indisponible, Veuillez contacter la direction');
@@ -93,7 +94,7 @@ class AnneeScolaire extends Model
     {
         if (DateController::checkTrimestres()) {
             return Trimestre::where('annee_scolaire_id', $this->id)
-                ->where('nom', '=', 'DEUXIEME TRIMESTRE')
+                ->where('nom', '=', 'DEUXIEME SEMESTRE')
                 ->first();
         } else {
             // dd('Trimestres Indisponible, Veuillez contacter la direction');
@@ -104,7 +105,7 @@ class AnneeScolaire extends Model
     {
         if (DateController::checkTrimestres()) {
             return Trimestre::where('annee_scolaire_id', $this->id)
-                ->where('nom', '=', 'TROISIEME TRIMESTRE')
+                ->where('nom', '=', 'TROISIEME SEMESTRE')
                 ->first();
         // } else {
             // dd('Trimestres Indisponible, Veuillez contacter la direction');
@@ -115,5 +116,9 @@ class AnneeScolaire extends Model
     public function encadrements()
     {
         return $this->hasMany(Encadrement::class);
+    }
+    public function enseignements()
+    {
+        return $this->hasMany(Enseignement::class);
     }
 }

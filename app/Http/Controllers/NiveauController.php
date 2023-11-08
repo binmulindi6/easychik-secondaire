@@ -47,8 +47,6 @@ class NiveauController extends Controller
             'numerotation' => ['required', 'string', 'max:255']
         ]);
 
-        // dd(10);
-
         Logfile::createLog(
             'niveaux',
             Niveau::create([
@@ -66,9 +64,18 @@ class NiveauController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        if ($request->_method === "PUT") {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255'],
+                'numerotation' => ['required', 'string', 'max:255']
+            ]);
+
+            return $this->update($request,$id);
+        }
+
+        abort(404);
     }
 
     /**
@@ -79,7 +86,13 @@ class NiveauController extends Controller
      */
     public function edit($id)
     {
-        //
+        $niveaux = Niveau::latest()->get();
+        $niveau = Niveau::findOrFail($id);
+
+        return view('enseignement.niveaux')
+                ->with('self', $niveau)
+                ->with('items', $niveaux)
+                ->with('page_name', $this->page_name . ' / Edit');
     }
 
     /**
@@ -91,7 +104,16 @@ class NiveauController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $niveau = Niveau::findOrFail($id);
+        $niveau->nom = $request->nom;
+        $niveau->numerotation = $request->numerotation;
+        $niveau->save();
+        Logfile::updateLog(
+            'niveaux',
+            $niveau->id
+        );
+
+        return redirect()->route('niveaux.index');
     }
 
     /**

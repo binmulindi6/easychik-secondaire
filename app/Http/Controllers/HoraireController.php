@@ -9,6 +9,7 @@ use App\Models\Classe;
 use App\Models\Horaire;
 use App\Models\Logfile;
 use Illuminate\Http\Request;
+use App\Models\AnneeScolaire;
 use Illuminate\Support\Facades\Auth;
 
 class HoraireController extends Controller

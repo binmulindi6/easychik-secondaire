@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logfile;
 use App\Models\UniteArticle;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,20 @@ class UniteArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => ['required', 'string', 'max:255'],
+            'abbreviation' => ['required', 'string', 'max:255']
+        ]);
+
+        Logfile::createLog(
+            'categorie_articles',
+            UniteArticle::create([
+                'nom' => $request->nom,
+                'abbreviation' => $request->nom
+            ])->id
+        );
+
+        return back();
     }
 
     /**

@@ -34,8 +34,8 @@
                     @if ($self->isEnseignant())
                         @if ($self->classe())
                             <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
-                                <a class="hover:text-blue-700 " href="{{ route('classes.show', $self->classe->id) }}">
-                                    {{ $self->classe->nomComplet() }}
+                                <a class="hover:text-blue-700 uppercase " href="{{ route('classes.show', $self->classe->id) }}">
+                                    Titulaire : {{ $self->classe->nomComplet() }}
                                 </a>
                             </p>
                         @else

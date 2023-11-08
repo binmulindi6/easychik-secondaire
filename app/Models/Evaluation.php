@@ -53,13 +53,13 @@ class Evaluation extends Model
                ->join('trimestres', 'trimestres.id', 'periodes.trimestre_id')
                ->where('trimestres.annee_scolaire_id', AnneeScolaire::current()->id)
                ->select('evaluations.*')
+               ->where('classe_id', $classe_id)
                ->orderBy('date_evaluation', 'desc')
                ->get()
          :
             Evaluation::join('periodes', 'periodes.id', 'periode_id')
                ->join('trimestres', 'trimestres.id', 'periodes.trimestre_id')
                ->where('trimestres.annee_scolaire_id', AnneeScolaire::current()->id)
-               ->where('classe_id', $classe_id)
                ->select('evaluations.*')
                ->orderBy('date_evaluation', 'desc')
                ->get();

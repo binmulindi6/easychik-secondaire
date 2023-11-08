@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string("formation");
             $table->string("diplome");
             $table->string("niveau_etude")->nullable();
-            $table->boolval("isActive")->default(1);
+            $table->boolean("isActive")->default(1);
             $table->timestamps();
         });
     }

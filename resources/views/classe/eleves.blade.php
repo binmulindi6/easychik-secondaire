@@ -1,134 +1,113 @@
 @extends('layouts.admin')
 
-<style>
-    body {
-        /* display: none; */
-    }
-
-    /* @page{
-                size: a4 portrait;
-                /* margin: 500px;
-                /* display: none; */
-    /* background: #000; */
-    /*} */
-
-    @media print {
-
-        /* @page{
-                    size: a4 portrait;
-                    margin: 1%;
-                } */
-        body {
-            background: #fff;
-        }
-
-        #printable {
-            /* min-width: 23cm; */
-            margin: auto;
-            transform: scale(0.90);
-            position: fixed;
-            top: 0;
-            left: 0;
-            /* transform-origin: auto 0; */
-            /* padding: 10px; */
-            /* display: none; */
-            /* background: #000; */
-        }
-
-    }
-</style>
-
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
         <x-back :link="route('classes.show', $classe->id)"></x-back>
-       <x-classe-profile-header :data="$classe" :print="true"></x-classe-profile-header>
-        
-    @if (isset($items))
-        @if ($page_name == 'Eleves/Edit' || $page_name == 'Eleves/Create')
-            <div
-                class="display container p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
-            @else
-                <div
-                    class="display container  p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
-        @endif
+        <x-classe-profile-header :data="$classe" :print="true"></x-classe-profile-header>
 
-        {{-- <div class=" flex justify-between pb-0 mb-0 bg-white rounded-t-2xl">
+        @if (isset($items))
+            @if ($page_name == 'Eleves/Edit' || $page_name == 'Eleves/Create')
+                <div
+                    class="display container p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
+                @else
+                    <div
+                        class="display container  p-4  relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
+            @endif
+
+            {{-- <div class=" flex justify-between pb-0 mb-0 bg-white rounded-t-2xl">
             <h6>Eleves</h6>
         </div> --}}
-        <div class="flex-auto px-0 pt-0 pb-2">
-            <div class="pt-5 overflow-x-auto">
-                <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                    <caption class="font-bold text-center uppercase align-middle bg-transparent shadow-none text-xl border-b-solid tracking-none whitespace-nowrap ">
-                         liste des eleves 
-                    </caption>
-                    <caption class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xl border-b-solid tracking-none whitespace-nowrap ">
-                         classe de {{ $classe->nomComplet()}}
-                    </caption>
-                    <thead class="align-bottom">
-                        <th
-                            class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Matricule </th>
-                        <th
-                            class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Nom, Prenom </th>
-                        <th
-                            class="px-1 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Sexe </th>
-                        <th
-                            class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            Lieu, Date de Naissance </th>
-                        {{-- <th
+            <div class="flex-auto px-0 pt-0 pb-2">
+                <div class="pt-5 overflow-x-auto">
+                    <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                        <caption
+                            class="font-bold text-center uppercase align-middle bg-transparent shadow-none text-xl border-b-solid tracking-none whitespace-nowrap ">
+                            liste des eleves
+                        </caption>
+                        <caption
+                            class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xl border-b-solid tracking-none whitespace-nowrap ">
+                            classe de {{ $classe->nomComplet() }}
+                        </caption>
+                        <thead class="align-bottom">
+                            <th
+                                class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                N° </th>
+                            <th
+                                class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Matricule </th>
+                            <th
+                                class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Num Permanent </th>
+                            <th
+                                class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Nom, Prenom </th>
+                            <th
+                                class="px-1 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Sexe </th>
+                            <th
+                                class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Lieu, Date de Naissance </th>
+                            {{-- <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Nom du Pere </th>
                         <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Nom de la Mere </th> --}}
-                        {{-- <th
+                            {{-- <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Adresse </th> --}}
-                        {{-- <th
+                            {{-- <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Classe </th> --}}
-                        {{-- @if ( Auth::user()->isAdmin() || !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
+                            {{-- @if (Auth::user()->isAdmin() || !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
                             <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap "
                                 colspan="2">action</th>
                         @endif --}}
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
 
-                        @foreach ($items as $item)
-                            <tr class=" rounded-2xl hover:bg-slate-100">
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                    @if (isset($parent) && $parent != null)
-                                        <a href="{{ route('parent-eleve.link', [$parent,$item->id]) }}">
+                            @foreach ($items as $index => $item)
+                                <tr class=" rounded-2xl hover:bg-slate-100">
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                        {{ $index + 1 }}</td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                        <a class="hover:text-blue-600 hover:font-semibold"
+                                            href="{{ route('eleves.show', $item->id) }}">
                                             {{ $item->matricule }}
                                         </a>
-                                    @else
-                                        <a href="{{ route('eleves.show', $item->id) }}">
-                                            {{ $item->matricule }}
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                        <a class="hover:text-blue-600 hover:font-semibold"
+                                            href="{{ route('eleves.show', $item->id) }}">
+                                            {{ $item->num_permanent }}
                                         </a>
-                                    @endif
-                                </td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->nom . ' ' . $item->prenom }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->sexe }}</td>
-                                <td
-                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    {{ $item->lieu_naissance . ', ' . $item->date_naissance }}</td>
-                                {{-- <td
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                        <a class="hover:text-blue-600 hover:font-semibold"
+                                            href="{{ route('eleves.show', $item->id) }}">
+                                            {{ $item->nom . ' ' . $item->prenom }}
+                                        </a>
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                        {{ $item->sexe }}</td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                        {{ $item->lieu_naissance . ', ' . $item->date_naissance }}</td>
+                                    {{-- <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->nom_pere }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->nom_mere }}</td> --}}
-                                {{-- <td
+                                    {{-- <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     {{ $item->adresse }}</td> --}}
-                                {{-- <td
+                                    {{-- <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                     @if ($item->classe(false) === null)
                                         <a class="text-blue-500 underline"
@@ -138,7 +117,7 @@
                                         {{ $item->classe(false) }}
                                     @endif
                                 </td> --}}
-                        {{-- @if ( Auth::user()->isAdmin()|| !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
+                                    {{-- @if (Auth::user()->isAdmin() || !Auth::user()->isEnseignant() || !Auth::user()->isParent() || !isset($parent) || $parent === null)
                             <td
                                 class="p-1 text-size-sm hidden text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                 <div class="flex justify-center gap-4 align-middle">
@@ -156,13 +135,13 @@
                                 </div>
                             </td>
                         @endif --}}
-                        </tr>
-    @endforeach
+                                </tr>
+                            @endforeach
 
-    </tbody>
-    </table>
-    </div>
-    </div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
     </div>
     @endif
     </div>

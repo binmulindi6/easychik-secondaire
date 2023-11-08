@@ -35,7 +35,7 @@
                         <div class="mt-4 w-full">
                             <x-label for="matricule" :value="__('Matricule')" />
                             <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
-                                :value="$self->matricule" required readonly />
+                                :value="$self->matricule" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="num_permanent" :value="__('Numero Permanent')" />
@@ -92,7 +92,7 @@
                             <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
                                 :value="$self->nationalite" required />
                         </div>
-                        
+
 
                     </div>
                     <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
@@ -109,8 +109,8 @@
                     </div>
                     <div class="mt-4 w-full">
                         <x-label for="adresse" :value="__('Adresse')" />
-                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
-                            :value="$self->adresse" required />
+                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse" :value="$self->adresse"
+                            required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -142,7 +142,7 @@
                         <div class="mt-4 w-full">
                             <x-label for="matricule" :value="__('Matricule')" />
                             <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
-                                :value="$last_matricule" required readonly />
+                                :value="$last_matricule" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="num_permanent" :value="__('Numero Permanent')" />
@@ -321,7 +321,7 @@
                                 </a>
                         @endif
                         <td class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                            @if ($item->currentFrequentation() === null)
+                            @if ($item->currentFrequentation() && $item->currentFrequentation()->classe === null)
                                 @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur() || Auth::user()->isManager())
                                     <a class="text-blue-500 underline"
                                         href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe
@@ -330,7 +330,7 @@
                                     Pas Inscrit(e)
                                 @endif
                             @else
-                                {{ $item->currentFrequentation()->classe->nomCourt() }}
+                                {{ $item->currentFrequentation() ? ($item->currentFrequentation()->classe ? $item->currentFrequentation()->classe->nomCourt() : 'Classe Indisponible') : 'Classe Indisponible' }}
                             @endif
                         </td>
                         @if (!Auth::user()->isParent())

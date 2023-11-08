@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Frais;
 use App\Models\Niveau;
 use App\Models\Logfile;
+use App\Models\Section;
 use App\Models\TypeFrais;
 use App\Models\ModePaiement;
 use Illuminate\Http\Request;
@@ -31,12 +32,14 @@ class FraisController extends Controller
 
         $types = TypeFrais::all();
         $niveaux = Niveau::all();
+        $sections = Section::all();
         $modes = ModePaiement::all();
 
         return view('frais.frais')
             ->with('items', $frais)
             ->with('types', $types)
             ->with('niveaux', $niveaux)
+            ->with('sections', $sections)
             ->with('modes', $modes)
             ->with('page_name', $this->page_name);
     }
@@ -66,55 +69,119 @@ class FraisController extends Controller
             'mode_paiement' => ['required', 'string', 'max:255'],
             'type_frais' => ['required', 'string', 'max:255'],
             'niveau' => ['required', 'string', 'max:255'],
+            'section' => ['required', 'string', 'max:255'],
         ]);
-        // dd(10);
+        // dd($request->niveau && $request->section);
 
-        if ($request->niveau === 'all') {
+        if ($request->niveau === 'all' && $request->section === 'all') {
 
             $niveaux = Niveau::all();
+            $sections = Section::all();
 
             foreach ($niveaux as $niveau) {
-                $frais = Frais::create([
-                    'nom' => $request->nom,
-                    'montant' => $request->montant,
-                ]);
+                foreach ($sections as $section) {
+                    $frais = Frais::create([
+                        'nom' => $request->nom,
+                        'montant' => $request->montant,
+                    ]);
 
-                $type = TypeFrais::find($request->type_frais);
-                $mode = ModePaiement::find($request->mode_paiement);
+                    $type = TypeFrais::find($request->type_frais);
+                    $mode = ModePaiement::find($request->mode_paiement);
 
-                $frais->type_frais()->associate($type);
-                $frais->niveau()->associate($niveau);
-                $frais->mode_paiement()->associate($mode);
+                    $frais->type_frais()->associate($type);
+                    $frais->niveau()->associate($niveau);
+                    $frais->section()->associate($section);
+                    $frais->mode_paiement()->associate($mode);
 
-                $frais->save();
+                    $frais->save();
 
-                Logfile::createLog(
-                    'frais',
-                    $frais->id
-                );
+                    Logfile::createLog(
+                        'frais',
+                        $frais->id
+                    );
+                }
             }
         } else {
-            $frais = Frais::create([
-                'nom' => $request->nom,
-                'montant' => $request->montant,
-            ]);
 
-            $type = TypeFrais::find($request->type_frais);
-            $niveau = Niveau::find($request->niveau);
-            $mode = ModePaiement::find($request->mode_paiement);
+            if ($request->niveau === 'all' && $request->section !== 'all') {
+                $niveaux = Niveau::all();
+                $section = Section::findOrFail($request->section);
 
-            ///
+                foreach ($niveaux as $niveau) {
+                    // foreach ($sections as $section) {
+                    $frais = Frais::create([
+                        'nom' => $request->nom,
+                        'montant' => $request->montant,
+                    ]);
 
-            $frais->type_frais()->associate($type);
-            $frais->niveau()->associate($niveau);
-            $frais->mode_paiement()->associate($mode);
+                    $type = TypeFrais::find($request->type_frais);
+                    $mode = ModePaiement::find($request->mode_paiement);
 
-            $frais->save();
+                    $frais->type_frais()->associate($type);
+                    $frais->niveau()->associate($niveau);
+                    $frais->section()->associate($section);
+                    $frais->mode_paiement()->associate($mode);
 
-            Logfile::createLog(
-                'frais',
-                $frais->id
-            );
+                    $frais->save();
+
+                    Logfile::createLog(
+                        'frais',
+                        $frais->id
+                    );
+                    // }
+                }
+            } else {
+                if ($request->niveau !== 'all' && $request->section === 'all') {
+                    $niveau = Niveau::findOrFail($request->niveau);
+                    $sections = Section::all();
+
+                    // foreach ($niveaux as $niveau) {
+                    foreach ($sections as $section) {
+                        $frais = Frais::create([
+                            'nom' => $request->nom,
+                            'montant' => $request->montant,
+                        ]);
+
+                        $type = TypeFrais::find($request->type_frais);
+                        $mode = ModePaiement::find($request->mode_paiement);
+
+                        $frais->type_frais()->associate($type);
+                        $frais->niveau()->associate($niveau);
+                        $frais->section()->associate($section);
+                        $frais->mode_paiement()->associate($mode);
+
+                        $frais->save();
+
+                        Logfile::createLog(
+                            'frais',
+                            $frais->id
+                        );
+                        // }
+                    }
+                } else {
+                    $frais = Frais::create([
+                        'nom' => $request->nom,
+                        'montant' => $request->montant,
+                    ]);
+
+                    $type = TypeFrais::find($request->type_frais);
+                    $niveau = Niveau::find($request->niveau);
+                    $mode = ModePaiement::find($request->mode_paiement);
+
+                    ///
+
+                    $frais->type_frais()->associate($type);
+                    $frais->niveau()->associate($niveau);
+                    $frais->mode_paiement()->associate($mode);
+
+                    $frais->save();
+
+                    Logfile::createLog(
+                        'frais',
+                        $frais->id
+                    );
+                }
+            }
         }
         return redirect()->route('frais.index');
         // return "succes";

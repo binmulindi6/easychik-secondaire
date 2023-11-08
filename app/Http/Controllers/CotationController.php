@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classe;
 use App\Models\Cours;
 use App\Models\Eleve;
 use App\Models\EleveEvaluation;
@@ -24,25 +25,48 @@ class CotationController extends Controller
 
     public function index()
     {
-            $classe = Auth::user()->classe;
-            $evaluations =  $classe->currentEvaluations();
-            // rsort($evaluations);
+        $classes = Auth::user()->classes();
+        // $evaluations =  $classe->currentEvaluations();
+        // rsort($evaluations);
 
-            return view('cotation.evaluations')
+        return view('cotation.classe')
             // ->with('items', $evaluations)
-            ->with('items', $evaluations)
+            ->with('classes', $classes)
             ->with('page_name', $this->page_name . " Evaluations");
+    }
+    public function classeEvaluation($id)
+    {
+        $classe = Classe::findOrFail($id);
+        $evaluations =  $classe->currentEvaluations();
+        // dd($evaluations);
 
+        return view('cotation.evaluations')
+            ->with('items', $evaluations)
+            ->with('classe', $classe)
+            ->with('page_name', $this->page_name . " Evaluations");
+    }
+    public function classeExamen($id)
+    {
+        $classe = Classe::findOrFail($id);
+        $examens = $classe->currentExamens();
+        // rsort($examens);
+
+        return view('cotation.examens')
+            // ->with('items', $evaluations)
+            ->with('items', $examens)
+            ->with('classe', $classe)
+            ->with('page_name', $this->page_name . " Examens");
     }
     public function examens()
     {
-            $classe = Auth::user()->classe;
-            $examens = $classe->currentExamens();
-            // rsort($examens);
+        $classe = Auth::user()->classe;
+        $examens = $classe->currentExamens();
+        // rsort($examens);
 
-            return view('cotation.examens')
+        return view('cotation.examens')
             // ->with('items', $evaluations)
             ->with('items', $examens)
+            ->with('classe', $classe)
             ->with('page_name', $this->page_name . " Examens");
     }
 
@@ -53,33 +77,38 @@ class CotationController extends Controller
             // ->join('type_evaluations', 'type_evaluations.id', '=', 'evaluations.type_evaluation_id')
             // ->where('type_evaluations.nom', 'like', '%' . $request->search . '%')
             ->get();
-
+        $classe = Classe::findOrFail($request->classe_id);
         return view('cotation.evaluations')
             ->with('page_name', $this->page_name . " Evaluations / Search")
             ->with('search',  $request->search)
+            ->with('classe', $classe)
             ->with('items', $items);
     }
 
     public function showEvaluation($id)
     {
         $evaluation = Evaluation::findOrFail($id);
+        $classe = $evaluation->classe;
         $eleveEvaluations = EleveEvaluation::getByEvaluation($evaluation->id);
 
         // dd($eleveEvaluations[0]);
 
         return view('cotation.showEvaluation')
-        ->with('evaluation', $evaluation)
-        ->with('items', $eleveEvaluations)
-        ->with('page_name', $this->page_name . " Evaluations " . $evaluation->cours->nom);
+            ->with('evaluation', $evaluation)
+            ->with('items', $eleveEvaluations)
+            ->with('classe', $classe)
+            ->with('page_name', $this->page_name . " Evaluations " . $evaluation->cours->nom);
     }
     public function showExamen($id)
     {
         $examen = Examen::findOrFail($id);
+        $classe = $examen->classe;
         $eleveExamens = EleveExamen::getByExamen($examen->id);
 
         return view('cotation.showExamen')
             ->with('examen', $examen)
             ->with('items', $eleveExamens)
+            ->with('classe', $classe)
             ->with('page_name', $this->page_name . " Examen " . $examen->cours->nom);
     }
 
@@ -94,10 +123,11 @@ class CotationController extends Controller
             // ->where('trimestres.nom', 'like', '%' . $request->search . '%')
             ->get();
 
-
+        $classe = Classe::findOrFail($request->classe_id);
         return view('cotation.examens')
             ->with('page_name', $this->page_name . " Examens / Search")
             ->with('search',  $request->search)
+            ->with('classe', $classe)
             ->with('page_name', $this->page_name)
             ->with('items', $items);
     }
@@ -115,24 +145,24 @@ class CotationController extends Controller
         $eleveEvaluations = EleveEvaluation::getByEvaluation($evaluation->id);
 
         $data = [];
-        foreach($eleveEvaluations as $eleveEvaluation){
-            foreach($items as $eleve){
-                if($eleveEvaluation->eleve_id === $eleve->id){
+        foreach ($eleveEvaluations as $eleveEvaluation) {
+            foreach ($items as $eleve) {
+                if ($eleveEvaluation->eleve_id === $eleve->id) {
                     $data[] = $eleveEvaluation;
                 }
             }
         }
 
         // dd($data);
-    
-            // dd($eleveEvaluations[0]);
-    
-            return view('cotation.showEvaluation')
+        $classe = Classe::findOrFail($request->classe_id);
+        // dd($eleveEvaluations[0]);
+
+        return view('cotation.showEvaluation')
             ->with('evaluation', $evaluation)
             ->with('items', $data)
+            ->with('classe', $classe)
             ->with('search',  $request->search)
             ->with('page_name', $this->page_name . " Evaluations " . $evaluation->cours->nom);
-
     }
     public function searchExamenEleve(Request $request, $id)
     {
@@ -147,25 +177,26 @@ class CotationController extends Controller
         $eleveExamens = EleveExamen::getByExamen($examen->id);
 
         $data = [];
-
+        $classe = Classe::findOrFail($request->classe_id);
+        $classe = Classe::findOrFail($request->classe_id);
         // dd($eleveExamens[0]);
-        foreach($eleveExamens as $eleveExamen){
-            foreach($items as $eleve){
-                if($eleveExamen->eleve_id === $eleve->id){
+        foreach ($eleveExamens as $eleveExamen) {
+            foreach ($items as $eleve) {
+                if ($eleveExamen->eleve_id === $eleve->id) {
                     $data[] = $eleveExamen;
                 }
             }
         }
 
         // dd($data);
-    
-            // dd($eleveEvaluations[0]);
-    
-            return view('cotation.showExamen')
+
+        // dd($eleveEvaluations[0]);
+
+        return view('cotation.showExamen')
             ->with('examen', $examen)
             ->with('items', $data)
+            ->with('classe', $classe)
             ->with('search',  $request->search)
             ->with('page_name', $this->page_name . " Evaluations " . $examen->cours->nom);
-
     }
 }

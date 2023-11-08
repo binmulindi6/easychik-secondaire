@@ -62,7 +62,7 @@
                         </caption>
                         <caption
                             class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xl border-b-solid tracking-none whitespace-nowrap ">
-                            classe de {{ $classe->nomComplet() }}
+                            {{-- classe de {{$classe &&  $classe->nomComplet() }} --}}
                         </caption>
                         <thead class="align-bottom">
                             <th

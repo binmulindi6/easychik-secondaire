@@ -33,8 +33,9 @@ class Eleve extends Model
 
      ];
 
-     public function nomComplet(){
-          return $this->nom . " " . $this->prenom; 
+     public function nomComplet()
+     {
+          return $this->nom . " " . $this->prenom;
      }
 
      //class() is already taken by the system, that why i use classe
@@ -43,15 +44,17 @@ class Eleve extends Model
      {
           if (!$this->frequentations->isEmpty()) {
                $frequentations = $this->frequentations;
-               foreach($frequentations as $frequentation){
-                    if($frequentation->annee_scolaire !== null){
+               foreach ($frequentations as $frequentation) {
+                    if ($frequentation->annee_scolaire !== null) {
                          if ($frequentation->annee_scolaire->isCurrent()) {
                               $classe_id = $frequentation->classe_id;
                               $classe = Classe::find($classe_id);
-                              if ($instance) {
-                                   return $classe;
+                              if ($classe !== null) {
+                                   if ($instance) {
+                                        return $classe;
+                                   }
+                                   return $classe->niveau->numerotation . "e " . $classe->nom;;
                               }
-                              return $classe->niveau->numerotation . "e " . $classe->nom;;
                          }
                     }
                }
@@ -68,8 +71,8 @@ class Eleve extends Model
 
                //dd($annee->nom, AnneeScolaire::current()->nom, $annee->isCurrent());
                // dd($frequentations[1]->annee_scolaire->isCurrent());
-               foreach($frequentations as $frequentation){
-                    if($frequentation->annee_scolaire !== null){
+               foreach ($frequentations as $frequentation) {
+                    if ($frequentation->annee_scolaire !== null) {
                          if ($frequentation->annee_scolaire->isCurrent()) {
                               return $frequentation;
                          }
@@ -88,8 +91,8 @@ class Eleve extends Model
                $next = AnneeScolaire::next();
                //dd($annee->nom, AnneeScolaire::current()->nom, $annee->isCurrent());
                // dd($frequentations[1]->annee_scolaire->isCurrent());
-               foreach($frequentations as $frequentation){
-                    if($frequentation->annee_scolaire !== null){
+               foreach ($frequentations as $frequentation) {
+                    if ($frequentation->annee_scolaire !== null) {
                          if ($frequentation->annee_scolaire->id === $next->id) {
                               return $frequentation;
                          }
@@ -106,8 +109,8 @@ class Eleve extends Model
 
      //bulletinPeriode() to get points from periode
      public function bulletinPeriode($periode)
-     {   
-          $niveau = $this->classe()->niveau; 
+     {
+          $niveau = $this->classe()->niveau;
 
           $bulletin = Evaluation::where('evaluations.periode_id', '=', $periode)
                ->join('eleve_evaluation', 'evaluation_id', '=', "evaluations.id")
@@ -115,7 +118,7 @@ class Eleve extends Model
                ->join('cours', 'cours.id', '=', 'evaluations.cours_id')
                ->where('cours.niveau_id', $niveau->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_evaluation.note_obtenu) as note'), DB::raw('SUM(evaluations.note_max) as max'), 'cours.max_periode as total')
-               ->groupBy('cours.id','cours.nom','cours.max_periode')
+               ->groupBy('cours.id', 'cours.nom', 'cours.max_periode')
                ->get();
 
           $bulletin->isEmpty() ? $bulletin = null : "";
@@ -126,9 +129,9 @@ class Eleve extends Model
 
      //bulletinPeriode() to get points from periode
      public function bulletinExamen($trimestre)
-     {    
+     {
 
-          $niveau = $this->classe()->niveau; 
+          $niveau = $this->classe()->niveau;
 
           $bulletin = Examen::where('examens.trimestre_id', '=', $trimestre)
                ->join('eleve_examen', 'examen_id', '=', "examens.id")
@@ -136,7 +139,7 @@ class Eleve extends Model
                ->join('cours', 'cours.id', '=', 'examens.cours_id')
                ->where('cours.niveau_id', $niveau->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_examen.note_obtenu) as note'), DB::raw('SUM(examens.note_max) as max'), 'cours.max_examen as total')
-               ->groupBy('cours.id','cours.nom','cours.max_examen')
+               ->groupBy('cours.id', 'cours.nom', 'cours.max_examen')
                ->get();
 
           $bulletin->isEmpty() ? $bulletin = null : "";
@@ -146,11 +149,11 @@ class Eleve extends Model
 
      public  function isActive()
      {
-         if ($this->isActive === 1) {
-             return true;
-         } else {
-             return false;
-         }
+          if ($this->isActive === 1) {
+               return true;
+          } else {
+               return false;
+          }
      }
 
      public function frequentations()
@@ -170,43 +173,52 @@ class Eleve extends Model
           return $this->belongsToMany(Examen::class)->withPivot('note_obtenu');
      }
 
-     public function conduites(){
+     public function conduites()
+     {
           return $this->hasMany(EleveConduite::class);
      }
 
-     public function parrains(){
+     public function parrains()
+     {
           return $this->belongsToMany(Parrain::class);
      }
 
-     public static function getLastMatricule(){
-          
-          // dd(count(Eleve::all()));
-          if(count(Eleve::all()) > 0){
-               $lastmatricule = Eleve::all()->last()->matricule;
+     public static function getLastMatricule()
+     {
+
+          $lastmatricule = Eleve::all()->last()->matricule;
+          if (count(Eleve::all()) > 0 && (count(explode('/', $lastmatricule, -1)) > 0)) {
                $initial = explode('/', $lastmatricule, -1)[0];
                $middle = str_replace('E', '', $initial);
-               $matricule = (intval($middle) + 1) < 10 ?  'E0' . intval($middle) + 1 . '/' . date('Y') : 'E' . intval($middle) + 1 . '/' . date('Y') ;
-          }else{
-               $matricule = 'E01/' . date('Y');
+               $matricule = (intval($middle) + 1) < 10 ?  'E0' . intval($middle) + 1 . '/' . date('Y') : 'E' . intval($middle) + 1 . '/' . date('Y');
+          } else {
+               if (count(Eleve::all()) > 0) {
+                    $matricule = 'E'. count(Eleve::withTrashed()->get('*')) + 1 .'/' . date('Y');
+               } else {
+                    $matricule = 'E01/' . date('Y');
+               }
+               
           }
 
           return $matricule;
      }
 
-     public static function checkEleves() : bool {
-          if(Eleve::count() > 0){
+     public static function checkEleves(): bool
+     {
+          if (Eleve::count() > 0) {
                return true;
           }
           return false;
      }
 
-     public function presence($date = null){
+     public function presence($date = null)
+     {
           $today =  $date ? $date : date('Y-m-d');
           $presence = Presence::join('frequentations', 'frequentations.id', 'frequentation_id')
-                              ->where('frequentations.eleve_id', $this->id)
-                              ->where('presences.date', $today)
-                              ->select('presences.*')
-                              ->first();
+               ->where('frequentations.eleve_id', $this->id)
+               ->where('presences.date', $today)
+               ->select('presences.*')
+               ->first();
           return $presence;
      }
 }

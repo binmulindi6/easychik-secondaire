@@ -56,7 +56,7 @@
                 <div class="pt-5 overflow-x-auto">
                     <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                         <caption class="font-bold text-center uppercase align-middle bg-transparent shadow-none  border-b-solid tracking-none whitespace-nowrap ">
-                            liste des eleves ayant payés la totalité  {{$frais->nom}} pout l'Annee scolaire {{$annee->nom}}
+                            liste des eleves ayant payés la totalité de " {{$frais->nom}} " pout l'Annee scolaire {{$annee->nom}}
                        </caption>
                        <caption class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none  border-b-solid tracking-none whitespace-nowrap ">
                             classe de {{ $classe->nomComplet()}}
@@ -104,7 +104,9 @@
                                     </td>
                                     <td
                                         class="p-1 text-size-sm text-center uppercase align-middle bg-transparent border-b  shadow-transparent">
-                                        {{ $item['eleve']->nomComplet() }}
+                                        <a href="{{route('eleves.show', $item['eleve']->id)}}" class="hover:font-semibold hover:text-blue-700">
+                                            {{ $item['eleve']->nomComplet() }}
+                                        </a>
                                     </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent text-black-500 hover:bg-slate-100">

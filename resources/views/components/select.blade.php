@@ -34,10 +34,10 @@
         @endif
     @else
         @if (isset($val->max_periode))
-            {{ $val->nom }}
+            {{ $val->nom . " : " . $val->niveau->nom . " " . $val->section->nom }}
         @else
             @if (isset($val->niveau))
-                {{ $val->niveau->nom . ' ' . $val->nom }}
+                {{ $val->niveau->nom . " " . $val->section->nom . ' ' . $val->nom }}
             @else
                 @if (isset($val->annee_scolaire))
                     {{ $val->nom . ' ' . $val->annee_scolaire->nom }}
@@ -105,10 +105,10 @@
                             {{ $item->nom . ' ' . $item->annee_scolaire->nom }}
                         @else
                             @if (isset($item->niveau) && isset($item->encadrements))
-                                {{ $item->niveau->nom . ' ' . $item->nom }}
+                            {{ $item->niveau->nom . " " . $item->section->nom . ' ' . $item->nom }}
                             @else
                                 @if (isset($item->max_periode))
-                                    {{ $item->nom }}
+                                {{ $item->nom . " : " . $item->niveau->nom . " " . $item->section->nom }}
                                 @else
                                     @if (isset($item->type_frais))
                                         {{ $item->nom . ' (en ' . $item->type_frais->devise . ')' }}

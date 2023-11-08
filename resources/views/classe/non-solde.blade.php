@@ -54,13 +54,17 @@
 
             <div class="flex-auto px-0 pt-0 pb-2">
                 <div class="pt-5 overflow-x-auto">
-                    <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                        <caption class="font-bold text-center uppercase align-middle bg-transparent shadow-none  border-b-solid tracking-none whitespace-nowrap ">
-                            liste des eleves ayant pas payés la totalité  {{$frais->nom}} pout l'Annee scolaire {{$annee->nom}}
-                       </caption>
-                       <caption class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none  border-b-solid tracking-none whitespace-nowrap ">
-                            classe de {{ $classe->nomComplet()}}
-                       </caption>
+                    <table id="printable"
+                        class="items-center w-full mb-0 align-top border-gray-200 text-slate-500 border border-collapse">
+                        <caption
+                            class="font-bold text-center uppercase align-middle bg-transparent shadow-none  border-b-solid tracking-none whitespace-nowrap ">
+                            liste des eleves avec litige de " {{ $frais->nom }} " pour l'Annee scolaire
+                            {{ $annee->nom }}
+                        </caption>
+                        <caption
+                            class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none  border-b-solid tracking-none whitespace-nowrap ">
+                            classe de {{ $classe->nomComplet() }}
+                        </caption>
                         <thead class="align-bottom">
                             <th
                                 class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
@@ -71,6 +75,9 @@
                             <th
                                 class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Montant payé</th>
+                            <th
+                                class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                reste à payer</th>
                             {{-- <th
                                 class="px-1 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                  </th> --}}
@@ -100,15 +107,22 @@
                                 <tr class=" rounded-2xl ">
                                     <td
                                         class="p-1 text-size-sm text-center uppercase align-middle bg-transparent border-b  shadow-transparent">
-                                        {{ $index+1 }}
+                                        {{ $index + 1 }}
                                     </td>
                                     <td
                                         class="p-1 text-size-sm text-center uppercase align-middle bg-transparent border-b  shadow-transparent">
-                                        {{ $item['eleve']->nomComplet() }}
+                                        <a href="{{ route('eleves.show', $item['eleve']->id) }}"
+                                            class="hover:font-semibold hover:text-blue-700">
+                                            {{ $item['eleve']->nomComplet() }}
+                                        </a>
                                     </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent text-black-500 hover:bg-slate-100">
-                                        {{ $item['montant'] . ' ' . $frais->type_frais->devise }} 
+                                        {{ $item['montant'] . ' ' . $frais->type_frais->devise }}
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent text-black-500 hover:bg-slate-100">
+                                        {{ (int) $frais->montant - (int) $item['montant'] . ' ' . $frais->type_frais->devise }}
                                     </td>
                                     {{-- <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent text-red-500 hover:bg-slate-100">

@@ -74,7 +74,7 @@
         <div class="h-19 mt-3 flex flex-col justify-center items-center">
             <a class="flex  m-0 text-size-sm whitespace-nowrap dark:text-white text-slate-700"
                 href="{{ route('dashboard') }}">
-                <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{ env('APP_NAME') }}</span> Main
+                <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{ env('APP_NAME') }}</span>
             </a>
             @if (Auth::user()->isManager())
                 <span class="font-bold text-slate-700 uppercase">Administration</span>
@@ -137,7 +137,7 @@
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Ecole') ||
                                 str_contains($page_name, 'Annees Scolaires') ||
-                                str_contains($page_name, 'Trimestres') ||
+                                str_contains($page_name, 'Semestres') ||
                                 str_contains($page_name, 'Conduites') ||
                                 str_contains($page_name, 'Periodes'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
@@ -173,11 +173,13 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->isDirecteur())
+                @if (Auth::user()->isDirecteur() || Auth::user()->isManager())
 
 
                     <li class="mt-0.5 w-full">
-                        @if (str_contains($page_name, 'Categories Cours') || str_contains($page_name, 'Cours'))
+                        @if (str_contains($page_name, 'Categories Cours') ||
+                                (str_contains($page_name, 'Cours') && !str_contains($page_name, 'Classe    ')) ||
+                                str_contains($page_name, 'Enseignements'))
                             <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-size-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                                 href="{{ route('cours.index') }}">
                             @else
@@ -198,7 +200,6 @@
                         Auth::user()->isParent() ||
                         Auth::user()->isDirecteur() ||
                         Auth::user()->isSecretaire() ||
-                        Auth::user()->isEnseignant() ||
                         (Auth::user()->isEnseignant() && Auth::user()->classe() !== null))
                     <li class="mt-0.5 w-full">
                         @if (
@@ -275,7 +276,9 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->isEnseignant() && Auth::user()->classe() !== null)
+                @if (
+                    (Auth::user()->isEnseignant() && Auth::user()->classe() !== null) ||
+                        (Auth::user()->isEnseignant() && count(Auth::user()->cours()) > 0))
                     <li class="mt-0.5 w-full">
                         @if (
                             (str_contains($page_name, 'Travails') ||
@@ -294,7 +297,7 @@
                             <i
                                 class="relative top-0 leading-normal text-blue-700 fa fa-regular fa-clipboard text-size-sm"></i>
                         </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Traveaux</span>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Travaux</span>
                         </a>
                     </li>
 
@@ -314,6 +317,9 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Cotations </span>
                         </a>
                     </li>
+
+                @endif
+                @if (Auth::user()->isEnseignant() && Auth::user()->classe() !== null)
 
                     <li class="mt-0.5 w-full">
                         @if (str_contains($page_name, 'Classe /'))

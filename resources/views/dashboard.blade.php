@@ -172,7 +172,7 @@
                             {{ Auth::currentYear()->nom ? Auth::currentYear()->nom : 'Not Defined' }} </span>
                     </div>
                     <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col justify-items items-center gap-1">
-                        <span class="font-base text-sm text-slate-500 uppercase">Trimestre en cours:</span>
+                        <span class="font-base text-sm text-slate-500 uppercase">Semestre en cours:</span>
                         <span class="font-bold text-2xl"> {{ 'Not Defined' }} </span>
                     </div>
                     <div class="bg-white rounded-5 p-5 shadow-2xl flex flex-col justify-items items-center gap-1">

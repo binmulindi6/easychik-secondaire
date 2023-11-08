@@ -7,11 +7,12 @@ namespace App\Models;
 use App\Models\Parrain;
 use App\Models\Employer;
 use App\Models\Encadrement;
+use Illuminate\Support\Arr;
+use App\Models\Enseignement;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -74,8 +75,12 @@ class User extends Authenticatable
             foreach ($this->employer->fonctions as $fonction) {
                 if (strtolower($fonction->nom) === strtolower('Enseignant')) {
                     return true;
-                    // dd(10);
                 }
+                // } else {
+                //     if ($this->classes() !== null) {
+                //         return true;
+                //     }
+                // }
             }
         }
         return false;
@@ -85,7 +90,7 @@ class User extends Authenticatable
     {
         if ($this->parrain_id === null) {
             foreach ($this->employer->fonctions as $fonction) {
-                if (strtolower($fonction->nom) === strtolower('Directeur')) {
+                if (strtolower($fonction->nom) === strtolower('Directeur') || strtolower($fonction->nom) === strtolower('Proviseur')) {
                     return true;
                     // dd(10);
                 }
@@ -157,15 +162,14 @@ class User extends Authenticatable
     public function classe()
     {
         $encadrements = $this->encadrements;
-        // dd($encadrements);
         $currentAnneeScolaire = AnneeScolaire::current();
         $currentEncadrement = null;
-        // dd($currentAnneeScolaire->id);
+        // dd($currentAnneeScolaire->id);  
         if ($this->isEnseignant()) {
             // dd(10);
             foreach ($encadrements as $encadrement) {
                 if ($encadrement->annee_scolaire->id === $currentAnneeScolaire->id) {
-                    if ((int)$encadrement->isActive === 1) {
+                    if ((int)$encadrement->isActive === 1 && $encadrement->classe() !== null) {
                         $currentEncadrement = $encadrement;
                         return $currentEncadrement->classe();
                     }
@@ -173,6 +177,96 @@ class User extends Authenticatable
             }
         }
         // dd(11);
+        // dd($encadrements);
+
+        return $currentEncadrement;
+    }
+
+    public function enseignements()
+    {
+        return $this->hasMany(Enseignement::class);
+    }
+
+    public function cours($classe = null)
+    {
+        $encadrements = $this->enseignements;
+        // dd($encadrements);
+        $currentAnneeScolaire = AnneeScolaire::current();
+        // $currentEncadrement = null;
+        // // dd($currentAnneeScolaire->id);
+        // if ($this->isEnseignant()) {
+        //     $currentEncadrement = [];
+        //     foreach ($encadrements as $encadrement) {
+        //         if ($encadrement->annee_scolaire->id === $currentAnneeScolaire->id) {
+        //             if ((int)$encadrement->isActive === 1) {
+        //                 $currentEncadrement[] = $encadrement->cours;
+        //                 // return $currentEncadrement->classe();
+        //             }
+        //         }
+        //     }
+        // }
+        // dd(11);
+
+        if ($classe !== null) {
+            return Cours::join('enseignements', 'cours_id', 'cours.id')
+                ->where('annee_scolaire_id', $currentAnneeScolaire->id)
+                ->where('enseignements.user_id', $this->id)
+                ->where('isActive', 1)
+                ->where('cours.niveau_id', $classe->niveau->id)
+                ->where('cours.section_id', $classe->section->id)
+                ->select('cours.*')
+                ->get();
+        } else {
+            return Cours::join('enseignements', 'cours_id', 'cours.id')
+                ->where('annee_scolaire_id', $currentAnneeScolaire->id)
+                ->where('isActive', 1)
+                ->where('enseignements.user_id', $this->id)
+                ->select('cours.*')
+                ->get();
+        }
+    }
+    public function isProf($cours)
+    {
+        $encadrements = $this->enseignements;
+        foreach ($encadrements as $encadrement) {
+            if ($encadrement->cours->id === $cours->id && $encadrement->isActive === 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function classes()
+    {
+        $encadrements = $this->enseignements;
+        // dd($encadrements);
+        $currentAnneeScolaire = AnneeScolaire::current();
+        $currentEncadrement = null;
+        // dd($currentAnneeScolaire->id);
+        if ($this->isEnseignant()) {
+            $currentEncadrement = [];
+            if (count($encadrements) > 0) {
+                foreach ($encadrements as $encadrement) {
+                    if ($encadrement->annee_scolaire->id === $currentAnneeScolaire->id) {
+                        if ((int)$encadrement->isActive === 1) {
+                            $classes = Classe::where('niveau_id', $encadrement->cours->niveau->id)
+                                ->where('section_id', $encadrement->cours->section->id)->get();
+                            if (count($classes) > 0) {
+                                foreach ($classes as $classe) {
+                                    $currentEncadrement[] = $classe;
+                                }
+                            }
+                            // return $currentEncadrement;
+                        }
+                    }
+                }
+            } else {
+                if ($this->classe() !== null) {
+                    $currentEncadrement[] = $this->classe;
+                }
+            }
+        }
+
 
         return $currentEncadrement;
     }

@@ -55,7 +55,7 @@
         </div> --}}
             <div class="flex-auto px-0 pt-0 pb-2">
                 <div class="pt-5 overflow-x-auto">
-                    <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                    <table id="printable" class="items-center w-full mb-0 align-top border-gray-200 text-slate-500 border border-collapse">
                         <caption
                             class="font-bold text-center uppercase align-middle bg-transparent shadow-none text-xl border-b-solid tracking-none whitespace-nowrap ">
                             liste des Cours
@@ -65,6 +65,9 @@
                             classe de {{ $classe->nomComplet() }}
                         </caption>
                         <thead class="align-bottom">
+                            <th
+                                class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                N° </th>
                             <th
                                 class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Intitulé </th>
@@ -77,6 +80,9 @@
                             <th
                                 class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                                 Max Trimestre </th>
+                            <th
+                                class="px-4 py-1 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                Enseignant </th>
                             {{-- <th
                             class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Nom du Pere </th>
@@ -96,11 +102,16 @@
                         </thead>
                         <tbody>
 
-                            @foreach ($items as $item)
+                            @foreach ($items as $index => $item)
                                 <tr class=" rounded-2xl hover:bg-slate-100">
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        <a href="{{route('cours.show', $item->id)}}" class="hover:text-blue-500 font-semibold">
+                                        {{ $index + 1 }}
+                                    </td>
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                        <a href="{{ route('cours.show', $item->id) }}"
+                                            class="hover:text-blue-500 font-semibold">
                                             {{ $item->nom }}
                                         </a>
                                     </td>
@@ -113,6 +124,24 @@
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                         {{ $item->max_examen }}
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                        @if ($item->enseignant() !== null)
+                                            <a class="p-1  text-blue-500 underline"
+                                                href="{{ route('employers.show', $item->enseignant()->employer->id) }}">
+                                                {{ $item->enseignant()->employer->nom . ' ' . $item->enseignant()->employer->prenom }}
+                                            </a>
+                                        @else
+                                            @if (!Auth::user()->isSecretaire())
+                                                <a class="p-1  text-blue-500 underline"
+                                                    href="{{ route('enseignements.linkCours', $item->id) }}"
+                                                    title="Assigner un Enseignant"> Enseignant
+                                                    indisponible </a>
+                                            @else
+                                                <span class="p-1  text-blue-500 underline"> Enseignant indisponible
+                                                </span>
+                                            @endif
+                                        @endif
                                     </td>
                                     {{-- <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">

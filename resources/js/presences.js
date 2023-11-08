@@ -95,7 +95,7 @@ btnsPresence &&
                 .then((e) => {
                     console.log(e);
                     if (e.data === "succes") {
-                        if (lastId === employer) {
+                        if (lastId === id) {
                             window.location.reload();
                         } else {
                             document

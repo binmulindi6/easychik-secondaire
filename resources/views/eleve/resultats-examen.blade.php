@@ -105,7 +105,7 @@
                     </table>
                 @else
                     <p class="text-bold text-2xl text-red-500 text-center">
-                       Buelletin Indisponible 
+                       Buelletin Indisponible
                     </p>
                 @endif
             </div>

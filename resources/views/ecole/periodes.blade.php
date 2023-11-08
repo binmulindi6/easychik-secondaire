@@ -38,14 +38,14 @@
                                 <option disabled> Choisir le nom de la Periode </option>
                                 <option value="PREMIERE PERIODE">PREMIERE PERIODE</option>
                                 <option value="DEUXIEME PERIODE">DEUXIEME PERIODE</option>
-                                <option value="TROISIEME CINQUIEMEPERIODE">TROISIEME PERIODE</option>
+                                <option value="TROISIEME PERIODE">TROISIEME PERIODE</option>
                                 <option value="QUATRIEME PERIODE">QUATRIEME PERIODE</option>
-                                <option value="CINQUIEME PERIODE">CINQUIEME PERIODE</option>
-                                <option value="SIXIEME PERIODE">SIXIEME PERIODE</option>
+                                {{-- <option value="CINQUIEME PERIODE">CINQUIEME PERIODE</option>
+                                <option value="SIXIEME PERIODE">SIXIEME PERIODE</option> --}}
                             </select>
                         </div>
                         <div class="mt-4 w-full">
-                            <x-label for="trimestre" :value="__('Trimestre')" />
+                            <x-label for="trimestre" :value="__('Semestre')" />
                             <x-select :val="$self->trimestre" :collection="$trimestres" class="block mt-1 w-full" name='trimestre'
                                 required> </x-select>
                         </div>
@@ -88,14 +88,14 @@
                                 <option disabled selected> Choisir le nom de la Periode </option>
                                 <option value="PREMIERE PERIODE">PREMIERE PERIODE</option>
                                 <option value="DEUXIEME PERIODE">DEUXIEME PERIODE</option>
-                                <option value="TROISIEME CINQUIEMEPERIODE">TROISIEME PERIODE</option>
+                                <option value="TROISIEME PERIODE">TROISIEME PERIODE</option>
                                 <option value="QUATRIEME PERIODE">QUATRIEME PERIODE</option>
-                                <option value="CINQUIEME PERIODE">CINQUIEME PERIODE</option>
-                                <option value="SIXIEME PERIODE">SIXIEME PERIODE</option>
+                                {{-- <option value="CINQUIEME PERIODE">CINQUIEME PERIODE</option>
+                                <option value="SIXIEME PERIODE">SIXIEME PERIODE</option> --}}
                             </select>
                         </div>
                         <div class="mt-4 w-full">
-                            <x-label for="trimestre" :value="__('Trimestre')" />
+                            <x-label for="trimestre" :value="__('Semestre')" />
                             <x-select :collection="$trimestres" class="block mt-1 w-full" name='trimestre' required> </x-select>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                             Nom</th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
-                            Trimestre</th>
+                            Semestres</th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
                             Date Debut</th>

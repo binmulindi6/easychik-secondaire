@@ -15,7 +15,7 @@
                 <span class="uppercase text-3 font-semibold dark:text-white">
                     {{ $data->categorie_cours->nom }}</span>
                 <span class="uppercase text-3 font-semibold dark:text-white">
-                    {{ $data->classe->nomComplet()}}</span>
+                    {{ $data->classe && $data->classe->nomComplet()}}</span>
                 {{-- <span class="uppercase text-3 font-semibold dark:text-white">Garçons :
                     {{ count($data->garcons()) }}</span> --}}
             </div>

@@ -49,7 +49,7 @@
                     <table class="items-center w-full mb-0 align-top border-gray-700 text-slate-500">
                         <caption
                             class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base border-b-solid tracking-none whitespace-nowrap text-slate-500">
-                            CLASSE DE  {{ $classe->nomComplet() }}
+                            CLASSE DE {{ $classe->nomComplet() }}
                         </caption>
                         <caption
                             class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base border-b-solid tracking-none whitespace-nowrap text-slate-500">

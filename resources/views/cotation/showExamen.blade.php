@@ -51,10 +51,10 @@
                         <tbody>
 
                             @foreach ($items as $item)
-                                @if (Auth::user()->isEnseignant() && Auth::user()->classe())
+                                @if (Auth::user()->isEnseignant())
                                 {{-- @die(Auth::user()->classe->id) --}}
                                     {{-- @if (Auth::user()->classe() && $item->cours->classe->id === Auth::user()->classe->id) --}}
-                                        <tr class="rounded-2xl hover:bg-slate-100">
+                                        <tr id="tr{{ $item->id }}" class="rounded-2xl hover:bg-slate-100">
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                                 <a href="{{route('eleves.show', $item->eleve_id)}}" class="hover:cursor-pointer hover:text-blue-600">

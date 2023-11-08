@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string("nom");
             $table->integer("max_periode");
             $table->integer("max_examen");
-            $table->foreignId('user_id')->nullable()->constrained();
+            // $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('categorie_cours_id')->nullable()->constrained();
             $table->foreignId('niveau_id')->nullable()->constrained();
+            $table->foreignId('section_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

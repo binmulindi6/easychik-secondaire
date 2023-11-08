@@ -35,7 +35,7 @@
                         <div class="mt-4 w-full">
                             <x-label for="matricule" :value="__('Matricule')" />
                             <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
-                                :value="$self->matricule" required readonly />
+                                :value="$self->matricule" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="nom" :value="__('Nom et Post-Nom')" />
@@ -134,7 +134,7 @@
                         <div class="mt-4 w-full">
                             <x-label for="matricule" :value="__('Matricule')" />
                             <x-input id="matricule" class="block mt-1 w-full" type="text" name="matricule"
-                                :value="$last_matricule" required readonly />
+                                :value="$last_matricule" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="nom" :value="__('Nom et Post-Nom')" />

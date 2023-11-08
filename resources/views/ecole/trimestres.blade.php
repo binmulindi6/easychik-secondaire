@@ -12,14 +12,14 @@
         @if (isset($item))
             <p class=" font-bold text-xl mt-5"> {{ $item->nom }} </p>
         @else
-            @if ($page_name == 'Trimestres / Edit' || $page_name == 'Trimestres / Create')
+            @if ($page_name == 'Semestres / Edit' || $page_name == 'Semestres / Create')
                 <div class="frm-create container bg-white shadow-2xl rounded-5 p-5">
                 @else
                     <div class="frm-create hidden container bg-white shadow-2xl rounded-5 p-5">
             @endif
             @if (isset($self))
-                <p class="font-bold text-base"> Edit Trimestres </p>
-                <x-auth-validation-errors class="mb-4" :errors="$errors" />
+            <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                <p class="font-bold text-base"> Edit Semestres </p>
                 <form method="PUT" action="{{ route('trimestres.update', $self->id) }}">
                     @csrf
                     {{ method_field('PUT') }}
@@ -31,9 +31,9 @@
                                 class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
                                 required>
                                 <option hidden selected value="{{ $self->nom }}"> {{ $self->nom }} </option>
-                                <option value="PREMIER TRIMESTRE">PREMIER TRIMESTRE</option>
-                                <option value="DEUXIEME TRIMESTRE">DEUXIEME TRIMESTRE</option>
-                                <option value="TROISIEME TRIMESTRE">TROISIEME TRIMESTRE</option>
+                                <option value="PREMIER SEMESTRE">PREMIER SEMESTRE</option>
+                                <option value="DEUXIEME SEMESTRE">DEUXIEME SEMESTRE</option>
+                                {{-- <option value="TROISIEME TRIMESTRE">TROISIEME TRIMESTRE</option> --}}
                             </select>
                         </div>
                         <div class="mt-4 w-full">
@@ -65,7 +65,7 @@
                     </div>
                 </form>
             @else
-                <p class="font-bold text-base"> Ajouter un Trimestre </p>
+                <p class="font-bold text-base"> Ajouter un Semestre </p>
                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 <form method="POST" action="{{ route('trimestres.store') }}">
                     @method('POST')
@@ -77,10 +77,10 @@
                             <select name="nom" id="nom"
                                 class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
                                 required>
-                                <option disabled selected> Choisir le nom du Trimestre </option>
-                                <option value="PREMIER TRIMESTRE">PREMIER TRIMESTRE</option>
-                                <option value="DEUXIEME TRIMESTRE">DEUXIEME TRIMESTRE</option>
-                                <option value="TROISIEME TRIMESTRE">TROISIEME TRIMESTRE</option>
+                                <option disabled selected> Choisir le nom du Semestre </option>
+                                <option value="PREMIER SEMESTRE">PREMIER SEMESTRE</option>
+                                <option value="DEUXIEME SEMESTRE">DEUXIEME SEMESTRE</option>
+                                {{-- <option value="TROISIEME TRIMESTRE">TROISIEME TRIMESTRE</option> --}}
                             </select>
                         </div>
                         <div class="mt-4 w-full">
@@ -118,14 +118,14 @@
     @endif
 
 
-    @if ($page_name == 'Trimestres / Edit' || $page_name == 'Trimestres / Create')
+    @if ($page_name == 'Semestres / Edit' || $page_name == 'Semestres / Create')
         <div class="display hidden container p-5 bg-white rounded-5 shadow-2xl">
         @else
             <div class="display container p-5 bg-white rounded-5 shadow-2xl">
     @endif
 
     <div class="p-2 pb-0 mb-0 bg-white rounded-t-2xl">
-        <h6>Trimestres</h6>
+        <h6>Semestres</h6>
     </div>
     @if (isset($items) && count($items) > 0)
         <div class="flex-auto px-0 pt-0 pb-2">
@@ -190,11 +190,11 @@
         </div>
     @else
         <div class="flex flex-col justify-center gap-2 p-5">
-            <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas des Trimestres pour
+            <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas des Semestres pour
                 l'annee scolaire en cours
                 , veuillez en ajouter</span>
             <a href="{{ route('trimestres.create') }}" class="text-center">
-                <x-button>Ajouter un Trimetres</x-button></a>
+                <x-button>Ajouter un Semestres</x-button></a>
         </div>
     @endif
     </div>

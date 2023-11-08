@@ -27,13 +27,7 @@ class EmployerController extends Controller
             'nom'
         ])->get();
 
-        $lastmatricule = Employer::withTrashed()->get('*')->last()->matricule;
-        //dd($lastmatricule);
-        // $lastmatricule = Employer::all()->last()->matricule;
-        // $lastmatricule = Employer::withTrashed()->lastest()->matricule;
-        $initial = explode('/', $lastmatricule, -1)[0];
-        $middle = str_replace('P', '', $initial);
-        $matricule = 'P0' . intval($middle) + 1 . '/' . date('Y');
+        $matricule = Employer::getLastMatricule();
 
         return view('employer.employers')
             ->with('page_name', $this->page)
@@ -98,17 +92,17 @@ class EmployerController extends Controller
 
     public function uploadProfile(Request $request)
     {
-        
+
         $request->validate([
-            'image' => ['required','image','max:2048'],
-            'employer_id' => ['required','string','max:255']
+            'image' => ['required', 'image', 'max:2048'],
+            'employer_id' => ['required', 'string', 'max:255']
         ]);
 
 
         $employer = Employer::findOrFail($request->employer_id);
         $file = $request->file('image');
 
-        $upload = new FileUpload('/profiles/employers/',['jpg','jpeg','png']);
+        $upload = new FileUpload('/profiles/employers/', ['jpg', 'jpeg', 'png']);
         $oldAvatar = $employer->avatar;
 
         $employer->avatar = $upload->uploadFile($file);
@@ -119,11 +113,11 @@ class EmployerController extends Controller
             $employer->id
         );
 
-        Storage::disk('public')->delete('/profiles/employers/'.$oldAvatar);
-    
-        if(isset($request->back)){
+        Storage::disk('public')->delete('/profiles/employers/' . $oldAvatar);
+
+        if (isset($request->back)) {
             return back();
-        }else{
+        } else {
             return redirect()->route('employers.show', $employer->id);
         }
 
@@ -176,7 +170,7 @@ class EmployerController extends Controller
             ->with('index', $index)
             ->with('employers', $employers)
             ->with('fonctions', Fonction::all())
-            ->with('page_name', 'Users / Show ');
+            ->with('page_name', 'Employers / Show ');
     }
 
     /**
@@ -307,13 +301,8 @@ class EmployerController extends Controller
             'nom'
         ])->get();
 
-        $lastmatricule = Employer::withTrashed()->get('*')->last()->matricule;
-        //dd($lastmatricule);
-        // $lastmatricule = Employer::all()->last()->matricule;
-        // $lastmatricule = Employer::withTrashed()->lastest()->matricule;
-        $initial = explode('/', $lastmatricule, -1)[0];
-        $middle = str_replace('P', '', $initial);
-        $matricule = 'P0' . intval($middle) + 1 . '/' . date('Y');
+        $matricule = Employer::getLastMatricule();
+        
         return view('employer.employers')
             ->with('page_name', $this->page . ' / Search')
             ->with('search',  $request->search)

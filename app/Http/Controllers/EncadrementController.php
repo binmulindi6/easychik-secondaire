@@ -22,6 +22,7 @@ class EncadrementController extends Controller
         // dd(session()->all());
 
         $encadrements = Encadrement::latest()
+            ->where('isActive', 1)
             ->limit(20)
             ->get();
         $classes = Classe::orderBy('niveau_id', 'asc')->get();
@@ -156,6 +157,7 @@ class EncadrementController extends Controller
     public function edit($id)
     {
         $encadrements = Encadrement::latest()
+            ->where('isActive', 1)
             ->limit(20)
             ->get();
         $encadrement = Encadrement::find($id);
@@ -340,6 +342,7 @@ class EncadrementController extends Controller
 
         $items = Encadrement::join('users', 'encadrements.user_id', 'users.id')
             ->join('employers', 'employer_id', 'employers.id')
+            ->where('isActive', 1)
             ->where('isAdmin', 0)
             ->where('nom', 'like', '%' . $request->search . '%')
             ->orWhere('prenom', 'like', '%' . $request->search . '%')

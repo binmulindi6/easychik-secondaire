@@ -60,7 +60,7 @@ class PaiementFraisController extends Controller
         // dd($this->error);
         $eleve = Eleve::findOrFail($id);
         if ($eleve->classe()) {
-            $frais = $eleve->classe()->niveau->frais;
+            $frais = $eleve->classe()->frais();
             $paiementsEleve = $eleve->currentFrequentation()->paiement_frais;
             $fraisNoPaye = []; //total payE
             // $i = 1;

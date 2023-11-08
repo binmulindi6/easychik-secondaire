@@ -45,14 +45,14 @@ class EleveController extends Controller
         if (DateController::checkYears()) {
             if (Auth::user()->isParent()) {
                 $eleves = Auth::user()->parrain->eleves;
-            }else{
+            } else {
                 $eleves = [];
             }
 
             if (Auth::user()->isEnseignant()) {
                 if (Auth::user()->classe() !== null) {
                     $eleves = Auth::user()->classe->eleves();
-                }else{
+                } else {
                     $eleves = [];
                 }
             }
@@ -102,7 +102,7 @@ class EleveController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'matricule' => ['required', 'string', 'max:255', 'unique:employers'],
+            'matricule' => ['required', 'string', 'max:255', 'unique:eleves'],
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
             'sexe' => ['required', 'string', 'max:255'],
@@ -150,7 +150,7 @@ class EleveController extends Controller
 
         if ($request->_method == 'PUT') {
             $request->validate([
-                'matricule' => ['required', 'string', 'max:255', 'unique:employers'],
+                'matricule' => ['required', 'string', 'max:255', 'unique:eleves'],
                 'nom' => ['required', 'string', 'max:255'],
                 'prenom' => ['required', 'string', 'max:255'],
                 'sexe' => ['required', 'string', 'max:255'],
@@ -231,16 +231,16 @@ class EleveController extends Controller
      */
     public function uploadProfile(Request $request)
     {
-        
+
         $request->validate([
-            'image' => ['required','image','max:2048'],
-            'eleve_id' => ['required','string','max:255']
+            'image' => ['required', 'image', 'max:2048'],
+            'eleve_id' => ['required', 'string', 'max:255']
         ]);
-        
+
         $eleve = Eleve::findOrFail($request->eleve_id);
         $file = $request->file('image');
 
-        $upload = new FileUpload('/profiles/eleves/', ['jpg','jpeg','png']);
+        $upload = new FileUpload('/profiles/eleves/', ['jpg', 'jpeg', 'png']);
         $oldAvatar = $eleve->avatar;
         $eleve->avatar = $upload->uploadFile($file);
         $eleve->save();
@@ -250,7 +250,7 @@ class EleveController extends Controller
             $eleve->id
         );
 
-        Storage::disk('public')->delete('/profiles/eleves/'.$oldAvatar);
+        Storage::disk('public')->delete('/profiles/eleves/' . $oldAvatar);
         return redirect()->route('eleves.show', $eleve->id);
 
         //laravel 9 file upload system?
@@ -297,11 +297,11 @@ class EleveController extends Controller
                 $eleve->id
             );
 
-           if (isset($request->back)) {
-            return redirect()->back();
-           }else{
-            return redirect()->route('eleves.index');
-           }
+            if (isset($request->back)) {
+                return redirect()->back();
+            } else {
+                return redirect()->route('eleves.index');
+            }
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
@@ -424,10 +424,7 @@ class EleveController extends Controller
             ->orWhere('lieu_naissance', 'like', '%' . $request->search . '%')
             ->orWhere('prenom', 'like', '%' . $request->search . '%')
             ->get();
-        $lastmatricule = Eleve::all()->last()->matricule;
-        $initial = explode('/', $lastmatricule, -1)[0];
-        $middle = str_replace('E', '', $initial);
-        $matricule = 'E' . intval($middle) + 1 . '/' . date('Y');
+        $matricule = Eleve::getLastMatricule();
         //return $eleves;
         // return response()->json([
         //     "eleves" => $eleves
@@ -444,33 +441,30 @@ class EleveController extends Controller
 
 
 
-            if (Auth::user()->isParent()) {
-                $eleves = Auth::user()->parrain->eleves;
-            }else{
+        if (Auth::user()->isParent()) {
+            $eleves = Auth::user()->parrain->eleves;
+        } else {
+            $eleves = [];
+        }
+
+        if (Auth::user()->isEnseignant()) {
+            if (Auth::user()->classe() !== null) {
+                $eleves = Auth::user()->classe->eleves();
+                dd($eleves);
+            } else {
                 $eleves = [];
             }
+        }
 
-            if (Auth::user()->isEnseignant()) {
-                if (Auth::user()->classe() !== null) {
-                    $eleves = Auth::user()->classe->eleves();
-                    dd($eleves);
-                }else{
-                    $eleves = [];
-                }
-            }
-
-            if (Auth::user()->isAdmin() || Auth::user()->isSecretaire() || Auth::user()->isManager()) {
-                $items = Eleve::where('nom', 'like', '%' . $request->search . '%')
+        if (Auth::user()->isAdmin() || Auth::user()->isSecretaire() || Auth::user()->isManager()) {
+            $items = Eleve::where('nom', 'like', '%' . $request->search . '%')
                 ->orWhere('matricule', 'like', '%' . $request->search . '%')
                 ->orWhere('lieu_naissance', 'like', '%' . $request->search . '%')
                 ->orWhere('prenom', 'like', '%' . $request->search . '%')
                 ->get();
-            }
+        }
 
-        $lastmatricule = Eleve::all()->last()->matricule;
-        $initial = explode('/', $lastmatricule, -1)[0];
-        $middle = str_replace('E', '', $initial);
-        $matricule = 'E' . intval($middle) + 1 . '/' . date('Y');
+        $matricule = Eleve::getLastMatricule();
         //return $eleves;
         // return response()->json([
         //     "eleves" => $eleves
@@ -512,7 +506,7 @@ class EleveController extends Controller
         $paiements = $freq->paiement_frais;
         $annees = $el->frequentations;
         // $curFreq = $el->currentFrequentation();
-        $frais = $freq->classe->niveau->frais;
+        $frais = $freq->classe->frais();
 
         $data = array();
         foreach ($frais as $ff) {

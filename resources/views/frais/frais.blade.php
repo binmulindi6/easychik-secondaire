@@ -58,10 +58,17 @@
                         {{-- <span></span> --}}
                     </div>
                 </div>
-                <div class="mt-4">
-                    <x-label for="niveau" :value="__('Niveau')" />
-                    <x-select :collection="$niveaux" :val="$self->niveau" class="block mt-1 w-full" name='niveau'
-                        required></x-select>
+                <div class="w-full flex flex-row gap-4 justify-between">
+                    <div class="mt-4 w-full">
+                        <x-label for="niveau" :value="__('Niveau')" />
+                        <x-select :collection="$niveaux" :val="$self->niveau" class="block mt-1 w-full" name='niveau'
+                            required></x-select>
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="section" :value="__('Section')" />
+                        <x-select :collection="$sections" :val="$self->section" class="block mt-1 w-full" name='section'
+                            required></x-select>
+                    </div>
                 </div>
 
                 <div class="flex gap-10">
@@ -115,10 +122,17 @@
                         {{-- <span></span> --}}
                     </div>
                 </div>
-                <div class="mt-4">
-                    <x-label for="niveau" :value="__('Niveau')" />
-                    <x-select :all="'TOUT LES NIVEAUX'" :collection="$niveaux" class="block mt-1 w-full" name='niveau'
-                        required></x-select>
+                <div class="w-full flex flex-row gap-4 justify-between">
+                    <div class="mt-4 w-full">
+                        <x-label for="niveau" :value="__('Niveau')" />
+                        <x-select :all="'TOUT LES NIVEAUX'" :collection="$niveaux" class="block mt-1 w-full" name='niveau'
+                            required></x-select>
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="section" :value="__('Section')" />
+                        <x-select :all="'TOUTES LES SECTIONS'" :collection="$sections" class="block mt-1 w-full" name='section'
+                            required></x-select>
+                    </div>
                 </div>
 
                 <div class="flex gap-10">
@@ -162,7 +176,10 @@
                             Montant </th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
-                            Niveaux de classes</th>
+                            Niveaux </th>
+                        <th
+                            class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
+                            Sections </th>
                         <th
                             class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  ">
                             type</th>
@@ -187,6 +204,9 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                     {{ $item->niveau->nom }}</td>
+                                <td
+                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                    {{ $item->section->nom }}</td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
                                     {{ $item->type_frais->nom }}</td>
@@ -217,11 +237,12 @@
 
         </div>
     @else
-    <div class="flex flex-col justify-center gap-2 p-5">
-        <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas des Frais pour l'instant, veuillez en créer</span>
-        <a href="{{ route('frais.create') }}" class="text-center">
-            <x-button>Ajouter un Frais</x-button></a>
-    </div>
+        <div class="flex flex-col justify-center gap-2 p-5">
+            <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Pas des Frais pour
+                l'instant, veuillez en créer</span>
+            <a href="{{ route('frais.create') }}" class="text-center">
+                <x-button>Ajouter un Frais</x-button></a>
+        </div>
     @endif
     </div>
     </div>

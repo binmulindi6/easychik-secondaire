@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nom');
             $table->integer('montant');
             $table->foreignId('niveau_id')->nullable()->constrained();
+            $table->foreignId('section_id')->nullable()->constrained();
             $table->foreignId('type_frais_id')->nullable()->constrained();
             $table->foreignId('mode_paiement_id')->nullable()->constrained();
             $table->timestamps();

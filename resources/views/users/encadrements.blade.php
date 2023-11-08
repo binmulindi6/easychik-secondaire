@@ -115,7 +115,7 @@
                         <x-label for="annee_scolaire" :value="__('Annee Scolaire')" />
                         @if (isset($user) || (isset($classe) && isset($current)))
                             <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
-                                :value="$current->nom" required />
+                                :value="$current->nom" required readonly/>
                             <input type="hidden" name="annee_scolaire_id" value="{{ $current->id }}">
                         @else
                             <x-input id="nom" class="block mt-1 w-full" type="text" name="nom"
@@ -173,7 +173,7 @@
                     <tbody>
 
                         @foreach ($items as $item)
-                            @if ($item->user != null)
+                            @if ($item->user != null && $item->classe != null)
                                 <tr class="">
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">

@@ -174,7 +174,7 @@
                     <tbody>
 
                         @foreach ($items as $item)
-                            @if ($item->eleve != null && $item->annee_scolaire)
+                            @if ($item->eleve != null && $item->classe && $item->annee_scolaire)
                                 <tr class="">
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">

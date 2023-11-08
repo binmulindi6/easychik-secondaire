@@ -27,14 +27,26 @@
                     {{ method_field('PUT') }}
                     <!-- Email Address -->
                     <div class="mt-4">
-                        <x-label for="nom" :value="__('Numerotation')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
-                            required />
+                        <x-label for="nom" :value="__('Nom')" />
+                        <select name="nom" id="nom"
+                            class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                            required>
+                            <option hidden selected value="{{ $self->nom }}"> {{ $self->nom }} </option>
+                            <option value="PREMIER ANNEE">PREMIER ANNEE</option>
+                            <option value="DEUXIEME ANNEE">DEUXIEME ANNEE</option>
+                            <option value="TROISIEME ANNEE">TROISIEME ANNEE</option>
+                            <option value="QUATRIEME ANNEE">QUATRIEME ANNEE</option>
+                            <option value="CINQUIEME ANNEE">CINQUIEME ANNEE</option>
+                            <option value="SIXIEME ANNEE">SIXIEME ANNEE</option>
+                            <option value="SEPTIEME ANNEE">SEPTIEME ANNEE</option>
+                            <option value="HUITIEME ANNEE">HUITIEME ANNEE</option>
+                            <option value="NEUVIEME ANNEE">NEUVIEME ANNEE</option>
+                        </select>
                     </div>
                     <div class="mt-4">
-                        <x-label for="nom" :value="__('Nom')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="number" name="numerotation" placeholder="ex: 5"
-                            :value="$self->numerotation" required />
+                        <x-label for="nom" :value="__('Numerotation')" />
+                        <x-input id="nom" class="block mt-1 w-full" type="number" name="numerotation"
+                            placeholder="ex: 5" :value="$self->numerotation" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -53,13 +65,25 @@
                     <!-- Email Address -->
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')"
-                            required />
+                        <select name="nom" id="nom"
+                            class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                            required>
+                            <option hidden selected disabled> Selectioner une Option</option>
+                            <option value="PREMIER ANNEE">PREMIER ANNEE</option>
+                            <option value="DEUXIEME ANNEE">DEUXIEME ANNEE</option>
+                            <option value="TROISIEME ANNEE">TROISIEME ANNEE</option>
+                            <option value="QUATRIEME ANNEE">QUATRIEME ANNEE</option>
+                            <option value="CINQUIEME ANNEE">CINQUIEME ANNEE</option>
+                            <option value="SIXIEME ANNEE">SIXIEME ANNEE</option>
+                            <option value="SEPTIEME ANNEE">SEPTIEME ANNEE</option>
+                            <option value="HUITIEME ANNEE">HUITIEME ANNEE</option>
+                            <option value="NEUVIEME ANNEE">NEUVIEME ANNEE</option>
+                        </select>
                     </div>
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Numerotation')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="number" name="numerotation" placeholder="ex: 5"
-                            :value="old('numerotation')" required />
+                        <x-input id="nom" class="block mt-1 w-full" type="number" name="numerotation"
+                            placeholder="ex: 5" :value="old('numerotation')" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -93,9 +117,9 @@
                         <th
                             class="p-1 px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
                             Numerotation</th>
-                        {{-- <th
+                        <th
                             class="p-1 px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                            action</th> --}}
+                            action</th>
                     </thead>
                     <tbody>
 
@@ -107,20 +131,13 @@
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                     {{ $item->numerotation }}</td>
-                                {{-- <td
+                                <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  text-blue-500 underline">
                                     <div class="flex justify-center gap-4 align-middle">
                                         <a title="Modifier" href="{{ route('niveaux.edit', $item->id) }}"><i
                                                 class="fa fa-solid fa-pen"></i></a>
-                                        <form class="delete-form" action="{{ route('niveaux.destroy', $item->id) }}"
-                                            method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button title="Effacer" type="submit"><i
-                                                    class="text-red-500 fa fa-solid fa-trash"></i></button>
-                                        </form>
                                     </div>
-                                </td> --}}
+                                </td>
                             </tr>
                         @endforeach
 

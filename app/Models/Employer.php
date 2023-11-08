@@ -44,12 +44,12 @@ class Employer extends Model
     }
 
     public function fonction()
-    {   
+    {
         $text = '';
-        foreach($this->fonctions as $fonction){
+        foreach ($this->fonctions as $fonction) {
             $text .= " " . $fonction->nom;
         }
-        if($this->user && $this->user->classe()){
+        if ($this->user && $this->user->classe()) {
             $text .= " " . $this->user->classe->nomCourt();
         }
 
@@ -72,13 +72,14 @@ class Employer extends Model
     //     return $this->hasMany(EmployerPresence::class);
     // }
 
-    public function presence($date = null){
+    public function presence($date = null)
+    {
         $today =  $date ? $date : date('Y-m-d');
         return EmployerPresence::where('employer_id', $this->id)
-                            ->where('date', $today)
-                            ->first();
+            ->where('date', $today)
+            ->first();
         // return null;
-   }
+    }
     public function isEnseignant()
     {
         foreach ($this->fonctions as $fonction) {
@@ -89,6 +90,25 @@ class Employer extends Model
         }
 
         return false;
+    }
+
+    public static function getLastMatricule()
+    {
+
+        $lastmatricule = Employer::withTrashed()->get('*')->last()->matricule;
+        if (count(Employer::all()) > 0 && (count(explode('/', $lastmatricule, -1)) > 0)) {
+            $initial = explode('/', $lastmatricule, -1)[0];
+            $middle = str_replace('P', '', $initial);
+            $matricule = (intval($middle) + 1) < 10 ?  'P0' . intval($middle) + 1 . '/' . date('Y') : 'P' . intval($middle) + 1 . '/' . date('Y');
+        } else {
+            if (count(Eleve::all()) > 0) {
+                $matricule = 'P' . count(Employer::withTrashed()->get('*')) + 1 . '/' . date('Y');
+            } else {
+                $matricule = 'P01/' . date('Y');
+            }
+        }
+
+        return $matricule;
     }
 
     public function classe()

@@ -1,9 +1,11 @@
 <div class="flex flex-col items-center sm:flex-row justify-between gap-4">
     <div class="flex flex-col sm:flex-row gap-4">
 
-        @if ((Auth::user()->isAdmin() || Auth::user()->isDirecteur()|| Auth::user()->isManager()) && !str_contains($pagename, 'Parents'))F
+        @if (
+            (Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isManager()) &&
+                !str_contains($pagename, 'Parents'))
 
-            @if (str_contains($pagename, 'Utilisateurs'))
+            @if (str_contains($pagename, 'Utilisateurs') || Auth::user()->isAdmin() || Auth::user()->isManager())
                 <div
                     class="items-center flex justify-center gap-2 bg-slate-100 rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
                 @else
@@ -32,7 +34,7 @@
             <a href="{{ route('users.index') }}">
                 <div>
                     <i class="relative top-0 leading-normal text-black fa fa-solid fa-user text-size-sm"></i>
-                    @if ($pagename === 'Enseignants')
+                    @if ($pagename === 'Enseignants' || Auth::user()->isDirecteur())
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enseignants</span>
                     @else
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Utilisateurs</span>
@@ -44,7 +46,7 @@
                 class="btn-display items-center flex justify-center gap-2 bg-white rounded-3 cursor-pointer hover:bg-white px-4 py-2 min-h-10 min-w-30">
                 <div>
                     <i class="relative top-0 leading-normal text-black fa fa-solid fa-user text-size-sm"></i>
-                    @if ($pagename === 'Enseignants')
+                    @if ($pagename === 'Enseignants' || Auth::user()->isDirecteur())
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Enseignants</span>
                     @else
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Utilisateurs</span>
