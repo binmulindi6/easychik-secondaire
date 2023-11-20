@@ -27,6 +27,10 @@ class Eleve extends Model
           'date_naissance',
           'nom_pere',
           'nom_mere',
+          'profession_pere',
+          'profession_mere',
+          'telephone_pere',
+          'telephone_mere',
           'adresse',
           'sexe',
           'nationalite',
@@ -118,7 +122,7 @@ class Eleve extends Model
                ->join('cours', 'cours.id', '=', 'evaluations.cours_id')
                ->where('cours.niveau_id', $niveau->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_evaluation.note_obtenu) as note'), DB::raw('SUM(evaluations.note_max) as max'), 'cours.max_periode as total')
-               ->groupBy('cours.id', 'cours.nom', 'cours.max_periode')
+               ->groupBy('cours.nom', 'cours.max_periode')
                ->get();
 
           $bulletin->isEmpty() ? $bulletin = null : "";
@@ -139,7 +143,7 @@ class Eleve extends Model
                ->join('cours', 'cours.id', '=', 'examens.cours_id')
                ->where('cours.niveau_id', $niveau->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_examen.note_obtenu) as note'), DB::raw('SUM(examens.note_max) as max'), 'cours.max_examen as total')
-               ->groupBy('cours.id', 'cours.nom', 'cours.max_examen')
+               ->groupBy('cours.nom', 'cours.max_examen')
                ->get();
 
           $bulletin->isEmpty() ? $bulletin = null : "";
@@ -220,5 +224,9 @@ class Eleve extends Model
                ->select('presences.*')
                ->first();
           return $presence;
+     }
+
+     public function profileImage() {
+          return storage_path('app/public/profiles/eleves/'. $this->avatar);
      }
 }

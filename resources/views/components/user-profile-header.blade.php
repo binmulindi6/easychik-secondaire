@@ -47,14 +47,15 @@
                             <i class="fa fa-solid fa-id-card"></i>
                             <span class="ml-2">Informations Compte</span>
                         </a>
-                        {{-- </li>
-            <li class="z-30 flex-auto text-center">
-              <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
-                <i class="ni ni-email-83"></i>
-                <span class="ml-2">Messages</span>
-              </a>
-            </li>
-            <li class="z-30 flex-auto text-center">
+                    {{-- </li>
+                    <li class="z-30 flex-auto text-center">
+                        <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                            nav-link href="javascript:;" role="tab" aria-selected="false">
+                            <i class="ni ni-email-83"></i>
+                            <span class="ml-2">Messages</span>
+                        </a>
+                    </li> --}}
+                    {{-- <li class="z-30 flex-auto text-center">
               <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700" nav-link href="javascript:;" role="tab" aria-selected="false">
                 <i class="ni ni-settings-gear-65"></i>
                 <span class="ml-2">Settings</span>

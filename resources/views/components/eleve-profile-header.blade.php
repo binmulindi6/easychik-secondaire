@@ -81,6 +81,14 @@
                                     <span class="ml-2">Identité Complete</span>
                                 </a>
                             </li>
+                            <li
+                                class=" cursor-pointer z-30 flex-auto text-center px-3 py-1 :bg-gray-100 hover:bg-gray-300 rounded-xl">
+                                <a href="{{route('eleves.fiche.identite',$data->id)}}" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                    role="tab" aria-selected="false">
+                                    <i class="fa fa-solid fa-id-card"></i>
+                                    <span class="ml-2">Fiche d'Identité</span>
+                                </a>
+                            </li>
                         @endif
 
                         @if (!Auth::user()->isParent())

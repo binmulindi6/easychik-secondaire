@@ -17,7 +17,7 @@
 
             {{-- @if ($item->classe() && $item->currentFrequentation() && $item->currentFrequentation()->annee_scolaire->id === $annee_scolaire->id) --}}
             <div class="shadow-2xl relative bg-white rounded-5 p-5 w-full  z-20">
-                <div id="printable" class="flex flex-col px-0 pt-0 ">
+                <div id="printable" class="flex flex-col px-0 pt-0 w-full">
                     <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                         <caption class="text-center text-3 sm:text-4 font-bold text-base uppercase"> Resultats
                             @if (isset($periode))

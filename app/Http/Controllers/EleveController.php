@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Eleve;
+use App\Models\Ecole;
 // use App\Models\Classe;
-use App\Models\Examen;
+use App\Models\Eleve;
 // use App\Models\Fonction;
+use App\Models\Examen;
 use App\Models\Logfile;
-use App\Models\Periode;
 // use Illuminate\Support\Arr;
+use App\Models\Periode;
 use App\Models\Trimestre;
 use App\Models\Evaluation;
-use App\Models\FileUpload;
 // use Illuminate\Http\JsonResponse;
-use App\Models\EleveExamen;
+use App\Models\FileUpload;
 // use App\Http\Middleware\TrimStrings;
-use Illuminate\Http\Request;
+use App\Models\EleveExamen;
 // use Illuminate\Support\Facades\Date;
 // use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use App\Models\Frequentation;
 use App\Models\TypeEvaluation;
@@ -111,6 +112,10 @@ class EleveController extends Controller
             'date_naissance' => ['required', 'string', 'max:255'],
             'nom_pere' => ['required', 'string', 'max:255'],
             'nom_mere' => ['required', 'string', 'max:255'],
+            'profession_pere' => ['required', 'string', 'max:255'],
+            'profession_mere' => ['required', 'string', 'max:255'],
+            'telephone_pere' => ['required', 'string', 'max:255'],
+            'telephone_mere' => ['required', 'string', 'max:255'],
             'adresse' => ['required', 'string', 'max:255'],
             'num_permanent' => ['string', 'max:255'],
         ]);
@@ -127,6 +132,10 @@ class EleveController extends Controller
             'date_naissance' => $request->date_naissance,
             'nom_pere' => $request->nom_pere,
             'nom_mere' => $request->nom_mere,
+            'profession_pere' => $request->profession_pere,
+            'profession_mere' => $request->profession_mere,
+            'telephone_pere' => $request->telephone_pere,
+            'telephone_mere' => $request->telephone_mere,
             'adresse' => $request->adresse,
         ]);
 
@@ -146,11 +155,11 @@ class EleveController extends Controller
      */
     public function show(Request $request, $id)
     {
-        //die(now());
-
+        // die(public_path('storage/profiles/eleves'));
+        // dd(asset('storage',true));
         if ($request->_method == 'PUT') {
             $request->validate([
-                'matricule' => ['required', 'string', 'max:255', 'unique:eleves'],
+                'matricule' => ['required', 'string', 'max:255'],
                 'nom' => ['required', 'string', 'max:255'],
                 'prenom' => ['required', 'string', 'max:255'],
                 'sexe' => ['required', 'string', 'max:255'],
@@ -159,6 +168,10 @@ class EleveController extends Controller
                 'nationalite' => ['string', 'max:255'],
                 'nom_pere' => ['required', 'string', 'max:255'],
                 'nom_mere' => ['required', 'string', 'max:255'],
+                'profession_pere' => ['required', 'string', 'max:255'],
+                'profession_mere' => ['required', 'string', 'max:255'],
+                'telephone_pere' => ['required', 'string', 'max:255'],
+                'telephone_mere' => ['required', 'string', 'max:255'],
                 'adresse' => ['required', 'string', 'max:255'],
                 'num_permanent' => ['string', 'max:255'],
             ]);
@@ -222,6 +235,39 @@ class EleveController extends Controller
             ->with('index', $index)
             ->with('trimestres', $trimestres);
     }
+    public function ficheIdentite($id)
+    {
+
+        $eleve = Eleve::findOrFail($id);
+
+        $eleves = Eleve::all();
+        if (Auth::user()->isEnseignant()) {
+            if (Auth::user()->classe() !== null) {
+                $eleves = Auth::user()->classe->eleves();
+                // dd($eleves);
+            }
+        }
+        ///joker
+        $index = 0;
+        for ($i = 0; $i < $eleves->count(); $i++) {
+            if ($eleves[$i]->id === $eleve->id) {
+                $index = $i;
+                break;
+            }
+        }
+
+        $annee_scolaire = AnneeScolaire::current();
+        $trimestres = $annee_scolaire->trimestres;
+        // $periode = 
+
+        return view('eleve.fiche-identite')
+            ->with('page_name', $this->page . " / Fiche D'Identité / " . $eleve->id)
+            ->with('annee_scolaire', $annee_scolaire)
+            ->with('item', $eleve)
+            ->with('eleves', $eleves)
+            ->with('index', $index)
+            ->with('trimestres', $trimestres);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -250,7 +296,7 @@ class EleveController extends Controller
             $eleve->id
         );
 
-        Storage::disk('public')->delete('/profiles/eleves/' . $oldAvatar);
+        Storage::disk('eleves')->delete($oldAvatar);
         return redirect()->route('eleves.show', $eleve->id);
 
         //laravel 9 file upload system?
@@ -289,6 +335,10 @@ class EleveController extends Controller
             $eleve->nationalite = $request->nationalite;
             $eleve->nom_pere = $request->nom_pere;
             $eleve->nom_mere = $request->nom_mere;
+            $eleve->profession_pere = $request->profession_pere;
+            $eleve->profession_mere = $request->profession_mere;
+            $eleve->telephone_pere = $request->telephone_pere;
+            $eleve->telephone_mere = $request->telephone_mere;
             $eleve->adresse = $request->adresse;
 
             $eleve->save();
@@ -540,7 +590,9 @@ class EleveController extends Controller
     public function carte($id)
     {
         $eleve = Eleve::findOrFail($id);
+        $ecole = Ecole::first();
         return view('eleve.carte')
+            ->with('ecole', $ecole)
             ->with('eleve', $eleve);
     }
 }

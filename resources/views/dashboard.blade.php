@@ -207,7 +207,7 @@
                 <div slider class="relative w-full h-full overflow-hidden rounded-2xl">
                     <!-- slide 3 -->
                     <div slide class="absolute w-full h-full transition-all duration-500">
-                        <img class="object-cover h-full" src="{{ asset('storage/students.jpg') }}" alt="carousel image" />
+                        <img class="object-cover h-full" src="{{ asset('storage/students.png') }}" alt="carousel image" />
                         <div class="block text-start ml-12 left-0 bottom-0 absolute right-[15%] pt-5 pb-5 text-white">
                             <div
                                 class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none">

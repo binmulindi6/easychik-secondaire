@@ -92,8 +92,6 @@
                             <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
                                 :value="$self->nationalite" required />
                         </div>
-
-
                     </div>
                     <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
@@ -105,6 +103,30 @@
                             <x-label for="nom_mere" :value="__('Nom de la Mere')" />
                             <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="nom_mere"
                                 :value="$self->nom_mere" required />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                        <div class="mt-4 w-full">
+                            <x-label for="nom_pere" :value="__('Profession du Pere')" />
+                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="profession_pere" :value="$self->profession_pere"
+                                required />
+                        </div>
+                        <div class="mt-4 w-full">
+                            <x-label for="nom_mere" :value="__('Profession de la Mere')" />
+                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="profession_mere" :value="$self->profession_mere"
+                                required />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                        <div class="mt-4 w-full">
+                            <x-label for="nom_pere" :value="__('Telephone du Pere')" />
+                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="telephone_pere" :value="$self->telephone_pere"
+                                required />
+                        </div>
+                        <div class="mt-4 w-full">
+                            <x-label for="nom_mere" :value="__('Telephone de la Mere')" />
+                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="telephone_mere" :value="$self->telephone_mere"
+                                required />
                         </div>
                     </div>
                     <div class="mt-4 w-full">
@@ -202,6 +224,30 @@
                             <x-label for="nom_mere" :value="__('Nom de la Mere')" />
                             <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="nom_mere"
                                 :value="old('nom_mere')" required />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                        <div class="mt-4 w-full">
+                            <x-label for="nom_pere" :value="__('Profession du Pere')" />
+                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="profession_pere" :value="old('profession_pere')"
+                                required />
+                        </div>
+                        <div class="mt-4 w-full">
+                            <x-label for="nom_mere" :value="__('Profession de la Mere')" />
+                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="profession_mere" :value="old('profession_mere')"
+                                required />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                        <div class="mt-4 w-full">
+                            <x-label for="nom_pere" :value="__('Telephone du Pere')" />
+                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="telephone_pere" :value="old('telephone_pere')"
+                                required />
+                        </div>
+                        <div class="mt-4 w-full">
+                            <x-label for="nom_mere" :value="__('Telephone de la Mere')" />
+                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="telephone_mere" :value="old('telephone_mere')"
+                                required />
                         </div>
                     </div>
                     <div class="mt-4 w-full">

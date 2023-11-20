@@ -104,6 +104,20 @@
                             </x-select>
                         </div>
                     </div>
+                    <div class="flex gap-5">
+
+                        <div class="mt-4 w-full">
+                            <x-label for="telephone1" :value="__('Telephone1')" />
+                            <x-input id="telephone1" class="block mt-1 w-full" type="text" name="telephone1"
+                                :value="$self->telephone1" required />
+                        </div>
+                        <div class="mt-4 w-full">
+                            <x-label for="telephone2" :value="__('Telephone2')" />
+                            <x-input id="telephone2" class="block mt-1 w-full" type="text" name="telephone2"
+                                :value="$self->telephone2" required />
+                        </div>
+
+                    </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
                             <x-button>Enregistrer</x-button>
@@ -201,13 +215,15 @@
                                 name="niveau_etude" id="niveau_etude" required>
                                 <option disabled selected>Selectionner une option</option>
                                 <option value="Aucun">Aucun</option>
+                                <option value="D6">D4</option>
                                 <option value="D6">D6</option>
-                                <option value="G1">G1</option>
-                                <option value="G2">G2</option>
-                                <option value="G3">G3</option>
+                                <option value="G1/BAC1">G1/BAC1</option>
+                                <option value="G2/BAC2">G2/BAC2</option>
+                                <option value="G3/BAC3">G3/BAC3</option>
                                 <option value="L1">L1</option>
                                 <option value="L2">L2</option>
-                                {{-- <option value="Doctorat">Doctorat</option> --}}
+                                <option value="MASTER">MASTER</option>
+                                <option value="DOCTORAT">DOCTORAT</option>
                             </select>
                             {{-- <x-input id="niveau_etude" class="block mt-1 w-full" type="text" name="niveau_etude"
                         :value="old('niveau_etude')" required /> --}}
@@ -217,6 +233,20 @@
                             <x-label for="nom" :value="__('Fonction')" />
                             <x-select :collection="$fonctions" class="block mt-1 w-full" name='fonction' required> </x-select>
                         </div>
+                    </div>
+                    <div class="flex gap-5">
+
+                        <div class="mt-4 w-full">
+                            <x-label for="telephone1" :value="__('Telephone1')" />
+                            <x-input id="telephone1" class="block mt-1 w-full" type="text" name="telephone1"
+                                :value="old('telephone1')" required />
+                        </div>
+                        <div class="mt-4 w-full">
+                            <x-label for="telephone2" :value="__('Telephone2')" />
+                            <x-input id="telephone2" class="block mt-1 w-full" type="text" name="telephone2"
+                                :value="old('telephone2')" required />
+                        </div>
+
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -324,29 +354,29 @@
                                         @endforeach
                                     </td>
                                     <td
-                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                            @if ($item->isActive == '0')
-                                                <form action="{{ route('employers.statut', $item->id) }}" method="post">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="hidden" name="statut" value="{{ $item->isActive }}">
-                                                    <button type="submit"
-                                                        title="Active"class="bg-gradient-to-tl cursor-pointer from-red-500 to-pink-400 px-3.6 text-xss rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                                        Inactif
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('employers.statut', $item->id) }}" method="post">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="hidden" name="statut" value="{{ $item->isActive }}">
-                                                    <button type="submit"
-                                                        title="Desactive"class="bg-gradient-to-tl cursor-pointer from-emerald-500 to-teal-400 px-3.6 text-xss rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                                        Actif
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </td>
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
+                                        @if ($item->isActive == '0')
+                                            <form action="{{ route('employers.statut', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="statut" value="{{ $item->isActive }}">
+                                                <button type="submit"
+                                                    title="Active"class="bg-gradient-to-tl cursor-pointer from-red-500 to-pink-400 px-3.6 text-xss rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                                    Inactif
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('employers.statut', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="statut" value="{{ $item->isActive }}">
+                                                <button type="submit"
+                                                    title="Desactive"class="bg-gradient-to-tl cursor-pointer from-emerald-500 to-teal-400 px-3.6 text-xss rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                                    Actif
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent   text-blue-500 underline">
                                         <div class="flex justify-center gap-4 align-middle">

@@ -93,6 +93,30 @@
                             required />
                     </div>
                 </div>
+                <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <div class="mt-4 w-full">
+                        <x-label for="nom_pere" :value="__('Profession du Pere')" />
+                        <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="profession_pere" :value="$item->profession_pere"
+                            required />
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="nom_mere" :value="__('Profession de la Mere')" />
+                        <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="profession_mere" :value="$item->profession_mere"
+                            required />
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <div class="mt-4 w-full">
+                        <x-label for="nom_pere" :value="__('Telephone du Pere')" />
+                        <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="telephone_pere" :value="$item->telephone_pere"
+                            required />
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="nom_mere" :value="__('Telephone de la Mere')" />
+                        <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="telephone_mere" :value="$item->telephone_mere"
+                            required />
+                    </div>
+                </div>
                 <div class="mt-4 w-full">
                     <x-label for="adresse" :value="__('Adresse')" />
                     <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse" :value="$item->adresse"

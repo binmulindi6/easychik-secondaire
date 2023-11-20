@@ -25,17 +25,16 @@
 
         <div id="card-back" class="card-container">
             <div class="header flex flex-col justify-center items-center p-5">
-                <span class="text-10 font-bold uppercase">REPUBLIQUE DEMOCRATIQUE DU CONGO</span>
-                <span class="text-10 font-bold uppercase">MINISTERE DE L'ENSEIGNAMENT PRIMAIRE, SECONDAIRE ET
-                    TECHNIQUE</span>
-                <span class="text-10 font-bold uppercase">PROVINCE DU SUD KIVU</span>
+                <span class="text-10 font-bold uppercase">{{ $ecole->pays }}</span>
+                <span class="text-10 font-bold uppercase">{{ $ecole->ministere }}</span>
+                <span class="text-10 font-bold uppercase">{{ $ecole->province }}</span>
                 {{-- <span class="text-10 font-bold uppercase">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span> --}}
 
             </div>
             <div class="card-body">
                 <div class="flex flex-col justify-center items-center p-10">
                     <span
-                        class="text-20 font-semibold text-blue-700">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span>
+                        class="text-20 font-semibold text-blue-700">{{ $ecole->nom ? $ecole->nom : env('APP_NAME') }}</span>
                     {{-- <span class="font-bold text-blue-700 text-3xl  py-1 px-4 rounded-md">{{ env('APP_NAME') }}</span> --}}
                     <span class="text-20 border-black border-b-8 w-10/12 font-semibold">CARTE D'ELEVE</span>
                     {{-- <span >eChik <span>SCHOOL MANAGEMENT SYSYTEM</span></span> --}}
@@ -55,11 +54,10 @@
             <div class="flex flex-row gap-5 items-center justify-between w-full border-b-8 border-black ">
                 <img class="icons" src="{{ asset('storage/flag.png') }}" alt="flag">
                 <div class="card-front-titles">
-                    <span class="text-9 font-bold uppercase">REPUBLIQUE DEMOCRATIQUE DU CONGO</span>
-                    <span class="text-9 font-bold uppercase text-blue-600">MINISTERE DE L'ENSEIGNAMENT PRIMAIRE,
-                        SECONDAIRE ET TECHNIQUE</span>
-                    <span class="text-9 font-bold uppercase text-blue-600">PROVINCE DU SUD KIVU</span>
-                    <span class="text-9 font-bold uppercase">{{ env('ECOLE') ? env('ECOLE') : env('APP_NAME') }}</span>
+                    <span class="text-9 font-bold uppercase">{{ $ecole->pays }}</span>
+                    <span class="text-9 font-bold uppercase text-blue-600">{{ $ecole->ministere }}</span>
+                    <span class="text-9 font-bold uppercase text-blue-600">{{ $ecole->province }}</span>
+                    <span class="text-9 font-bold uppercase">{{ $ecole->nom ? $ecole->nom : env('APP_NAME') }}</span>
                 </div>
                 <img class="icons" src="{{ asset('storage/armoirie.png') }}" alt="armoirie">
             </div>
@@ -69,7 +67,8 @@
                     <div class="avatar-container">
                         <!-- <img id="qr-code" src="" alt=""> -->
                         @if ($eleve->avatar !== null)
-                        <img id="avatar" src="{{ asset('storage/profiles/eleves/'.$eleve->avatar) }}" alt="avatar" />
+                            <img id="avatar" src="{{ asset('storage/profiles/eleves/' . $eleve->avatar) }}"
+                                alt="avatar" />
                         @else
                             @if ($eleve->sexe === 'M')
                                 <img id="avatar" src="{{ asset('storage/avatar-boy.png') }}" alt="avatar" />
@@ -102,7 +101,7 @@
                         </tr>
                         <tr class="">
                             <td class=" uppercase text-10">CLASSE : <span id="prenom" class="font-bold"></span>
-                                {{ $eleve->classe() ? $eleve->classe()->nomComplet() : "Pas Inscrit"}}
+                                {{ $eleve->classe() ? $eleve->classe()->nomComplet() : 'Pas Inscrit' }}
                             </td>
                         </tr>
                         <tr class="">

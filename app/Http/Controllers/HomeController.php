@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Date\DateController;
+use App\Models\Ecole;
 use App\Models\Frequentation;
 
 class HomeController extends Controller
@@ -151,7 +152,9 @@ class HomeController extends Controller
         return $data;
     }
     public function print()
-    {
-        return view('print.print');
+    {   
+        $ecole = Ecole::first();
+        // dd($ecole);
+        return view('print.print')->with('ecole',$ecole);
     }
 }

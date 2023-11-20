@@ -42,14 +42,14 @@
    
     <div class="flex flex-col gap-2 bg-white rounded-xl shadow-xxs w-full p-5  items-center">
         <div class="w-full flex flex-row justify-between">
-            <div  class="container w-full flex justify-center"> 
+            <div id="bulletin"  class="container w-full flex justify-center"> 
                 @if (!$bulletin == null)
                 @if((!Auth::user()->isParent()) || (Auth::user()->isParent() && $resultat > 1))
                 <table id="printable" border-collapse class=" w-full max-w-160 border border-collapse">
                         <thead>
                             <th colspan="3" class="border px-2 py-1 uppercase text-left text-xs" >
-                                <span class="upercase w-full">ecole: {{env('ECOLE')}}</span><br>
-                                <span class="upercase w-full">ville: {{env('VILLE')}}</span> <br>
+                                <span class="upercase w-full">ecole: {{$ecole->nom}}</span><br>
+                                <span class="upercase w-full">ville: {{$ecole->ville}}</span> <br>
                                 {{-- <span class="upercase w-full">Commune/Ter (1)</span> <br>
                                 <span class="upercase w-full">code : </span><br> --}}
                             </th>

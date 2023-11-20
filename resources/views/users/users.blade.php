@@ -242,7 +242,10 @@
                                 <tr class="">
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
-                                        {{ $item->employer->nom . ' ' . $item->employer->prenom }}</td>
+                                        <a class="hover:text-blue-700 "
+                                            href="{{ route('employers.show', $item->employer->id) }}">
+                                            {{ $item->employer->nom . ' ' . $item->employer->prenom }}</a>
+                                    </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         {{ $item->email }}</td>
@@ -252,23 +255,15 @@
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent">
                                         @if ($item->isEnseignant())
-                                            @if ($item->classe() == null || $item->classe !== null)
+                                            @if ($item->classe() === null || $item->classe === null)
                                                 <a class="text-blue-500 underline "
                                                     href="{{ route('encadrements.link', $item->id) }}">
                                                     assigner à une classe
                                                 </a>
                                             @else
-                                                @if ($item->classe !== null)
-                                                    <a class="text-blue-500 underline "
-                                                        href="{{ route('classes.show', $item->classe->id) }}">
-                                                        {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}
-                                                    </a>
-                                                @else
-                                                    <a class="text-blue-500 underline "
-                                                        href="{{ route('encadrements.link', $item->id) }}">
-                                                        assigner à une classe
-                                                    </a>
-                                                @endif
+                                                <a class="hover:text-blue-700 "
+                                                    href="{{ route('classes.show', $item->classe->id) }}">
+                                                    {{ $item->classe->niveau->nom . ' ' . $item->classe->nom }}
                                             @endif
                                         @else
                                             ---

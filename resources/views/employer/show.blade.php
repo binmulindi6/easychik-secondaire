@@ -104,6 +104,20 @@
                                     name='fonction' required> </x-select>
                             </div>
                         </div>
+                        <div class="flex gap-5">
+
+                            <div class="mt-4 w-full">
+                                <x-label for="telephone1" :value="__('Telephone1')" />
+                                <x-input id="telephone1" class="block mt-1 w-full" type="text" name="telephone1"
+                                    :value="$self->telephone1" required />
+                            </div>
+                            <div class="mt-4 w-full">
+                                <x-label for="telephone2" :value="__('Telephone2')" />
+                                <x-input id="telephone2" class="block mt-1 w-full" type="text" name="telephone2"
+                                    :value="$self->telephone2" required />
+                            </div>
+
+                        </div>
                         <div class="btn-save1 hidden flex gap-10">
                             <div class="mt-4">
                                 <x-button>Enregistrer</x-button>
@@ -275,97 +289,97 @@
                 </div>
             </div>
         </div>
-    {{-- </div> --}}
+        {{-- </div> --}}
 
-    <div class=" flex flex-col-reverse md:flex-row w-full justify-between gap-5">
-        <div class="flex flex-col gap-2 w-full md:w-3/6">
-            <div class="shadow-2xl text-center relative bg-white rounded-5 p-5 w-full  z-20">
-                <span class="text-center font-bold text-base"> Historique d'Encadrements </span>
-                <div class="flex-auto px-0 pt-0 pb-2">
-                    <div class="p-0 overflow-x-auto">
-                        <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                            <thead class="align-bottom">
-                                <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                    Annee Scolaire
-                                </th>
-                                <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                    Classe
-                                </th>
-                            </thead>
-                            <tbody>
+        <div class=" flex flex-col-reverse md:flex-row w-full justify-between gap-5">
+            <div class="flex flex-col gap-2 w-full md:w-3/6">
+                <div class="shadow-2xl text-center relative bg-white rounded-5 p-5 w-full  z-20">
+                    <span class="text-center font-bold text-base"> Historique d'Encadrements </span>
+                    <div class="flex-auto px-0 pt-0 pb-2">
+                        <div class="p-0 overflow-x-auto">
+                            <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                                <thead class="align-bottom">
+                                    <th
+                                        class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                        Annee Scolaire
+                                    </th>
+                                    <th
+                                        class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                        Classe
+                                    </th>
+                                </thead>
+                                <tbody>
 
-                                @if ($user->encadrements->count() > 0)
-                                    @foreach ($user->encadrements as $encadrement)
-                                        @if ($encadrement->annee_scolaire)
-                                            <tr class=" rounded-2xl hover:bg-slate-100">
-                                                <td
-                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
-                                                    {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                    {{ $encadrement->annee_scolaire->nom }}
-                                                    {{-- </a> --}}
-                                                </td>
-                                                <td
-                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
-                                                    {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                    {{ $encadrement->classe->nomComplet() }}
-                                                    {{-- </a> --}}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
+                                    @if ($user->encadrements->count() > 0)
+                                        @foreach ($user->encadrements as $encadrement)
+                                            @if ($encadrement->annee_scolaire)
+                                                <tr class=" rounded-2xl hover:bg-slate-100">
+                                                    <td
+                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                        {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
+                                                        {{ $encadrement->annee_scolaire->nom }}
+                                                        {{-- </a> --}}
+                                                    </td>
+                                                    <td
+                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                        {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
+                                                        {{ $encadrement->classe->nomComplet() }}
+                                                        {{-- </a> --}}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        @if ($user->isEnseignant())
-            <div class="shadow-2xl text-center relative bg-white rounded-5 p-5 w-full  z-20">
-                <span class="text-center font-bold text-base"> Historique d'Enseignements </span>
-                <div class="flex-auto px-0 pt-0 pb-2">
-                    <div class="p-0 overflow-x-auto">
-                        <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                            <thead class="align-bottom">
-                                <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                   Cours
-                                </th>
-                                <th
-                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
-                                    Classe
-                                </th>
-                            </thead>
-                            <tbody>
+            @if ($user->isEnseignant())
+                <div class="shadow-2xl text-center relative bg-white rounded-5 p-5 w-full  z-20">
+                    <span class="text-center font-bold text-base"> Historique d'Enseignements </span>
+                    <div class="flex-auto px-0 pt-0 pb-2">
+                        <div class="p-0 overflow-x-auto">
+                            <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                                <thead class="align-bottom">
+                                    <th
+                                        class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                        Cours
+                                    </th>
+                                    <th
+                                        class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap ">
+                                        Classe
+                                    </th>
+                                </thead>
+                                <tbody>
 
-                                @if ($user->enseignements->count() > 0)
-                                    @foreach ($user->enseignements as $enseignement)
-                                        @if ($enseignement->annee_scolaire)
-                                            <tr class=" rounded-2xl hover:bg-slate-100">
-                                                <td
-                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
-                                                    {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                    {{ $enseignement->cours->nom }}
-                                                    {{-- </a> --}}
-                                                </td>
-                                                <td
-                                                    class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
-                                                    {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                    {{ $enseignement->cours->niveau->nom . " " . $enseignement->cours->section->nom }}
-                                                    {{-- </a> --}}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
+                                    @if ($user->enseignements->count() > 0)
+                                        @foreach ($user->enseignements as $enseignement)
+                                            @if ($enseignement->annee_scolaire)
+                                                <tr class=" rounded-2xl hover:bg-slate-100">
+                                                    <td
+                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                        {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
+                                                        {{ $enseignement->cours->nom }}
+                                                        {{-- </a> --}}
+                                                    </td>
+                                                    <td
+                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                        {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
+                                                        {{ $enseignement->cours->niveau->nom . ' ' . $enseignement->cours->section->nom }}
+                                                        {{-- </a> --}}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-        @endif
-    </div>
+            @endif
+        </div>
 
     </div>
 

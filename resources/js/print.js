@@ -1,6 +1,7 @@
 //joker print
 
 const printable = document.getElementById("printable");
+const bulletin = document.getElementById("bulletin");
 const btnJokerPrint = document.getElementById("joker-print");
 const node = printable &&  printable.cloneNode(true);
 const pageNode = printable &&  printable.cloneNode(true);
@@ -15,27 +16,16 @@ btnJokerPrint !== null &&
         var nn = window.open('/data/print')
         nn.onload = () => {
             // nn.alert(10); 
-            // nn.document.body.appendChild(node)
-            nn.document.getElementById('root').appendChild(node)
+            if(bulletin){
+                bulletin && (nn.document.body.innerHTML = '')
+                nn.document.body.appendChild(node)
+            }else{
+                nn.document.getElementById('root').appendChild(node)
+            }
             nn.print()
             // nn.close()
         }
-        // var thedoc = nn.document
-        // nn.getElementById('root')
 
-        // const dothis = () => {
-        //     alert(printable.innerHTML)
-        // }
-
-        // theroot.innerHTML = ' window.onload = ' + dothis.toString() + ';'
-        // thedoc.body.appendChild(theroot);
-
-        // window.print();
-        
-
-
-        // let newW = open(btn.id, 'Carte Eleve', '_blank');
-        // newW.focus()
     });
 
 // window.addEventListener("beforeprint", (e) => {

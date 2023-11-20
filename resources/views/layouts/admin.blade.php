@@ -7,7 +7,7 @@
     <link rel="icon" href="{{ asset('storage/favicon.png') }}" />
     <!--link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" /-->
     <!--link rel="icon" type="image/png" href="../assets/img/favicon.png" /-->
-    <title> {{ config('app.name', 'SAS') }} - {{ $page_name }} </title>
+    <title> {{ config('app.name', 'easyChik') }} - {{ $page_name }} </title>
     <!--     Fonts and icons     -->
     {{-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" /> --}}
     <!-- Font Awesome Icons -->
@@ -769,16 +769,13 @@
         <!-- end Navbar -->
 
         <!-- cards -->
-        <div class="w-full h-full md:p-6 mx-auto ">
+        <div class="w-full h-full p-2 md:p-6 mx-auto ">
             @yield('content')
         </div>
-        <div class="w-full h-full md:p-6 mx-auto hidden">
+        <div class="w-full h-full  p-2 md:p-6 mx-auto hidden">
             <x-settings></x-settings>
         </div>
         <!-- end cards -->
-
-
-
     </main>
     </div>
 </body>

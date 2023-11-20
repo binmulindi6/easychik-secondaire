@@ -98,6 +98,17 @@ Route::post('frequentation/store/api', [FrequentationController::class, 'storeAp
 // //       });
 // //  });
 
+//outter 
+Route::get('ecole/register', [EcoleController::class, 'create'])->name('ecole.create');
+Route::post('ecole/store', [EcoleController::class, 'store'])->name('ecole.store');
+
+//employer
+Route::get('ecole/first/employer', [EcoleController::class, 'firstEmployer'])->name('ecole.first.employer');
+Route::post('ecole/store/first/employer', [EcoleController::class, 'storeFirstEmployer'])->name('ecole.store.first.employer');
+
+//user
+Route::get('ecole/first/user/{id}', [EcoleController::class, 'firstUser'])->name('ecole.first.user');
+Route::post('ecole/store/first/user', [EcoleController::class, 'storeFirstUser'])->name('ecole.store.first.user');
 // //Ressours
 Route::middleware(['auth', 'isActive'])->group(function () {
 
@@ -105,7 +116,8 @@ Route::middleware(['auth', 'isActive'])->group(function () {
     Route::middleware(['isStarter'])->group(function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
         Route::get('/data/print', [HomeController::class, 'print'])->name('print');
-        
+        Route::post('ecole/update', [EcoleController::class, 'update'])->name('ecole.update');
+
         Route::resource('annee-scolaires', AnneeScolaireController::class);
         Route::post('annee-scolaires/{id}', [AnneeScolaireController::class, 'changeStatut'])->name('annee-scolaires.statut');
         Route::resource('categorie-cours', CategorieCoursController::class);
@@ -181,6 +193,7 @@ Route::middleware(['auth', 'isActive'])->group(function () {
 
         //Examens
         Route::get('eleves/{eleve}/examens/{trimestre}', [EleveController::class, 'ficheExamen'])->name('eleves.examens');
+        Route::get('eleves/{eleve}/fiche-identite', [EleveController::class, 'ficheIdentite'])->name('eleves.fiche.identite');
         Route::get('eleves/{eleve}/examens/edit/{examen}', [EleveExamenController::class, 'edit'])->name('eleves.examens.edit');
         Route::put('eleves/examens/{pivot}', [EleveExamenController::class, 'update'])->name('eleves.examens.update');
         Route::get('eleves/{eleve}/evaluations/{periode}', [EleveController::class, 'ficheEvaluations'])->name('eleves.evaluations');

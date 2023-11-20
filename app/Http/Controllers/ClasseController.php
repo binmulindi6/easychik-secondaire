@@ -234,7 +234,7 @@ class ClasseController extends Controller
 
         $classResults = $classe->resultats();
         $res = array();
-        // arsort($classResults);
+        // dd($classResults);
         foreach ($classResults as $resultat) {
             if ($resultat->frequentation->eleve !== null) {
                 $data = array();
@@ -268,7 +268,7 @@ class ClasseController extends Controller
         $classResults = $classe->resultats();
         $res = array();
         // dd($trimestre);
-        // arsort($classResults);
+        // dd($classResults);
         foreach ($classResults as $resultat) {
             if ($resultat->frequentation->eleve !== null) {
                 $data = array();
@@ -343,12 +343,6 @@ class ClasseController extends Controller
             case 'QUATRIEME PERIODE':
                 $data = $resultat->periode4;
                 break;
-            case 'CINQUIME PERIODE':
-                $data = $resultat->periode5;
-                break;
-            case 'SIXIEME PERIODE':
-                $data = $resultat->periode6;
-                break;
         }
 
         return $data;
@@ -359,14 +353,11 @@ class ClasseController extends Controller
         // dd($trimestre);
         $trim = 0.00;
         switch ($trimestre->nom) {
-            case 'PREMIER TRIMESTRE':
+            case 'PREMIER SEMESTRE':
                 $trim = $resultat->trimestre1;
                 break;
-            case 'DEUXIEME TRIMESTRE':
+            case 'DEUXIEME SEMESTRE':
                 $trim = $resultat->trimestre2;
-                break;
-            case 'TROISIEME TRIMESTRE':
-                $trim = $resultat->trimestre3;
                 break;
         }
 

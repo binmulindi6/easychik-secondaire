@@ -22,10 +22,7 @@
                             $periode2 != null &&
                             $examenT2 != null &&
                             $periode3 != null &&
-                            $periode4 != null &&
-                            $examenT3 != null &&
-                            $periode5 != null &&
-                            $periode6 != null)
+                            $periode4 != null)
                         @if (
                             (!Auth::user()->isEnseignant() && $resultatAnnee !== null) ||
                                 (Auth::user()->isEnseignant() && $resultatAnnee !== null) ||
@@ -34,17 +31,17 @@
 
 
 
-                            <div class="w-full flex flex-col justify-center items-center h-full ">
+                            <div id="bulletin" class="w-full flex flex-col justify-center items-center h-full ">
                                 {{-- <x-button id="btn-export">export</x-button> --}}
-                                <table id="printable" class="border-2xl print:w-60 border-collapse text-xs m-5">
+                                <table id="printable" class="border-2xl border-collapse text-xs m-5">
                                     <thead>
-                                        <th colspan="12" class="border p-1 uppercase text-left">
-                                            <span class="upercase w-full">ecole: {{ env('ECOLE') }}</span><br>
-                                            <span class="upercase w-full">ville: {{ env('VILLE') }} </span> <br>
-                                            <span class="upercase w-full">Commune/Ter (1) : {{ env('COMMUNE') }}</span> <br>
-                                            <span class="upercase w-full">code : {{ env('CODE') }}</span><br>
+                                        <th colspan="8" class="border p-1 uppercase text-left">
+                                            <span class="upercase w-full">ecole: {{ $ecole->nom }}</span><br>
+                                            <span class="upercase w-full">ville: {{ $ecole->ville }} </span> <br>
+                                            <span class="upercase w-full">Commune/Ter (1) : {{ $ecole->commune }}</span> <br>
+                                            <span class="upercase w-full">code : {{ $ecole->code }}</span><br>
                                         </th>
-                                        <th colspan="12" class="border p-1 px-2 uppercase text-left">
+                                        <th colspan="9" class="border p-1 px-2 uppercase text-left">
 
                                             <span class="upercase w-full">ELEVE : {{ $eleve->nomComplet() }} sexe:
                                                 {{ $eleve->sexe }}</span><br>
@@ -61,16 +58,16 @@
                                         </th>
                                     </thead>
                                     <thead>
-                                        <th colspan="12" class="border p-0.5 uppercase">Bulletin de l'eleve :
+                                        <th colspan="8" class="border p-0.5 uppercase">Bulletin de l'eleve :
                                             {{ $eleve->classe()->niveau->nom }} </th>
-                                        <th colspan="12" class="border p-0.5 uppercase"> Annee scolaire
+                                        <th colspan="9" class="border p-0.5 uppercase"> Annee scolaire
                                             {{ $annee_scolaire->nom }} </th>
                                     </thead>
                                     <thead>
                                         <th class="border row-span-2" rowspan="2"></th>
-                                        <th colspan="7" class="border p-0.5">PREMIER TRIMESTRE</th>
-                                        <th colspan="7" class="border p-0.5">SECOND TRIMESTRE</th>
-                                        <th colspan="7" class="border p-0.5">TROISIEME TRIMESTRE</th>
+                                        <th colspan="7" class="border p-0.5">PREMIER SEMESTRE</th>
+                                        <th colspan="7" class="border p-0.5">SECOND SEMESTRE</th>
+                                        {{-- <th colspan="7" class="border p-0.5">TROISIEME TRIMESTRE</th> --}}
                                         <th colspan="2" class="border p-0.5">TOTAL</th>
                                     </thead>
                                     <thead>
@@ -91,13 +88,13 @@
                                         <th class=" border p-0.5 text-3">Max Tri</th>
                                         <th class=" border p-0.5 text-3">Pts Ob</th>
 
-                                        <th class=" border p-0.5 text-3">Max P</th>
+                                        {{-- <th class=" border p-0.5 text-3">Max P</th>
                                         <th class=" border p-0.5 text-3">5e P</th>
                                         <th class=" border p-0.5 text-3">6e P</th>
                                         <th class=" border p-0.5 text-3">Max Ex</th>
                                         <th class=" border p-0.5 text-3">Pts Ex</th>
                                         <th class=" border p-0.5 text-3">Max Tri</th>
-                                        <th class=" border p-0.5 text-3">Pts Ob</th>
+                                        <th class=" border p-0.5 text-3">Pts Ob</th> --}}
 
 
                                         <th class=" border p-0.5">Max</th>
@@ -174,36 +171,36 @@
                                                 
                                                 //Trimestre 3
                                                 
-                                                if ($examenT3[$i]->max == $examenT3[$i]->total) {
-                                                    $noteExT3 += $examenT3[$i]->note;
-                                                    $maxExT3 += $examenT3[$i]->total;
-                                                } else {
-                                                    $examenT3[$i]->note = round(($examenT3[$i]->note * $examenT3[$i]->total) / $examenT3[$i]->max, 1);
-                                                    $noteExT3 += $examenT3[$i]->note;
-                                                    $maxExT3 += $examenT3[$i]->total;
-                                                }
+                                                // if ($examenT3[$i]->max == $examenT3[$i]->total) {
+                                                //     $noteExT3 += $examenT3[$i]->note;
+                                                //     $maxExT3 += $examenT3[$i]->total;
+                                                // } else {
+                                                //     $examenT3[$i]->note = round(($examenT3[$i]->note * $examenT3[$i]->total) / $examenT3[$i]->max, 1);
+                                                //     $noteExT3 += $examenT3[$i]->note;
+                                                //     $maxExT3 += $examenT3[$i]->total;
+                                                // }
                                                 
-                                                //Periode 5
-                                                if ($periode5[$i]->max == $periode5[$i]->total) {
-                                                    $noteP5 += $periode5[$i]->note;
-                                                    $maxP5 += $periode5[$i]->total;
-                                                } else {
-                                                    $periode5[$i]->note = round(($periode5[$i]->note * $periode5[$i]->total) / $periode5[$i]->max, 1);
-                                                    $noteP5 += $periode5[$i]->note;
-                                                    $maxP5 += $periode5[$i]->total;
-                                                }
+                                                // //Periode 5
+                                                // if ($periode5[$i]->max == $periode5[$i]->total) {
+                                                //     $noteP5 += $periode5[$i]->note;
+                                                //     $maxP5 += $periode5[$i]->total;
+                                                // } else {
+                                                //     $periode5[$i]->note = round(($periode5[$i]->note * $periode5[$i]->total) / $periode5[$i]->max, 1);
+                                                //     $noteP5 += $periode5[$i]->note;
+                                                //     $maxP5 += $periode5[$i]->total;
+                                                // }
                                                 
-                                                //Periode 46
-                                                if ($periode6[$i]->max == $periode6[$i]->total) {
-                                                    $noteP6 += $periode6[$i]->note;
-                                                    $maxP6 += $periode6[$i]->total;
-                                                } else {
-                                                    $periode6[$i]->note = round(($periode6[$i]->note * $periode6[$i]->total) / $periode6[$i]->max, 1);
-                                                    $noteP6 += $periode6[$i]->note;
-                                                    $maxP6 += $periode6[$i]->total;
-                                                }
+                                                // //Periode 46
+                                                // if ($periode6[$i]->max == $periode6[$i]->total) {
+                                                //     $noteP6 += $periode6[$i]->note;
+                                                //     $maxP6 += $periode6[$i]->total;
+                                                // } else {
+                                                //     $periode6[$i]->note = round(($periode6[$i]->note * $periode6[$i]->total) / $periode6[$i]->max, 1);
+                                                //     $noteP6 += $periode6[$i]->note;
+                                                //     $maxP6 += $periode6[$i]->total;
+                                                // }
                                                 
-                                                $noteTri3 += $periode5[$i]->note + $periode6[$i]->note + $examenT3[$i]->note;
+                                                // $noteTri3 += $periode5[$i]->note + $periode6[$i]->note + $examenT3[$i]->note;
                                                 
                                             @endphp
                                             <tr>
@@ -240,7 +237,7 @@
                                                 @endphp
                                                 <td class="border p-0.5 text-center"> {{ $PointsT2 }} </td>
 
-                                                <td class="border p-0.5 text-center font-bold"> {{ $periode5[$i]->total }}
+                                                {{-- <td class="border p-0.5 text-center font-bold"> {{ $periode5[$i]->total }}
                                                 </td>
                                                 <td class="border p-0.5 text-center"> {{ $periode5[$i]->note }} </td>
                                                 <td class="border p-0.5 text-center"> {{ $periode6[$i]->note }} </td>
@@ -253,14 +250,14 @@
                                                 @php
                                                     $PointsT3 = $periode5[$i]->note + $periode6[$i]->note + $examenT3[$i]->note;
                                                 @endphp
-                                                <td class="border p-0.5 text-center"> {{ $PointsT3 }} </td>
+                                                <td class="border p-0.5 text-center"> {{ $PointsT3 }} </td> --}}
 
 
                                                 <td class="border p-0.5 text-center font-bold">
-                                                    {{ $examenT1[$i]->total * 2 + $examenT2[$i]->total * 2 + $examenT3[$i]->total * 2 }}
+                                                    {{ $examenT1[$i]->total * 2 + $examenT2[$i]->total * 2}}
                                                 </td>
                                                 <td class="border p-0.5 text-center">
-                                                    {{ $PointsT1 + $PointsT2 + $PointsT3 }}
+                                                    {{ $PointsT1 + $PointsT2}}
                                                 </td>
 
                                             </tr>
@@ -277,7 +274,7 @@
                                             <th class="border p-0.5">{{ $noteP2 }}</th>
                                             <th class="border p-0.5">{{ $maxExT1 }}</th>
                                             <th class="border p-0.5">{{ $noteExT1 }}</th>
-                                            <th class="border p-0.5"> {{ $maxExT1 * 2 }} </th>
+                                            <th class="border p-0.5"> {{ $maxExT1 + $maxP1 + $maxP2 }} </th>
                                             <th class="border p-0.5"> {{ $noteTri1 }} </th>
 
                                             <th class="border p-0.5"> {{ $maxP3 }} </th>
@@ -285,23 +282,23 @@
                                             <th class="border p-0.5">{{ $noteP4 }}</th>
                                             <th class="border p-0.5">{{ $maxExT2 }}</th>
                                             <th class="border p-0.5">{{ $noteExT2 }}</th>
-                                            <th class="border p-0.5"> {{ $maxExT2 * 2 }} </th>
+                                            <th class="border p-0.5">  {{ $maxExT2 + $maxP3 + $maxP4 }} </th>
                                             <th class="border p-0.5"> {{ $noteTri2 }} </th>
 
-                                            <th class="border p-0.5"> {{ $maxP5 }} </th>
+                                            {{-- <th class="border p-0.5"> {{ $maxP5 }} </th>
                                             <th class="border p-0.5">{{ $noteP5 }}</th>
                                             <th class="border p-0.5">{{ $noteP6 }}</th>
                                             <th class="border p-0.5">{{ $maxExT3 }}</th>
                                             <th class="border p-0.5">{{ $noteExT3 }}</th>
                                             <th class="border p-0.5"> {{ $maxExT3 * 2 }} </th>
-                                            <th class="border p-0.5"> {{ $noteTri3 }} </th>
+                                            <th class="border p-0.5"> {{ $noteTri3 }} </th> --}}
                                             @php
-                                                $maxGeneral = $maxExT3 * 6;
+                                                $maxGeneral = $maxExT1 + $maxP1 + $maxP2 + $maxExT2 + $maxP3 + $maxP4 ;
                                             @endphp
 
                                             <th class="border p-0.5"> {{ $maxGeneral }} </th>
                                             @php
-                                                $noteGeneral = $noteTri1 + $noteTri2 + $noteTri3;
+                                                $noteGeneral = $noteTri1 + $noteTri2;
                                             @endphp
                                             <th class="border p-0.5"> {{ $noteGeneral }} </th>
 
@@ -320,7 +317,7 @@
                                                 {{ round(($noteExT1 * 100) / $maxExT1, 1) }}%</td>
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
-                                                {{ round(($noteTri1 * 100) / ($maxExT1 * 2), 1) }}%</td>
+                                                {{ round(($noteTri1 * 100) / ($maxExT1 + $maxP1 + $maxP2), 1) }}%</td>
 
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
@@ -332,9 +329,9 @@
                                                 {{ round(($noteExT2 * 100) / $maxExT2, 1) }}%</td>
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
-                                                {{ round(($noteTri2 * 100) / ($maxExT2 * 2), 1) }}%</td>
+                                                {{ round(($noteTri2 * 100) / ($maxExT2 + $maxP3 + $maxP4), 1) }}%</td>
 
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            {{-- <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
                                                 {{ round(($noteP5 * 100) / $maxP5, 1) }}%</td>
                                             <td class="border p-0.5 font-normal text-center">
@@ -344,7 +341,7 @@
                                                 {{ round(($noteExT3 * 100) / $maxExT3, 1) }}%</td>
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
-                                                {{ round(($noteTri3 * 100) / ($maxExT3 * 2), 1) }}%</td>
+                                                {{ round(($noteTri3 * 100) / ($maxExT3 * 2), 1) }}%</td> --}}
 
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
@@ -355,20 +352,20 @@
                                             $pourcP2 = round(($noteP2 * 100) / $maxP2, 1);
                                             $pourcP3 = round(($noteP3 * 100) / $maxP3, 1);
                                             $pourcP4 = round(($noteP4 * 100) / $maxP4, 1);
-                                            $pourcP5 = round(($noteP5 * 100) / $maxP5, 1);
-                                            $pourcP6 = round(($noteP6 * 100) / $maxP6, 1);
+                                            // $pourcP5 = round(($noteP5 * 100) / $maxP5, 1);
+                                            // $pourcP6 = round(($noteP6 * 100) / $maxP6, 1);
                                             
                                             //examen
                                             
                                             $pourcEx1 = round(($noteExT1 * 100) / $maxExT1, 1);
                                             $pourcEx2 = round(($noteExT2 * 100) / $maxExT2, 1);
-                                            $pourcEx3 = round(($noteExT3 * 100) / $maxExT3, 1);
+                                            // $pourcEx3 = round(($noteExT3 * 100) / $maxExT3, 1);
                                             
                                             //trimestre
                                             
-                                            $pourcTrim1 = round(($noteTri1 * 100) / ($maxExT1 * 2), 1);
-                                            $pourcTrim2 = round(($noteTri2 * 100) / ($maxExT2 * 2), 1);
-                                            $pourcTrim3 = round(($noteTri3 * 100) / ($maxExT3 * 2), 1);
+                                            $pourcTrim1 = round(($noteTri1 * 100) / ($maxExT1 + $maxP1 + $maxP2), 1);
+                                            $pourcTrim2 = round(($noteTri2 * 100) / ($maxExT2 + $maxP3 + $maxP4), 1);
+                                            // $pourcTrim3 = round(($noteTri3 * 100) / ($maxExT3 * 2), 1);
                                             
                                             //annee
                                             
@@ -422,19 +419,19 @@
                                             {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT2 * 100 / $maxExT2, 1)) }}%</td> --}}
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
-                                                {{ conduite(round(($noteTri2 * 100) / ($maxExT2 * 2), 1)) }}</td>
+                                                {{ conduite(round(($noteTri2 * 100) / ($maxExT2 + $maxP3 + $maxP2), 1)) }}</td>
 
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            {{-- <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
                                                 {{ conduite(round(($noteP5 * 100) / $maxP5, 1)) }}</td>
                                             <td class="border p-0.5 font-normal text-center">
                                                 {{ conduite(round(($noteP6 * 100) / $maxP6, 1)) }}</td>
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td> --}}
                                             {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT3 * 100 / $maxExT3, 1)) }}%</td> --}}
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            {{-- <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center">
-                                                {{ conduite(round(($noteTri3 * 100) / ($maxExT3 * 2), 1)) }}</td>
+                                                {{ conduite(round(($noteTri3 * 100) / ($maxExT3 * 2), 1)) }}</td> --}}
 
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
@@ -527,7 +524,7 @@
                                             {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteTri2 * 100 / ($maxExT2 * 2), 1)}}%</td> --}}
 
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
-                                            <td class="border p-0.5 font-normal text-center">
+                                            {{-- <td class="border p-0.5 font-normal text-center">
                                                 @if ($cond6)
                                                     <a href="{{ route('eleveconduites.edit', [$eleve->id, $p3->id]) }}"
                                                         class="hover:text-blue-500 hover:text-5"
@@ -543,8 +540,8 @@
                                                         <span title="Consuite Indisponible">CI</span>
                                                     @endif
                                                 @endif
-                                            </td>
-                                            <td class="border p-0.5 font-normal text-center">
+                                            </td> --}}
+                                            {{-- <td class="border p-0.5 font-normal text-center">
                                                 @if ($cond6)
                                                     <a href="{{ route('eleveconduites.edit', [$eleve->id, $p3->id]) }}"
                                                         class="hover:text-blue-500 hover:text-5"
@@ -560,16 +557,16 @@
                                                         <span title="Consuite Indisponible">CI</span>
                                                     @endif
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            {{-- <td class="border p-0.5 font-normal text-center bg-slate-400"></td> --}}
                                             {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteExT3 * 100 / $maxExT3, 1) }}%</td> --}}
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            {{-- <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td> --}}
                                             {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteTri3 * 100 / ($maxExT3*2), 1)}}%</td> --}}
 
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
-                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            {{-- <td class="border p-0.5 font-normal text-center bg-slate-400"></td>
+                                            <td class="border p-0.5 font-normal text-center bg-slate-400"></td> --}}
                                             {{-- <td class="border p-0.5 font-normal text-center" >{{ round($noteGeneral * 100 / ($maxGeneral), 1)}}%</td> --}}
                                         </tr>
                                         <tr>
@@ -582,7 +579,7 @@
                                                         @if ($decision === null)
                                                             <div class="flex flex-row gap-1 items-center">
                                                                 @if (Auth::user()->isEnseignant())
-                                                                    @if ($pourcAnnee >= env('REUSSITE'))
+                                                                    @if ($pourcAnnee >= (int)$ecole->reussite)
                                                                         <x-input checked :submitOnChange="true" type="radio"
                                                                             name="decision" value="passe"></x-input>
                                                                     @else
@@ -590,7 +587,7 @@
                                                                             name="decision" value="passe"></x-input>
                                                                     @endif
                                                                 @else
-                                                                    @if ($pourcAnnee >= env('REUSSITE'))
+                                                                    @if ($pourcAnnee >= (int)$ecole->reussite)
                                                                         <x-input disabled checked type="radio"
                                                                             name="decision" value="passe"></x-input>
                                                                     @else
@@ -603,7 +600,7 @@
                                                             </div>
                                                             <div class="flex flex-row gap-1 items-center">
                                                                 @if (Auth::user()->isEnseignant())
-                                                                    @if ($pourcAnnee < env('REUSSITE'))
+                                                                    @if ($pourcAnnee < (int)$ecole->reussite)
                                                                         <x-input checked :submitOnChange="true" type="radio"
                                                                             name="decision" value="double"> </x-input>
                                                                     @else
@@ -611,7 +608,7 @@
                                                                             name="decision" value="double"> </x-input>
                                                                     @endif
                                                                 @else
-                                                                    @if ($pourcAnnee < env('REUSSITE'))
+                                                                    @if ($pourcAnnee < (int)$ecole->reussite)
                                                                         <x-input checked disabled type="radio"
                                                                             name="decision" value="double"> </x-input>
                                                                     @else
@@ -671,31 +668,31 @@
                                                     <input type="hidden" name="periode2" value="{{ $pourcP2 }}">
                                                     <input type="hidden" name="periode3" value="{{ $pourcP3 }}">
                                                     <input type="hidden" name="periode4" value="{{ $pourcP4 }}">
-                                                    <input type="hidden" name="periode5" value="{{ $pourcP5 }}">
-                                                    <input type="hidden" name="periode6" value="{{ $pourcP6 }}">
+                                                    {{-- <input type="hidden" name="periode5" value="{{ $pourcP5 }}">
+                                                    <input type="hidden" name="periode6" value="{{ $pourcP6 }}"> --}}
                                                     <input type="hidden" name="examen1" value="{{ $pourcEx1 }}">
                                                     <input type="hidden" name="examen2" value="{{ $pourcEx2 }}">
-                                                    <input type="hidden" name="examen3" value="{{ $pourcEx3 }}">
+                                                    {{-- <input type="hidden" name="examen3" value="{{ $pourcEx3 }}"> --}}
                                                     <input type="hidden" name="trimestre1"
                                                         value="{{ $pourcTrim1 }}">
                                                     <input type="hidden" name="trimestre2"
                                                         value="{{ $pourcTrim2 }}">
-                                                    <input type="hidden" name="trimestre3"
-                                                        value="{{ $pourcTrim3 }}">
+                                                    {{-- <input type="hidden" name="trimestre3"
+                                                        value="{{ $pourcTrim3 }}"> --}}
                                                     <input type="hidden" name="annee" value="{{ $pourcAnnee }}">
                                                     @if (
                                                         ($resultatP1 !== $pourcP1 ||
                                                             $resultatP2 !== $pourcP2 ||
                                                             $resultatP3 !== $pourcP3 ||
                                                             $resultatP4 !== $pourcP4 ||
-                                                            $resultatP5 !== $pourcP5 ||
-                                                            $resultatP6 !== $pourcP6 ||
+                                                            // $resultatP5 !== $pourcP5 ||
+                                                            // $resultatP6 !== $pourcP6 ||
                                                             $resultatEx1 !== $pourcEx1 ||
                                                             $resultatEx2 !== $pourcEx2 ||
-                                                            $resultatEx3 !== $pourcEx3 ||
+                                                            // $resultatEx3 !== $pourcEx3 ||
                                                             $resultatTri1 !== $pourcTrim1 ||
                                                             $resultatTri2 !== $pourcTrim2 ||
-                                                            $resultatTri3 !== $pourcTrim3 ||
+                                                            // $resultatTri3 !== $pourcTrim3 ||
                                                             $resultatAnnee !== $pourcAnnee) &&
                                                             Auth::user()->isEnseignant())
                                                         <x-button title="Valider le bulletin">Valider ✅</x-button>

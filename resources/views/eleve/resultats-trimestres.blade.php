@@ -45,7 +45,7 @@
 
         <div class="flex flex-col gap-2 bg-white rounded-xl shadow-xxs w-full p-5  items-center">
             <div class="w-full flex flex-row justify-between">
-                <div class="container w-full flex justify-center">
+                <div id="bulletin" class="container w-full flex justify-center">
                     @if ($examen != null && $periode1 != null && $periode2 != null)
                         @if (
                             !Auth::user()->isParent() ||
@@ -54,8 +54,8 @@
                             <table id="printable" border-collapse class=" w-full max-w-160 border border-collapse">
                                 <thead>
                                     <th colspan="8" class="border px-2 py-1 uppercase text-left text-xs">
-                                        <span class="upercase w-full">ecole: {{ env('ECOLE') }}</span><br>
-                                        <span class="upercase w-full">ville: {{ env('VILLE') }}</span> <br>
+                                        <span class="upercase w-full">ecole: {{ $ecole->nom }}</span><br>
+                                        <span class="upercase w-full">ville: {{ $ecole->ville }}</span> <br>
                                         {{-- <span class="upercase w-full">Commune/Ter (1)</span> <br>
                                 <span class="upercase w-full">code : </span><br> --}}
                                     </th>
@@ -165,7 +165,7 @@
                                                 {{ $examen[$i]->total * 2 }} </td>
                                             <td
                                                 class="p-1 border text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90 ">
-                                                {{ $periode1[$i]->note + $periode2[$i]->note + $examen[$i]->note }} </td>
+                                                {{ $periode1[$i]->note + $periode2[$i]->note + $examen[$i]->note }}</td>
 
 
                                         </tr>
@@ -205,7 +205,7 @@
                                             {{ $noteEx }}</th>
                                         <th
                                             class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90">
-                                            {{ $maxEx * 2 }} </th>
+                                            {{ $maxEx + $maxP1 + $maxP2 }} </th>
                                         <th
                                             class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90">
                                             {{ $noteTri }} </th>
@@ -234,7 +234,7 @@
                                         </th>
                                         <th
                                             class="p-1 border font-bold text-center uppercase align-middle bg-transparent border-b shadow-none text-xs  tracking-none whitespace-nowrap text-slate-700 opacity-90">
-                                            {{ round(($noteTri * 100) / ($maxEx * 2), 1) }} %</th>
+                                            {{ round(($noteTri * 100) / ($maxEx + $maxP1 + $maxP2), 1) }} %</th>
                                     </tr>
                                     <tr>
                                         <th

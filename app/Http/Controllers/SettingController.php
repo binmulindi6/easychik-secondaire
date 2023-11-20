@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Date\DateController;
+use App\Models\Ecole;
 
 class SettingController extends Controller
 {
@@ -14,11 +15,12 @@ class SettingController extends Controller
     {   
         $annees = AnneeScolaire::orderBy('nom')->get();
         $current = AnneeScolaire::current();
-        // dd(Auth::user()->classe());
+        $ecole = Ecole::first();
         
         return view('settings.settings')
                     ->with('page_name', $this->page)
                     ->with('current', $current)
+                    ->with('ecole', $ecole)
                     ->with("annees",$annees);
                     
     }

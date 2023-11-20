@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Ecole;
 use App\Models\Logfile;
 use App\Models\Employer;
 use App\Models\Fonction;
@@ -47,6 +48,7 @@ class EmployerController extends Controller
         return $this->index();
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -65,6 +67,8 @@ class EmployerController extends Controller
             'diplome' => ['required', 'string', 'max:255'],
             'niveau_etude' => ['required', 'string', 'max:255'],
             'fonction' => ['required', 'integer', 'max:255'],
+            'telephone1' => ['required', 'string', 'max:255'],
+            'telephone2' => ['required', 'string', 'max:255'],
         ]);
 
         $employer = Employer::create([
@@ -76,6 +80,8 @@ class EmployerController extends Controller
             'formation' => $request->formation,
             'diplome' => $request->diplome,
             'niveau_etude' => $request->niveau_etude,
+            'telephone1' => $request->telephone1,
+            'telephone2' => $request->telephone2,
         ]);
 
         $fonction = Fonction::find($request->fonction);
@@ -144,6 +150,8 @@ class EmployerController extends Controller
                 'diplome' => ['required', 'string', 'max:255'],
                 'niveau_etude' => ['required', 'string', 'max:255'],
                 'fonction' => ['required', 'integer', 'max:255'],
+                'telephone1' => ['required', 'string', 'max:255'],
+                'telephone2' => ['required', 'string', 'max:255'],
             ]);
 
             //dd(10);
@@ -203,18 +211,7 @@ class EmployerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'matricule' => ['required', 'string', 'max:255',],
-            'nom' => ['required', 'string', 'max:255'],
-            'prenom' => ['required', 'string', 'max:255'],
-            'date_naissance' => ['required', 'string', 'max:255'],
-            'nationalite' => ['required', 'string', 'max:255'],
-            'sexe' => ['required', 'string', 'max:255'],
-            'formation' => ['required', 'string', 'max:255'],
-            'diplome' => ['required', 'string', 'max:255'],
-            'niveau_etude' => ['required', 'string', 'max:255'],
-            'fonction' => ['required', 'integer', 'max:255'],
-        ]);
+
 
         $employer = Employer::find($id);
         if ($employer->isActive()) {
@@ -228,6 +225,8 @@ class EmployerController extends Controller
             $employer->formation = $request->formation;
             $employer->diplome = $request->diplome;
             $employer->niveau_etude = $request->niveau_etude;
+            $employer->telephone1 = $request->telephone1;
+            $employer->telephone2 = $request->telephone2;
 
             if ($request->fonction !== null) {
                 $fonction = Fonction::find($request->fonction);
@@ -302,7 +301,7 @@ class EmployerController extends Controller
         ])->get();
 
         $matricule = Employer::getLastMatricule();
-        
+
         return view('employer.employers')
             ->with('page_name', $this->page . ' / Search')
             ->with('search',  $request->search)
@@ -315,8 +314,11 @@ class EmployerController extends Controller
 
     public function carte($id)
     {
+
         $eleve = Employer::findOrFail($id);
+        $ecole = Ecole::first();
         return view('employer.carte')
+            ->with('ecole', $ecole)
             ->with('eleve', $eleve);
     }
 

@@ -25,6 +25,9 @@ return new class extends Migration
             $table->string("nationalite")->default('CONGOLAISE');
             $table->string("formation");
             $table->string("diplome");
+            $table->string("telephone1")->nullable();
+            $table->string("telephone2")->nullable();
+            $table->string("diplome");
             $table->string("niveau_etude")->nullable();
             $table->boolean("isActive")->default(1);
             $table->timestamps();

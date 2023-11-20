@@ -188,7 +188,7 @@ class Classe extends Model
     //     return $evs;
     // }
 
-    
+
     public function eleves()
     {
         $annee = AnneeScolaire::current();
@@ -326,6 +326,7 @@ class Classe extends Model
         // dd($this);
 
         return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
+            ->join('sections', 'sections.id', 'section_id')
             ->where('numerotation', '=', $niveau + 1)
             ->orderBy('numerotation', 'asc')
             ->select('classes.*')
@@ -338,6 +339,7 @@ class Classe extends Model
         // dd($this);
 
         return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
+            ->join('sections', 'sections.id', 'section_id')
             ->where('numerotation', '=', $niveau)
             ->orderBy('numerotation', 'asc')
             ->select('classes.*')
@@ -349,6 +351,7 @@ class Classe extends Model
         // dd($this);
 
         return Classe::join('niveaux', 'niveaux.id', 'niveau_id')
+            ->join('sections', 'sections.id', 'section_id')
             ->where('numerotation', '<', $niveau)
             ->orderBy('numerotation', 'asc')
             ->select('classes.*')

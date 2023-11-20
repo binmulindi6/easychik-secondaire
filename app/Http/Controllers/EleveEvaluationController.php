@@ -7,7 +7,12 @@ use App\Models\Logfile;
 use App\Models\Evaluation;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
+use App\Models\TypeEvaluation;
 use App\Models\EleveEvaluation;
+use App\Models\EleveExamen;
+use App\Models\Examen;
+use App\Models\Periode;
+use App\Models\Trimestre;
 use Illuminate\Support\Facades\DB;
 
 class EleveEvaluationController extends Controller
@@ -70,30 +75,69 @@ class EleveEvaluationController extends Controller
     public function joker($id)
     {
         $current = AnneeScolaire::current();
+        $eleve = Eleve::findOrFail($id);
 
-        $eleveEva = DB::table('eleve_evaluation')
-            ->where('eleve_id',  $id)
-            ->get();
+        ///ceation
+        $classe = $eleve->classe();
+        $cours = $classe->cours();
+        $periodes = Trimestre::currents();
+        $type_evaluation = TypeEvaluation::findOrFail(1);
+        $eleves = $classe->eleves();
+        $evaluations = $classe->examens;
+        // dd($evaluations);
+        // dd($classe, $cours, $periodes, $type_evaluation);
 
-        foreach ($eleveEva as $eva) {
-            $evaluation = Evaluation::findOrFail($eva->evaluation_id);
-            if ($evaluation->periode->trimestre->annee_scolaire->id === $current->id) {
-                if ((int)$evaluation->note_max === 5) {
-                    EleveEvaluation::set($eva->id, 3);
-                } else {
-                    if ((int)$evaluation->note_max === 10) {
-                        EleveEvaluation::set($eva->id, 6);
-                    } else {
-                        if ((int)$evaluation->note_max === 20) {
-                            EleveEvaluation::set($eva->id, 14);
-                        } else
-                            if ((int)$evaluation->note_max === 40) {
-                            EleveEvaluation::set($eva->id, 32);
-                        }
+        foreach ($evaluations as $evaluation) {
+        // foreach ($periodes as $periode) {
+        //     foreach ($cours as $item) {
+        //         $evaluation = Examen::create([
+        //             'note_max' => $item->max_examen,
+        //             'date_examen' => date('Y-m-d'),
+        //         ]);
+
+        //         $evaluation->cours()->associate($item);
+        //         $evaluation->classe()->associate($classe);
+        //         $evaluation->trimestre()->associate($periode);
+        //         // $evaluation->type_evaluation()->associate($type_evaluation);
+
+        //         $evaluation->save();
+
+        //         // dd($eleves[0]->id);
+
+                // foreach ($eleves as $eleve) {
+                if ($eleve->evaluations() !== null) {
+                    $currentEleve = Eleve::find($eleve->id);
+                    // dd($currentEleve);
+                    if ($currentEleve !== null) {
+                        $currentEleve->examens()->attach($evaluation);
+                        $currentEleve->save();
+
+                        EleveExamen::set($evaluation->id, ((int)$evaluation->note_max * 6 / 10));
                     }
-                }
-            }
+            //     }
+            // }
         }
+        }
+        // }
+        // foreach ($eleveEva as $eva) {
+        //     $evaluation = Evaluation::findOrFail($eva->evaluation_id);
+        //     if ($evaluation->periode->trimestre->annee_scolaire->id === $current->id) {
+        //         if ((int)$evaluation->note_max === 5) {
+        //             EleveEvaluation::set($eva->id, 3);
+        //         } else {
+        //             if ((int)$evaluation->note_max === 10) {
+        //                 EleveEvaluation::set($eva->id, 6);
+        //             } else {
+        //                 if ((int)$evaluation->note_max === 20) {
+        //                     EleveEvaluation::set($eva->id, 14);
+        //                 } else
+        //                     if ((int)$evaluation->note_max === 40) {
+        //                     EleveEvaluation::set($eva->id, 32);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         // dd(11);
 

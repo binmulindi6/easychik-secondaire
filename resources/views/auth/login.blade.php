@@ -94,7 +94,7 @@
               </div>
             </div>
             <div class="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
-              <div style="background-image: url('{{asset('storage/students.jpg')}}')" class="relative flex flex-col justify-center items-center h-full bg-cover px-24 m-4 overflow-hidden rounded-xl ">
+              <div style="background-image: url('{{asset('storage/students.png')}}')" class="relative flex flex-col justify-center items-center h-full bg-cover px-24 m-4 overflow-hidden rounded-xl ">
                 <span class=" relative font-bold mt-30 w- text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md z-100">{{env("SIGLE") ? env("SIGLE") : env('APP_NAME')}}</span>
                 {{-- <span class=" relative font-bold mt-30 w-50 text-white text-5xl bg-gradient-to-r from-cyan-500 to-blue-500 py-2 px-3 rounded-md z-100"><span class="p-1 bg-white rounded-full h-4">e</span>Chik</span> --}}
                 <span class="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-black to-violet-500 opacity-40"></span>
