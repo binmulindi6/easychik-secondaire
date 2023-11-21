@@ -43,21 +43,6 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-        'eleves' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/profiles/eleves'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'employers' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/profiles/employers'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -84,9 +69,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
-        public_path('storage/profiles/eleves') => storage_path('app/public/profiles/eleves'),
-        public_path('storage/profiles/employers') => storage_path('app/public/profiles/employers'),
+        public_path('storage') => storage_path('app/public')
     ],
 
 ];

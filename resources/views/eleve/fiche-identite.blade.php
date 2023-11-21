@@ -15,8 +15,8 @@
                 <div class="flex flex-row items-center w-full py-5">
                     <div class="flex justify-center items-center w-4/12">
                         @if ($item->avatar)
-                            <div class="border border-zinc-700 p-2 h-40 w-40 flex justify-center items-center bg-center bg-contain"
-                                style=" background-image : url('{{ asset('storage/flag.png') }}')';" alt="flag"> </div>
+                            <div class="border border-zinc-700 p-2 h-40 w-40 flex justify-center items-center bg-center bg-contain bg-no-repeat"
+                                style="background-image: url('{{asset('storage/'.$item->avatar)}}')" alt="flag"> </div>
                         @else
                             <div class="border border-zinc-700 p-2 h-40 w-40 flex justify-center items-center">
                                 <span class="font-semibold">Photo</span>

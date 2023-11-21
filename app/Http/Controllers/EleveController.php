@@ -296,7 +296,7 @@ class EleveController extends Controller
             $eleve->id
         );
 
-        Storage::disk('eleves')->delete($oldAvatar);
+        Storage::disk('public')->delete($oldAvatar);
         return redirect()->route('eleves.show', $eleve->id);
 
         //laravel 9 file upload system?

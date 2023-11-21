@@ -67,7 +67,7 @@
                     <div class="avatar-container">
                         <!-- <img id="qr-code" src="" alt=""> -->
                         @if ($eleve->avatar !== null)
-                            <img id="avatar" src="{{ asset('storage/profiles/eleves/' . $eleve->avatar) }}"
+                            <img id="avatar" src="{{ asset('storage/' . $eleve->avatar) }}"
                                 alt="avatar" />
                         @else
                             @if ($eleve->sexe === 'M')

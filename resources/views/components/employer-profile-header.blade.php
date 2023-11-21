@@ -5,10 +5,10 @@
             <div id="btn-pop-up"
                 class="relative cursor-pointer hover:bg-slate-100 inline-flex items-center justify-center text-white transition-all duration-200 ease-in-out text-size-base h-19 w-19 rounded-xl">
                 @if (Auth::user()->parrain_id === null)
-                    <img src="{{ $self->avatar !== null ? asset('storage/profiles/employers/' . $self->avatar) : ($self->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
+                    <img src="{{ $self->avatar !== null ? asset('storage/' . $self->avatar) : ($self->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
                         alt="profile_image" class="w-full shadow-2xl rounded-xl" />
                 @else
-                    <img src="{{ $data->parrain->avatar !== null ? asset('storage/profiles/employers/' . $data->parrain->avatar) : ($data->parrain->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
+                    <img src="{{ $data->parrain->avatar !== null ? asset('storage/' . $data->parrain->avatar) : ($data->parrain->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
                         alt="profile_image" class="w-full shadow-2xl rounded-xl" />
                 @endif
             </div>
@@ -115,12 +115,12 @@
             <div class="flex flex-col gap-2 md:p-5">
                 @if (Auth::user()->isParent())
                     <img id="profile-image" class="h-60 w-60 sm:h-80 sm:w-80 rounded-xl p-2 sm:p-5 shadow-xs"
-                        src="{{ $data->parrain->avatar !== null ? asset('storage/profiles/employers/' . $data->parrain->avatar) : ($data->parrain->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
+                        src="{{ $data->parrain->avatar !== null ? asset('storage/' . $data->parrain->avatar) : ($data->parrain->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
                         alt="profile-image">
                     <input type="hidden" name="parrain_id" value="{{ $data->parrain->id }}">
                 @else
                     <img id="profile-image" class="h-60 w-60 sm:h-80 sm:w-80 rounded-xl p-2 sm:p-5 shadow-xs"
-                        src="{{ $self->avatar !== null ? asset('storage/profiles/employers/' . $self->avatar) : ($self->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
+                        src="{{ $self->avatar !== null ? asset('storage/' . $self->avatar) : ($self->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
                         alt="profile-image">
                     <input type="hidden" name="employer_id" value="{{ $self->id }}">
                 @endif

@@ -6,7 +6,7 @@
             <div class="flex-none w-auto max-w-full px-3">
                 <div id="btn-pop-up"
                     class="relative hover:bg-slate-100 cursor-pointer inline-flex items-center justify-center text-white transition-all duration-200 ease-in-out text-size-base h-19 w-19 rounded-xl">
-                    <img src="{{ $data->avatar !== null ? asset('storage/profiles/eleves/' . $data->avatar) : ($data->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
+                    <img src="{{ $data->avatar !== null ? asset('storage/' . $data->avatar) : ($data->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
                         alt="profile_image" class="w-full shadow-2xl rounded-xl" />
                     {{-- <input type="file" name="" id=""> --}}
                 </div>
@@ -201,7 +201,7 @@
             @method('POST')
             <div class="flex flex-col gap-2 md:p-5">
                 <img id="profile-image" class="h-60 w-60 sm:h-80 sm:w-80 rounded-xl p-2 sm:p-5 shadow-xs"
-                    src="{{ $data->avatar !== null ? asset('storage/profiles/eleves/' . $data->avatar) : ($data->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
+                    src="{{ $data->avatar !== null ? asset('storage/' . $data->avatar) : ($data->sexe === 'M' ? asset('storage/avatar-boy.png') : asset('storage/avatar-girl.png')) }}"
                     alt="profile-image">
                 <input type="hidden" name="eleve_id" value="{{ $data->id }}">
                 @if ($errors->any())

@@ -38,7 +38,7 @@ class FileUpload{
 
         // Move the file to the target directory
         // dd($file->getLinkTarget());
-        if (!Storage::disk('public')->put($this->target_dir.$file_name,file_get_contents($file->getPathName()))) {
+        if (!Storage::disk('public')->put($file_name,file_get_contents($file->getPathName()))) {
             throw new Exception("File could not be uploaded");
         }
         // if (!move_uploaded_file($file->getPathName(), $this->target_dir . $file_name)) {

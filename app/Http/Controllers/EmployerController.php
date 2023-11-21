@@ -119,7 +119,7 @@ class EmployerController extends Controller
             $employer->id
         );
 
-        Storage::disk('public')->delete('/profiles/employers/' . $oldAvatar);
+        Storage::disk('public')->delete($oldAvatar);
 
         if (isset($request->back)) {
             return back();
