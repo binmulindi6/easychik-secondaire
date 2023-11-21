@@ -541,10 +541,10 @@ class ResultatController extends Controller
                 $data = $resultat->examen2;
                 $trim = $resultat->trimestre2;
                 break;
-                // case 'TROISIEME TRIMESTRE':
-                //     $data = $resultat->examen3;
-                //     $trim = $resultat->trimestre3;
-                //     break;
+            default:
+                $data = null;
+                $trim = null;
+                break;
         }
 
         return [$data, $trim];
