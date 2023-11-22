@@ -73,25 +73,47 @@
                                         {{ $index + 1 }}</td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        <a class="hover:text-blue-600 hover:font-semibold"
-                                            href="{{ route('eleves.show', $item->id) }}">
-                                            {{ $item->matricule }}
-                                        </a>
+                                        @if (isset($parent) && $parent != null)
+                                            <a class="hover:text-blue-600 hover:font-semibold"
+                                                href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
+                                                {{ $item->matricule }}
+                                            </a>
+                                        @else
+                                            <a class="hover:text-blue-600 hover:font-semibold"
+                                                href="{{ route('eleves.show', $item->id) }}">
+                                                {{ $item->matricule }}
+                                            </a>
+                                        @endif
                                     </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        <a class="hover:text-blue-600 hover:font-semibold"
-                                            href="{{ route('eleves.show', $item->id) }}">
-                                            {{ $item->num_permanent }}
-                                        </a>
+                                        @if (isset($parent) && $parent != null)
+                                            <a class="hover:text-blue-600 hover:font-semibold"
+                                                href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
+                                                {{ $item->num_permanent }}
+                                            </a>
+                                        @else
+                                            <a class="hover:text-blue-600 hover:font-semibold"
+                                                href="{{ route('eleves.show', $item->id) }}">
+                                                {{ $item->num_permanent }}
+                                            </a>
                                     </td>
-                                    <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                        <a class="hover:text-blue-600 hover:font-semibold"
-                                            href="{{ route('eleves.show', $item->id) }}">
-                                            {{ $item->nom . ' ' . $item->prenom }}
-                                        </a>
-                                    </td>
+                            @endif
+                            <td
+                                class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
+                                @if (isset($parent) && $parent != null)
+                                    <a class="hover:text-blue-600 hover:font-semibold"
+                                        href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
+                                        {{ $item->nom . ' ' . $item->prenom }}
+                                    </a>
+                                @else
+                                    <a class="hover:text-blue-600 hover:font-semibold"
+                                        href="{{ route('eleves.show', $item->id) }}">
+                                        {{ $item->nom . ' ' . $item->prenom }}
+
+                                    </a>
+                                @endif
+                            </td>
                                     <td
                                         class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
                                         {{ $item->sexe }}</td>
