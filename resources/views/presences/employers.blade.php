@@ -44,8 +44,8 @@
         @if (isset($annee) && $annee !== null)
             <div id="display-reussite"
                 class="display-passation shadow-2xl container p-4 bg-white rounded-5 flex justify-center items-center w-full">
-                <div id="printable" class="flex flex-col px-0 pt-0 lg:w-8/12 md:w-10/12 w-full">
-                    <table class="items-center w-full mb-0 align-top border-gray-700 text-slate-500">
+                <div  class="flex flex-col px-0 pt-0 lg:w-8/12 md:w-10/12 w-full">
+                    <table id="printable" class="items-center w-full mb-0 align-top border-gray-700 text-slate-500">
                         <caption
                             class="font-bold pb-4 text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base border-b-solid tracking-none whitespace-nowrap text-slate-500">
                             LISTE DE PRESENCE PERSONNELS DU @if ($day)
