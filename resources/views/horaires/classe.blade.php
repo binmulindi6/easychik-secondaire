@@ -204,9 +204,9 @@
                                                                 RECREATION
                                                             @else
                                                                @if ($horaire->cours !== null)
-                                                               {{ $horaire->cours->nom }}
+                                                               {{ $horaire->cours ? $horaire->cours->nom : '-----' }}
                                                                @else
-                                                                   ---
+                                                                   -----
                                                                @endif
                                                             @endif
                                                         </td>
