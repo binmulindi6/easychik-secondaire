@@ -25,6 +25,11 @@ return new class extends Migration
             $table->string('code');
             $table->string('ministere');
             $table->string('reussite');
+            $table->string('telephone1')->nullable();
+            $table->string('telephone2')->nullable();
+            $table->string('email')->nullable();
+            $table->string('subscription')->nullable();
+            $table->string('domain')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

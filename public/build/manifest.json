@@ -7,10 +7,6 @@
     "file": "assets/fa-solid-900.8f06540f.woff2",
     "src": "resources/css/fonts/fa-solid-900.woff2"
   },
-  "public/storage/logo.png": {
-    "file": "assets/logo.90e12f9a.png",
-    "src": "public/storage/logo.png"
-  },
   "resources/css/fonts/nucleo-icons.woff2": {
     "file": "assets/nucleo-icons.3180896c.woff2",
     "src": "resources/css/fonts/nucleo-icons.woff2"
@@ -56,7 +52,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app.2641003e.css",
+    "file": "assets/app.79a064f4.css",
     "src": "resources/css/app.css",
     "isEntry": true
   }
