@@ -6,6 +6,17 @@ const btnJokerPrint = document.getElementById("joker-print");
 const node = printable &&  printable.cloneNode(true);
 const pageNode = printable &&  printable.cloneNode(true);
 let page = document.body.innerHTML;
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Change the content of the viewport meta tag
+    var viewportMetaTag = document.querySelector('meta[name="viewport"]');
+    
+    if (printable && viewportMetaTag) {
+        viewportMetaTag.content = '';
+    }
+});
+
+
 btnJokerPrint !== null &&
     btnJokerPrint.addEventListener("click", () => {
         // const node = printable.cloneNode(true);

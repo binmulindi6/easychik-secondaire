@@ -39,7 +39,8 @@
 @section('content')
     <div class="container flex flex-col justify-between gap-5">
         <x-nav-horaire :pagename="$page_name" :print="true"> </x-nav-horaire>
-        <div id="display-reussite" class="display-passation hidden shadow-2xl container p-4 bg-white rounded-5 flex flex-col gap-2 justify-end">
+        <div id="display-reussite"
+            class="display-passation hidden shadow-2xl container p-4 bg-white rounded-5 flex flex-col gap-2 justify-end">
             <div class="flex justify-end">
                 <a class="hidden btn-horaire-terminer " href="{{ route('horaires.classe', $classe->id) }}">
                     <x-button> ✅ terminer </x-button>
@@ -71,8 +72,24 @@
                             @foreach ($heures as $heure)
                                 <tr class=" rounded-2xl ">
                                     <td
-                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                        {{ $heure->heures() }}</td>
+                                        class="p-1  gap-2 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                        {{-- {{ $heure->heures() }} --}}
+                                        <form class="flex flex-row" id="frmH{{ $heure->id }}"
+                                            action="{{ route('api.heures.store') }}" method="post"
+                                            class="mb-0 flex flex-col items-center gap-1">
+                                            @csrf
+                                            <input type="hidden" name="token" id="token{{ $heure->id }}"
+                                                value="{{ csrf_token() }}">
+                                            <input type="hidden" name="token" id="user{{ $heure->id }}"
+                                                value="{{ Auth::user()->id }}">
+                                            <x-input class="heure-trigger inline w-22 text-4" type="time" name="debut"
+                                                id="debut-{{ $heure->id }}" value="{{ $heure->debut }}"></x-input>
+                                            <x-input class="heure-trigger inline w-22 text-4" type="time" name="fin"
+                                                id="fin-{{ $heure->id }}" value="{{ $heure->fin }}"></x-input>
+                                        </form>
+                                        <span id="errH{{ $heure->id }}"
+                                            class="text-3 font-semibold text-red-500"></span>
+                                    </td>
                                     @foreach ($jours as $jour)
                                         @php
                                             $i = 0;
@@ -135,7 +152,8 @@
                                                     <input id="heure{{ $jour->id . $heure->id }}" type="hidden"
                                                         name="heure" value="{{ $heure->id }}">
                                                     <input type="hidden" name="token"
-                                                        id="token{{ $jour->id . $heure->id }}" value="{{ csrf_token() }}">
+                                                        id="token{{ $jour->id . $heure->id }}"
+                                                        value="{{ csrf_token() }}">
                                                     <input type="hidden" name=""
                                                         id="user{{ $jour->id . $heure->id }}"
                                                         value="{{ Auth::user()->id }}">
@@ -156,77 +174,78 @@
                 </div>
             </div>
         </div>
-                  <div id="display-echec" class="display-passation shadow-2xl  container p-4 bg-white rounded-5 flex flex-col gap-2 justify-end">
-                    @if (Auth::user()->isEnseignant() || Auth::user()->isDirecteur() || Auth::user()->isManager())
-                    <div class="flex justify-end">
-                        <x-button id="btn-reussite" class='btn-passation'> Modifier </x-button>
-                    </div>
-                    @endif
-                    <div class="flex-auto px-0 pt-0 pb-2">
-                        <div class="p-0 overflow-x-auto">
-                            <table id="printable"
-                                class="border-collapse border items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                                <caption
-                                    class="font-bold text-center uppercase align-middle bg-transparent shadow-none text-4 border tracking-none whitespace-nowrap p-1">
-                                    Horaire des cours
-                                    classe de {{ $classe->nomComplet() }}
-                                </caption>
-                                <thead class="align-bottom">
+        <div id="display-echec"
+            class="display-passation shadow-2xl  container p-4 bg-white rounded-5 flex flex-col gap-2 justify-end">
+            @if (Auth::user()->isEnseignant() || Auth::user()->isDirecteur() || Auth::user()->isManager())
+                <div class="flex justify-end">
+                    <x-button id="btn-reussite" class='btn-passation'> Modifier </x-button>
+                </div>
+            @endif
+            <div class="flex-auto px-0 pt-0 pb-2">
+                <div class="p-0 overflow-x-auto">
+                    <table id="printable"
+                        class="border-collapse border items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                        <caption
+                            class="font-bold text-center uppercase align-middle bg-transparent shadow-none text-4 border tracking-none whitespace-nowrap p-1">
+                            Horaire des cours
+                            classe de {{ $classe->nomComplet() }}
+                        </caption>
+                        <thead class="align-bottom">
 
-                                    <th
-                                        class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-4 border-solid tracking-none whitespace-nowrap">
-                                        HEURES</th>
+                            <th
+                                class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-4 border-solid tracking-none whitespace-nowrap">
+                                HEURES</th>
+                            @foreach ($jours as $jour)
+                                <th
+                                    class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-4 border-solid tracking-none whitespace-nowrap">
+                                    {{ $jour->nom }}</th>
+                            @endforeach
+
+                        </thead>
+                        <tbody>
+                            @foreach ($heures as $heure)
+                                <tr class=" rounded-2xl ">
+                                    <td
+                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                        {{ $heure->heures() }}</td>
                                     @foreach ($jours as $jour)
-                                        <th
-                                            class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-4 border-solid tracking-none whitespace-nowrap">
-                                            {{ $jour->nom }}</th>
-                                    @endforeach
-
-                                </thead>
-                                <tbody>
-                                    @foreach ($heures as $heure)
-                                        <tr class=" rounded-2xl ">
+                                        @php
+                                            $i = 0;
+                                        @endphp
+                                        @foreach ($horaires as $horaire)
+                                            @if ($horaire->heure->id === $heure->id && $horaire->jour->id === $jour->id)
+                                                @php
+                                                    $i = 1;
+                                                @endphp
+                                                <td
+                                                    class="p-1 uppercase text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
+                                                    @if ((int) $horaire->isRecreation === 1)
+                                                        RECREATION
+                                                    @else
+                                                        @if ($horaire->cours !== null)
+                                                            {{ $horaire->cours ? $horaire->cours->nom : '-----' }}
+                                                        @else
+                                                            -----
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                            @endif
+                                        @endforeach
+                                        @if (isset($i) && $i === 0)
                                             <td
                                                 class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                {{ $heure->heures() }}</td>
-                                            @foreach ($jours as $jour)
-                                                @php
-                                                    $i = 0;
-                                                @endphp
-                                                @foreach ($horaires as $horaire)
-                                                    @if ($horaire->heure->id === $heure->id && $horaire->jour->id === $jour->id)
-                                                        @php
-                                                            $i = 1;
-                                                        @endphp
-                                                        <td
-                                                            class="p-1 uppercase text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                            @if ((int)$horaire->isRecreation === 1)
-                                                                RECREATION
-                                                            @else
-                                                               @if ($horaire->cours !== null)
-                                                               {{ $horaire->cours ? $horaire->cours->nom : '-----' }}
-                                                               @else
-                                                                   -----
-                                                               @endif
-                                                            @endif
-                                                        </td>
-                                                    @endif
-                                                @endforeach
-                                                @if (isset($i) && $i === 0)
-                                                    <td
-                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent  ">
-                                                        ---
-                                                    </td>
-                                                @endif
-                                                {{-- @endforeach --}}
-                                            @endforeach
+                                                ---
                                             </td>
-                                        </tr>
+                                        @endif
+                                        {{-- @endforeach --}}
                                     @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                @endsection
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @endsection

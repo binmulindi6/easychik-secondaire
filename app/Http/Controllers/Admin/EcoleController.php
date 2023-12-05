@@ -208,7 +208,7 @@ class EcoleController extends Controller
             $user->isActive = 1;
             $user->save();
 
-            redirect()->route('dasboard');
+            return redirect()->route('dasboard');
         } else if (count($ecole) >= 2) {
             return redirect()->route('dashboard');
         }

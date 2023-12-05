@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string("nationalite")->default('Congolaise');
             $table->string("nom_pere")->nullable();
             $table->string("nom_mere")->nullable();
-            $table->string("prefession_pere")->nullable();
-            $table->string("prefession_mere")->nullable();
+            $table->string("profession_pere")->nullable();
+            $table->string("profession_mere")->nullable();
             $table->string("email")->nullable();
             $table->string("telephone_pere")->nullable();
             $table->string("telephone_mere")->nullable();

@@ -3,7 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\IsGold;
-use App\Http\Middleware\isGoldPremium;
+use App\Http\Middleware\IsGoldPremium;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsActive;
 use App\Http\Middleware\IsSilver;
@@ -81,6 +81,6 @@ class Kernel extends HttpKernel
         'isStandard' => IsStandard::class,
         'isSilver' => IsSilver::class,
         'isGold' => IsGold::class,
-        'isGoldPremium' => isGoldPremium::class,
+        'isGoldPremium' => IsGoldPremium::class,
     ];
 }

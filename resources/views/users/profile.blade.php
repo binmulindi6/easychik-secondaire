@@ -3,8 +3,8 @@
 @section('content')
     <div class=" container flex flex-col justify-between gap-5">
         <x-user-profile-header :data="$user" />
-      <div class="frm-identity hidden container p-5 bg-white rounded-5 shadow-2xl">
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        <div class="frm-identity hidden container p-5 bg-white rounded-5 shadow-2xl">
+        {{-- <x-auth-validation-errors class="mb-4" :errors="$errors" /> --}}
           <div class="flex items-center">
             {{-- <p class="mb-0 dark:text-white/80">Edit Profile</p> --}}
             <span class="leading-normal uppercase dark:text-white dark:opacity-60 text-size-sm">
@@ -55,13 +55,7 @@
             </form>
       </div>
     <div class="frm-identity  bg-white container shadow-2xl rounded-5 p-5">
-      <div class="container">
-            @if ($errors->any())
-                @foreach ($errors as $error)
-                    <p class="font-bold text-red-500 text-xl">{{ $error }}</p>
-                @endforeach
-            @endif
-        </div>
+      <x-auth-validation-errors class="mb-4" :errors="$errors" />
         @if (isset($self))
             <div class="flex items-center">
               {{-- <p class="mb-0 dark:text-white/80">Edit Profile</p> --}}
@@ -121,8 +115,27 @@
                           <x-input id="formation" class="block mt-1 w-full" type="hidden" name="formation"
                               :value="$self->formation" required />
                       </div>
+                      <div class="mt-4 w-full">
+                        <x-label for="nationalite" :value="__('Nationalite')" />
+                        <x-input id="nationalite" class="block mt-1 w-full" type="text" name="nationalite"
+                            :value="$self->nationalite" required />
+                    </div>
                       
                   </div>
+                  <div class="flex gap-5">
+
+                    <div class="mt-4 w-full">
+                        <x-label for="telephone1" :value="__('Telephone1')" />
+                        <x-input id="telephone1" class="block mt-1 w-full" type="text" name="telephone1"
+                            :value="$self->telephone1" required />
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="telephone2" :value="__('Telephone2')" />
+                        <x-input id="telephone2" class="block mt-1 w-full" type="text" name="telephone2"
+                            :value="$self->telephone2" required />
+                    </div>
+
+                </div>
                   <div class="flex flex-col md:flex-row md:gap-5">
                       <div class="mt-4 w-full">
                           {{-- <x-label for="diplome" :value="__('Diplome')" /> --}}

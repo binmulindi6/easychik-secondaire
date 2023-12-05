@@ -29,12 +29,12 @@
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
                         <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="$self->nom"
-                            required placeholder="ex: EDUCATION DE BASE"/>
+                            required placeholder="ex: EDUCATION DE BASE" />
                     </div>
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Abbreviation')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="abbreviation" placeholder="ex: EB"
-                            :value="$self->abbreviation" required />
+                        <x-input id="nom" class="block mt-1 w-full" type="text" name="abbreviation"
+                            placeholder="ex: EB" :value="$self->abbreviation" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -54,12 +54,12 @@
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Nom')" />
                         <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')"
-                            required placeholder="ex: EDUCATION DE BASE"/>
+                            required placeholder="ex: EDUCATION DE BASE" />
                     </div>
                     <div class="mt-4">
                         <x-label for="nom" :value="__('Abbreviation')" />
-                        <x-input id="nom" class="block mt-1 w-full" type="text" name="abbreviation" placeholder="ex: EB"
-                            :value="old('abbreviation')" required />
+                        <x-input id="nom" class="block mt-1 w-full" type="text" name="abbreviation"
+                            placeholder="ex: EB" :value="old('abbreviation')" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -112,13 +112,13 @@
                                     <div class="flex justify-center gap-4 align-middle">
                                         <a title="Modifier" href="{{ route('sections.edit', $item->id) }}"><i
                                                 class="fa fa-solid fa-pen"></i></a>
-                                        {{-- <form class="delete-form" action="{{ route('sections.destroy', $item->id) }}"
+                                        <form class="delete-form" action="{{ route('sections.destroy', $item->id) }}"
                                             method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button title="Effacer" type="submit"><i
                                                     class="text-red-500 fa fa-solid fa-trash"></i></button>
-                                        </form> --}}
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

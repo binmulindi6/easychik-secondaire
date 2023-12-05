@@ -3,12 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HeureController;
+use App\Http\Controllers\HoraireController;
+use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\EleveExamenController;
 use App\Http\Controllers\FrequentationController;
 use App\Http\Controllers\EleveEvaluationController;
 use App\Http\Controllers\EmployerPresenceController;
-use App\Http\Controllers\HoraireController;
-use App\Http\Controllers\PresenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::post('/horaires', [HoraireController::class, 'storeApi'])->name('api.hora
 Route::get('/charts', [HomeController::class, 'chart']);
 
 Route::post('/presences/store', [PresenceController::class, 'storeApi'])->name('presences.api.store');
+Route::post('/heures/apistore', [HeureController::class, 'storeApi'])->name('api.heures.store');
 Route::post('/presences/employers/store', [EmployerPresenceController::class, 'storeApi'])->name('presences.employers.api.store');
 // Route::put('api/eleves/evaluations/{pivot}', [EleveEvaluationController::class, 'updateViaApi'])->name('eleves.evaluations.update.api');
 // Route::put('api/eleves/examens/{pivot}', [EleveExamenController::class, 'updateViaApi'])->name('eleves.examens.update.api');

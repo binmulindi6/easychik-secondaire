@@ -298,7 +298,7 @@ class EnseignementController extends Controller
                 $annee  = AnneeScolaire::findOrFail($request->annee_scolaire_id);
 
                 // dd($oldEncadrement->user_id, $request->user_id);
-                if (($oldEnseignement->user_id === (int)$request->user_id) && (int)$oldEnseignement->isActive === 1) {
+                if (((int)$oldEnseignement->user_id === (int)$request->user_id) && (int)$oldEnseignement->isActive === 1) {
                     return redirect()->route('cours.index');
                 } else {
 

@@ -20,7 +20,9 @@ class Employer extends Model
         'sexe',
         'formation',
         'diplome',
-        'niveau_etude'
+        'niveau_etude',
+        'telephone1',
+        'telephone2'
     ];
 
     //nomComplet
@@ -36,7 +38,7 @@ class Employer extends Model
 
     public  function isActive()
     {
-        if ($this->isActive === 1) {
+        if ((int)$this->isActive === 1) {
             return true;
         } else {
             return false;

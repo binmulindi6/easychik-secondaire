@@ -136,6 +136,13 @@
                                     <div class="flex justify-center gap-4 align-middle">
                                         <a title="Modifier" href="{{ route('niveaux.edit', $item->id) }}"><i
                                                 class="fa fa-solid fa-pen"></i></a>
+                                                <form class="delete-form" action="{{ route('niveaux.destroy', $item->id) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button title="Effacer" type="submit"><i
+                                                            class="text-red-500 fa fa-solid fa-trash"></i></button>
+                                                </form>
                                     </div>
                                 </td>
                             </tr>

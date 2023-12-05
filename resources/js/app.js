@@ -1,3 +1,4 @@
+import "./print"
 import "./delete";
 // import "./bootstrap";
 import "./fa.min";
@@ -10,7 +11,6 @@ import "./sidenav-burger";
 import "./perfect-scrollbar";
 import "./toExcel";
 import "./myjs";
-import "./print"
 import "./horaire"
 import "./components"
 import './presences'

@@ -124,6 +124,13 @@ class NiveauController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $niveau = Niveau::findOrFail($id);
+        Logfile::deleteLog(
+            'niveaux',
+            $niveau->id
+        );
+
+        $niveau->delete();
+        return redirect()->route('niveaux.index');
     }
 }

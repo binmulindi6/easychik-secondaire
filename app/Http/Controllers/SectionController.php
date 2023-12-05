@@ -128,6 +128,13 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $section = Section::findOrFail($id);
+        Logfile::deleteLog(
+            'sections',
+            $section->id
+        );
+        $section->delete();
+
+        return redirect()->route('sections.index');
     }
 }

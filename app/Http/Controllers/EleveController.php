@@ -144,7 +144,10 @@ class EleveController extends Controller
             $eleve->id
         );
 
-        return redirect()->route('frequentations.link', $eleve->id);
+        if(count(Eleve::all()) > 1){
+            return redirect()->route('frequentations.link', $eleve->id);
+        }
+        return redirect()->route('eleves.index');
     }
 
     /**
@@ -296,7 +299,7 @@ class EleveController extends Controller
             $eleve->id
         );
 
-        Storage::disk('public')->delete($oldAvatar);
+        $oldAvatar && Storage::disk('public')->delete($oldAvatar);
         return redirect()->route('eleves.show', $eleve->id);
 
         //laravel 9 file upload system?

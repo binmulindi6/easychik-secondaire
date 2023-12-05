@@ -37,7 +37,7 @@ class AnneeScolaire extends Model
     }
     public  function isActive()
     {
-        if ($this->isActive === 1) {
+        if ((int)$this->isActive === 1) {
             return true;
         } else {
             return false;

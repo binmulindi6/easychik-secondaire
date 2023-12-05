@@ -197,11 +197,12 @@
                                 name="diplome" id="diplome" required>
                                 <option disabled selected>Selectionner une option</option>
                                 <option value="Aucun">Aucun</option>
-                                <option value="D'Etat">D'Etat</option>
-                                <option value="Graduat">Graduat</option>
-                                <option value="Licence">Licence</option>
-                                <option value="Master">Master</option>
-                                <option value="Doctorat">Doctorat</option>
+                                <option value="D6">D"ETAT</option>
+                                <option value="GRADUAT">GRADUAT</option>
+                                <option value="BACCALAUREAT">BACCALAUREAT</option>
+                                <option value="LICENCE">LICENCE</option>
+                                <option value="MASTER">MASTER</option>
+                                <option value="DOCTORAT">DOCTORAT</option>
                             </select>
                             {{-- <x-input id="diplome" class="block mt-1 w-full" type="text" name="diplome"
                                 :value="old('diplome')" required /> --}}

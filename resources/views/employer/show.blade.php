@@ -310,25 +310,27 @@
                                 </thead>
                                 <tbody>
 
-                                    @if ($user->encadrements->count() > 0)
-                                        @foreach ($user->encadrements as $encadrement)
-                                            @if ($encadrement->annee_scolaire)
-                                                <tr class=" rounded-2xl hover:bg-slate-100">
-                                                    <td
-                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
-                                                        {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                        {{ $encadrement->annee_scolaire->nom }}
-                                                        {{-- </a> --}}
-                                                    </td>
-                                                    <td
-                                                        class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
-                                                        {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
-                                                        {{ $encadrement->classe->nomComplet() }}
-                                                        {{-- </a> --}}
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
+                                    @if ($user)
+                                        @if (count($user->encadrements) > 0)
+                                            @foreach ($user->encadrements as $encadrement)
+                                                @if ($encadrement->annee_scolaire)
+                                                    <tr class=" rounded-2xl hover:bg-slate-100">
+                                                        <td
+                                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                            {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
+                                                            {{ $encadrement->annee_scolaire->nom }}
+                                                            {{-- </a> --}}
+                                                        </td>
+                                                        <td
+                                                            class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent hover:text-red-500  ">
+                                                            {{-- <a href="{{ route('frequentations.show', $frequetation->id) }}"> --}}
+                                                            {{ $encadrement->classe->nomComplet() }}
+                                                            {{-- </a> --}}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     @endif
                                 </tbody>
                             </table>

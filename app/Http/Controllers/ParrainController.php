@@ -193,7 +193,7 @@ class ParrainController extends Controller
     public function destroy($id)
     {
         if (AnneeScolaire::current()->isActive()) {
-            
+
             $parent = Parrain::find($id);
             $user = $parent->user;
             $user->isActive = 0;
@@ -215,27 +215,26 @@ class ParrainController extends Controller
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
         ])->onlyInput('nom');
-        
     }
 
     public function changeStatut(Request $request, $id)
     {
         if (AnneeScolaire::current()->isActive()) {
-        $parent = Parrain::find($id);
-        $user = User::find($parent->user->id);
+            $parent = Parrain::find($id);
+            $user = User::find($parent->user->id);
 
-        if ($request->statut == '0') {
-            $user->isActive = 1;
-        } else {
-            $user->isActive = 0;
-        }
-        $user->save();
-        Logfile::updateLog(
-            'users',
-            $user->id
-        );
+            if ($request->statut == '0') {
+                $user->isActive = 1;
+            } else {
+                $user->isActive = 0;
+            }
+            $user->save();
+            Logfile::updateLog(
+                'users',
+                $user->id
+            );
 
-        return redirect()->route('parents.index');
+            return redirect()->route('parents.index');
         }
         return redirect()->back()->withErrors([
             "Vous ne pouvez pas effectuer des operations sur les Archives",
@@ -245,14 +244,27 @@ class ParrainController extends Controller
     public function linkParentEleve($parent, $eleve)
     {
         $parent = Parrain::find($parent);
+
+        $eleves = $parent->eleves;
         $eleve = Eleve::find($eleve);
+        $find = 0;
+        if (count($eleves) > 0) {
+            foreach ($eleves as $item) {
+                if ($item->id === $eleve->id) {
+                    $find = 1;
+                }
+            }
 
-        $parent->eleves()->attach($eleve);
-        $parent->save();
+            if ($find === 0) {
+                $parent->eleves()->attach($eleve);
+                $parent->save();
+            }
+        } else {
 
+            $parent->eleves()->attach($eleve);
+            $parent->save();
+        }
         return redirect()->route('parents.index');
-
-        // dd($parent . " " . $eleve);
     }
 
     public function search(Request $request)

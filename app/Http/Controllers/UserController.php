@@ -111,6 +111,7 @@ UserController extends Controller
                     'password' => Hash::make($request->password),
                     //'name' => $request->name,
                 ]);
+                (str_contains($employer->fonctions[0]->nom, 'Informaticien') || str_contains($employer->fonctions[0]->nom, 'Admin')) && $user->isActive = 1;
                 $user->employer()->associate($employer);
                 $user->save();
 

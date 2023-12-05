@@ -108,31 +108,31 @@
                     <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_pere" :value="__('Profession du Pere')" />
-                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="profession_pere" :value="$self->profession_pere"
-                                required />
+                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="profession_pere"
+                                :value="$self->profession_pere" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="nom_mere" :value="__('Profession de la Mere')" />
-                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="profession_mere" :value="$self->profession_mere"
-                                required />
+                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="profession_mere"
+                                :value="$self->profession_mere" required />
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_pere" :value="__('Telephone du Pere')" />
-                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="telephone_pere" :value="$self->telephone_pere"
-                                required />
+                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="telephone_pere"
+                                :value="$self->telephone_pere" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="nom_mere" :value="__('Telephone de la Mere')" />
-                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="telephone_mere" :value="$self->telephone_mere"
-                                required />
+                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="telephone_mere"
+                                :value="$self->telephone_mere" required />
                         </div>
                     </div>
                     <div class="mt-4 w-full">
                         <x-label for="adresse" :value="__('Adresse')" />
-                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse" :value="$self->adresse"
-                            required />
+                        <x-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
+                            :value="$self->adresse" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">
@@ -229,25 +229,25 @@
                     <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_pere" :value="__('Profession du Pere')" />
-                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="profession_pere" :value="old('profession_pere')"
-                                required />
+                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="profession_pere"
+                                :value="old('profession_pere')" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="nom_mere" :value="__('Profession de la Mere')" />
-                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="profession_mere" :value="old('profession_mere')"
-                                required />
+                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="profession_mere"
+                                :value="old('profession_mere')" required />
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                         <div class="mt-4 w-full">
                             <x-label for="nom_pere" :value="__('Telephone du Pere')" />
-                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="telephone_pere" :value="old('telephone_pere')"
-                                required />
+                            <x-input id="nom_pere" class="block mt-1 w-full" type="text" name="telephone_pere"
+                                :value="old('telephone_pere')" required />
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="nom_mere" :value="__('Telephone de la Mere')" />
-                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="telephone_mere" :value="old('telephone_mere')"
-                                required />
+                            <x-input id="nom_mere" class="block mt-1 w-full" type="text" name="telephone_mere"
+                                :value="old('telephone_mere')" required />
                         </div>
                     </div>
                     <div class="mt-4 w-full">
@@ -349,9 +349,16 @@
                                 </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                                    <a class="hover:text-blue-700" href="{{ route('eleves.show', $item->id) }}">
-                                        {{ $item->num_permanent }}
-                                    </a>
+                                    @if (isset($parent) && $parent != null)
+                                        <a class="hover:text-blue-700"
+                                            href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
+                                            {{ $item->num_permanent }}
+                                        </a>
+                                    @else
+                                        <a class="hover:text-blue-700" href="{{ route('eleves.show', $item->id) }}">
+                                            {{ $item->num_permanent }}
+                                        </a>
+                                    @endif
                                 </td>
                                 <td
                                     class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
@@ -359,15 +366,15 @@
                                         <a class="hover:text-blue-700"
                                             href="{{ route('parent-eleve.link', [$parent, $item->id]) }}">
                                             {{ $item->nom . ' ' . $item->prenom }}
+                                        </a>
+                                    @else
+                                        <a class="hover:text-blue-700" href="{{ route('eleves.show', $item->id) }}">
+                                            {{ $item->nom . ' ' . $item->prenom }}
+                                        </a>
                                 </td>
-                                </a>
-                            @else
-                                <a class="hover:text-blue-700" href="{{ route('eleves.show', $item->id) }}">
-                                    {{ $item->nom . ' ' . $item->prenom }}</td>
-                                </a>
                         @endif
                         <td class="p-1 text-size-sm text-center align-middle bg-transparent border-b  shadow-transparent ">
-                            @if ($item->currentFrequentation() && $item->currentFrequentation()->classe === null)
+                            @if (!$item->currentFrequentation() || $item->currentFrequentation()->classe === null)
                                 @if (Auth::user()->isSecretaire() || Auth::user()->isDirecteur() || Auth::user()->isManager())
                                     <a class="text-blue-500 underline"
                                         href="{{ route('frequentations.link', $item->id) }}"> Ajouter dans une classe

@@ -136,12 +136,15 @@ class Eleve extends Model
      {
 
           $niveau = $this->classe()->niveau;
+          $section = $this->classe()->section;
+          // dd($section);
 
           $bulletin = Examen::where('examens.trimestre_id', '=', $trimestre)
                ->join('eleve_examen', 'examen_id', '=', "examens.id")
                ->where('eleve_examen.eleve_id', '=', $this->id)
                ->join('cours', 'cours.id', '=', 'examens.cours_id')
                ->where('cours.niveau_id', $niveau->id)
+               ->where('cours.section_id', $section->id)
                ->select('cours.nom as nom', DB::raw('SUM(eleve_examen.note_obtenu) as note'), DB::raw('SUM(examens.note_max) as max'), 'cours.max_examen as total')
                ->groupBy('cours.nom', 'cours.max_examen')
                ->get();
@@ -153,7 +156,7 @@ class Eleve extends Model
 
      public  function isActive()
      {
-          if ($this->isActive === 1) {
+          if ((int)$this->isActive === 1) {
                return true;
           } else {
                return false;
@@ -190,19 +193,21 @@ class Eleve extends Model
      public static function getLastMatricule()
      {
 
-          $lastmatricule = Eleve::all()->last()->matricule;
-          if (count(Eleve::all()) > 0 && (count(explode('/', $lastmatricule, -1)) > 0)) {
-               $initial = explode('/', $lastmatricule, -1)[0];
-               $middle = str_replace('E', '', $initial);
-               $matricule = (intval($middle) + 1) < 10 ?  'E0' . intval($middle) + 1 . '/' . date('Y') : 'E' . intval($middle) + 1 . '/' . date('Y');
-          } else {
-               if (count(Eleve::all()) > 0) {
-                    $matricule = 'E'. count(Eleve::withTrashed()->get('*')) + 1 .'/' . date('Y');
+          $eleves = Eleve::all();
+          if (count($eleves) > 0) {
+               $lastmatricule = Eleve::all()->last()->matricule;
+               if ((count(explode('/', $lastmatricule, -1)) > 0)) {
+                    $initial = explode('/', $lastmatricule, -1)[0];
+                    $middle = str_replace('E', '', $initial);
+                    $matricule = (intval($middle) + 1) < 10 ?  'E0' . intval($middle) + 1 . '/' . date('Y') : 'E' . intval($middle) + 1 . '/' . date('Y');
                } else {
-                    $matricule = 'E01/' . date('Y');
+
+                    $matricule = 'E' . count(Eleve::withTrashed()->get('*')) + 1 . '/' . date('Y');
                }
-               
+          } else {
+               $matricule = 'E01/' . date('Y');
           }
+
 
           return $matricule;
      }

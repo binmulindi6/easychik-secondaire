@@ -22,7 +22,7 @@ class EmployerController extends Controller
     protected $page = 'Employers';
     public function index()
     {
-        $employers = Employer::all()->except(['id', 1]);
+        $employers = Employer::latest()->except(['id', 1]);
         $fonctions = Fonction::select([
             'id',
             'nom'
@@ -119,7 +119,7 @@ class EmployerController extends Controller
             $employer->id
         );
 
-        Storage::disk('public')->delete($oldAvatar);
+        $oldAvatar && Storage::disk('public')->delete($oldAvatar);
 
         if (isset($request->back)) {
             return back();
@@ -162,7 +162,7 @@ class EmployerController extends Controller
         $user = User::where('employer_id', $employer->id)->first();
         $self = $employer;
 
-        $employers = Employer::all()->except(['id', 1]);
+        $employers = Employer::latest()->except(['id', 1]);
         ///joker
         $index = 0;
         for ($i = 0; $i < $employers->count(); $i++) {
@@ -189,7 +189,7 @@ class EmployerController extends Controller
      */
     public function edit($id)
     {
-        $employers = Employer::all();
+        $employers = Employer::latest()->except(['id', 1]);
         $employer = Employer::find($id);
         $fonctions = Fonction::select([
             'id',

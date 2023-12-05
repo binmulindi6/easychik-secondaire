@@ -16,13 +16,15 @@ class FonctionSeeder extends Seeder
     public function run()
     {
         $fonctions = [
-            'Enseignant',
-            'Secretaire',
             'Comptable',
-            'Proviseur',
+            'Enseignant',
             'Directeur',
             'Directeur de Discipline',
             'Gestionnaire',
+            'Système Admin',
+            'Secretaire',
+            'Proviseur',
+            'Ouvrier',
         ];
 
 

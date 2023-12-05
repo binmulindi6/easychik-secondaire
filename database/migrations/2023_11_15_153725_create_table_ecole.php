@@ -29,6 +29,8 @@ return new class extends Migration
             $table->string('telephone2')->nullable();
             $table->string('email')->nullable();
             $table->string('subscription')->nullable();
+            $table->date('subscription_start')->nullable();
+            $table->date('subscription_end')->nullable();
             $table->string('domain')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -229,7 +229,7 @@ class User extends Authenticatable
     {
         $encadrements = $this->enseignements;
         foreach ($encadrements as $encadrement) {
-            if ($encadrement->cours->id === $cours->id && $encadrement->isActive === 1) {
+            if ($encadrement->cours->id === $cours->id && (int)$encadrement->isActive === 1) {
                 return true;
             }
         }

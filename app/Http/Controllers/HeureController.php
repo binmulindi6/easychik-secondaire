@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Heure;
+use App\Models\Logfile;
 use Illuminate\Http\Request;
 
 class HeureController extends Controller
@@ -32,6 +34,29 @@ class HeureController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function storeApi(Request $request)
+    {
+        $request->validate([
+            'heure' => ['string', 'max:255', 'required'],
+            'debut' => ['string', 'max:255', 'required'],
+            'fin' => ['string', 'max:255', 'required']
+        ]);
+
+        $heure = Heure::findOrFail($request->heure);
+
+        $heure->debut = $request->debut;
+        $heure->fin = $request->fin;
+
+        $heure->save();
+
+        Logfile::updateLog(
+            'heures',
+            $heure->id,
+            $request->user
+        );
+
+        return 'succes';
+    }
     public function store(Request $request)
     {
         //

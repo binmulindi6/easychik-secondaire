@@ -9,7 +9,7 @@ class LogfileController extends Controller
 {
     public function index()
     {   
-        $logs = Logfile::where('done_by','!=',2 )
+        $logs = Logfile::where('done_by','!=',1 )
         ->limit(100)        
         ->get();
 

@@ -3,6 +3,10 @@
     "file": "assets/nucleo-icons.f899f875.eot",
     "src": "resources/css/fonts/nucleo-icons.eot"
   },
+  "storage/app/public/logo.png": {
+    "file": "assets/logo.90e12f9a.png",
+    "src": "storage/app/public/logo.png"
+  },
   "resources/css/fonts/fa-solid-900.woff2": {
     "file": "assets/fa-solid-900.8f06540f.woff2",
     "src": "resources/css/fonts/fa-solid-900.woff2"
@@ -24,7 +28,7 @@
     "src": "resources/css/fonts/nucleo-icons.svg"
   },
   "resources/js/app.js": {
-    "file": "assets/app.52a5bdbc.js",
+    "file": "assets/app.988bdbe1.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -44,7 +48,7 @@
     "isDynamicEntry": true
   },
   "node_modules/canvg/lib/index.es.js": {
-    "file": "assets/index.es.e0dabc5c.js",
+    "file": "assets/index.es.c99f65d3.js",
     "src": "node_modules/canvg/lib/index.es.js",
     "isDynamicEntry": true,
     "imports": [
@@ -52,7 +56,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app.79a064f4.css",
+    "file": "assets/app.5fc440f1.css",
     "src": "resources/css/app.css",
     "isEntry": true
   }
