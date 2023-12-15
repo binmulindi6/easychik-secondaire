@@ -10,17 +10,19 @@
                         <x-classe-card :to="'evaluations.classe'" :data="$item"></x-classe-card>
                     @endforeach
                 @else
-                    @if(Auth::user()->isDirecteur() || Auth::user()->isManager())
-                    <div class="flex flex-col justify-center gap-2 p-5">
-                        <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Veuillez Ajouter des
-                            classes Pour pouvoir gerer les travaux des eleves</span>
-                        <a href="{{route('classes.create')}}" class="text-center">
-                            <x-button>Ajouter une Classe</x-button></a>
-                    </div>
+                    @if (Auth::user()->isDirecteur() || Auth::user()->isManager())
+                        <div class="flex flex-col justify-center gap-2 p-5">
+                            <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">⚠️ Veuillez
+                                Ajouter des
+                                classes Pour pouvoir gerer les travaux des eleves</span>
+                            <a href="{{ route('classes.create') }}" class="text-center">
+                                <x-button>Ajouter une Classe</x-button></a>
+                        </div>
                     @else
-                    <div class="flex flex-col justify-center gap-2 p-5">
-                        <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">Vous devez enseigner un Cours Pour pouvoir gerer les travaux des eleves </span>
-                    </div>
+                        <div class="flex flex-col justify-center gap-2 p-5">
+                            <span class="uppercase text-red-500 font-semibold text-4 sm:text-6 text-center">Vous devez
+                                enseigner un Cours Pour pouvoir gerer les travaux des eleves </span>
+                        </div>
                     @endif
                 @endif
             </div>

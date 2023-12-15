@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('periode_id')->nullable()->constrained();
             $table->date('date_evaluation');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Date\DateController;
+use App\Models\Classe;
 
 class EleveController extends Controller
 {
@@ -144,7 +145,7 @@ class EleveController extends Controller
             $eleve->id
         );
 
-        if(count(Eleve::all()) > 1){
+        if(count(Classe::all()) > 0){
             return redirect()->route('frequentations.link', $eleve->id);
         }
         return redirect()->route('eleves.index');

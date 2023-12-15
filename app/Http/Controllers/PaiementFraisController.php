@@ -10,8 +10,10 @@ use App\Models\TypeFrais;
 use App\Models\ModePaiement;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
+use App\Models\Ecole;
 use App\Models\MoyenPaiement;
 use App\Models\PaiementFrais;
+use Illuminate\Support\Facades\Auth;
 
 class PaiementFraisController extends Controller
 {
@@ -109,6 +111,7 @@ class PaiementFraisController extends Controller
             'montant' => ['required', 'string', 'max:255'],
             'moyen_paiement' => ['required', 'string', 'max:255'],
             'date' => ['required', 'string', 'max:255'],
+            'deposer_par' => ['required', 'string', 'max:255'],
             // 'reference' => ['string']
         ]);
 
@@ -135,16 +138,19 @@ class PaiementFraisController extends Controller
                                 'montant_paye' => $request->montant,
                                 'reference' => $request->reference,
                                 'date' => $request->date,
+                                'deposer_par' => $request->deposer_par,
+                                
                             ]);
                         } else {
                             $paiement = PaiementFrais::create([
                                 'montant_paye' => $request->montant,
-                                // 'reference' => $request->reference,
+                                'deposer_par' => $request->deposer_par,
                                 'date' => $request->date,
                             ]);
                         }
 
                         $paiement->frais()->associate($frais);
+                        $paiement->user()->associate(Auth::user());
                         $paiement->frequentation()->associate($eleve->currentFrequentation());
                         $paiement->moyen_paiement()->associate($moyen);
                         $paiement->save();
@@ -180,11 +186,13 @@ class PaiementFraisController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {   
+        $ecole = Ecole::first();
         $paiement = PaiementFrais::find($id);
         $annee = 'Annee Scolaire ' . $paiement->frequentation->annee_scolaire->nom;
         return view('frais.facture')
             ->with('page_name', $this->page_name . ' / Facture')
+            ->with('ecole', $ecole)
             ->with('annee', $annee)
             ->with('self', $paiement);
 

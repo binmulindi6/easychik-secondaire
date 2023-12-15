@@ -34,7 +34,6 @@ btnJokerPrint !== null &&
                 nn.document.getElementById('root').appendChild(node)
             }
             nn.print()
-            // nn.close()
         }
 
     });

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('date_fin');
             $table->foreignId('trimestre_id')->nullable()->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -46,7 +46,7 @@
     <div class="flex flex-row mt-10 justify-center gap-4 items-center w-full">
 
         <div class="flex flex-col gap-2 justify-center items-center h-20">
-            <span class="font-bold">Fait à {{ $ecole->ville }} le {{ date('d/m/Y h:m:d') }}</span>
+            <span class="font-bold">Fait à {{ $ecole->ville }} le {{ date('d/m/Y') }}</span>
             <span class="font-bold">Pour {{ $ecole->abbreviation }}</span>
         </div>
     </div>

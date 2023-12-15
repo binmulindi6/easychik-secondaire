@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->integer('montant_paye');
             $table->string('reference')->nullable();
+            $table->string('deposer_par')->nullable();
             $table->foreignId('frais_id')->nullable()->constrained();
-            $table->foreignId('eleve_id')->nullable()->constrained();
             $table->foreignId('moyen_paiement_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

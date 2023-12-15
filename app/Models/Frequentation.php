@@ -24,6 +24,30 @@ class Frequentation extends Model
                         ->limit(20)
                         ->get();
     }
+    public static function currents(){
+        $current = AnneeScolaire::current();
+        if($current === null){
+            return [];
+        }
+        return self::where('annee_scolaire_id', $current->id)
+                        ->get();
+    }
+    public static function previous(){
+        $current = AnneeScolaire::previous();
+        if($current === null){
+            return [];
+        }
+        return self::where('annee_scolaire_id', $current->id)
+                        ->get();
+    }
+    public static function next(){
+        $current = AnneeScolaire::next();
+            if($current === null){
+                return [];
+            }
+        return self::where('annee_scolaire_id', $current->id)
+                        ->get();
+    }
     //links
     function annee_scolaire(){
         return $this->belongsTo(AnneeScolaire::class);
@@ -53,4 +77,13 @@ class Frequentation extends Model
         return $this->hasMany(Presence::class);
     }
 
+    public static function getPource() {
+        $curr = self::currents() ? count(self::currents()) : 0;
+        $prev = self::previous() ? count(self::previous()) : 0; 
+
+        $dif = $curr - $prev;
+        // dd($dif * 100 / $prev);
+        return $curr > 0 ? ($dif * 100) / $curr : ($dif * 100) / 1;
+        dd($curr - $prev);
+    }
 }

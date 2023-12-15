@@ -156,6 +156,27 @@
                                                         placeholder="ex: MINISTERE DE L ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE" />
                                                 </div>
                                             </div>
+                                            <div class=" mb-2 md:mb-4 w-full">
+                                                <x-label for="email" :value="__('Email')" />
+                                                <x-input id="email" class="block mt-1 w-full" type="text"
+                                                    name="email" :value="$ecole->email" required
+                                                    placeholder="ex: votreecole@gmail.com" />
+                                            </div>
+                                            <div
+                                                class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-5">
+                                                <div class=" mb-2 md:mb-4 w-full">
+                                                    <x-label for="commune" :value="__('Telephone 1')" />
+                                                    <x-input id="commune" class="block mt-1 w-full" type="text"
+                                                        name="telephone1" :value="$ecole->telephone1" required
+                                                        placeholder="ex: +2439900000000" />
+                                                </div>
+                                                <div class=" mb-2 md:mb-4 w-full">
+                                                    <x-label for="ministere" :value="__('Telephone 2')" />
+                                                    <x-input id="ministere" class="block mt-1 w-full" type="text"
+                                                        name="telephone2" :value="$ecole->telephone2" required
+                                                        placeholder="ex: ex: +2439900000000" />
+                                                </div>
+                                            </div>
 
                                             <button type="submit"
                                                 class="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-700 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-size-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25">Enregistrer</button>

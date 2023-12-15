@@ -60,7 +60,7 @@ class TrimestreController extends Controller
 
             //dd($request->nom);
             $annee = AnneeScolaire::find($request->annee_scolaire);
-            if (count($annee->trimestres) >= 2) {
+            if (count($annee->trimestres) < 2) {
                 $trim = Trimestre::where('annee_scolaire_id', $annee->id)
                     ->where('nom', $request->nom)->first();
                 if ($trim === null) {

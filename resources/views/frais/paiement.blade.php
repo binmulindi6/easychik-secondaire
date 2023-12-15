@@ -83,13 +83,18 @@
                             <x-label for="type_frais" :value="__('Reference')" />
                             <input name="reference" type='text'
                                 class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                value="" />
+                                value="" placeholder="Numero Bordereau"/>
                         </div>
                         <div class="mt-4 w-full">
                             <x-label for="type_frais" :value="__('Date')" />
                             <x-input id="montant" name="date" type='date' max="{{date('Y-m-d')}}" class="block mt-1 w-full"
                                 :value="old('date')" />
                         </div>
+                    </div>
+                    <div class="mt-4 w-full">
+                        <x-label for="deposer_par" :value="__('Deposer Par')" />
+                        <x-input class="block mt-1 w-full" type="text" mim="1" name="deposer_par"
+                            :value="old('deposer_par')" placeholder="" required />
                     </div>
                     <div class="flex gap-10">
                         <div class="mt-4">

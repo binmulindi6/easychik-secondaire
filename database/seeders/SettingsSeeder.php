@@ -96,12 +96,13 @@ class SettingsSeeder extends Seeder
         }
 
         $sections = [
-            'EDUCATION DE BASE'
+            'EDUCATION DE BASE' => 'EB'
         ];
 
-        foreach ($sections as $value) {
+        foreach ($sections as $index => $value) {
             Section::create([
-                'nom' => $value
+                'nom' => $index,
+                'abbreviation' => $value
             ]);
         }
 
@@ -115,7 +116,7 @@ class SettingsSeeder extends Seeder
         foreach ($conduites as $key => $value) {
             Conduite::create([
                 'nom' => $key,
-                'numerotation' => $value
+                'abbreviation' => $value
             ]);
         }
 
@@ -123,6 +124,7 @@ class SettingsSeeder extends Seeder
             '07:30:00' => '08:20:00', 
             '08:20:00' => '09:10:00', 
             '09:10:00' => '10:00:00', 
+            '10:10:00' => '10:15:03', 
             '10:00:00' => '10:20:00', 
             '10:20:00' => '11:10:00', 
             '12:00:00' => '12:20:00', 
@@ -130,7 +132,7 @@ class SettingsSeeder extends Seeder
             '13:10:00' => '14:00:03', 
         ];
 
-        $num = 1;
+        $num = 0;
         foreach ($heures as $key => $value) {
             Heure::create([
                 'debut' => $key,
@@ -148,7 +150,7 @@ class SettingsSeeder extends Seeder
 
         foreach ($moyen_paiements as $value) {
             MoyenPaiement::create([
-                'nom' => $key,
+                'nom' => $value,
             ]);
         }
     }

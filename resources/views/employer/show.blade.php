@@ -338,7 +338,7 @@
                     </div>
                 </div>
             </div>
-            @if ($user->isEnseignant())
+            @if ($user && $user->isEnseignant())
                 <div class="shadow-2xl text-center relative bg-white rounded-5 p-5 w-full  z-20">
                     <span class="text-center font-bold text-base"> Historique d'Enseignements </span>
                     <div class="flex-auto px-0 pt-0 pb-2">

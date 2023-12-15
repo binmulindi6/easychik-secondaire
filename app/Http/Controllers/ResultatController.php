@@ -59,7 +59,7 @@ class ResultatController extends Controller
 
         return view('eleve.resultats-periode')
             ->with('ecole', $ecole)
-            
+
             ->with('bulletin', $bulletin)
             ->with('max', $max)
             ->with('note', $note)
@@ -241,7 +241,7 @@ class ResultatController extends Controller
         // dd($annee->trimestre3()->periode5());
 
         $trimestres = $annee->trimestres;
-        if ($trimestres->count() != 3) {
+        if ($trimestres->count() != 2) {
             $examenT1 = null;
             $periode1 = null;
             $periode2 = null;
@@ -266,11 +266,13 @@ class ResultatController extends Controller
         $trimestre2 = $annee->trimestre2();
         // $trimestre3 = $annee->trimestre3();
 
+        // dd($trimestre1->periodes);
+
         //periodes
-        $p1 = $trimestre1->periodes[0];
-        $p2 = $trimestre1->periodes[1];
-        $p3 = $trimestre2->periodes[0];
-        $p4 = $trimestre2->periodes[1];
+        $p1 = count($trimestre1->periodes) == 2 ? $trimestre1->periodes[0] : null;
+        $p2 = count($trimestre1->periodes) == 2 ? $trimestre1->periodes[1] : null;
+        $p3 = count($trimestre2->periodes) == 2 ? $trimestre2->periodes[0] : null;
+        $p4 = count($trimestre2->periodes) == 2 ? $trimestre2->periodes[1] : null;
         // $p5 = $trimestre3->periodes[0];
         // $p6 = $trimestre3->periodes[1];
 
@@ -281,10 +283,10 @@ class ResultatController extends Controller
         // $examenT3 = $eleve->bulletinExamen($trimestre3->id);
 
         //fiches par periodes
-        $periode1 = $eleve->bulletinPeriode($p1->id);
-        $periode2 = $eleve->bulletinPeriode($p2->id);
-        $periode3 = $eleve->bulletinPeriode($p3->id);
-        $periode4 = $eleve->bulletinPeriode($p4->id);
+        $periode1 = $p1 ? $eleve->bulletinPeriode($p1->id) : null;
+        $periode2 = $p2 ? $eleve->bulletinPeriode($p2->id) : null;
+        $periode3 = $p3 ? $eleve->bulletinPeriode($p3->id) : null;
+        $periode4 = $p4 ? $eleve->bulletinPeriode($p4->id) : null;
         // $periode5 = $eleve->bulletinPeriode($p5->id);
         // $periode6 = $eleve->bulletinPeriode($p6->id);
 
@@ -323,18 +325,25 @@ class ResultatController extends Controller
 
 
         //conduites
-        $cond1 = EleveConduite::where('eleve_id', '=', $eleve->id)
-            ->where('periode_id', '=', $p1->id)
-            ->first();
-        $cond2 = EleveConduite::where('eleve_id', '=', $eleve->id)
-            ->where('periode_id', '=', $p2->id)
-            ->first();
-        $cond3 = EleveConduite::where('eleve_id', '=', $eleve->id)
-            ->where('periode_id', '=', $p3->id)
-            ->first();
-        $cond4 = EleveConduite::where('eleve_id', '=', $eleve->id)
-            ->where('periode_id', '=', $p4->id)
-            ->first();
+        if ($p1 !== null && $p2 !== null && $p3 !== null && $p4 !== null) {
+            $cond1 = EleveConduite::where('eleve_id', '=', $eleve->id)
+                ->where('periode_id', '=', $p1->id)
+                ->first();
+            $cond2 = EleveConduite::where('eleve_id', '=', $eleve->id)
+                ->where('periode_id', '=', $p2->id)
+                ->first();
+            $cond3 = EleveConduite::where('eleve_id', '=', $eleve->id)
+                ->where('periode_id', '=', $p3->id)
+                ->first();
+            $cond4 = EleveConduite::where('eleve_id', '=', $eleve->id)
+                ->where('periode_id', '=', $p4->id)
+                ->first();
+        } else {
+            $cond1 = null;
+            $cond2 = null;
+            $cond3 = null;
+            $cond4 = null;
+        }
         // $cond5 = EleveConduite::where('eleve_id', '=', $eleve->id)
         //     ->where('periode_id', '=', $p5->id)
         //     ->first();

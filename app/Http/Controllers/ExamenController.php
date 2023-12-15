@@ -7,7 +7,7 @@ use App\Models\Eleve;
 use App\Models\Classe;
 use App\Models\Examen;
 use App\Models\Logfile;
-use App\Models\trimestre;
+use App\Models\Trimestre;
 use Illuminate\Http\Request;
 use App\Models\AnneeScolaire;
 use App\Models\TypeEvaluation;

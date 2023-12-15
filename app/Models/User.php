@@ -9,6 +9,7 @@ use App\Models\Employer;
 use App\Models\Encadrement;
 use Illuminate\Support\Arr;
 use App\Models\Enseignement;
+use App\Models\PaiementFrais;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -100,6 +101,20 @@ class User extends Authenticatable
         // return $this->isManager() ? true : false;
     }
 
+    public function isDD()
+    {
+        if ($this->parrain_id === null) {
+            foreach ($this->employer->fonctions as $fonction) {
+                if (strtolower($fonction->nom) === strtolower('Directeur de Discipline') || strtolower($fonction->nom) === strtolower('DD')) {
+                    return true;
+                    // dd(10);
+                }
+            }
+        }
+        return false;
+        // return $this->isManager() ? true : false;
+    }
+
 
     public function isSecretaire()
     {
@@ -157,6 +172,11 @@ class User extends Authenticatable
     public function encadrements()
     {
         return $this->hasMany(Encadrement::class);
+    }
+
+    public function paiements()
+    {
+        return $this->hasMany(PaiementFrais::class);
     }
 
     public function classe()

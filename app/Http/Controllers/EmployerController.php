@@ -22,7 +22,7 @@ class EmployerController extends Controller
     protected $page = 'Employers';
     public function index()
     {
-        $employers = Employer::latest()->except(['id', 1]);
+        $employers = Employer::where('id', '!=', 1)->latest()->get();
         $fonctions = Fonction::select([
             'id',
             'nom'
@@ -162,7 +162,7 @@ class EmployerController extends Controller
         $user = User::where('employer_id', $employer->id)->first();
         $self = $employer;
 
-        $employers = Employer::latest()->except(['id', 1]);
+        $employers = Employer::where('id', '!=', 1)->latest()->get();
         ///joker
         $index = 0;
         for ($i = 0; $i < $employers->count(); $i++) {

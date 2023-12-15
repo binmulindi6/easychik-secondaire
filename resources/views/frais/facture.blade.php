@@ -10,58 +10,67 @@
         @endif
 
         @if (isset($self))
-            <div class="display flex justify-center shadow-2xl p-4 bg-white rounded-5">
-                {{-- <div class="pb-0 mb-0 bg-white rounded-t-2xl">
-                    <span> Reçu Faiement</span>
-                </div> --}}
-                <div id="printable" class="max-w0 flex flex-col justify-center items-center p-5 border">
-                    <span class="uppercase font-semibold">{{ env('ecole') ? env('ecole') : env('APP_NAME') }}</span>
-                    <span class="uppercase font-semibold">{{ $annee }}</span>
-                    <span class="uppercase font-semibold">Reçu N° : 00{{ $self->id }}</span>
-                    <table class="border-collapse mt-4">
-                        <thead>
-                            <tr>
-                                <td colspan="" class="uppercase">ELEVE: <span
-                                        class="font-semibold">{{ $self->frequentation->eleve->nomComplet() }}</span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="" class="uppercase">CLASSE: <span
-                                        class="font-semibold">{{ $self->frequentation->eleve->classe()->nomComplet() }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="" class="uppercase">PAYÉ À LA: <span
-                                        class="font-semibold">{{ $self->moyen_paiement->nom }}</span></td>
-                                @if ($self->reference !== null)
-                                    <td colspan="" class="uppercase">REF : <span
-                                            class="font-semibold">{{ $self->reference }}</span></td>
+            <div id="bulletin" class="display flex justify-center shadow-2xl p-4 bg-white rounded-5">
+
+                <div id="printable" class="flex min-h-80 h-80 flex-row items-center w-full border">
+                    <div class="flex w-28 h-full bg-blue-700 justify-start">
+
+                    </div>
+                    <div class="flex flex-col p-2 w-full h-full">
+                        <div class="w-full px-5 flex flex-row justify-between items-center">
+                            <div class="flex w-6/12 justify-center items-center">
+                                <span class="block text-center uppercase font-semibold text-5">
+                                    {{ $ecole ? $ecole->nom : env('APP_NAME') }}
+                                </span>
+                            </div>
+                            <div class="flex w-4/12 justify-center items-center">
+                                <span class="block text-center uppercase font-semibold text-5">
+                                    REÇU <span>N°<span>{{'00' . $self->id . '/'. Auth::currentYear()->nom}}</span></span>
+                                </span>
+                            </div>
+                            <div class="flex w-2/12 justify-center items-center">
+                                {{-- <img class="h-16" src="{{asset('storage/favicon.png')}}" alt="" srcset=""> --}}
+                            </div>
+                        </div>
+                        <div class="borer-b flex flex-col p-2">
+                            <span class="w-full semibold text-justify pb-1 border-b border-dotted"> 
+                                Nom de l'élève :  {{$self->frequentation->eleve->nomComplet()}}, Classe: {{$self->frequentation->classe->nomComplet()}}
+                            </span>
+                            <span class="semibold pb-1 border-b border-dotted">
+                                Motif : {{$self->frais->nom . ' (' . $self->frais->type_frais->nom . ')'}},  Montant : {{$self->montant_paye . $self->frais->type_frais->devise}}
+                            </span>
+                            <span class="semibold pb-1 border-b border-dotted flex w-full"> 
+                                @if ($self->moyen_paiement->nom == "BANQUE")
+                                    
+                                <span class="w-6/12">Déposer à :  LA {{$self->moyen_paiement->nom}}, Référence :  {{$self->reference}}</span>
+                                @else
+                                
+                                <span class="w-6/12">Déposer à :  LA {{$self->moyen_paiement->nom}}</span>
                                 @endif
-                            </tr>
-                        </thead>
-                        </thead>
-                        <thead class="">
-                            <th class="uppercase border py-1 px-2  ">FRAIS</th>
-                            <th class="uppercase border py-1 px-2">Montant Payé</th>
-                            <th class="uppercase border py-1 px-2">Date</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="uppercase border py-1 px-2 text-center">{{ $self->frais->nom }}</td>
-                                <td class="uppercase border py-1 px-2 text-center">
-                                    {{ $self->montant_paye . ' ' . $self->frais->type_frais->devise }} </td>
-                                <td class="uppercase border py-1 px-2 text-center">le {{ date_format(date_create($self->date),'d/m/Y') }}</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th class="pt-8 italic" colspan="3" class="self-end">Fait à {{env('VILLE')}} le {{date('d/m/Y')}}</th>
-                            </tr>
-                            <tr>
-                                <th class="pt-2 pb-8" colspan="3" class="self-end">Secretariat</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                <span class="w-6/12">Déposer Par :  {{$self->deposer_par}}</span>
+                            </span>
+                        </div>
+                        <div class="flex flex-row w-full">
+                            <div class="w-6/12 flex flex-col p-2">
+                                {{-- <span class="font-semibold">Adresse: </span> --}}
+                                <span class="font-semibold">{{$ecole->bp}}</span>
+                                <span class="font-semibold">{{$ecole->email}}</span>
+                                <span class="font-semibold">{{$ecole->telephone1 ." | ". $ecole->telephone2}}</span>
+                            </div>
+                            <div class="w-6/12 flex flex-col p-2">
+                                <span class="border-b pb-2 w-full">
+                                    @if ($self->user !== null)
+                                    {{$self->user->employer->nomComplet()}}
+                                    @endif
+                                </span>
+                                <span class="border-b pb-2 w-full">
+                                    Date : {{date_format(date_create($self->date), 'd/m/Y')}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         @endif
     </div>

@@ -27,14 +27,22 @@
                         @foreach ($self->fonctions as $fonction)
                             <p
                                 class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-90 text-size-sm uppercase">
-                                {{ $fonction->nom }}</p>
+                                {{ $fonction->nom }}
+                                @if ((Auth::user()->isManager() || Auth::user()->isDirecteur()) && $self->user === null)
+                                    <a class="text-green-500" title="creer un compte"
+                                        href="{{ route('users.create.employer', $self->id) }}"><i
+                                            class="fa fa-solid fa-user"></i></a>
+                                @endif
+
+                            </p>
                             {{-- <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">{{$data->employer->fonctions[0]->nom}}</p> --}}
                         @endforeach
                     @endif
                     @if ($self->isEnseignant())
                         @if ($self->classe())
                             <p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-size-sm">
-                                <a class="hover:text-blue-700 uppercase " href="{{ route('classes.show', $self->classe->id) }}">
+                                <a class="hover:text-blue-700 uppercase "
+                                    href="{{ route('classes.show', $self->classe->id) }}">
                                     Titulaire : {{ $self->classe->nomComplet() }}
                                 </a>
                             </p>

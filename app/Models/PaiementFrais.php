@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Frais;
 use App\Models\Frequentation;
 use App\Models\MoyenPaiement;
@@ -16,7 +17,8 @@ class PaiementFrais extends Model
     protected $fillable = [
         'montant_paye',
         'reference',
-        'date'
+        'date',
+        'deposer_par',
     ];
 
     public static function current()
@@ -41,6 +43,10 @@ class PaiementFrais extends Model
     public function frais()
     {
         return $this->belongsTo(Frais::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public static function periode($debut, $fin){

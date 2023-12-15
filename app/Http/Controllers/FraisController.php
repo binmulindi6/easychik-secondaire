@@ -197,7 +197,7 @@ class FraisController extends Controller
     {
         $request->validate([
             'nom' => ['required', 'string', 'max:255'],
-            'montant' => ['required', 'integer', 'max:10'],
+            'montant' => ['required', 'string', 'max:10'],
             'mode_paiement' => ['required', 'integer', 'max:10'],
             'type_frais' => ['required', 'integer', 'max:10'],
             'niveau' => ['required', 'integer', 'max:10'],
@@ -222,10 +222,13 @@ class FraisController extends Controller
         $types = TypeFrais::all();
         $niveaux = Niveau::all();
         $modes = ModePaiement::all();
+        
+        $sections = Section::all();
         return view('frais.frais')
             ->with('items', $frais)
             ->with('self', $self)
             ->with('types', $types)
+            ->with('sections', $sections)
             ->with('niveaux', $niveaux)
             ->with('modes', $modes)
             ->with('page_name', $this->page_name . " / Edit");

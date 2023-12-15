@@ -60,14 +60,16 @@
                 </div>
                 <div class="w-full flex flex-row gap-4 justify-between">
                     <div class="mt-4 w-full">
-                        <x-label for="niveau" :value="__('Niveau')" />
-                        <x-select :collection="$niveaux" :val="$self->niveau" class="block mt-1 w-full" name='niveau'
-                            required></x-select>
+                        <x-label for="niveau" :value="__('Niveau de Classe')" />
+                        <x-input id="nom" class="block mt-1 w-full" type="text" name="" :value="$self->niveau->nom"
+                            placeholder="ex: Prime Scolaire" readonly />
+                            <input type="hidden" name="niveau" value="{{$self->niveau->id}}">
                     </div>
                     <div class="mt-4 w-full">
                         <x-label for="section" :value="__('Section')" />
-                        <x-select :collection="$sections" :val="$self->section" class="block mt-1 w-full" name='section'
-                            required></x-select>
+                        <x-input id="nom" class="block mt-1 w-full" type="text" name="" :value="$self->section->nom"
+                            placeholder="ex: Prime Scolaire" readonly />
+                            <input type="hidden" name="section" value="{{$self->section->id}}">
                     </div>
                 </div>
 
@@ -124,7 +126,7 @@
                 </div>
                 <div class="w-full flex flex-row gap-4 justify-between">
                     <div class="mt-4 w-full">
-                        <x-label for="niveau" :value="__('Niveau')" />
+                        <x-label for="niveau" :value="__('Niveau de Classe')" />
                         <x-select :all="'TOUT LES NIVEAUX'" :collection="$niveaux" class="block mt-1 w-full" name='niveau'
                             required></x-select>
                     </div>

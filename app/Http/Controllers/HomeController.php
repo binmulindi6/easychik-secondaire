@@ -18,7 +18,8 @@ use App\Models\Frequentation;
 class HomeController extends Controller
 {
     public function index()
-    {
+    {   
+        $frePourcentage = Frequentation::getPource();
         if (DateController::checkYears()) {
             if (Auth::user()->isManager() || Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isSecretaire()) {
                 $annee = AnneeScolaire::current();
@@ -73,6 +74,7 @@ class HomeController extends Controller
                 $usersActifs = count(User::where('isActive', '1')->where('employer_id', '=', null)->get()) > 0 ? count(User::where('isActive', '1')->where('employer_id', '=', null)->get()) : 0;
                 return view('dashboard', [
                     'page_name' => 'Dashboard',
+                    'frePourcentage' => $frePourcentage,
                     'eleves' => $total,
                     'employers' => $employers,
                     'hommes' => $hommes,
@@ -101,7 +103,7 @@ class HomeController extends Controller
             //     ]);
             // }
 
-
+            // dd(1);
             if (DateController::checkTrimestres()) {
                 if (DateController::checkPeriodes()) {
                     $annee = AnneeScolaire::current();
@@ -109,6 +111,7 @@ class HomeController extends Controller
                     $periode = Periode::current();
                     return view('dashboard')
                         ->with('annee', $annee)
+                        ->with('frePourcentage', $frePourcentage)
                         ->with('trimestre', $trimestre)
                         ->with('periode', $periode)
                         ->with('page_name', "Dashboard");
@@ -129,7 +132,7 @@ class HomeController extends Controller
         }
 
         return view('dashboard')
-            ->with('notDefined', true)
+            ->with('frePourcentage', $frePourcentage)
             ->with('page_name', "Dashboard");
         // return abort(403);
     }
@@ -152,9 +155,9 @@ class HomeController extends Controller
         return $data;
     }
     public function print()
-    {   
+    {
         $ecole = Ecole::first();
         // dd($ecole);
-        return view('print.print')->with('ecole',$ecole);
+        return view('print.print')->with('ecole', $ecole);
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('examen_id')->nullable()->constrained();
             $table->integer('note_obtenu')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

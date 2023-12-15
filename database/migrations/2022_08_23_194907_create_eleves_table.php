@@ -40,6 +40,7 @@ return new class extends Migration
             $table->string("adresse")->nullable();
             $table->boolean('isActive')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

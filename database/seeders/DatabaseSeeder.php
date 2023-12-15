@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             AnneeScolaireSeeder::class,
             FonctionSeeder::class,
             EmployerSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            SettingsSeeder::class
         ]);
     }
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('isActive')->default(1)->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -111,6 +111,9 @@ class EcoleController extends Controller
             'code' => ['required', 'string', 'max:255'],
             'ministere' => ['required', 'string', 'max:255'],
             'reussite' => ['required', 'string', 'max:255'],
+            'reussite' => ['required', 'string', 'max:255'],
+            'telephone1' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255'],
         ]);
 
 
@@ -126,6 +129,10 @@ class EcoleController extends Controller
         $ecole->ville = $request->ville;
         $ecole->commune = $request->commune;
         $ecole->ministere = $request->ministere;
+        $ecole->telephone1 = $request->telephone1;
+        $ecole->telephone2 = $request->telephone2;
+        $ecole->email = $request->email;
+
 
         $ecole->save();
         return redirect()->route('settings.index');
@@ -208,7 +215,7 @@ class EcoleController extends Controller
             $user->isActive = 1;
             $user->save();
 
-            return redirect()->route('dasboard');
+            return redirect()->route('dashboard');
         } else if (count($ecole) >= 2) {
             return redirect()->route('dashboard');
         }

@@ -1,11 +1,12 @@
 import axios from "axios";
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Set the browser zoom level to 90%
-    document.body.style.zoom = '90%';
-    console.log(document.body.style.zoom)
-});
+//put loader here
 
+// document.addEventListener('DOMContentLoaded', function () {
+//     // Set the browser zoom level to 90%
+//     document.body.style.zoom = '90%';
+//     console.log(document.body.style.zoom)
+// });
 
 const selectTrigger = document.querySelectorAll(".select-trigger");
 selectTrigger &&

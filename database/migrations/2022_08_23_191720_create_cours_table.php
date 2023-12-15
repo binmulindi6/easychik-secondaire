@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('niveau_id')->nullable()->constrained();
             $table->foreignId('section_id')->nullable()->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

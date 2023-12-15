@@ -59,6 +59,22 @@ class AnneeScolaire extends Model
         return null;
     }
 
+    public static function previous()
+    {
+
+        $annee = AnneeScolaire::current();
+        if ($annee !== null && isset($annee->nom)) {
+            // dd($annee);
+            $date = explode('-', $annee->nom)[0];
+            $prevName = (int)$date-1 . "-" . $date;
+
+            $prevYear = AnneeScolaire::where('nom', $prevName)->first();
+            return $prevYear;
+        }
+        return null;
+    }
+
+
     public  function isCurrent()
     {
 
